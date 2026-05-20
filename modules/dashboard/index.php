@@ -765,11 +765,11 @@ include '../../includes/sidebar.php';
                 <thead>
                     <tr>
                         <th style="background: #f8fafc !important; border: 1px solid #e2e8f0; text-align: center;">Rank</th>
-                        <th style="background: #f8fafc !important; border: 1px solid #e2e8f0; text-align: center;">Seller SKU</th>
-                        <th style="background: #f8fafc !important; border: 1px solid #e2e8f0; text-align: center;">Units Sold</th>
-                        <th style="background: #eff6ff !important; border: 1px solid #e2e8f0; text-align: center;">Revenue</th>
-                        <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0; text-align: center;">Net Profit</th>
-                        <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0; text-align: center;">Net Profit%</th>
+                        <th style="background: #f8fafc !important; border: 1px solid #e2e8f0; text-align: left;">Seller SKU</th>
+                        <th style="background: #f8fafc !important; border: 1px solid #e2e8f0; text-align: right;">Units Sold</th>
+                        <th style="background: #eff6ff !important; border: 1px solid #e2e8f0; text-align: right;">Revenue</th>
+                        <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0; text-align: right;">Net Profit</th>
+                        <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0; text-align: right;">Net Profit%</th>
                         <th style="background: #eff6ff !important; border: 1px solid #e2e8f0; text-align: center;">Status</th>
                     </tr>
                 </thead>
@@ -1767,16 +1767,16 @@ $(document).ready(function() {
                     }
 
                     skuPlHtml += `<tr>
-                        <td style="padding: 1.25rem 0.75rem; text-align: center; font-size: 1.1rem; font-weight: 700;">${i+1}</td>
-                        <td style="max-width:250px; font-weight:700; padding: 1.25rem 0.75rem;">
+                        <td style="padding: 1.25rem 0.75rem; text-align: left; font-size: 1.1rem; font-weight: 700;">${i+1}</td>
+                        <td style="max-width:250px; font-weight:700; padding: 1.25rem 0.75rem; text-align: left;">
                             <div style="font-size:1.1rem; color:#1e293b; font-weight: 800; margin-bottom: 2px;">${p.sku}</div>
                             <div style="font-size:0.85rem; color:#94a3b8; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${productName}">${productName}</div>
                         </td>
-                        <td style="font-size: 1.1rem; font-weight: 700; text-align: center;">${productUnits.toLocaleString()}</td>
-                        <td style="font-weight:800; color:#1e40af; font-size: 1.1rem; text-align: center;">$${productRevenue.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                        <td style="font-weight:900; color:#10b981; font-size: 1.2rem; text-align: center;">$${productNet.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                        <td style="text-align:center;"><span style="background:#f0fdf4; color:#166534; padding:6px 10px; border-radius:8px; font-weight:900; font-size: 1rem;">${productMargin.toFixed(1)}%</span></td>
-                        <td style="text-align:center; padding: 1.25rem 0.75rem;">${statusBadge}</td>
+                        <td style="font-size: 1.1rem; font-weight: 700; text-align: left; padding-left: 1.25rem;">${productUnits.toLocaleString()}</td>
+                        <td style="font-weight:800; color:#1e40af; font-size: 1.1rem; text-align: left; padding-left: 1.25rem;">$${productRevenue.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+                        <td style="font-weight:900; color:#10b981; font-size: 1.2rem; text-align: left; padding-left: 1.25rem;">$${productNet.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+                        <td style="text-align: left; padding-left: 1.25rem;"><span style="background:#f0fdf4; color:#166534; padding:6px 10px; border-radius:8px; font-weight:900; font-size: 1rem;">${productMargin.toFixed(1)}%</span></td>
+                        <td style="text-align:left; padding: 1.25rem 0.75rem;">${statusBadge}</td>
                     </tr>`;
                 });
 
@@ -1791,11 +1791,11 @@ $(document).ready(function() {
                 }
 
                 const skuPlFootHtml = `<tr>
-                    <td colspan="2" style="text-align: right; font-weight: 800; font-size: 1rem; padding: 1.25rem 0.75rem;">TOTAL SUMMARY</td>
-                    <td style="text-align: center; font-size: 1.1rem; font-weight: 800;">${tUnits.toLocaleString()}</td>
-                    <td style="color: #1e40af; text-align: center; font-size: 1.1rem; font-weight: 800;">$${tRev.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                    <td style="color: #10b981; font-weight: 900; text-align: center; font-size: 1.2rem;">$${tNet.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                    <td style="text-align: center;"><span style="background: #10b98122; padding: 4px 10px; border-radius: 6px; font-size: 1rem; font-weight: 800;">${tMargin.toFixed(1)}%</span></td>
+                    <td colspan="2" style="text-align: left; font-weight: 800; font-size: 1rem; padding: 1.25rem 0.75rem;">TOTAL SUMMARY</td>
+                    <td style="text-align: left; font-size: 1.1rem; font-weight: 800; padding-left: 1.25rem;">${tUnits.toLocaleString()}</td>
+                    <td style="color: #1e40af; text-align: left; font-size: 1.1rem; font-weight: 800; padding-left: 1.25rem;">$${tRev.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+                    <td style="color: #10b981; font-weight: 900; text-align: left; font-size: 1.2rem; padding-left: 1.25rem;">$${tNet.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+                    <td style="text-align: left; padding-left: 1.25rem;"><span style="background: #10b98122; padding: 4px 10px; border-radius: 6px; font-size: 1rem; font-weight: 800;">${tMargin.toFixed(1)}%</span></td>
                     <td style="text-align: center;">${statusBadgeSummary}</td>
                 </tr>`;
                 $('#sku_pl_foot').html(skuPlFootHtml);
