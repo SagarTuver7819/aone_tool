@@ -27,14 +27,148 @@ if (!isset($_SESSION['user_id'])) {
     <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script>$.fn.dataTable.ext.errMode = 'none';</script>
     <style>
-        .dataTables_wrapper { padding: 1rem 0; }
-        .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter { margin-bottom: 1.5rem; padding: 0 0.5rem; }
-        .dataTables_wrapper .dataTables_paginate { margin-top: 1.5rem; }
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current { background: #6366f1 !important; color: white !important; border: none !important; border-radius: 6px !important; }
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover { background: #e0e7ff !important; color: #6366f1 !important; border: none !important; }
-        .dataTables_wrapper .dataTables_length select { border-radius: 6px; padding: 4px 8px; border-color: #e2e8f0; }
-        .dataTables_wrapper .dataTables_filter input { border-radius: 6px; padding: 6px 12px; border: 1px solid #e2e8f0; margin-left: 0.5rem; }
-        table.dataTable thead th { border-bottom: 1px solid #e2e8f0 !important; }
+        /* Custom Premium DataTables & Global Tables Styling */
+        .dataTables_wrapper { padding: 1.5rem 0; }
+        .dataTables_wrapper .dataTables_length { margin-bottom: 1.5rem; float: left; }
+        .dataTables_wrapper .dataTables_filter { margin-bottom: 1.5rem; float: right; }
+        .dataTables_wrapper .dataTables_info { color: #64748b !important; font-weight: 700 !important; font-size: 0.8rem !important; margin-top: 1.5rem; float: left; }
+        .dataTables_wrapper .dataTables_paginate { margin-top: 1.5rem; float: right; display: flex; gap: 4px; }
+        
+        /* Modern pagination buttons styling */
+        .dataTables_wrapper .dataTables_paginate .paginate_button { 
+            background: #ffffff !important; 
+            color: #475569 !important; 
+            border: 1px solid #e2e8f0 !important; 
+            border-radius: 8px !important; 
+            padding: 8px 14px !important; 
+            font-weight: 700 !important; 
+            font-size: 0.8rem !important; 
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover { 
+            background: #f1f5f9 !important; 
+            color: #0f172a !important; 
+            border-color: #cbd5e1 !important; 
+            transform: translateY(-1px);
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover { 
+            background: #3b82f6 !important; /* Premium Indigo/Blue */
+            color: #ffffff !important; 
+            border-color: #3b82f6 !important; 
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25) !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+            background: #f8fafc !important;
+            color: #cbd5e1 !important;
+            border-color: #f1f5f9 !important;
+            cursor: not-allowed !important;
+            opacity: 0.6;
+            transform: none !important;
+        }
+        
+        /* Length & Filter Controls */
+        .dataTables_wrapper .dataTables_length select { 
+            background: #f8fafc; 
+            border: 1px solid #cbd5e1; 
+            border-radius: 10px; 
+            padding: 6px 12px; 
+            font-weight: 700; 
+            font-size: 0.85rem;
+            color: #1e293b;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .dataTables_wrapper .dataTables_length select:focus {
+            border-color: #3b82f6;
+            background: #ffffff;
+        }
+        .dataTables_wrapper .dataTables_filter input { 
+            background: #f8fafc; 
+            border: 1px solid #cbd5e1; 
+            border-radius: 10px; 
+            padding: 8px 16px; 
+            font-weight: 600; 
+            font-size: 0.85rem; 
+            color: #1e293b; 
+            margin-left: 0.5rem; 
+            outline: none;
+            transition: all 0.3s;
+        }
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: #3b82f6;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Unified Table, DataTable, Analysis Table styling */
+        table.dataTable, table.table, table.analysis-table { 
+            width: 100% !important; 
+            border-collapse: collapse !important; 
+            border-spacing: 0 !important;
+            margin: 1.5rem 0 !important;
+            overflow: hidden !important;
+            border-radius: 16px !important;
+            border: 1px solid #f1f5f9 !important;
+        }
+
+        table.dataTable thead th, table.table thead th, table.analysis-table thead th { 
+            background: #f8fafc !important; 
+            color: #475569 !important; 
+            font-weight: 800 !important; 
+            font-size: 0.75rem !important; 
+            text-transform: uppercase !important; 
+            letter-spacing: 0.05em !important; 
+            padding: 1.25rem 1rem !important;
+            border-bottom: 2px solid #e2e8f0 !important;
+            border-top: none !important;
+            border-left: none !important;
+            border-right: none !important;
+            text-align: center !important;
+            vertical-align: middle !important;
+            white-space: nowrap !important;
+        }
+
+
+
+        table.dataTable tbody td, table.table tbody td, table.analysis-table tbody td { 
+            padding: 1.25rem 1rem !important; 
+            border-bottom: 1px solid #f1f5f9 !important; 
+            border-top: none !important;
+            border-left: none !important;
+            border-right: none !important;
+            font-size: 0.875rem !important;
+            font-weight: 600 !important;
+            color: #1e293b !important;
+            text-align: center !important;
+            vertical-align: middle !important;
+            white-space: nowrap !important;
+            background: #ffffff;
+        }
+
+        /* Alignment utilities for table body cells */
+        table.dataTable tbody td.text-start, table.table tbody td.text-start, table.analysis-table tbody td.text-start,
+        table.dataTable tbody td.align-left, table.table tbody td.align-left, table.analysis-table tbody td.align-left {
+            text-align: left !important;
+        }
+        table.dataTable tbody td.text-end, table.table tbody td.text-end, table.analysis-table tbody td.text-end,
+        table.dataTable tbody td.align-right, table.table tbody td.align-right, table.analysis-table tbody td.align-right {
+            text-align: right !important;
+        }
+
+        /* Hover effect */
+        table.dataTable tbody tr:hover td, table.table tbody tr:hover td, table.analysis-table tbody tr:hover td { 
+            background: #f8fafc !important; 
+            color: #0f172a !important;
+        }
+        
+        /* Eliminate native DataTable border lines */
+        table.dataTable.no-footer { border-bottom: 1px solid #f1f5f9 !important; }
     </style>
 </head>
 <body>
