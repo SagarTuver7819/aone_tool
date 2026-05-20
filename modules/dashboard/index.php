@@ -255,11 +255,12 @@ include '../../includes/sidebar.php';
 .trend-table th { 
     background: linear-gradient(135deg, var(--bg-main) 0%, var(--accent-soft) 100%); color: var(--primary); 
     padding: 1rem; font-size: 0.75rem; text-transform: capitalize; letter-spacing: 0.05em;
-    border-bottom: 2px solid var(--primary-light); text-align: center;
+    border-bottom: 2px solid var(--primary-light); text-align: right;
 }
-.trend-table th:first-child { border-top-left-radius: 12px; }
+.trend-table th:first-child { border-top-left-radius: 12px; text-align: left !important; }
 .trend-table th:last-child { border-top-right-radius: 12px; }
-.trend-table td { padding: 1rem; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #475569; }
+.trend-table td { padding: 1rem; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #475569; text-align: right; }
+.trend-table td:first-child { text-align: left !important; }
 .trend-table td.highlight-col { background: #f8fafc; color: #1e293b; font-weight: 800; }
 .trend-table tr:hover td { background: #f1f5f9; }
 

@@ -15,9 +15,9 @@ if ($isLocal) {
 } else {
     // Live Database Configuration
     define('DB_HOST', 'localhost');
-    define('DB_USER', 'jrosvllq_ocean_crm_amazon');
-    define('DB_PASS', 'ZVQT7EmeFyyVm5?2');
-    define('DB_NAME', 'jrosvllq_ocean_crm_amazon');
+    define('DB_USER', 'your_live_db_user');
+    define('DB_PASS', 'your_live_db_password');
+    define('DB_NAME', 'your_live_db_name');
 }
 
 // Establish Connection

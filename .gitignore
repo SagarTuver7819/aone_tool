@@ -1,0 +1,26 @@
+# Database & Environment Configuration
+config.php
+
+# Excel / CSV data files (sensitive Amazon business reports)
+excel/*.csv
+excel/*.xlsx
+excel/*.xls
+*.xlsx
+*.xls
+*.csv
+
+# User Uploads Directory
+uploads/
+
+# Backups & Temporary Development files
+backups/
+scratch/
+*.zip
+*.rar
+*.tar.gz
+
+# IDE and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
