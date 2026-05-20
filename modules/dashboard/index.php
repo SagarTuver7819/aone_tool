@@ -760,7 +760,7 @@ include '../../includes/sidebar.php';
     </div>
     <div class="card" style="margin-bottom: 2rem;">
         <div class="section-title"><i class="fas fa-boxes" style="background: #6366f1; color: white;"></i> <span>SKU Wise P&L Performance</span></div>
-        <div class="analysis-table-container" style="max-height: 500px;">
+        <div class="analysis-table-container" style="max-height: 800px;">
             <table id="sku_pl_table" class="analysis-table">
                 <thead>
                     <tr>
