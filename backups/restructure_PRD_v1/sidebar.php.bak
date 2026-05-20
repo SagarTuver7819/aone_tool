@@ -1,0 +1,108 @@
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <i class="fas fa-chart-pie" style="color: var(--primary); font-size: 1rem;"></i>
+        </div>
+        <span style="font-size: 1.125rem; font-weight: 800; letter-spacing: -0.5px;">AOne <span style="color: var(--accent);">Intelligence</span></span>
+    </div>
+    
+    <ul class="nav-links">
+        <li class="nav-item">
+            <a href="<?php echo BASE_URL; ?>modules/dashboard/index.php?tab=kpi" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'dashboard') !== false && ($_GET['tab'] ?? 'kpi') === 'kpi') ? 'active' : ''; ?>">
+                <i class="fas fa-chart-bar"></i>
+                <span>KPIs & Performance</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?php echo BASE_URL; ?>modules/dashboard/index.php?tab=financial" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'dashboard') !== false && ($_GET['tab'] ?? '') === 'financial') ? 'active' : ''; ?>">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Financial Analysis</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?php echo BASE_URL; ?>modules/dashboard/index.php?tab=products" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'dashboard') !== false && ($_GET['tab'] ?? '') === 'products') ? 'active' : ''; ?>">
+                <i class="fas fa-boxes"></i>
+                <span>Product Analytics</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?php echo BASE_URL; ?>modules/amazon_ads/index.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'amazon_ads') !== false && strpos($_SERVER['PHP_SELF'], 'pro_keywords') === false) ? 'active' : ''; ?>">
+                <i class="fas fa-ad"></i>
+                <span>Advertising Analysis</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?php echo BASE_URL; ?>modules/amazon_ads/pro_keywords.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'pro_keywords') !== false) ? 'active' : ''; ?>">
+                <i class="fas fa-magic"></i>
+                <span>PPC Intelligence</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?php echo BASE_URL; ?>modules/amazon_ops/index.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'amazon_ops') !== false) ? 'active' : ''; ?>">
+                <i class="fas fa-box-open"></i>
+                <span>Returns & Reimbursements</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?php echo BASE_URL; ?>modules/amazon_orders/index.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'amazon_orders') !== false) ? 'active' : ''; ?>">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Order Intelligence</span>
+            </a>
+        </li>
+
+        <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+        <li class="nav-item">
+            <a href="<?php echo BASE_URL; ?>modules/customer/index.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'customer') !== false) ? 'active' : ''; ?>">
+                <i class="fas fa-users"></i>
+                <span>Customers</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'report_upload') !== false && strpos($_SERVER['PHP_SELF'], 'dynamic_excel') === false) ? 'active' : ''; ?>">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Upload Data</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="<?php echo BASE_URL; ?>modules/dynamic_excel/index.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'dynamic_excel') !== false) ? 'active' : ''; ?>">
+                <i class="fas fa-table"></i>
+                <span>Dynamic Excel</span>
+            </a>
+        </li>
+        <?php endif; ?>
+    </ul>
+
+    <div style="position: absolute; bottom: 1rem; left: 1rem; right: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 12px;">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #064e3b;">
+                <?php echo strtoupper(substr($_SESSION['username'] ?? 'U', 0, 1)); ?>
+            </div>
+            <div style="flex: 1;">
+                <p style="font-size: 0.7rem; color: #94A3B8; font-weight: 600; text-transform: uppercase; margin: 0;"><?php echo htmlspecialchars($_SESSION['role'] ?? 'Guest'); ?></p>
+                <p style="font-size: 0.8rem; color: #FFFFFF; font-weight: 500; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo htmlspecialchars($_SESSION['username'] ?? 'User'); ?></p>
+            </div>
+        </div>
+        <a href="<?php echo BASE_URL; ?>logout.php" style="display: flex; align-items: center; gap: 0.5rem; color: #ef4444; text-decoration: none; font-size: 0.8rem; font-weight: 700;">
+            <i class="fas fa-sign-out-alt"></i> SIGN OUT
+        </a>
+    </div>
+</aside>
+
+<div class="main-wrapper">
+    <header class="top-header">
+        <div class="header-title">
+            <h1><?php echo htmlspecialchars($page_title ?? 'Amazon Intelligence Dashboard'); ?></h1>
+            <span><?php echo htmlspecialchars($page_subtitle ?? 'Performance tracking & financial insights'); ?></span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <div style="text-align: right;">
+                <p style="font-size: 0.875rem; font-weight: 600;"><?php echo date('l, d M Y'); ?></p>
+                <p style="font-size: 0.75rem; opacity: 0.8;">Data Engine Active</p>
+            </div>
+            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn btn-primary">
+                <i class="fas fa-plus"></i> NEW UPLOAD
+            </a>
+            <?php endif; ?>
+        </div>
+    </header>
