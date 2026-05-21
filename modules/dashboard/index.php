@@ -173,12 +173,12 @@ include '../../includes/sidebar.php';
 .analysis-table-container { background: #ffffff; border-radius: 16px; border: 1px solid #f1f5f9; overflow: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
 .analysis-table { width: 100%; border-collapse: collapse !important; border-spacing: 0; }
 .analysis-table th {
-    background: #f8fafc; padding: 12px 16px; font-size: 0.7rem; font-weight: 800; text-transform: capitalize; letter-spacing: 0.05em; color: #64748b;
+    background: #f8fafc; padding: 12px 16px; font-size: 0.9rem; font-weight: 800; text-transform: capitalize; letter-spacing: 0.05em; color: #64748b;
     border: 1px solid #e2e8f0; white-space: nowrap; position: sticky; top: 0; z-index: 10;
     vertical-align: middle; text-align: center;
 }
 .analysis-table th.group-header { 
-    background: #f1f5f9; color: #1e293b; font-size: 0.75rem; 
+    background: #f1f5f9; color: #1e293b; font-size: 0.9rem; 
     border-bottom: 2px solid #e2e8f0; font-weight: 900;
 }
 .analysis-table th:first-child { border-top-left-radius: 16px; }
@@ -236,7 +236,7 @@ include '../../includes/sidebar.php';
 }
 
 .analysis-table td { 
-    padding: 1.25rem 1rem; font-size: 0.9rem; color: #1e293b; 
+    padding: 1.25rem 1rem; font-size: 0.975rem; color: #1e293b; 
     border-bottom: 1px solid #f1f5f9; vertical-align: middle; 
     text-align: center !important; 
 }
@@ -251,18 +251,53 @@ include '../../includes/sidebar.php';
 .mini-bar-fill { height: 100%; border-radius: 10px; }
 
 /* Trend Table & Chart Tab Enhancements */
-.trend-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.trend-table { width: 100%; border-collapse: collapse !important; border: 1px solid #f1f5f9 !important; border-radius: 16px !important; overflow: hidden !important; }
 .trend-table th { 
-    background: linear-gradient(135deg, var(--bg-main) 0%, var(--accent-soft) 100%); color: var(--primary); 
-    padding: 1rem; font-size: 0.75rem; text-transform: capitalize; letter-spacing: 0.05em;
-    border-bottom: 2px solid var(--primary-light); text-align: right;
+    background: #f8fafc !important; 
+    color: #475569 !important; 
+    font-weight: 800 !important; 
+    font-size: 0.9rem !important; 
+    text-transform: uppercase !important; 
+    letter-spacing: 0.05em !important; 
+    padding: 1.25rem 1rem !important;
+    border: 1px solid #e2e8f0 !important;
+    text-align: right !important;
 }
-.trend-table th:first-child { border-top-left-radius: 12px; text-align: left !important; }
-.trend-table th:last-child { border-top-right-radius: 12px; }
-.trend-table td { padding: 1rem; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #475569; text-align: right; }
-.trend-table td:first-child { text-align: left !important; }
-.trend-table td.highlight-col { background: #f8fafc; color: #1e293b; font-weight: 800; }
-.trend-table tr:hover td { background: #f1f5f9; }
+.trend-table th:first-child { 
+    text-align: left !important; 
+    background: #f8fafc !important; 
+}
+.trend-table th:nth-child(2) { 
+    background: #f8fafc !important; 
+}
+.trend-table th:nth-child(3) { 
+    background: #eff6ff !important; 
+    color: #1e40af !important; 
+}
+.trend-table th:nth-child(4) { 
+    background: #f0fdf4 !important; 
+    color: #166534 !important; 
+}
+.trend-table td { 
+    padding: 1.25rem 1rem !important; 
+    border-bottom: 1px solid #f1f5f9 !important; 
+    font-weight: 700 !important; 
+    color: #1e293b !important; 
+    text-align: right !important; 
+    font-size: 1.05rem !important;
+}
+.trend-table td:first-child { 
+    text-align: left !important; 
+    color: #475569 !important;
+    font-weight: 800 !important;
+}
+.trend-table td.highlight-col { 
+    background: rgba(240, 253, 244, 0.4) !important; 
+    color: #166534 !important; 
+    font-weight: 900 !important; 
+}
+.trend-table tr:hover td { background: #f8fafc !important; }
+.trend-table tr:hover td.highlight-col { background: rgba(240, 253, 244, 0.6) !important; }
 
 .chart-tabs { display: flex; gap: 0.75rem; padding: 0.5rem; background: #f1f5f9; border-radius: 50px; width: fit-content; margin-bottom: 2rem; }
 .chart-tab-btn { 
@@ -762,16 +797,15 @@ include '../../includes/sidebar.php';
             <thead>
                 <tr>
                     <th style="background: #f8fafc !important; border: 1px solid #e2e8f0; text-align: center;">Rank</th>
-                    <th style="background: #f8fafc !important; border: 1px solid #e2e8f0; text-align: center;">Seller SKU</th>
+                    <th style="background: #f8fafc !important; border: 1px solid #e2e8f0; text-align: left !important; padding-left: 0.75rem !important;">Seller SKU</th>
                     <th style="background: #f8fafc !important; border: 1px solid #e2e8f0; text-align: center;">Units Sold</th>
                     <th style="background: #eff6ff !important; border: 1px solid #e2e8f0; text-align: center;">Revenue</th>
                     <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0; text-align: center;">Net Profit</th>
                     <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0; text-align: center;">Net Profit%</th>
-                    <th style="background: #eff6ff !important; border: 1px solid #e2e8f0; text-align: center;">Status</th>
                 </tr>
             </thead>
             <tbody id="sku_pl_body">
-                <tr><td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading SKU data...</td></tr>
+                <tr><td colspan="6" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading SKU data...</td></tr>
             </tbody>
             <tfoot id="sku_pl_foot" style="background: #f8fafc; border-top: 2px solid #e2e8f0; font-weight: 800;">
                 <!-- JS Populated -->
@@ -1839,7 +1873,6 @@ $(document).ready(function() {
                         <td class="text-end" style="font-weight:800; color:#1e40af; font-size: 1.1rem; text-align: right; padding-right: 1.25rem;">$${productRevenue.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
                         <td class="text-end" style="font-weight:900; color:#10b981; font-size: 1.2rem; text-align: right; padding-right: 1.25rem;">$${productNet.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
                         <td class="text-end" style="text-align: right; padding-right: 1.25rem;"><span style="background:#f0fdf4; color:#166534; padding:6px 10px; border-radius:8px; font-weight:900; font-size: 1rem;">${productMargin.toFixed(1)}%</span></td>
-                        <td style="text-align:left; padding: 1.25rem 0.75rem;">${statusBadge}</td>
                     </tr>`;
                 });
 
@@ -1859,7 +1892,6 @@ $(document).ready(function() {
                     <td class="text-end" style="color: #1e40af; text-align: right; font-size: 1.1rem; font-weight: 800; padding-right: 1.25rem;">$${tRev.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
                     <td class="text-end" style="color: #10b981; font-weight: 900; text-align: right; font-size: 1.2rem; padding-right: 1.25rem;">$${tNet.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
                     <td class="text-end" style="text-align: right; padding-right: 1.25rem;"><span style="background: #10b98122; padding: 4px 10px; border-radius: 6px; font-size: 1rem; font-weight: 800;">${tMargin.toFixed(1)}%</span></td>
-                    <td style="text-align: center;">${statusBadgeSummary}</td>
                 </tr>`;
                 $('#sku_pl_foot').html(skuPlFootHtml);
 
@@ -2061,7 +2093,7 @@ $(document).ready(function() {
                 });
                 $('#product_list').html(prodHtml);
                 $('#product_analysis_body').html(tableHtml);
-                $('#sku_pl_body').html(skuPlHtml || '<tr><td colspan="7" style="text-align:center;">No SKU data found.</td></tr>');
+                $('#sku_pl_body').html(skuPlHtml || '<tr><td colspan="6" style="text-align:center;">No SKU data found.</td></tr>');
 
                 // Populate Monthly SKU Matrix
                 let mHtml = '';

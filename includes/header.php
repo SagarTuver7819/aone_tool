@@ -107,7 +107,7 @@ if (!isset($_SESSION['user_id'])) {
         }
 
         /* Unified Table, DataTable, Analysis Table styling */
-        table.dataTable, table.table, table.analysis-table { 
+        table.dataTable, table.table, table.analysis-table, table.trend-table { 
             width: 100% !important; 
             border-collapse: collapse !important; 
             border-spacing: 0 !important;
@@ -117,32 +117,27 @@ if (!isset($_SESSION['user_id'])) {
             border: 1px solid #f1f5f9 !important;
         }
 
-        table.dataTable thead th, table.table thead th, table.analysis-table thead th { 
+        table.dataTable thead th, table.table thead th, table.analysis-table thead th, table.trend-table thead th { 
             background: #f8fafc !important; 
             color: #475569 !important; 
             font-weight: 800 !important; 
-            font-size: 0.75rem !important; 
+            font-size: 0.9rem !important; 
             text-transform: uppercase !important; 
             letter-spacing: 0.05em !important; 
             padding: 1.25rem 1rem !important;
-            border-bottom: 2px solid #e2e8f0 !important;
-            border-top: none !important;
-            border-left: none !important;
-            border-right: none !important;
+            border: 1px solid #e2e8f0 !important;
             text-align: center !important;
             vertical-align: middle !important;
             white-space: nowrap !important;
         }
 
-
-
-        table.dataTable tbody td, table.table tbody td, table.analysis-table tbody td { 
+        table.dataTable tbody td, table.table tbody td, table.analysis-table tbody td, table.trend-table tbody td { 
             padding: 1.25rem 1rem !important; 
             border-bottom: 1px solid #f1f5f9 !important; 
             border-top: none !important;
             border-left: none !important;
             border-right: none !important;
-            font-size: 0.875rem !important;
+            font-size: 0.975rem !important;
             font-weight: 600 !important;
             color: #1e293b !important;
             text-align: center !important;
@@ -152,17 +147,17 @@ if (!isset($_SESSION['user_id'])) {
         }
 
         /* Alignment utilities for table body cells */
-        table.dataTable tbody td.text-start, table.table tbody td.text-start, table.analysis-table tbody td.text-start,
-        table.dataTable tbody td.align-left, table.table tbody td.align-left, table.analysis-table tbody td.align-left {
+        table.dataTable tbody td.text-start, table.table tbody td.text-start, table.analysis-table tbody td.text-start, table.trend-table tbody td.text-start,
+        table.dataTable tbody td.align-left, table.table tbody td.align-left, table.analysis-table tbody td.align-left, table.trend-table tbody td.align-left {
             text-align: left !important;
         }
-        table.dataTable tbody td.text-end, table.table tbody td.text-end, table.analysis-table tbody td.text-end,
-        table.dataTable tbody td.align-right, table.table tbody td.align-right, table.analysis-table tbody td.align-right {
+        table.dataTable tbody td.text-end, table.table tbody td.text-end, table.analysis-table tbody td.text-end, table.trend-table tbody td.text-end,
+        table.dataTable tbody td.align-right, table.table tbody td.align-right, table.analysis-table tbody td.align-right, table.trend-table tbody td.align-right {
             text-align: right !important;
         }
 
         /* Hover effect */
-        table.dataTable tbody tr:hover td, table.table tbody tr:hover td, table.analysis-table tbody tr:hover td { 
+        table.dataTable tbody tr:hover td, table.table tbody tr:hover td, table.analysis-table tbody tr:hover td, table.trend-table tbody tr:hover td { 
             background: #f8fafc !important; 
             color: #0f172a !important;
         }
