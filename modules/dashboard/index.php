@@ -823,9 +823,9 @@ include '../../includes/sidebar.php';
                     <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Interactive state-level performance heatmap with dynamic SKU breakdowns</span>
                 </div>
             </div>
-            <span style="font-size: 0.75rem; background: #fef3c7; color: #b45309; padding: 6px 14px; border-radius: 50px; font-weight: 800; border: 1px solid #fde68a;">
-                <i class="fas fa-globe-americas"></i> USA Sales Coverage
-            </span>
+            <!-- <span style="font-size: 0.75rem; background: #fef3c7; color: #b45309; padding: 6px 14px; border-radius: 50px; font-weight: 800; border: 1px solid #fde68a;">
+                <i class="fas fa-globe-americas"></i>
+            </span> -->
         </div>
         
         <div style="padding: 2rem;">
@@ -838,17 +838,17 @@ include '../../includes/sidebar.php';
             </div>
             
             <!-- Table Container -->
-            <div class="analysis-table-container" style="border: 1px solid #94a3b8; border-radius: 12px; overflow: hidden; background: #fff;">
+            <div class="analysis-table-container" style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #fff;">
                 <table id="geo_sales_table" class="analysis-table" style="width: 100%; border-collapse: collapse; margin: 0; font-size: 0.95rem;">
                     <thead>
-                        <tr style="background: #f8fafc; border-bottom: 2px solid #94a3b8;">
-                            <th style="border: 1px solid #94a3b8 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 25% !important;">State / Region</th>
-                            <th style="border: 1px solid #94a3b8 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 10% !important;">Orders</th>
-                            <th style="border: 1px solid #94a3b8 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 10% !important;">Units Sold</th>
-                            <th style="border: 1px solid #94a3b8 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 14% !important;">Sales</th>
-                            <th style="border: 1px solid #94a3b8 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 14% !important;">Amazon Fees</th>
-                            <th style="border: 1px solid #94a3b8 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 14% !important;">Refund Cost</th>
-                            <th style="border: 1px solid #94a3b8 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 13% !important;">Gross Profit</th>
+                        <tr>
+                            <th style="background: #f8fafc !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 20% !important;">State / Region</th>
+                            <th style="background: #f8fafc !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 13% !important;">Orders</th>
+                            <th style="background: #f8fafc !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 13% !important;">Units Sold</th>
+                            <th style="background: #eff6ff !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 13% !important;">Sales</th>
+                            <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 13% !important;">Amazon Fees</th>
+                            <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 13% !important;">COGS</th>
+                            <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 15% !important;">Net Profit</th>
                         </tr>
                     </thead>
                     <tbody id="region_sales_body">
@@ -1560,6 +1560,8 @@ $(document).ready(function() {
     }
 
     function loadDashboard() {
+        if (dashboardLoadInProgress) return;
+        dashboardLoadInProgress = true;
         showLoader();
         const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : $('#filter_customer').val();
         let from = $('#filter_from').val() || '2026-01-01';
@@ -1570,7 +1572,9 @@ $(document).ready(function() {
             data: { customer_id: customerId, from_date: from, to_date: to },
             dataType: 'json',
             success: function(res) {
-                if (!res || !res.kpis) return;
+                if (!res || !res.kpis) {
+                    return;
+                }
                 
                 // Load product-specific charts
                 loadProductAnalytics(customerId, from, to);
@@ -2122,11 +2126,12 @@ $(document).ready(function() {
                     language: { search: "_INPUT_", searchPlaceholder: "Search SKU P&L..." }
                 });
 
-                loadSettlementAnalytics(customerId, from, to);
-                loadProductAnalytics(customerId, from, to);
                 animateCurrentTab();
             },
-            complete: () => hideLoader()
+            complete: () => {
+                dashboardLoadInProgress = false;
+                hideLoader();
+            }
         });
     }
 
@@ -2134,6 +2139,7 @@ $(document).ready(function() {
     let regionalMap = null;
     let mapMarkers = [];
     let geoJsonLayer = null;
+    let dashboardLoadInProgress = false;
 
     function toggleGeoSkuRow(state) {
         const row = $('#row-child-' + state.replace(/\s+/g, '_'));
@@ -2194,33 +2200,14 @@ $(document).ready(function() {
             scrollWheelZoom: false
         });
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 20
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
         }).addTo(regionalMap);
 
         const maxSales = Math.max(...regionList.map(r => r.total_sales)) || 1;
 
-        const distinctColors = {
-            "Quebec": "#6366f1",         // Indigo
-            "Ontario": "#a855f7",        // Bright Purple
-            "British Columbia": "#ec4899", // Sunset Pink
-            "Alberta": "#f97316",        // Glowing Orange
-            "Saskatchewan": "#10b981",   // Rich Emerald Green
-            "Manitoba": "#f59e0b",       // Warm Amber Gold
-            "Nova Scotia": "#06b6d4"     // Bright Electric Cyan
-        };
-        const getDistinctColor = (name) => {
-            const clean = name.trim();
-            if (distinctColors[clean]) return distinctColors[clean];
-            let hash = 0;
-            for (let i = 0; i < clean.length; i++) {
-                hash = clean.charCodeAt(i) + ((hash << 5) - hash);
-            }
-            const colors = ['#6366f1', '#a855f7', '#ec4899', '#f97316', '#10b981', '#f59e0b', '#06b6d4', '#ef4444', '#3b82f6', '#f43f5e'];
-            return colors[Math.abs(hash) % colors.length];
-        };
+        const getDistinctColor = () => '#bfdbfe';
 
         const stateAbbr = {
             "Alabama": "AL", "Alaska": "AK", "Arizona": "AZ", "Arkansas": "AR", "California": "CA", "Colorado": "CO", "Connecticut": "CT", "Delaware": "DE",
@@ -2249,14 +2236,14 @@ $(document).ready(function() {
                         const feat = stateName.toLowerCase();
                         return feat === prov || feat.includes(prov) || prov.includes(feat);
                     });
-                    const fillColor = !match ? '#f8fafc' : getDistinctColor(match.province);
+                    const fillColor = '#bfdbfe';
                     
                     return {
                         fillColor: fillColor,
-                        weight: 2,
-                        opacity: 1,
-                        color: '#ffffff',
-                        fillOpacity: match ? 0.85 : 0.15
+                        weight: 1.8,
+                        opacity: 0.98,
+                        color: '#60a5fa',
+                        fillOpacity: 0.72
                     };
                 },
                 onEachFeature: function(feature, layer) {
@@ -2319,13 +2306,13 @@ $(document).ready(function() {
                 const salesVal = p.total_sales >= 1000 ? `$${(p.total_sales/1000).toFixed(1)}k` : `$${p.total_sales.toFixed(0)}`;
 
                 const customLabelIcon = L.divIcon({
-                    html: `<div style="background: ${stateColor}; color: #ffffff; padding: 6px 12px; border-radius: 50px; font-weight: 900; font-size: 0.75rem; white-space: nowrap; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.25); border: 2.5px solid #ffffff; font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; gap: 4px; transition: transform 0.2s;" class="map-label-hover">
-                        <span style="font-weight: 900; opacity: 0.95; font-size: 0.65rem; background: rgba(255,255,255,0.25); padding: 1px 4px; border-radius: 4px;">${abbr}</span>
-                        <span>${salesVal}</span>
+                    html: `<div style="background: rgba(255, 255, 255, 0.94); color: ${stateColor}; padding: 8px 12px; border-radius: 999px; font-weight: 800; font-size: 0.75rem; white-space: nowrap; text-align: center; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12); border: 1px solid rgba(15, 23, 42, 0.08); font-family: 'Inter', sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: transform 0.2s;" class="map-label-hover">
+                        <span style="font-weight: 800; opacity: 0.9; font-size: 0.65rem; background: rgba(15, 23, 42, 0.05); padding: 2px 6px; border-radius: 999px; color: ${stateColor};">${abbr}</span>
+                        <span style="color: #0f172a;">${salesVal}</span>
                     </div>`,
                     className: 'custom-state-label',
-                    iconSize: [85, 32],
-                    iconAnchor: [42, 16]
+                    iconSize: [90, 36],
+                    iconAnchor: [45, 18]
                 });
 
                 const marker = L.marker(coords, { icon: customLabelIcon }).addTo(regionalMap);
@@ -2426,21 +2413,25 @@ $(document).ready(function() {
                         const grossProfitColor = p.gross_profit >= 0 ? '#10b981' : '#f43f5e';
                         const grossProfitSign = p.gross_profit >= 0 ? '' : '-';
                         const formattedGross = p.gross_profit >= 0 ? p.gross_profit : Math.abs(p.gross_profit);
+                        const netProfitValue = p.total_sales + p.fees + p.refunds - p.cogs;
+                        const netProfitColor = netProfitValue >= 0 ? '#10b981' : '#f43f5e';
+                        const netProfitSign = netProfitValue >= 0 ? '' : '-';
+                        const formattedNetProfit = netProfitValue >= 0 ? netProfitValue : Math.abs(netProfitValue);
 
                         regHtml += `
                             <tr class="geo-parent-row" data-state="${p.province}" style="cursor: pointer; transition: background 0.2s; border-bottom: 1px solid #cbd5e1;" onclick="toggleGeoSkuRow('${p.province}')">
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: center; font-weight: 800; color: #1e293b;">
-                                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: left; font-weight: 800; color: #1e293b;">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
                                         <i class="fas fa-chevron-right geo-chevron" id="chevron-${p.province.replace(/\s+/g, '_')}" style="font-size: 0.75rem; color: #94a3b8; transition: transform 0.2s;"></i>
                                         <span>${p.province}</span>
                                     </div>
                                 </td>
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: center; color: #475569; font-weight: 700;">${p.order_count.toLocaleString()}</td>
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: center; color: #475569; font-weight: 700;">${p.units_sold.toLocaleString()}</td>
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: center; color: #1e293b; font-weight: 800;">$${p.total_sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: center; color: #ef4444; font-weight: 700;">-$${Math.abs(p.fees).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: center; color: #ef4444; font-weight: 700;">$${p.refunds.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: center; color: ${grossProfitColor}; font-weight: 900;">${grossProfitSign}$${formattedGross.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: right !important; color: #475569; font-weight: 700;">${p.order_count.toLocaleString()}</td>
+                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: right !important; color: #475569; font-weight: 700;">${p.units_sold.toLocaleString()}</td>
+                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: right !important; color: #1e293b; font-weight: 800;">$${p.total_sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: right !important; color: #ef4444; font-weight: 700;">-$${Math.abs(p.fees).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: right !important; color: #475569; font-weight: 700;">-$${Math.abs(p.cogs).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: right !important; color: ${netProfitColor}; font-weight: 900;">${netProfitSign}$${formattedNetProfit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                             </tr>
                             <tr class="geo-child-row" id="row-child-${p.province.replace(/\s+/g, '_')}" style="display: none; background: #f8fafc;">
                                 <td colspan="7" style="padding: 1.5rem 2.5rem; border: 1px solid #94a3b8;">
@@ -2456,29 +2447,30 @@ $(document).ready(function() {
                                                 <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">Units Sold</th>
                                                 <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">Sales</th>
                                                 <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">Amazon Fees</th>
-                                                <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">Refund Cost</th>
-                                                <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">Gross Profit</th>
+                                                <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">COGS</th>
+                                                <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">Net Profit</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             ${p.skus.length === 0 ? 
                                                 `<tr><td colspan="7" style="text-align: center; padding: 2rem; color: #94a3b8; font-weight: 700;">No product sales in this region.</td></tr>` : 
                                                 p.skus.map(s => {
-                                                    const sGrossColor = s.gross_profit >= 0 ? '#10b981' : '#f43f5e';
-                                                    const sGrossSign = s.gross_profit >= 0 ? '' : '-';
-                                                    const sFormattedGross = s.gross_profit >= 0 ? s.gross_profit : Math.abs(s.gross_profit);
+                                                    const sNetProfit = s.sales + s.fees + (s.refunds || 0) - (s.cogs || 0);
+                                                    const sNetColor = sNetProfit >= 0 ? '#10b981' : '#f43f5e';
+                                                    const sNetSign = sNetProfit >= 0 ? '' : '-';
+                                                    const sFormattedNet = sNetProfit >= 0 ? sNetProfit : Math.abs(sNetProfit);
                                                     return `
                                                         <tr style="transition: background 0.15s;">
                                                             <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: center;">
                                                                 <div style="font-weight: 800; color: #1e293b; font-size: 0.8rem;">${s.sku}</div>
                                                                 <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;" title="${s.product_name}">${s.product_name}</div>
                                                             </td>
-                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: center; color: #475569; font-weight: 700; font-size: 0.8rem;">${s.order_count.toLocaleString()}</td>
-                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: center; color: #475569; font-weight: 700; font-size: 0.8rem;">${s.units_sold.toLocaleString()}</td>
-                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: center; color: #1e293b; font-weight: 800; font-size: 0.8rem;">$${s.sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: center; color: #ef4444; font-weight: 700; font-size: 0.8rem;">-$${Math.abs(s.fees).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: center; color: #ef4444; font-weight: 700; font-size: 0.8rem;">$${s.refunds.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: center; color: ${sGrossColor}; font-weight: 800; font-size: 0.8rem;">${sGrossSign}$${sFormattedGross.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: right !important; color: #475569; font-weight: 700; font-size: 0.8rem;">${s.order_count.toLocaleString()}</td>
+                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: right !important; color: #475569; font-weight: 700; font-size: 0.8rem;">${s.units_sold.toLocaleString()}</td>
+                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: right !important; color: #1e293b; font-weight: 800; font-size: 0.8rem;">$${s.sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: right !important; color: #ef4444; font-weight: 700; font-size: 0.8rem;">-$${Math.abs(s.fees).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: right !important; color: #475569; font-weight: 700; font-size: 0.8rem;">-$${Math.abs(s.cogs || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: right !important; color: ${sNetColor}; font-weight: 800; font-size: 0.8rem;">${sNetSign}$${sFormattedNet.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                                                         </tr>
                                                     `;
                                                 }).join('')
