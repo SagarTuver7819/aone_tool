@@ -341,6 +341,9 @@ try {
     // Use the accurate revenue from Business Report (to match KPI cards)
     $revenue = floatval($totals_full['total_sales'] ?? 0);
     
+    // Accurate PL revenue from Transaction Report
+    $pl_revenue = floatval($trans_res['gross_revenue'] ?? 0);
+    
     // Total Amazon Fees (all categories from Transaction Report)
     $selling_fees = floatval($trans_res['selling_fees'] ?? 0);
     $fba_fees = floatval($trans_res['fba_fees'] ?? 0);
@@ -351,8 +354,9 @@ try {
     
     $total_amazon_fees = $selling_fees + $fba_fees + $serv + $adj + $inv + $ret;
     
-    // Calculated Gross Profit: Revenue - All Fees
-    $gross_calc = $revenue + $total_amazon_fees; // Fees are already negative
+    // Calculated Gross Profit: PL Revenue - All Fees
+    $pl_gross_profit = $pl_revenue + $total_amazon_fees; // Fees are already negative
+    $gross_calc = $pl_gross_profit; // Align main calculations with accurate transaction-based gross profit
     
     // 3.1 Advertising Data
     $sql_ads = "SELECT SUM(spend) as total_spend, SUM(total_sales) as total_ad_sales, SUM(total_orders) as total_ad_orders 
@@ -385,10 +389,10 @@ try {
     
     // Final Net Profit: Gross Profit - Product Costs
     $net_profit = $gross_calc - $cogs;
-    $net_margin = $revenue > 0 ? ($net_profit / $revenue) * 100 : 0;
+    $net_margin = $pl_revenue > 0 ? ($net_profit / $pl_revenue) * 100 : 0;
 
     $financials_payload = [
-        'revenue' => $revenue,
+        'revenue' => $pl_revenue,
         'product_sales' => floatval($trans_res['product_sales_only'] ?? 0),
         'shipping_credits' => floatval($trans_res['shipping_credits'] ?? 0),
         'gift_wrap_credits' => floatval($trans_res['gift_wrap_credits'] ?? 0),

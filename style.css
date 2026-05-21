@@ -438,7 +438,7 @@ body {
     background: #f8fafc !important; 
     color: #64748b !important; 
     font-weight: 800 !important; 
-    font-size: 0.7rem !important; 
+    font-size: 0.9rem !important; 
     text-transform: capitalize; 
     letter-spacing: 0.05em; 
     padding: 1.25rem 1rem !important;
@@ -450,7 +450,7 @@ body {
     border-bottom: 1px solid #f1f5f9; 
     text-align: center !important;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.975rem !important; 
     color: #1e293b;
 }
 .analysis-table tr:hover td { background: #f8fafc; }
@@ -530,41 +530,62 @@ body {
 /* Trend Table */
 .trend-table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
+    border-collapse: collapse !important;
+    border: 1px solid #f1f5f9 !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
 }
 
 .trend-table th {
-    background: #F8FAFC;
-    color: var(--text-muted);
-    font-size: 0.7rem;
-    padding: 1rem;
-    text-align: right;
+    background: #f8fafc !important;
+    color: #475569 !important;
+    font-weight: 800 !important;
+    font-size: 0.9rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 1.25rem 1rem !important;
+    border: 1px solid #e2e8f0 !important;
+    text-align: right !important;
 }
 
 .trend-table th:first-child {
-    text-align: left;
+    text-align: left !important;
+    background: #f8fafc !important;
+}
+
+.trend-table th:nth-child(2) {
+    background: #f8fafc !important;
+}
+
+.trend-table th:nth-child(3) {
+    background: #eff6ff !important;
+    color: #1e40af !important;
+}
+
+.trend-table th:nth-child(4) {
+    background: #f0fdf4 !important;
+    color: #166534 !important;
 }
 
 .trend-table td {
-    padding: 1.25rem 1rem;
-    text-align: right;
-    border-bottom: 1px solid #F1F5F9;
-    font-weight: 600;
+    padding: 1.25rem 1rem !important;
+    border-bottom: 1px solid #F1F5F9 !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    text-align: right !important;
+    font-size: 1.05rem !important;
 }
 
 .trend-table td:first-child {
-    text-align: left;
-    color: var(--text-main);
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+    text-align: left !important;
+    color: #475569 !important;
+    font-weight: 800 !important;
 }
 
 .highlight-col {
-    background: rgba(255, 251, 235, 0.5);
-    border-left: 1px solid #FEF3C7;
-    border-right: 1px solid #FEF3C7;
+    background: rgba(240, 253, 244, 0.4) !important;
+    color: #166534 !important;
+    font-weight: 900 !important;
 }
 
 .trend-indicator {

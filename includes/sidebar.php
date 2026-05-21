@@ -18,10 +18,16 @@
                 </a>
             </li>
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a href="<?php echo BASE_URL; ?>modules/dashboard/index.php?tab=traffic" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'dashboard') !== false && ($_GET['tab'] ?? '') === 'traffic') ? 'active' : ''; ?>">
                     <i class="fas fa-users"></i>
                     <span>Sales & Traffic</span>
+                </a>
+            </li> -->
+             <li class="nav-item">
+                <a href="<?php echo BASE_URL; ?>modules/dashboard/index.php?tab=financial" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'dashboard') !== false && ($_GET['tab'] ?? '') === 'financial') ? 'active' : ''; ?>">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>Profit & Fees</span>
                 </a>
             </li>
 
@@ -73,12 +79,7 @@
 
             <li class="nav-header" style="padding: 1rem 1rem 0.5rem; font-size: 0.65rem; color: #64748b; font-weight: 800; text-transform: capitalize; letter-spacing: 0.05em;">Operations & Finance</li>
 
-            <li class="nav-item">
-                <a href="<?php echo BASE_URL; ?>modules/dashboard/index.php?tab=financial" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'dashboard') !== false && ($_GET['tab'] ?? '') === 'financial') ? 'active' : ''; ?>">
-                    <i class="fas fa-hand-holding-usd"></i>
-                    <span>Profit & Fees</span>
-                </a>
-            </li>
+           
 
             <li class="nav-item">
                 <a href="<?php echo BASE_URL; ?>modules/amazon_ops/index.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'amazon_ops/index') !== false) ? 'active' : ''; ?>">

@@ -27,7 +27,7 @@ include '../../includes/sidebar.php';
         background: #f8fafc !important; 
         color: #64748b !important; 
         font-weight: 800 !important; 
-        font-size: 0.7rem !important; 
+        font-size: 0.9rem !important; 
         text-transform: uppercase; 
         letter-spacing: 0.05em; 
         padding: 1.25rem 1rem !important;
@@ -39,7 +39,7 @@ include '../../includes/sidebar.php';
         border-bottom: 1px solid #f1f5f9; 
         text-align: center !important;
         font-weight: 600;
-        font-size: 0.85rem;
+        font-size: 0.975rem !important;
         color: #1e293b;
     }
     .analysis-table tr:hover td { background: #f8fafc; }
