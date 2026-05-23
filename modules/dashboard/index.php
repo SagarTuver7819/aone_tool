@@ -11,175 +11,235 @@ $page_subtitle = "Real-time Amazon Business Intelligence & Analytics";
 include '../../includes/header.php';
 include '../../includes/sidebar.php';
 ?>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+        corePlugins: {
+            preflight: false,
+        },
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#000000",
+                    "secondary": "#0051d5",
+                    "background": "#f7f9fb",
+                    "surface": "#f7f9fb",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f2f4f6",
+                    "surface-container": "#eceef0",
+                    "surface-container-high": "#e6e8ea",
+                    "surface-container-highest": "#e0e3e5",
+                    "on-surface": "#191c1e",
+                    "on-surface-variant": "#45464d",
+                    "outline-variant": "#c6c6cd",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#6ffbbe",
+                    "on-tertiary-container": "#009668",
+                    "secondary-fixed": "#dbe1ff"
+                }
+            }
+        }
+    }
+</script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+    
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .filled-icon {
+        font-variation-settings: 'FILL' 1;
+    }
+    .bento-card {
+        background: #FFFFFF;
+        border-radius: 16px;
+        box-shadow: 0px 4px 20px rgba(15, 23, 42, 0.05);
+        border: 1px solid #E2E8F0;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .bento-card:hover {
+        box-shadow: 0px 10px 30px rgba(15, 23, 42, 0.1);
+        transform: translateY(-4px);
+    }
+    .sparkline-path {
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        animation: dash 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes dash {
+        to { stroke-dashoffset: 0; }
+    }
+</style>
 
 <style>
 /* Global Premium Styles */
 :root {
-    --card-shadow: 0 10px 30px rgba(0,0,0,0.04);
-    --hover-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    --hover-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 
 .kpi-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    margin-bottom: 0.75rem;
+    gap: 1.25rem;
+    margin-bottom: 1rem;
 }
 
 .kpi-card { 
     background: #ffffff;
     border-radius: 16px;
-    padding: 1.25rem !important;
-    border: none;
+    padding: 1.5rem !important;
+    border: 1px solid #e7e8e9;
     box-shadow: var(--card-shadow);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 140px;
+    min-height: 145px;
     opacity: 0;
     transform: translateY(20px);
 }
 
 .kpi-card.visible { opacity: 1; transform: translateY(0); }
-.kpi-card:hover { transform: translateY(-8px); box-shadow: var(--hover-shadow); }
+.kpi-card:hover { transform: translateY(-4px); box-shadow: var(--hover-shadow); }
 
-.kpi-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+.kpi-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
 
 .cmp-tag {
-    font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 50px;
+    font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 50px;
     display: flex; align-items: center; gap: 4px; color: white;
 }
-.cmp-tag.up { background: #22c55e; }
-.cmp-tag.down { background: #ef4444; }
-.cmp-tag.none { background: #94a3b8; }
+.cmp-tag.up { background: var(--success); }
+.cmp-tag.down { background: var(--error); }
+.cmp-tag.none { background: var(--outline); }
 
 .kpi-icon { 
-    width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
-    font-size: 0.85rem; color: #fff;
+    width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; color: #fff;
 }
 
-/* Specific Card Themes based on Screenshot 2 - Premium Gradient Style */
+/* Specific Card Themes - Executive Minimalist */
 .kpi-card.blue-theme { 
-    background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%); 
-    border-bottom: 3px solid #3b82f6;
+    background: #ffffff; 
+    border-bottom: 3px solid var(--primary-container);
 }
-.kpi-card.blue-theme .kpi-icon { background: #3b82f6; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3); }
+.kpi-card.blue-theme .kpi-icon { background: var(--primary-container); box-shadow: 0 4px 12px rgba(15, 82, 255, 0.2); }
 
 .kpi-card.indigo-theme { 
-    background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 100%); 
-    border-bottom: 3px solid #6366f1;
+    background: #ffffff; 
+    border-bottom: 3px solid var(--primary-fixed-dim);
 }
-.kpi-card.indigo-theme .kpi-icon { background: #6366f1; box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3); }
+.kpi-card.indigo-theme .kpi-icon { background: var(--primary-fixed-dim); box-shadow: 0 4px 12px rgba(184, 196, 255, 0.2); }
 
 .kpi-card.teal-theme { 
-    background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%); 
-    border-bottom: 3px solid #14b8a6;
+    background: #ffffff; 
+    border-bottom: 3px solid var(--tertiary-fixed-dim);
 }
-.kpi-card.teal-theme .kpi-icon { background: #14b8a6; box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3); }
+.kpi-card.teal-theme .kpi-icon { background: var(--tertiary-fixed-dim); box-shadow: 0 4px 12px rgba(78, 222, 163, 0.2); }
 
 .kpi-card.green-theme { 
-    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); 
-    border-bottom: 3px solid #22c55e;
+    background: #ffffff; 
+    border-bottom: 3px solid var(--success);
 }
-.kpi-card.green-theme .kpi-icon { background: #22c55e; box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3); }
+.kpi-card.green-theme .kpi-icon { background: var(--success); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
 
 .kpi-card.emerald-theme { 
-    background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%); 
-    border-bottom: 3px solid #10b981;
+    background: #ffffff; 
+    border-bottom: 3px solid var(--success);
 }
-.kpi-card.emerald-theme .kpi-icon { background: #10b981; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); }
+.kpi-card.emerald-theme .kpi-icon { background: var(--success); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
 
 .kpi-card.rose-theme { 
-    background: linear-gradient(135deg, #fff1f2 0%, #ffffff 100%); 
-    border-bottom: 3px solid #f43f5e;
+    background: #ffffff; 
+    border-bottom: 3px solid var(--error);
 }
-.kpi-card.rose-theme .kpi-icon { background: #f43f5e; box-shadow: 0 8px 20px rgba(244, 63, 94, 0.3); }
+.kpi-card.rose-theme .kpi-icon { background: var(--error); box-shadow: 0 4px 12px rgba(186, 26, 26, 0.2); }
 
 .kpi-card.purple-theme { 
-    background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%); 
-    border-bottom: 3px solid #a855f7;
+    background: #ffffff; 
+    border-bottom: 3px solid var(--outline-variant);
 }
-.kpi-card.purple-theme .kpi-icon { background: #a855f7; box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3); }
+.kpi-card.purple-theme .kpi-icon { background: var(--outline-variant); box-shadow: 0 4px 12px rgba(195, 197, 217, 0.2); }
 
 .kpi-card.yellow-theme { 
-    background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%); 
-    border-bottom: 3px solid #f59e0b;
+    background: #ffffff; 
+    border-bottom: 3px solid #ffda6a;
 }
-.kpi-card.yellow-theme .kpi-icon { background: #f59e0b; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3); }
+.kpi-card.yellow-theme .kpi-icon { background: #ffda6a; box-shadow: 0 4px 12px rgba(255, 218, 106, 0.2); }
 
 .kpi-card.cyan-theme { 
-    background: linear-gradient(135deg, #ecfeff 0%, #ffffff 100%); 
-    border-bottom: 3px solid #06b6d4;
+    background: #ffffff; 
+    border-bottom: 3px solid var(--outline-variant);
 }
-.kpi-card.cyan-theme .kpi-icon { background: #06b6d4; box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3); }
+.kpi-card.cyan-theme .kpi-icon { background: var(--outline-variant); box-shadow: 0 4px 12px rgba(195, 197, 217, 0.2); }
 
-.kpi-body h3 { font-size: 1.65rem; font-weight: 900; margin: 0.25rem 0; color: #1e293b; letter-spacing: -0.02em; }
-.kpi-body p { font-size: 0.65rem; color: #64748b; font-weight: 700; text-transform: capitalize; letter-spacing: 0.05em; margin: 0; line-height: 1.2; }
+.kpi-body h3 { font-family: 'Hanken Grotesk', sans-serif; font-size: 32px; font-weight: 600; line-height: 40px; margin: 0.25rem 0; color: var(--on-surface); letter-spacing: -0.01em; }
+.kpi-body p { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; line-height: 20px; color: var(--on-surface-variant); margin: 0; }
 
 .kpi-footer { 
-    font-size: 1.05rem; font-weight: 800; color: #1e293b; margin-top: 0; 
+    font-size: 0.8rem; font-weight: 700; color: var(--on-surface-variant); margin-top: 0; 
     display: flex; align-items: center; gap: 8px; 
-    background: rgba(241, 245, 249, 0.5); padding: 8px 14px; border-radius: 8px;
-    width: fit-content; border: 1px solid rgba(226, 232, 240, 0.8);
+    background: var(--surface-container-low); padding: 6px 12px; border-radius: 8px;
+    width: fit-content; border: 1px solid var(--outline-variant);
 }
 .kpi-footer i { opacity: 0.8; font-size: 1.05rem; }
 
 /* Financial P&L Styles */
-.pl-card { border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-.pl-header { padding: 1.5rem 2rem; }
+.pl-card { border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px -2px rgba(0,0,0,0.05); border: 1px solid #e7e8e9; }
+.pl-header { padding: 1.5rem 2rem; background: var(--secondary) !important; }
 .pl-header h3 { margin: 0; color: #fff; font-weight: 800; text-transform: capitalize; letter-spacing: 0.05em; font-size: 1rem; }
 .pl-row { display: flex; justify-content: space-between; padding: 1.25rem 0; border-bottom: 1px solid #f1f5f9; align-items: center; }
 .pl-row:last-child { border-bottom: none; }
-.pl-row label { font-weight: 700; color: #334155; font-size: 0.95rem; }
+.pl-row label { font-weight: 700; color: var(--on-surface-variant); font-size: 0.95rem; }
 .pl-row span { font-weight: 800; font-size: 1.1rem; }
 .pl-row.sub { padding: 0.85rem 0 0.85rem 1.5rem; font-size: 0.85rem; border-bottom: 1px dashed #f1f5f9; }
-.pl-row.sub label { color: #64748b; font-weight: 600; }
+.pl-row.sub label { color: var(--on-surface-variant); font-weight: 600; opacity: 0.85; }
 .pl-row.total { padding: 1.5rem; margin-top: 1rem; border-radius: 12px; }
 
-.expense-progress { height: 6px; background: #f1f5f9; border-radius: 10px; width: 80px; overflow: hidden; margin-top: 4px; }
+.expense-progress { height: 6px; background: var(--surface-container); border-radius: 10px; width: 80px; overflow: hidden; margin-top: 4px; }
 .expense-progress-bar { height: 100%; border-radius: 10px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
 
 /* Product Gallery Styles */
 #product_list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
 .product-item {
-    background: #ffffff; border-radius: 16px; padding: 1.5rem; position: relative; border: 1px solid #f1f5f9;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    background: #ffffff; border-radius: 16px; padding: 1.5rem; position: relative; border: 1px solid #e7e8e9;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
 }
-.product-item:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: #6366f1; }
-.product-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #6366f1, #a855f7); opacity: 0; transition: opacity 0.3s; }
-.product-item:hover::before { opacity: 1; }
+.product-item:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); border-color: var(--primary-container); }
+.product-item::before { display: none; }
 
 .product-rank {
-    position: absolute; top: 1rem; right: 1rem; width: 32px; height: 32px; background: #f1f5f9; color: #64748b; border-radius: 50%;
+    position: absolute; top: 1rem; right: 1rem; width: 32px; height: 32px; background: var(--surface-container-low); color: var(--on-surface-variant); border-radius: 50%;
     display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; border: 2px solid #fff; z-index: 2;
 }
 .product-item:nth-child(1) .product-rank { background: #fef3c7; color: #92400e; border-color: #fbbf24; }
 .product-item:nth-child(2) .product-rank { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
 .product-item:nth-child(3) .product-rank { background: #ffedd5; color: #9a3412; border-color: #fdba74; }
 
-.product-sku-tag { font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: capitalize; letter-spacing: 0.05em; margin-bottom: 0.75rem; display: block; }
-.product-card-title { font-size: 0.95rem; font-weight: 700; color: #1e293b; line-height: 1.5; margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 4.5rem; }
+.product-sku-tag { font-size: 0.65rem; font-weight: 700; color: var(--on-surface-variant); opacity: 0.7; text-transform: capitalize; letter-spacing: 0.05em; margin-bottom: 0.75rem; display: block; }
+.product-card-title { font-size: 0.95rem; font-weight: 700; color: var(--on-surface); line-height: 1.5; margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 4.5rem; }
 .product-metrics-pill { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; padding-top: 1.25rem; border-top: 1px solid #f1f5f9; }
 .metric-col { text-align: center; }
-.metric-col label { display: block; font-size: 0.6rem; font-weight: 700; color: #94a3b8; text-transform: capitalize; margin-bottom: 0.25rem; }
-.metric-col span { display: block; font-size: 0.9rem; font-weight: 800; color: #0f172a; }
-.metric-col.revenue span { color: #6366f1; }
+.metric-col label { display: block; font-size: 0.6rem; font-weight: 700; color: var(--on-surface-variant); opacity: 0.75; text-transform: capitalize; margin-bottom: 0.25rem; }
+.metric-col span { display: block; font-size: 0.9rem; font-weight: 800; color: var(--on-surface); }
+.metric-col.revenue span { color: var(--primary-container); }
 
 /* Premium Analysis Table Styles */
-.analysis-table-container { background: #ffffff; border-radius: 16px; border: 1px solid #f1f5f9; overflow: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+.analysis-table-container { background: #ffffff; border-radius: 16px; border: 1px solid #e7e8e9; overflow: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
 .analysis-table { width: 100%; border-collapse: collapse !important; border-spacing: 0; }
 .analysis-table th {
-    background: #f8fafc; padding: 12px 16px; font-size: 0.9rem; font-weight: 800; text-transform: capitalize; letter-spacing: 0.05em; color: #64748b;
+    background: var(--surface-container-low); padding: 12px 16px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--on-surface-variant);
     border: 1px solid #e2e8f0; white-space: nowrap; position: sticky; top: 0; z-index: 10;
     vertical-align: middle; text-align: center;
 }
 .analysis-table th.group-header { 
-    background: #f1f5f9; color: #1e293b; font-size: 0.9rem; 
-    border-bottom: 2px solid #e2e8f0; font-weight: 900;
+    background: var(--surface-container-high); color: var(--on-surface); font-size: 12px; 
+    border-bottom: 2px solid #e2e8f0; font-weight: 700;
 }
 .analysis-table th:first-child { border-top-left-radius: 16px; }
 .analysis-table th:last-child { border-top-right-radius: 16px; }
@@ -187,62 +247,62 @@ include '../../includes/sidebar.php';
 .analysis-table th {
     text-align: center !important;
     vertical-align: middle !important;
-    font-weight: 800 !important;
-    text-transform: capitalize;
+    font-weight: 700 !important;
+    text-transform: uppercase;
     letter-spacing: 0.05em;
     padding: 12px 8px !important;
 }
 
-/* Group specific colors - Premium Gradient Style */
+/* Group specific colors - Premium Solid Minimalist Style */
 .analysis-table th.sales-metrics-group, 
 .analysis-table th.sales-group { 
-    background: linear-gradient(180deg, #4f46e5 0%, #3730a3 100%) !important; 
-    color: #fff !important; border-color: #312e81 !important; 
+    background: var(--primary-container) !important; 
+    color: #fff !important; border-color: var(--primary) !important; 
 }
 
 .analysis-table th.ads-spend-group { 
-    background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%) !important; 
-    color: #fff !important; border-color: #991b1b !important; 
+    background: var(--error) !important; 
+    color: #fff !important; border-color: var(--error) !important; 
 }
 
 .analysis-table th.acos-group { 
-    background: linear-gradient(180deg, #f97316 0%, #c2410c 100%) !important; 
-    color: #fff !important; border-color: #9a3412 !important; 
+    background: var(--on-primary-fixed-variant) !important; 
+    color: #fff !important; border-color: var(--on-primary-fixed-variant) !important; 
 }
 
 .analysis-table th.ad-dep-group { 
-    background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%) !important; 
-    color: #fff !important; border-color: #5b21b6 !important; 
+    background: #6f42c1 !important; /* Premium Violet */
+    color: #fff !important; border-color: #6f42c1 !important; 
 }
 
 .analysis-table th.traffic-sess-group { 
-    background: linear-gradient(180deg, #0ea5e9 0%, #0369a1 100%) !important; 
-    color: #fff !important; border-color: #075985 !important; 
+    background: var(--outline) !important; 
+    color: #fff !important; border-color: var(--outline) !important; 
 }
 
 .analysis-table th.conv-group { 
-    background: linear-gradient(180deg, #10b981 0%, #047857 100%) !important; 
-    color: #fff !important; border-color: #065f46 !important; 
+    background: var(--success) !important; 
+    color: #fff !important; border-color: var(--success) !important; 
 }
 
 .analysis-table th.refund-group { 
-    background: linear-gradient(180deg, #f43f5e 0%, #be123c 100%) !important; 
-    color: #fff !important; border-color: #9f1239 !important; 
+    background: var(--error) !important; 
+    color: #fff !important; border-color: var(--error) !important; 
 }
 
 .analysis-table th.buy-box-group { 
-    background: linear-gradient(180deg, #475569 0%, #1e293b 100%) !important; 
-    color: #fff !important; border-color: #0f172a !important; 
+    background: var(--secondary) !important; 
+    color: #fff !important; border-color: var(--secondary) !important; 
 }
 
 .analysis-table td { 
-    padding: 1.25rem 1rem; font-size: 0.975rem; color: #1e293b; 
+    padding: 1.25rem 1rem; font-size: 0.975rem; color: var(--on-surface); 
     border-bottom: 1px solid #f1f5f9; vertical-align: middle; 
     text-align: center !important; 
 }
 .analysis-table tr:hover td { background: #f8fafc; }
 
-.status-pill { padding: 4px 10px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; text-transform: capitalize; }
+.status-pill { padding: 4px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 700; text-transform: capitalize; }
 .status-pill.star { background: #dcfce7; color: #15803d; }
 .status-pill.risk { background: #fee2e2; color: #b91c1c; }
 .status-pill.ad-dep { background: #ffedd5; color: #9a3412; }
@@ -356,11 +416,11 @@ include '../../includes/sidebar.php';
 </style>
 
 <!-- Filter Section -->
-<div class="card" style="margin-bottom: 2rem; padding: 1.5rem; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+<div class="card" style="margin-bottom: 2rem;">
     <div style="display: flex; gap: 1.5rem; align-items: flex-end; flex-wrap: wrap;">
         <div class="form-group" style="flex: 1; min-width: 280px;">
-            <label style="font-weight: 700; color: #4b5563; margin-bottom: 8px; display: block; font-size: 0.75rem; text-transform: capitalize;">Account Selection</label>
-            <select id="filter_customer" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb;" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
+            <label>Account Selection</label>
+            <select id="filter_customer" style="width: 100%;" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
                 <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
                     <option value="">All Amazon Profiles</option>
                 <?php endif; ?>
@@ -377,17 +437,17 @@ include '../../includes/sidebar.php';
             <?php endif; ?>
         </div>
         <div class="form-group">
-            <label style="font-weight: 700; color: #4b5563; margin-bottom: 8px; display: block; font-size: 0.75rem; text-transform: capitalize;">Date Range</label>
+            <label>Date Range</label>
             <div style="display: flex; gap: 0.5rem; align-items: center;">
-                <input type="date" id="filter_from" value="" style="padding: 8px 12px; border-radius: 8px; border: 1px solid #e5e7eb;">
-                <span style="color: #9ca3af;">to</span>
-                <input type="date" id="filter_to" value="" style="padding: 8px 12px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                <input type="date" id="filter_from" value="">
+                <span style="color: var(--on-surface-variant); opacity: 0.8;">to</span>
+                <input type="date" id="filter_to" value="">
             </div>
         </div>
-        <button id="apply_filters" class="btn btn-primary" style="height: 42px; font-weight: 800; padding: 0 24px;">
+        <button id="apply_filters" class="btn btn-primary" style="height: 40px; padding: 0 20px;">
             <i class="fas fa-sync-alt"></i> REFRESH ANALYSIS
         </button>
-        <button id="export_csv" class="btn btn-outline" style="height: 42px; font-weight: 600; padding: 0 24px;">
+        <button id="export_csv" class="btn btn-outline" style="height: 40px; padding: 0 20px;">
             <i class="fas fa-file-csv"></i> EXPORT CSV
         </button>
     </div>
@@ -612,31 +672,53 @@ include '../../includes/sidebar.php';
         <div style="height: 480px;"><canvas id="trafficTrendChart"></canvas></div>
     </div>
 
-    <div class="card">
-        <div class="section-title"><i class="fas fa-table"></i> <span>Daily Traffic Breakdown</span></div>
-        <table id="traffic_daily_table" class="analysis-table">
-            <thead>
-                <tr>
-                    <th rowspan="2" style="background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0;">DATE</th>
-                    <th colspan="2" class="group-header traffic-sess-group" style="border: 1px solid #075985;">TRAFFIC VOLUME</th>
-                    <th colspan="1" class="group-header buy-box-group" style="border: 1px solid #0f172a;">MARKET</th>
-                    <th colspan="2" class="group-header sales-metrics-group" style="border: 1px solid #312e81;">ACTIVITY</th>
-                    <th colspan="1" class="group-header conv-group" style="border: 1px solid #065f46;">PERFORMANCE</th>
-                </tr>
-                <tr>
-                    <th class="traffic-sess-group" style="opacity: 0.9; border: 1px solid #075985;">Sessions</th>
-                    <th class="traffic-sess-group" style="opacity: 0.9; border: 1px solid #075985;">Page Views</th>
-                    <th class="buy-box-group" style="opacity: 0.9; border: 1px solid #0f172a;">Buy Box %</th>
-                    <th class="sales-metrics-group" style="opacity: 0.9; border: 1px solid #312e81;">Units</th>
-                    <th class="sales-metrics-group" style="opacity: 0.9; border: 1px solid #312e81;">Orders</th>
-                    <th class="conv-group" style="opacity: 0.9; border: 1px solid #065f46;">Conversion %</th>
-                </tr>
-            </thead>
-            <tbody id="traffic_daily_body">
-                <tr><td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8;">Syncing traffic data...</td></tr>
-            </tbody>
-        </table>
-    </div>
+    <section class="bento-card overflow-hidden mb-8" style="background:#ffffff; border-radius:16px; border: 1px solid #c6c6cd; overflow:hidden;">
+        <div class="px-8 py-6 border-b border-outline-variant flex justify-between items-center" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #c6c6cd; padding: 24px 32px; background: #ffffff;">
+            <h3 class="font-headline-md text-headline-md text-primary" style="font-size: 22px; font-weight: 700; color: #000000; margin: 0; display: flex; align-items: center; gap: 8px;">
+                <span class="material-symbols-outlined text-secondary" style="font-size: 24px; color: #0051d5;">traffic</span>
+                Daily Traffic Breakdown
+            </h3>
+            <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
+                <div class="relative" style="position: relative;">
+                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #45464d; pointer-events: none;"></i>
+                    <input id="traffic_search_input" style="padding-left: 36px; padding-right: 16px; padding-top: 8px; padding-bottom: 8px; border: 1px solid #c6c6cd; border-radius: 8px; outline: none; background: #f2f4f6; font-size: 14px; font-weight: 600; width: 220px;" placeholder="Search traffic..." type="text"/>
+                </div>
+                <button style="padding: 8px; border: 1px solid #c6c6cd; border-radius: 8px; background: transparent; color: #45464d; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                    <span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
+                </button>
+            </div>
+        </div>
+        <div style="overflow-x: auto;">
+            <table id="traffic_daily_table" style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
+                    <tr>
+                        <th rowspan="2" style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center; vertical-align: middle;">DATE</th>
+                        <th colspan="2" style="padding: 8px 16px; font-size: 11px; font-weight: 700; color: #0051d5; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center; background: rgba(219,225,255,0.4);">TRAFFIC VOLUME</th>
+                        <th colspan="1" style="padding: 8px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center; vertical-align: middle;">MARKET</th>
+                        <th colspan="2" style="padding: 8px 16px; font-size: 11px; font-weight: 700; color: #000000; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center; background: rgba(19,27,46,0.05);">ACTIVITY</th>
+                        <th colspan="1" style="padding: 8px 16px; font-size: 11px; font-weight: 700; color: #009668; text-transform: uppercase; text-align: center; background: rgba(111,251,190,0.15); vertical-align: middle;">PERFORMANCE</th>
+                    </tr>
+                    <tr>
+                        <th style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: right; background: rgba(219,225,255,0.2);">Sessions</th>
+                        <th style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: right; background: rgba(219,225,255,0.2);">Page Views</th>
+                        <th style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center;">Buy Box %</th>
+                        <th style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: right; background: rgba(19,27,46,0.02);">Units</th>
+                        <th style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: right; background: rgba(19,27,46,0.02);">Orders</th>
+                        <th style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; text-align: right; background: rgba(111,251,190,0.05);">Conversion %</th>
+                    </tr>
+                </thead>
+                <tbody id="traffic_daily_body" style="background:#ffffff;">
+                    <tr><td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8;">Syncing traffic data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #f2f4f6; border-top: 1px solid #c6c6cd; padding: 16px 32px; box-sizing: border-box;">
+            <p style="font-size: 12px; color: #45464d; margin: 0;" id="traffic_showing_text">Showing 1 to 10 of 0 entries</p>
+            <div style="display: flex; gap: 8px;" id="traffic_pagination">
+                <!-- Dynamic Pagination Buttons -->
+            </div>
+        </div>
+    </section>
 </div>
 
 <!-- FINANCIAL TAB -->
@@ -791,36 +873,58 @@ include '../../includes/sidebar.php';
             </div>
         </div>
     </div>
-    <div class="card" style="margin-bottom: 2rem;">
-        <div class="section-title"><i class="fas fa-boxes" style="background: #6366f1; color: white;"></i> <span>SKU Wise P&L Performance</span></div>
-        <table id="sku_pl_table" class="analysis-table">
-            <thead>
-                <tr>
-                    <th style="background: #f8fafc !important; border: 1px solid #e2e8f0; text-align: center;">Rank</th>
-                    <th style="background: #f8fafc !important; border: 1px solid #e2e8f0; text-align: left !important; padding-left: 0.75rem !important;">Seller SKU</th>
-                    <th style="background: #f8fafc !important; border: 1px solid #e2e8f0; text-align: center;">Units Sold</th>
-                    <th style="background: #eff6ff !important; border: 1px solid #e2e8f0; text-align: center;">Revenue</th>
-                    <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0; text-align: center;">Net Profit</th>
-                    <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0; text-align: center;">Net Profit%</th>
-                </tr>
-            </thead>
-            <tbody id="sku_pl_body">
-                <tr><td colspan="6" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading SKU data...</td></tr>
-            </tbody>
-            <tfoot id="sku_pl_foot" style="background: #f8fafc; border-top: 2px solid #e2e8f0; font-weight: 800;">
-                <!-- JS Populated -->
-            </tfoot>
-        </table>
-    </div>
+    <section class="bento-card overflow-hidden mb-8" style="background:#ffffff; border-radius:16px; border: 1px solid #c6c6cd; overflow:hidden; margin-bottom: 2rem;">
+        <div class="px-8 py-6 border-b border-outline-variant flex justify-between items-center" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #c6c6cd; padding: 24px 32px; background: #ffffff;">
+            <h3 class="font-headline-md text-headline-md text-primary" style="font-size: 22px; font-weight: 700; color: #000000; margin: 0; display: flex; align-items: center; gap: 8px;">
+                <span class="material-symbols-outlined text-secondary" style="font-size: 24px; color: #0051d5;">inventory_2</span>
+                SKU Wise P&L Performance
+            </h3>
+            <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
+                <div class="relative" style="position: relative;">
+                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #45464d; pointer-events: none;"></i>
+                    <input id="sku_pl_search_input" style="padding-left: 36px; padding-right: 16px; padding-top: 8px; padding-bottom: 8px; border: 1px solid #c6c6cd; border-radius: 8px; outline: none; background: #f2f4f6; font-size: 14px; font-weight: 600; width: 220px;" placeholder="Search SKUs..." type="text"/>
+                </div>
+                <button style="padding: 8px; border: 1px solid #c6c6cd; border-radius: 8px; background: transparent; color: #45464d; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                    <span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
+                </button>
+            </div>
+        </div>
+        <div style="overflow-x: auto;">
+            <table id="sku_pl_table" style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed;">
+                <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
+                    <tr>
+                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 10%;">Rank</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 30%;">Seller SKU</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 15%;">Units Sold</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #0051d5; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 15%; background: rgba(219,225,255,0.1);">Revenue</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 15%; background: rgba(111,251,190,0.05);">Net Profit</th>
+                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 15%; background: rgba(111,251,190,0.05);">Net Profit%</th>
+                    </tr>
+                </thead>
+                <tbody id="sku_pl_body" style="background:#ffffff;">
+                    <tr><td colspan="6" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading SKU data...</td></tr>
+                </tbody>
+                <tfoot id="sku_pl_foot" style="background: #f2f4f6; border-top: 2px solid #c6c6cd; font-weight: 800;">
+                    <!-- JS Populated Summary Row -->
+                </tfoot>
+            </table>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #f2f4f6; border-top: 1px solid #c6c6cd; padding: 16px 32px; box-sizing: border-box;">
+            <p style="font-size: 12px; color: #45464d; margin: 0;" id="sku_pl_showing_text">Showing 1 to 10 of 0 entries</p>
+            <div style="display: flex; gap: 8px;" id="sku_pl_pagination">
+                <!-- Dynamic Pagination Buttons -->
+            </div>
+        </div>
+    </section>
 
     <!-- SECTION 3: Geographic Sales Distribution (Full Width Premium Map & SKU Table) -->
-    <div class="card" style="border-radius: 20px; border: 1px solid #e2e8f0; overflow: hidden; background: #fff; margin-bottom: 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
-        <div style="padding: 1.25rem 2rem; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between;">
+    <div class="card" style="overflow: hidden; margin-bottom: 2rem; padding: 0;">
+        <div style="padding: 1.25rem 2rem; background: var(--surface-container-low); border-bottom: 1px solid var(--outline-variant); display: flex; align-items: center; justify-content: space-between;">
             <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);"><i class="fas fa-map-marked-alt"></i></div>
+                <div style="width: 36px; height: 36px; background: var(--primary-container); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(15, 82, 255, 0.2);"><i class="fas fa-map-marked-alt"></i></div>
                 <div>
-                    <span style="font-weight: 800; color: #1e293b; font-size: 1.1rem; display: block;">Geographic Sales Distribution</span>
-                    <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Interactive state-level performance heatmap with dynamic SKU breakdowns</span>
+                    <span style="font-weight: 800; color: var(--on-surface); font-size: 1.1rem; display: block;">Geographic Sales Distribution</span>
+                    <span style="font-size: 0.75rem; color: var(--on-surface-variant); font-weight: 600;">Interactive state-level performance heatmap with dynamic SKU breakdowns</span>
                 </div>
             </div>
             <!-- <span style="font-size: 0.75rem; background: #fef3c7; color: #b45309; padding: 6px 14px; border-radius: 50px; font-weight: 800; border: 1px solid #fde68a;">
@@ -860,12 +964,12 @@ include '../../includes/sidebar.php';
     </div>
 
     <!-- SECTION 4: Fees Breakdown (Full Width Platform Fee Analysis) -->
-    <div class="card" style="border-radius: 20px; border: 1px solid #e2e8f0; overflow: hidden; background: #fff; margin-bottom: 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
-        <div style="padding: 1.25rem 2rem; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 10px;">
-            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #f43f5e, #e11d48); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(244, 63, 94, 0.2);"><i class="fas fa-receipt"></i></div>
+    <div class="card" style="overflow: hidden; margin-bottom: 2rem; padding: 0;">
+        <div style="padding: 1.25rem 2rem; background: var(--surface-container-low); border-bottom: 1px solid var(--outline-variant); display: flex; align-items: center; gap: 10px;">
+            <div style="width: 36px; height: 36px; background: var(--error); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(186, 26, 26, 0.2);"><i class="fas fa-receipt"></i></div>
             <div>
-                <span style="font-weight: 800; color: #1e293b; font-size: 1.1rem; display: block;">Amazon Platform Fee Analysis</span>
-                <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Granular breakdown of Amazon platform charges and adjustment categories</span>
+                <span style="font-weight: 800; color: var(--on-surface); font-size: 1.1rem; display: block;">Amazon Platform Fee Analysis</span>
+                <span style="font-size: 0.75rem; color: var(--on-surface-variant); font-weight: 600;">Granular breakdown of Amazon platform charges and adjustment categories</span>
             </div>
         </div>
         <div style="padding: 2rem; display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; align-items: center;">
@@ -881,179 +985,190 @@ include '../../includes/sidebar.php';
             </div>
         </div>
     </div>
-
 </div>
 
-<!-- PRODUCTS TAB -->
 <div id="tab_products" class="tab-content" <?php echo ($active_tab !== 'products') ? 'style="display: none;"' : ''; ?>>
     
-    <!-- Top Performing SKUs Card -->
-    <div class="card" style="border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; margin-bottom: 2rem; padding: 1.5rem 2rem;">
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem;">
-            <div style="width: 32px; height: 32px; background: #eff6ff; color: #3b82f6; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
-                <i class="fas fa-award"></i>
+    <!-- Section 1: Hero Cards (Top Performing SKUs) -->
+    <section class="mb-8">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-secondary" style="font-size: 28px; color: #0051d5;">workspace_premium</span>
+                <h3 class="font-headline-md text-headline-md text-primary" style="font-size: 24px; font-weight: 700; color: #000000; margin: 0;">Top Performing SKUs</h3>
             </div>
-            <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #1e293b;">Top Performing SKUs</h3>
         </div>
-        <div class="product-grid" id="product_list" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
-            <!-- Rendered dynamically in JS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6" id="product_list">
+            <!-- Dynamically populated in JS -->
         </div>
-    </div>
+    </section>
 
-    <!-- Two Column Layout: Revenue Contribution & Stacked Summary Cards -->
-    <div style="display: grid; grid-template-columns: 1.6fr 1fr; gap: 2rem; margin-bottom: 2rem;">
-        
-        <!-- Left: Revenue Contribution Card -->
-        <div class="card" style="border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; display: flex; flex-direction: column; height: 100%; min-height: 420px; padding: 2rem;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+    <!-- Mid Section: Chart and Stats -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- SKU Contribution Chart -->
+        <div class="lg:col-span-2 bento-card p-8 flex flex-col justify-between" style="min-height: 420px; box-sizing: border-box; display: flex; flex-direction: column;">
+            <div class="flex justify-between items-center mb-6" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                 <div>
-                    <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #1e293b;">Revenue Contribution by SKU</h3>
-                    <p style="margin: 0.25rem 0 0 0; font-size: 0.8rem; color: #64748b; font-weight: 600;">Percentage split of total store revenue across top products.</p>
+                    <h3 class="font-headline-md text-headline-md text-primary" style="font-size: 22px; font-weight: 700; color: #000000; margin: 0;">Revenue Contribution by SKU</h3>
+                    <p class="text-label-sm text-on-surface-variant mt-1" style="font-size: 12px; color: #45464d; margin: 0;">Percentage split of total store revenue across top products.</p>
                 </div>
-                <a href="#product_perf_table" class="details-link" style="font-size: 0.85rem; font-weight: 700; color: #2563eb; text-decoration: none; display: flex; align-items: center; gap: 4px;">
-                    Details <i class="fas fa-arrow-right" style="font-size: 0.75rem;"></i>
+                <a href="#product_perf_table" class="text-secondary font-label-md text-label-md flex items-center gap-1 hover:underline" style="font-size: 14px; font-weight: 600; color: #0051d5; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                    Details <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                 </a>
             </div>
-            <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 2rem; align-items: center; flex: 1; justify-content: center;">
-                <div style="position: relative; width: 100%; height: 260px; display: flex; align-items: center; justify-content: center;">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-12 flex-1" style="display: flex; align-items: center; justify-content: space-between; gap: 48px;">
+                <div class="relative w-60 h-60 flex items-center justify-center" style="position: relative; width: 240px; height: 240px; margin: 0 auto; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                     <canvas id="productRevenueShareChart" style="max-height: 240px; max-width: 240px;"></canvas>
-                    <div id="doughnut_center_overlay" style="position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; text-align: center;">
-                        <span id="doughnut_center_val" style="font-size: 1.75rem; font-weight: 900; color: #1e293b; line-height: 1.1;">$0k</span>
-                        <span style="font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;">Total Rev</span>
+                    <div class="absolute text-center" style="position: absolute; pointer-events: none; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0;">
+                        <p class="text-display-lg font-bold leading-none" id="doughnut_center_val" style="font-size: 32px; font-weight: 700; color: #000000; margin: 0;">$0k</p>
+                        <p class="text-label-sm text-on-surface-variant" style="font-size: 12px; color: #45464d; margin: 0;">Total Rev</p>
                     </div>
                 </div>
-                <div id="doughnut_custom_legend" style="display: flex; flex-direction: column; gap: 1rem; padding-left: 1rem;">
-                    <!-- Custom HTML Legend Rendered Dynamically in JS -->
+                <div class="grid grid-cols-1 gap-3 flex-1 max-w-[280px] w-full" id="doughnut_custom_legend" style="padding-left: 16px; display: flex; flex-direction: column; gap: 12px; width: 100%;">
+                    <!-- Populated dynamically -->
                 </div>
             </div>
         </div>
-
-        <!-- Right: Stacked Metric Cards -->
-        <div style="display: flex; flex-direction: column; gap: 1.25rem; justify-content: space-between;">
+        
+        <!-- Summary Stats Column -->
+        <div class="flex flex-col gap-6" style="display: flex; flex-direction: column; gap: 24px;">
+            <!-- Avg. Store ROAS -->
+            <div class="bento-card p-6 flex flex-col justify-between" style="min-height: 125px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
+                <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
+                    <div class="w-12 h-12 bg-secondary-fixed/20 rounded-xl flex items-center justify-center text-secondary" style="width: 48px; height: 48px; background: rgba(219, 225, 255, 0.5); border-radius: 12px; color: #0051d5; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <span class="material-symbols-outlined filled-icon">trending_up</span>
+                    </div>
+                    <div>
+                        <p class="text-label-sm text-on-surface-variant uppercase tracking-wider" style="font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; margin: 0; letter-spacing: 0.05em;">Avg. Store ROAS</p>
+                        <p class="font-headline-md text-headline-md font-bold" id="prod_meta_roas" style="font-size: 24px; font-weight: 700; color: #000000; margin: 0;">4.2x</p>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center gap-2" style="display: flex; align-items: center; gap: 8px; margin-top: 16px;">
+                    <span class="text-on-tertiary-container font-label-md text-label-sm bg-tertiary-fixed/30 px-2 py-0.5 rounded" style="background: rgba(111, 251, 190, 0.3); color: #009668; font-size: 12px; font-weight: 600; padding: 2px 6px; border-radius: 4px;">+12.4%</span>
+                    <span class="text-label-sm text-on-surface-variant" style="font-size: 12px; color: #45464d;">vs last month</span>
+                </div>
+            </div>
             
-            <!-- Card 1: AVG. STORE ROAS -->
-            <div class="card" style="border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; padding: 1.25rem 1.5rem; display: flex !important; flex-direction: row !important; align-items: center !important; gap: 1.25rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); height: 30%; margin-bottom: 0; transition: all 0.3s ease;">
-                <div style="width: 48px; height: 48px; background: #eff6ff; color: #3b82f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0;">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: left;">
-                    <div style="font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;">AVG. STORE ROAS</div>
-                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; flex-wrap: wrap;">
-                        <span id="prod_meta_roas" style="font-size: 1.6rem; font-weight: 900; color: #1e293b; line-height: 1;">4.2x</span>
-                        <span style="background: #ecfdf5; color: #10b981; font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border-radius: 20px; white-space: nowrap;">+12.4%</span>
-                        <span style="font-size: 0.7rem; color: #64748b; font-weight: 600; white-space: nowrap;">vs last month</span>
+            <!-- Total Sessions -->
+            <div class="bento-card p-6 flex flex-col justify-between" style="min-height: 125px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
+                <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
+                    <div class="w-12 h-12 bg-tertiary-fixed/20 rounded-xl flex items-center justify-center text-on-tertiary-container" style="width: 48px; height: 48px; background: rgba(111, 251, 190, 0.2); border-radius: 12px; color: #009668; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <span class="material-symbols-outlined filled-icon">group</span>
+                    </div>
+                    <div>
+                        <p class="text-label-sm text-on-surface-variant uppercase tracking-wider" style="font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; margin: 0; letter-spacing: 0.05em;">Total Sessions</p>
+                        <p class="font-headline-md text-headline-md font-bold" id="prod_meta_sessions" style="font-size: 24px; font-weight: 700; color: #000000; margin: 0;">12,482</p>
                     </div>
                 </div>
-            </div>
-
-            <!-- Card 2: TOTAL SESSIONS -->
-            <div class="card" style="border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; padding: 1.25rem 1.5rem; display: flex !important; flex-direction: row !important; align-items: center !important; gap: 1.25rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); height: 30%; margin-bottom: 0; transition: all 0.3s ease;">
-                <div style="width: 48px; height: 48px; background: #ecfdf5; color: #10b981; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0;">
-                    <i class="fas fa-users"></i>
+                <div class="mt-4 flex items-center gap-2" style="display: flex; align-items: center; gap: 8px; margin-top: 16px;">
+                    <span class="text-on-tertiary-container font-label-md text-label-sm bg-tertiary-fixed/30 px-2 py-0.5 rounded" style="background: rgba(111, 251, 190, 0.3); color: #009668; font-size: 12px; font-weight: 600; padding: 2px 6px; border-radius: 4px;">+8.1%</span>
+                    <span class="text-label-sm text-on-surface-variant" style="font-size: 12px; color: #45464d;">organic traffic</span>
                 </div>
-                <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: left;">
-                    <div style="font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;">TOTAL SESSIONS</div>
-                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; flex-wrap: wrap;">
-                        <span id="prod_meta_sessions" style="font-size: 1.6rem; font-weight: 900; color: #1e293b; line-height: 1;">12,482</span>
-                        <span style="background: #ecfdf5; color: #10b981; font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border-radius: 20px; white-space: nowrap;">+8.1%</span>
-                        <span style="font-size: 0.7rem; color: #64748b; font-weight: 600; white-space: nowrap;">organic traffic</span>
+            </div>
+            
+            <!-- Active SKUs -->
+            <div class="bento-card p-6 flex flex-col justify-between" style="min-height: 125px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
+                <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
+                    <div class="w-12 h-12 bg-primary-container/10 rounded-xl flex items-center justify-center text-primary" style="width: 48px; height: 48px; background: rgba(19, 27, 46, 0.1); border-radius: 12px; color: #000000; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <span class="material-symbols-outlined filled-icon">layers</span>
+                    </div>
+                    <div>
+                        <p class="text-label-sm text-on-surface-variant uppercase tracking-wider" style="font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; margin: 0; letter-spacing: 0.05em;">Active SKUs</p>
+                        <p class="font-headline-md text-headline-md font-bold" id="prod_meta_skus" style="font-size: 24px; font-weight: 700; color: #000000; margin: 0;">48</p>
                     </div>
                 </div>
-            </div>
-
-            <!-- Card 3: ACTIVE SKUS -->
-            <div class="card" style="border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; padding: 1.25rem 1.5rem; display: flex !important; flex-direction: row !important; align-items: center !important; gap: 1.25rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); height: 30%; margin-bottom: 0; transition: all 0.3s ease;">
-                <div style="width: 48px; height: 48px; background: #f8fafc; color: #0f172a; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; border: 1px solid #e2e8f0;">
-                    <i class="fas fa-box"></i>
-                </div>
-                <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: left;">
-                    <div style="font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;">ACTIVE SKUS</div>
-                    <div style="display: flex; align-items: center; gap: 12px; margin-top: 4px; flex-wrap: wrap;">
-                        <span id="prod_meta_skus" style="font-size: 1.6rem; font-weight: 900; color: #1e293b; line-height: 1;">48</span>
-                        <div style="font-size: 0.7rem; color: #b45309; font-weight: 700; display: flex; align-items: center; gap: 4px; white-space: nowrap;">
-                            <span style="width: 6px; height: 6px; background: #f59e0b; border-radius: 50%;"></span> 3 pending restocking
-                        </div>
-                    </div>
+                <div class="mt-4 flex items-center gap-2" style="display: flex; align-items: center; gap: 8px; margin-top: 16px;">
+                    <span class="text-label-sm text-on-surface-variant" style="font-size: 12px; color: #45464d;">3 pending restocking</span>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- Product Performance Analysis Table Card -->
-    <div class="card" style="border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; margin-bottom: 2rem; padding: 1.5rem 2rem;">
-        <h3 style="margin-bottom: 1.5rem;"><i class="fas fa-list-alt"></i> Product Performance Analysis</h3>
-        <table id="product_perf_table" class="analysis-table" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
-            <thead>
-                <tr>
-                    <th style="width: 12.5%; text-align: center !important; background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0; font-weight: 800;">RANK</th>
-                    <th style="width: 12.5%; text-align: center !important; background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0; font-weight: 800;">PRODUCT IDENTITY</th>
-                    <th style="width: 12.5%; text-align: center !important; background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0; font-weight: 800;">SALES ($)</th>
-                    <th style="width: 12.5%; text-align: center !important; background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0; font-weight: 800;">ORDERS</th>
-                    <th style="width: 12.5%; text-align: center !important; background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0; font-weight: 800;">UNITS SOLD</th>
-                    <th style="width: 12.5%; text-align: center !important; background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0; font-weight: 800;">AD SPEND</th>
-                    <th style="width: 12.5%; text-align: center !important; background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0; font-weight: 800;">ROAS (X)</th>
-                    <th style="width: 12.5%; text-align: center !important; background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0; font-weight: 800;">TREND</th>
-                </tr>
-            </thead>
-            <tbody id="product_analysis_body">
-                <!-- JS populated -->
-            </tbody>
-        </table>
-    </div>
-
-    <!-- NEW: Monthly SKU-wise Matrix -->
-    <div class="card" style="display: none; border-radius: 20px; border: 1px solid #e2e8f0; overflow: hidden; background: #fff; margin-bottom: 2rem;">
-        <div style="padding: 1.5rem; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 12px;">
-            <div style="width: 32px; height: 32px; background: #10b981; color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-calendar-alt"></i></div>
-            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #1e293b;">Monthly SKU Performance Matrix</h3>
-            <span style="font-size: 0.75rem; background: #dcfce7; padding: 4px 10px; border-radius: 20px; font-weight: 700; color: #166534; margin-left: auto;">Historical Analysis</span>
+    <!-- Section 4: Performance Table -->
+    <section class="bento-card overflow-hidden mb-8" style="background:#ffffff; border-radius:16px; border: 1px solid #c6c6cd; overflow:hidden;">
+        <div class="px-8 py-6 border-b border-outline-variant flex justify-between items-center" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #c6c6cd; padding: 24px 32px;">
+            <h3 class="font-headline-md text-headline-md text-primary" style="font-size: 22px; font-weight: 700; color: #000000; margin: 0;">Monthly Performance by SKU</h3>
+            <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
+                <div class="relative" style="position: relative;">
+                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #45464d; pointer-events: none;"></i>
+                    <input id="product_search_input" style="padding-left: 36px; padding-right: 16px; padding-top: 8px; padding-bottom: 8px; border: 1px solid #c6c6cd; border-radius: 8px; outline: none; background: #f2f4f6; font-size: 14px; font-weight: 600; width: 220px;" placeholder="Search products..." type="text"/>
+                </div>
+                <button style="padding: 8px; border: 1px solid #c6c6cd; border-radius: 8px; background: transparent; color: #45464d; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                    <span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
+                </button>
+            </div>
         </div>
-        <div style="padding: 1rem; overflow-x: auto;">
-            <table class="analysis-table" style="width: 100%;">
-                <thead style="background: #f8fafc;">
+        <div style="overflow-x: auto;">
+            <table id="product_perf_table" style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed;">
+                <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
                     <tr>
-                        <th>Month</th>
-                        <th>ASIN</th>
-                        <th style="text-align: right;">Sales</th>
-                        <th style="text-align: center;">Units</th>
-                        <th style="text-align: center;">Sessions</th>
-                        <th style="text-align: center;">Conv %</th>
+                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 10%;">Rank</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 30%;">Product Identity</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 12%;">Sales ($)</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 10%;">Orders</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 10%;">Units Sold</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 12%;">Ad Spend</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 8%;">ROAS (x)</th>
+                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 8%;">Trend</th>
                     </tr>
                 </thead>
-                <tbody id="monthly_sku_body">
-                    <tr><td colspan="6" class="text-center">Loading monthly historical data...</td></tr>
+                <tbody id="product_analysis_body" style="background:#ffffff;">
+                    <!-- Populated dynamically via JS matching code 1.html -->
                 </tbody>
             </table>
         </div>
-    </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #f2f4f6; border-top: 1px solid #c6c6cd; padding: 16px 32px; box-sizing: border-box;">
+            <p style="font-size: 12px; color: #45464d; margin: 0;" id="product_perf_showing_text">Showing 1 to 5 of 48 entries</p>
+            <div style="display: flex; gap: 8px;" id="product_perf_pagination">
+                <!-- Dynamic Pagination Buttons -->
+            </div>
+        </div>
+    </section>
 
-    <!-- SECTION 2: UNIFIED PRODUCT INTELLIGENCE COMBO (Full Width Bottom) -->
-    <div class="card" style="border-radius: 20px; border: 1px solid #e2e8f0; overflow: hidden; background: #fff; margin-bottom: 2rem;">
-        <div style="padding: 1.5rem; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 12px;">
-            <div style="width: 32px; height: 32px; background: #4f46e5; color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-chart-line"></i></div>
-            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #1e293b;">Ultimate Product Performance Intelligence</h3>
-            <div style="margin-left: auto; display: flex; gap: 1.5rem; font-size: 0.75rem; font-weight: 700;">
-                <span style="color: #93B9BD; display: flex; align-items: center; gap: 6px;"><i class="fas fa-square" style="font-size: 0.9rem;"></i> Page Views</span>
-                <span style="color: #8B5CF6; display: flex; align-items: center; gap: 6px;"><i class="fas fa-square" style="font-size: 0.9rem;"></i> Sessions</span>
-                <span style="color: #4F46E5; display: flex; align-items: center; gap: 6px;"><i class="fas fa-minus" style="font-weight: 900;"></i> Revenue ($)</span>
-                <span style="color: #10B981; display: flex; align-items: center; gap: 6px;"><i class="fas fa-ellipsis-h"></i> Conv %</span>
+    <!-- Section 5: Traffic vs Revenue Correlation -->
+    <section class="bento-card p-8 mb-8" style="padding: 32px; box-sizing: border-box;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+            <div>
+                <h3 class="font-headline-md text-headline-md text-primary" style="font-size: 22px; font-weight: 700; color: #000000; margin: 0;">Traffic vs Revenue Correlation</h3>
+                <p class="text-label-sm text-on-surface-variant mt-1" style="font-size: 12px; color: #45464d; margin: 0;">Analyzing sessions (bars) against revenue generation (line) per top 10 SKUs.</p>
             </div>
-        </div>
-        <div style="padding: 2.5rem;">
-            <div style="height: 550px;"><canvas id="productComboChart"></canvas></div>
-            <div style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;">
-                <div style="padding: 1.5rem; background: #f8fafc; border-radius: 16px; border-left: 5px solid #4f46e5; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                    <h5 style="margin: 0 0 0.75rem 0; font-size: 0.9rem; color: #1e293b; font-weight: 800;">Strategic Correlation</h5>
-                    <p style="margin: 0; font-size: 0.8rem; color: #64748b; line-height: 1.6;">Analyze the relationship between traffic (bars) and financial outcomes (lines). High traffic with low revenue indicates listing optimization is needed.</p>
+            <div style="display: flex; gap: 24px; align-items: center;">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <span style="width: 12px; height: 12px; background: #dbe1ff; border-radius: 2px; display: inline-block;"></span>
+                    <span style="font-size: 12px; color: #45464d;">Sessions</span>
                 </div>
-                <div style="padding: 1.5rem; background: #f0fdf4; border-radius: 16px; border-left: 5px solid #10b981; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                    <h5 style="margin: 0 0 0.75rem 0; font-size: 0.9rem; color: #166534; font-weight: 800;">Actionable Insight</h5>
-                    <p style="margin: 0; font-size: 0.8rem; color: #15803d; line-height: 1.6;">Prioritize products where the green dashed line (Conv %) is trending upwards, as these are your most efficient growth opportunities.</p>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <span style="width: 16px; height: 2px; background: #0051d5; display: inline-block;"></span>
+                    <span style="font-size: 12px; color: #45464d;">Revenue ($)</span>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <span style="width: 16px; border-top: 2px dashed #009668; display: inline-block;"></span>
+                    <span style="font-size: 12px; color: #45464d;">Conv %</span>
                 </div>
             </div>
         </div>
-    </div>
+        <div style="height: 300px; width: 100%; display: flex; align-items: flex-end; border-left: 1px solid rgba(198, 198, 205, 0.3); border-bottom: 1px solid rgba(198, 198, 205, 0.3); position: relative; padding-left: 16px; padding-right: 16px; margin-top: 20px; box-sizing: border-box;">
+            <!-- Y Axis Labels -->
+            <div style="position: absolute; left: -48px; bottom: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding-top: 8px; padding-bottom: 8px; font-size: 12px; color: #45464d; font-weight: 500;">
+                <span>5,000</span><span>4,000</span><span>3,000</span><span>2,000</span><span>1,000</span><span>0</span>
+            </div>
+            <!-- Chart Bars and Lines simulation -->
+            <div style="display: flex; align-items: flex-end; justify-content: space-between; width: 100%; height: 100%; position: relative; padding-left: 24px; padding-right: 24px; box-sizing: border-box;" id="correlation_bars_container">
+                <!-- Dynamically populated in JS -->
+            </div>
+        </div>
+        
+        <!-- Strategic Insights -->
+        <div style="margin-top: 80px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+            <div style="padding: 24px; background: #f2f4f6; border-left: 4px solid #0051d5; border-radius: 0 12px 12px 0;">
+                <p style="font-weight: 700; font-size: 14px; margin-bottom: 8px; color: #000;">Strategic Correlation</p>
+                <p style="font-size: 14px; color: #45464d; margin: 0;">Analyze the relationship between traffic (bars) and financial outcomes (lines). High traffic with low revenue indicates listing optimization is needed.</p>
+            </div>
+            <div style="padding: 24px; background: #f2f4f6; border-left: 4px solid #009668; border-radius: 0 12px 12px 0;">
+                <p style="font-weight: 700; font-size: 14px; margin-bottom: 8px; color: #009668;">Actionable Insight</p>
+                <p style="font-size: 14px; color: #45464d; margin: 0;">Prioritize products where the green dashed line (Conv %) is trending upwards, as these are your most efficient growth opportunities.</p>
+            </div>
+        </div>
+    </section>
 </div>
 
 <script>
@@ -1063,6 +1178,22 @@ $(document).ready(function() {
     let productComboChart;
     let trafficTrendChart;
     let globalData = null;
+    
+    // Custom Bento Table Global Datasets and States
+    let globalProductsData = [];
+    let globalSkuPlData = [];
+    let globalTrafficData = [];
+
+    let productsCurrentPage = 1;
+    let productsSearchQuery = "";
+
+    let skuPlCurrentPage = 1;
+    let skuPlSearchQuery = "";
+
+    let trafficCurrentPage = 1;
+    let trafficSearchQuery = "";
+
+    const ITEMS_PER_PAGE = 10;
     const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function updateComparison(selector, cmp) {
@@ -1559,6 +1690,310 @@ $(document).ready(function() {
         }
     }
 
+    // Global attachments for dynamic page clicks
+    window.onTrafficPageClick = function(page) {
+        trafficCurrentPage = page;
+        renderTrafficTable();
+    };
+
+    window.onSkuPlPageClick = function(page) {
+        skuPlCurrentPage = page;
+        renderSkuPlTable();
+    };
+
+    window.onProductsPageClick = function(page) {
+        productsCurrentPage = page;
+        renderProductPerformanceTable();
+    };
+
+    function getProductImage(sku) {
+        if (sku === 'BUNDLE-ROUL-1') {
+            return 'https://lh3.googleusercontent.com/aida-public/AB6AXuAypBptolpDuxkoye5Nux145mJ8fntxyAedasKc7ggGXv9GRAOwYTND3WZnE8gVw8_QC4n6knRhuFbqXhVpfbmeLUJzfT2OJu90FOvtppXdp6EJtz_cnn9Rqp53U07-0C2LV_QlAVWzyVQFClmsJ7l7j09S52p5VABwhvjZqYUPZKHlScWL8RBRd70al-jgnKWQ2TemWTk9W4xKw8zQiqIdy0tMUh1qpgwouvmdPh6gjN83rk-ny8Lr0ivI_h4MEctFa7Hz5wVWKNg';
+        } else if (sku === 'BUNDLE-10CLPS') {
+            return 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmT6sw81_FEjN_uU0Xo5k1av95t1fid5tCDRYrZcUFGPH5c9boRAi_GYllP7UFxqkEFnS7lAfck_yNroHsEajJ0ks6JCYGNMhEXMN4zSyvJ2dkmDUpLTVMCr7-pA7A0fTNBM2_LMB0PpicfdKvSOkVbpG4-m7qzSyKPIIvffsUvezK_zBxu_OKtbv0sJ1lx7DbwW5QqtFTX0iQKkjZ0RQA4RGcQCKPJ12_RovgMGkkiH1YytdUemk5Qjf0YsxR7nC2kjITbPS9p-g';
+        } else if (sku === 'BUNDLE-10CLPS-2') {
+            return 'https://lh3.googleusercontent.com/aida-public/AB6AXuCIOn6DIRhGpdB3IuHRkhL7jSDqByNquaripj7uEEQ-DuJj_1GpKb9IJYPE2k4ANmx_RXZQkNFiR0TzeyHjk3iZXNeuy7qqwl7Pc0v2DsYcHZCR6SgmSJ-Atbt8KypYg-7DkUOvUakDlaPi2yq8jNxN1iFoe5ZV9Ly8jBT-FjdpkSYW3N3hz-rnPdsK1XZ5SDdSlSq8RF7okfY_Z8yaaabhXQxyICgy5YzSKdcDVjNUI-nzU7mxZ1RHwbroTmROTlvg6jqGaAvvkmM';
+        } else if (sku === 'BUNDLE-WDRB-4') {
+            return 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGFgjbHN7bQpCKwjGTxU3wooizombqbbttFdZuBUajxtHlTlNg7AULCjdGRJRlNE08eCPw-LI1Np51NYULKNtGQ3H7U2ObrWFzay0JuNjTJGSnrZ9jBIcc_BcpAUyoQuQJQp9VE2rSSyyEzU-teyCtuMZsZcG0lwWzszEElFIoEm2G_3tyYSO3-ZxFiGnjindr60-EB8L-g4TNbFwdVLh226ssdOIyhJ-So8wRhQrQ104mLD3gZ-o04vkmWtV0on8PyMgfNvs07WY';
+        }
+        return '';
+    }
+
+    function generateBentoSparkline(values) {
+        if (!values || values.length === 0) return '';
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+        const range = max - min;
+        
+        const height = 24;
+        const width = 100;
+        const padding = 3;
+        
+        const points = values.map((val, idx) => {
+            const x = padding + (idx / (values.length - 1)) * (width - 2 * padding);
+            const y = (range === 0) ? (height / 2) : (height - padding - ((val - min) / range) * (height - 2 * padding));
+            return { x, y };
+        });
+        
+        const firstVal = values[0];
+        const lastVal = values[values.length - 1];
+        let strokeColor = '#0051d5'; // Bento Blue
+        
+        if (lastVal > firstVal * 1.05) {
+            strokeColor = '#009668'; // Bento Green
+        } else if (lastVal < firstVal * 0.95) {
+            strokeColor = '#ef4444'; // Bento Red
+        }
+        
+        let pathD = '';
+        points.forEach((pt, idx) => {
+            if (idx === 0) {
+                pathD += `M ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
+            } else {
+                pathD += ` L ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
+            }
+        });
+        
+        return `
+        <svg class="w-16 h-8 overflow-visible" viewBox="0 0 100 40" style="display: block; margin: 0 auto;">
+            <path class="sparkline-path" d="${pathD}" fill="none" stroke="${strokeColor}" stroke-width="2" stroke-linecap="round" />
+        </svg>`;
+    }
+
+    function renderBentoPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        if (totalPages <= 1) return '';
+        
+        let paginationHtml = '';
+        
+        // Chevron Left
+        const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
+        paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})">
+            <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+        </button>`;
+        
+        // Page Numbers (Up to 5 page buttons)
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, startPage + 4);
+        if (endPage - startPage < 4) {
+            startPage = Math.max(1, endPage - 4);
+        }
+        
+        for (let page = startPage; page <= endPage; page++) {
+            if (page === currentPage) {
+                paginationHtml += `<button class="px-3 py-1 rounded bg-secondary text-white font-label-md text-label-md" style="background: #0051d5; color: #ffffff; font-weight: 700; border: none; cursor: default;">${page}</button>`;
+            } else {
+                paginationHtml += `<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors font-label-md text-label-md bg-white" style="cursor: pointer;" onclick="${onClickPage}(${page})">${page}</button>`;
+            }
+        }
+        
+        // Chevron Right
+        const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
+        paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})">
+            <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+        </button>`;
+        
+        return paginationHtml;
+    }
+
+    function renderTrafficTable() {
+        let filtered = globalTrafficData;
+        if (trafficSearchQuery) {
+            const query = trafficSearchQuery.toLowerCase();
+            filtered = globalTrafficData.filter(item => {
+                return (item.date && item.date.toLowerCase().includes(query)) ||
+                       (item.sessions && item.sessions.toString().includes(query)) ||
+                       (item.pageViews && item.pageViews.toString().includes(query));
+            });
+        }
+        
+        const totalItems = filtered.length;
+        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+        if (trafficCurrentPage > totalPages) trafficCurrentPage = totalPages;
+        if (trafficCurrentPage < 1) trafficCurrentPage = 1;
+        
+        const startIndex = (trafficCurrentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+        const paginatedItems = filtered.slice(startIndex, endIndex);
+        
+        let html = '';
+        if (paginatedItems.length > 0) {
+            paginatedItems.forEach(item => {
+                html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3);">
+                    <td style="padding: 14px 16px; font-weight: 700; color: #64748b; font-family: 'Inter', sans-serif; text-align: center;">${item.date}</td>
+                    <td style="padding: 14px 16px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.sessions.toLocaleString()}</td>
+                    <td style="padding: 14px 16px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.pageViews.toLocaleString()}</td>
+                    <td style="padding: 14px 16px; text-align: center; color: #45464d; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.buyBox.toFixed(0)}%</td>
+                    <td style="padding: 14px 16px; text-align: right; color: #45464d; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.units.toLocaleString()}</td>
+                    <td style="padding: 14px 16px; text-align: right; color: #45464d; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.orders.toLocaleString()}</td>
+                    <td style="padding: 14px 16px; text-align: right; font-family: 'Inter', sans-serif;"><span style="background: rgba(219, 225, 255, 0.4); color: #0051d5; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-variant-numeric: tabular-nums;">${item.conv.toFixed(2)}%</span></td>
+                </tr>`;
+            });
+        } else {
+            html = `<tr><td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8;">No traffic breakdown data matches your search query.</td></tr>`;
+        }
+        
+        $('#traffic_daily_body').html(html);
+        
+        const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
+        $('#traffic_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
+        
+        const paginationButtons = renderBentoPagination(totalItems, trafficCurrentPage, ITEMS_PER_PAGE, 'window.onTrafficPageClick');
+        $('#traffic_pagination').html(paginationButtons);
+    }
+
+    function renderSkuPlTable() {
+        let filtered = globalSkuPlData;
+        if (skuPlSearchQuery) {
+            const query = skuPlSearchQuery.toLowerCase();
+            filtered = globalSkuPlData.filter(item => {
+                return (item.sku && item.sku.toLowerCase().includes(query)) ||
+                       (item.name && item.name.toLowerCase().includes(query));
+            });
+        }
+        
+        const totalItems = filtered.length;
+        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+        if (skuPlCurrentPage > totalPages) skuPlCurrentPage = totalPages;
+        if (skuPlCurrentPage < 1) skuPlCurrentPage = 1;
+        
+        const startIndex = (skuPlCurrentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+        const paginatedItems = filtered.slice(startIndex, endIndex);
+        
+        let html = '';
+        if (paginatedItems.length > 0) {
+            paginatedItems.forEach((p, idx) => {
+                const globalIndex = startIndex + idx;
+                const productRevenue = toNumber(p.revenue || 0);
+                const productNet = toNumber(p.net || 0);
+                const productUnits = toNumber(p.units || 0);
+                const productMargin = toNumber(p.margin || 0);
+                
+                html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3);">
+                    <td style="width: 10%; padding: 14px 32px; text-align: center; font-size: 1.05rem; font-weight: 700; color: #45464d;">${globalIndex + 1}</td>
+                    <td style="width: 30%; padding: 14px 24px; text-align: left; font-weight: 800; color: #1e293b; font-family: 'Inter', sans-serif;">
+                        <div style="font-size: 0.95rem; color: #191c1e; font-weight: 700;">${p.sku}</div>
+                    </td>
+                    <td style="width: 15%; padding: 14px 24px; text-align: right; font-weight: 700; color: #45464d; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${productUnits.toLocaleString()}</td>
+                    <td style="width: 15%; padding: 14px 24px; text-align: right; font-weight: 800; color: #0051d5; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; background: rgba(219,225,255,0.05);">$${productRevenue.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+                    <td style="width: 15%; padding: 14px 24px; text-align: right; font-weight: 900; color: #009668; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; background: rgba(111,251,190,0.02);">$${productNet.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+                    <td style="width: 15%; padding: 14px 32px; text-align: right; font-family: 'Inter', sans-serif; background: rgba(111,251,190,0.02);"><span style="background: rgba(111, 251, 190, 0.2); color: #009668; padding: 4px 10px; border-radius: 6px; font-weight: 900; font-variant-numeric: tabular-nums;">${productMargin.toFixed(1)}%</span></td>
+                </tr>`;
+            });
+        } else {
+            html = `<tr><td colspan="6" style="text-align: center; padding: 3rem; color: #94a3b8;">No SKU matching your search query.</td></tr>`;
+        }
+        
+        $('#sku_pl_body').html(html);
+        
+        const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
+        $('#sku_pl_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
+        
+        const paginationButtons = renderBentoPagination(totalItems, skuPlCurrentPage, ITEMS_PER_PAGE, 'window.onSkuPlPageClick');
+        $('#sku_pl_pagination').html(paginationButtons);
+    }
+
+    function renderProductPerformanceTable() {
+        let filtered = globalProductsData;
+        if (productsSearchQuery) {
+            const query = productsSearchQuery.toLowerCase();
+            filtered = globalProductsData.filter(p => {
+                return (p.sku && p.sku.toLowerCase().includes(query)) ||
+                       (p.name && p.name.toLowerCase().includes(query)) ||
+                       (p.title && p.title.toLowerCase().includes(query));
+            });
+        }
+        
+        const totalItems = filtered.length;
+        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+        if (productsCurrentPage > totalPages) productsCurrentPage = totalPages;
+        if (productsCurrentPage < 1) productsCurrentPage = 1;
+        
+        const startIndex = (productsCurrentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+        const paginatedItems = filtered.slice(startIndex, endIndex);
+        
+        let html = '';
+        if (paginatedItems.length > 0) {
+            paginatedItems.forEach((p, idx) => {
+                const globalIndex = startIndex + idx;
+                const productRevenue = toNumber(p.revenue || p.sales || 0);
+                const productFullTitle = p.name || p.title || 'Unknown Product';
+                const productOrders = toNumber(p.total_orders || p.orders || 0);
+                const productUnits = toNumber(p.units || 0);
+                const adSpend = toNumber(p.ad_spend || 0);
+                const roasVal = adSpend > 0 ? (productRevenue / adSpend) : 0;
+                
+                const roasText = roasVal > 0 ? roasVal.toFixed(1) + 'x' : '0.0x';
+                const roasBg = roasVal >= 15 ? '#e6fcf5' : (roasVal > 0 ? '#fff1f2' : '#f2f4f6');
+                const roasColor = roasVal >= 15 ? '#009668' : (roasVal > 0 ? '#ef4444' : '#45464d');
+                const roasBadgeHtml = `<span style="background: ${roasBg}; color: ${roasColor}; padding: 6px 12px; border-radius: 6px; font-weight: 800; font-size: 0.9rem; display: inline-block;">${roasText}</span>`;
+                
+                const imgUrl = getProductImage(p.sku);
+                let visualIdentityHtml = '';
+                if (imgUrl) {
+                    visualIdentityHtml = `<img alt="${p.sku}" class="w-10 h-10 rounded-lg bg-surface-container object-cover" style="width: 40px; height: 40px; border-radius: 8px; background: #eceef0; object-fit: cover;" src="${imgUrl}"/>`;
+                } else {
+                    visualIdentityHtml = `
+                    <div style="width: 40px; height: 40px; background: #0f172a; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                    </div>`;
+                }
+                
+                const productIdentityHtml = `
+                <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
+                    ${visualIdentityHtml}
+                    <div style="display: flex; flex-direction: column; min-width: 0; flex: 1;">
+                        <div style="font-weight: 800; color: #191c1e; font-size: 0.95rem; line-height: 1.2; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${p.sku}">${p.sku}</div>
+                        <div style="font-size: 0.75rem; color: #45464d; font-weight: 500; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;" title="${productFullTitle}">${productFullTitle}</div>
+                    </div>
+                </div>`;
+                
+                let trendValues = [];
+                const sortedMonthly = ((globalData && globalData.monthly_products) || [])
+                    .filter(m => m.asin === p.asin)
+                    .sort((a, b) => (a.month || '').localeCompare(b.month || ''));
+                if (sortedMonthly.length >= 2) {
+                    trendValues = sortedMonthly.map(m => toNumber(m.revenue));
+                } else {
+                    const skuStr = p.sku || '';
+                    let seed = (skuStr.charCodeAt(0) || 0) + (skuStr.charCodeAt(skuStr.length - 1) || 0) + globalIndex;
+                    for (let j = 0; j < 5; j++) {
+                        const factor = 1 + (Math.sin(seed + j) * 0.18);
+                        trendValues.push(productRevenue * factor);
+                    }
+                }
+                const sparklineHtml = generateBentoSparkline(trendValues);
+                
+                html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3);">
+                    <td style="width: 10%; padding: 14px 32px; font-weight: 800; color: #0051d5; text-align: center;">#${globalIndex + 1}</td>
+                    <td style="width: 30%; padding: 14px 24px;">${productIdentityHtml}</td>
+                    <td style="width: 12%; padding: 14px 24px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${productRevenue.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                    <td style="width: 10%; padding: 14px 24px; font-weight: 700; color: #45464d; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${productOrders.toLocaleString()}</td>
+                    <td style="width: 10%; padding: 14px 24px; font-weight: 700; color: #45464d; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${productUnits.toLocaleString()}</td>
+                    <td style="width: 12%; padding: 14px 24px; font-weight: 800; color: #ef4444; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${adSpend.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                    <td style="width: 8%; padding: 14px 24px; text-align: center; vertical-align: middle;">${roasBadgeHtml}</td>
+                    <td style="width: 8%; padding: 14px 32px; text-align: center; vertical-align: middle;">${sparklineHtml}</td>
+                </tr>`;
+            });
+        } else {
+            html = `<tr><td colspan="8" style="text-align: center; padding: 3rem; color: #94a3b8;">No products matching your search query.</td></tr>`;
+        }
+        
+        $('#product_analysis_body').html(html);
+        
+        const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
+        $('#product_perf_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
+        
+        const paginationButtons = renderBentoPagination(totalItems, productsCurrentPage, ITEMS_PER_PAGE, 'window.onProductsPageClick');
+        $('#product_perf_pagination').html(paginationButtons);
+    }
+
     function loadDashboard() {
         if (dashboardLoadInProgress) return;
         dashboardLoadInProgress = true;
@@ -1572,6 +2007,10 @@ $(document).ready(function() {
             data: { customer_id: customerId, from_date: from, to_date: to },
             dataType: 'json',
             success: function(res) {
+                if (res && res.error === 'Unauthorized') {
+                    window.location.href = '<?php echo BASE_URL; ?>login.php';
+                    return;
+                }
                 if (!res || !res.kpis) {
                     return;
                 }
@@ -1660,30 +2099,23 @@ $(document).ready(function() {
                 const mobileShare = totalPV > 0 ? (mobilePV / totalPV) * 100 : 0;
                 setPercentAnimated('#kpi_mobile_t', mobileShare, 1);
 
-                // Daily Traffic Table
-                let trafficHtml = '';
+                // Populate Daily Traffic global dataset and render Bento table
+                globalTrafficData = [];
                 if (res.charts && res.charts.labels) {
                     res.charts.labels.forEach((label, i) => {
-                        trafficHtml += `<tr>
-                            <td style="font-weight: 700; color: #64748b;">${label}</td>
-                            <td style="font-weight: 800; color: #1e293b;">${res.charts.sessions[i].toLocaleString()}</td>
-                            <td style="font-weight: 800; color: #1e293b;">${res.charts.page_views[i].toLocaleString()}</td>
-                            <td style="text-align: center;">${res.charts.buy_box[i].toFixed(0)}%</td>
-                            <td style="text-align: center;">${res.charts.units[i].toLocaleString()}</td>
-                            <td style="text-align: center;">${res.charts.orders[i].toLocaleString()}</td>
-                            <td style="text-align: right;"><span style="background: #eff6ff; color: #1e40af; padding: 4px 8px; border-radius: 6px; font-weight: 800;">${res.charts.conversion[i].toFixed(2)}%</span></td>
-                        </tr>`;
+                        globalTrafficData.push({
+                            date: label,
+                            sessions: toNumber(res.charts.sessions[i]),
+                            pageViews: toNumber(res.charts.page_views[i]),
+                            buyBox: toNumber(res.charts.buy_box[i]),
+                            units: toNumber(res.charts.units[i]),
+                            orders: toNumber(res.charts.orders[i]),
+                            conv: toNumber(res.charts.conversion[i])
+                        });
                     });
                 }
-                $('#traffic_daily_body').html(trafficHtml || '<tr><td colspan="7" class="text-center">No traffic data for this range.</td></tr>');
-                
-                if ($.fn.DataTable.isDataTable('#traffic_daily_table')) $('#traffic_daily_table').DataTable().destroy();
-                $('#traffic_daily_table').DataTable({ 
-                    pageLength: 10, 
-                    order: [[0, 'desc']], 
-                    dom: 'lf<"analysis-table-container"t>ip',
-                    language: { search: "_INPUT_", searchPlaceholder: "Search daily traffic..." } 
-                });
+                trafficCurrentPage = 1;
+                renderTrafficTable();
 
                 renderTrafficTrendChart();
 
@@ -1746,18 +2178,19 @@ $(document).ready(function() {
                 feeItems.forEach((item, index) => {
                     const absVal = Math.abs(item.val);
                     const share = f.revenue > 0 ? ((absVal / f.revenue) * 100).toFixed(1) : '0.0';
-                    let status = 'NORMAL';
-                    let statusBg = '#f1f5f9';
-                    let statusColor = '#475569';
+                    const isAdjustment = item.label.includes('Adjustments');
                     
-                    if (item.label.includes('COGS')) {
-                        status = 'OPTIMIZED';
-                        statusBg = '#e6fcf5';
-                        statusColor = '#0ca678';
-                    } else if (share > 10) {
-                        status = 'ATTENTION';
-                        statusBg = '#fff5f5';
-                        statusColor = '#ff6b6b';
+                    let valDisplay = '';
+                    let shareHtml = '';
+                    
+                    if (isAdjustment) {
+                        // Display credit as cost reduction: negative cost, green text
+                        valDisplay = `-$${absVal.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+                        shareHtml = `<span style="background: #e6fcf5; color: #0ca678; padding: 6px 12px; border-radius: 50px; font-size: 0.85rem !important; font-weight: 800 !important;">-${share}%</span>`;
+                    } else {
+                        // Regular expense: positive cost in list, red text
+                        valDisplay = `$${absVal.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+                        shareHtml = `<span style="background: #fff1f2; color: #e11d48; padding: 6px 12px; border-radius: 50px; font-size: 0.85rem !important; font-weight: 800 !important;">${share}%</span>`;
                     }
                     
                     plExpRowsHtml += `
@@ -1765,11 +2198,11 @@ $(document).ready(function() {
                             <td style="width: 33.33% !important; text-align: left !important; padding: 1.5rem 2rem !important; font-weight: 700 !important; color: #0f172a !important; font-size: 1.05rem !important;">
                                 ${item.label}
                             </td>
-                            <td style="width: 33.33% !important; text-align: right !important; padding: 1.5rem 2rem !important; font-weight: 800 !important; color: #0f172a !important; font-size: 1.05rem !important;">
-                                $${absVal.toLocaleString(undefined, {minimumFractionDigits: 2})}
+                            <td style="width: 33.33% !important; text-align: right !important; padding: 1.5rem 2rem !important; font-weight: 800 !important; color: ${isAdjustment ? '#0ca678' : '#0f172a'} !important; font-size: 1.05rem !important;">
+                                ${valDisplay}
                             </td>
-                            <td style="width: 33.33% !important; text-align: right !important; padding: 1.5rem 2rem !important; font-weight: 800 !important; color: #e11d48 !important; font-size: 1.05rem !important;">
-                                <span style="background: #fff1f2; color: #e11d48; padding: 6px 12px; border-radius: 50px; font-size: 0.85rem !important; font-weight: 800 !important;">${share}%</span>
+                            <td style="width: 33.33% !important; text-align: right !important; padding: 1.5rem 2rem !important; font-weight: 800 !important;">
+                                ${shareHtml}
                             </td>
                         </tr>
                     `;
@@ -1841,104 +2274,30 @@ $(document).ready(function() {
                 renderChart($('.chart-tab-btn.active').data('chart'));
                 
                 let prodHtml = '';
-                let tableHtml = '';
-                let skuPlHtml = '';
+                
                 // Robust parsing for total units to avoid NaN/Infinity
                 const totalUnitsRaw = k.total_units || '0';
                 const totalUnitsParsed = typeof totalUnitsRaw === 'string' ? parseNumberFromText(totalUnitsRaw) : toNumber(totalUnitsRaw);
-                const avgCogsPerUnit = (totalUnitsParsed > 0) ? (toNumber(f.cogs) / totalUnitsParsed) : 0;
                 
-                let tUnits = 0, tRev = 0, tsFee = 0, tfFee = 0, toFee = 0, tGross = 0, tNet = 0, tCogs = 0;
+                let tUnits = 0, tRev = 0, tNet = 0;
 
-                (res.sku_pl || []).forEach((p, i) => {
-                    const productRevenue = toNumber(p.revenue || 0);
-                    const productNet = toNumber(p.net || 0);
-                    const productUnits = toNumber(p.units || 0);
-                    const productMargin = toNumber(p.margin || 0);
-                    const productName = p.name || 'Unknown Product';
-
-                    tUnits += productUnits; tRev += productRevenue; tNet += productNet;
-                    
-                    let statusBadge = '';
-                    if (productMargin > 20) {
-                        statusBadge = '<span style="background:#e6fffa; color:#0d9488; border: 1px solid #99f6e4; font-size:0.75rem; padding:4px 12px; border-radius:50px; font-weight:800; display:inline-block;">HIGH PROFIT</span>';
-                    } else if (productMargin > 0) {
-                        statusBadge = '<span style="background:#f0fdf4; color:#16a34a; border: 1px solid #bbf7d0; font-size:0.75rem; padding:4px 12px; border-radius:50px; font-weight:800; display:inline-block;">PROFITABLE</span>';
-                    } else {
-                        statusBadge = '<span style="background:#fef2f2; color:#dc2626; border: 1px solid #fecaca; font-size:0.75rem; padding:4px 12px; border-radius:50px; font-weight:800; display:inline-block;">LOSS MAKING</span>';
-                    }
-
-                    skuPlHtml += `<tr>
-                        <td style="padding: 1.25rem 0.75rem; text-align: left; font-size: 1.1rem; font-weight: 700;">${i+1}</td>
-                        <td class="text-start" style="max-width:250px; font-weight:700; padding: 1.25rem 0.75rem; text-align: left;">
-                            <div style="font-size:1.1rem; color:#1e293b; font-weight: 800; margin-bottom: 2px;">${p.sku}</div>
-                        </td>
-                        <td class="text-end" style="font-size: 1.1rem; font-weight: 700; text-align: right; padding-right: 1.25rem;">${productUnits.toLocaleString()}</td>
-                        <td class="text-end" style="font-weight:800; color:#1e40af; font-size: 1.1rem; text-align: right; padding-right: 1.25rem;">$${productRevenue.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                        <td class="text-end" style="font-weight:900; color:#10b981; font-size: 1.2rem; text-align: right; padding-right: 1.25rem;">$${productNet.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                        <td class="text-end" style="text-align: right; padding-right: 1.25rem;"><span style="background:#f0fdf4; color:#166534; padding:6px 10px; border-radius:8px; font-weight:900; font-size: 1rem;">${productMargin.toFixed(1)}%</span></td>
-                    </tr>`;
+                // Populate global SKU P&L dataset
+                globalSkuPlData = res.sku_pl || [];
+                globalSkuPlData.forEach((p, i) => {
+                    tUnits += toNumber(p.units || 0);
+                    tRev += toNumber(p.revenue || 0);
+                    tNet += toNumber(p.net || 0);
                 });
 
                 const tMargin = tRev > 0 ? (tNet / tRev) * 100 : 0;
-                let statusBadgeSummary = '';
-                if (tMargin > 20) {
-                    statusBadgeSummary = '<span style="background:#0d9488; color:#ffffff; font-size:0.75rem; padding:4px 12px; border-radius:50px; font-weight:800;">HIGH PROFIT</span>';
-                } else if (tMargin > 0) {
-                    statusBadgeSummary = '<span style="background:#16a34a; color:#ffffff; font-size:0.75rem; padding:4px 12px; border-radius:50px; font-weight:800;">PROFITABLE</span>';
-                } else {
-                    statusBadgeSummary = '<span style="background:#dc2626; color:#ffffff; font-size:0.75rem; padding:4px 12px; border-radius:50px; font-weight:800;">LOSS MAKING</span>';
-                }
-
                 const skuPlFootHtml = `<tr>
-                    <td colspan="2" class="text-start" style="text-align: left; font-weight: 800; font-size: 1rem; padding: 1.25rem 0.75rem;">TOTAL SUMMARY</td>
-                    <td class="text-end" style="text-align: right; font-size: 1.1rem; font-weight: 800; padding-right: 1.25rem;">${tUnits.toLocaleString()}</td>
-                    <td class="text-end" style="color: #1e40af; text-align: right; font-size: 1.1rem; font-weight: 800; padding-right: 1.25rem;">$${tRev.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                    <td class="text-end" style="color: #10b981; font-weight: 900; text-align: right; font-size: 1.2rem; padding-right: 1.25rem;">$${tNet.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                    <td class="text-end" style="text-align: right; padding-right: 1.25rem;"><span style="background: #10b98122; padding: 4px 10px; border-radius: 6px; font-size: 1rem; font-weight: 800;">${tMargin.toFixed(1)}%</span></td>
+                    <td colspan="2" class="text-start" style="width: 40%; text-align: left; font-weight: 800; font-size: 1rem; padding: 1.25rem 0.75rem; font-family: 'Inter', sans-serif;">TOTAL SUMMARY</td>
+                    <td class="text-end" style="width: 15%; text-align: right; font-size: 1.1rem; font-weight: 800; padding-right: 1.25rem; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${tUnits.toLocaleString()}</td>
+                    <td class="text-end" style="width: 15%; color: #0051d5; text-align: right; font-size: 1.1rem; font-weight: 800; padding-right: 1.25rem; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tRev.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+                    <td class="text-end" style="width: 15%; color: #009668; font-weight: 900; text-align: right; font-size: 1.2rem; padding-right: 1.25rem; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tNet.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+                    <td class="text-end" style="width: 15%; text-align: right; padding-right: 1.25rem; font-family: 'Inter', sans-serif;"><span style="background: rgba(111,251,190,0.2); color: #009668; padding: 4px 10px; border-radius: 6px; font-size: 1rem; font-weight: 800; font-variant-numeric: tabular-nums;">${tMargin.toFixed(1)}%</span></td>
                 </tr>`;
                 $('#sku_pl_foot').html(skuPlFootHtml);
-
-                const generateSparkline = (values, rank) => {
-                    if (!values || values.length === 0) return '';
-                    const min = Math.min(...values);
-                    const max = Math.max(...values);
-                    const range = max - min;
-                    
-                    const height = 24;
-                    const width = 100;
-                    const padding = 3;
-                    
-                    const points = values.map((val, idx) => {
-                        const x = padding + (idx / (values.length - 1)) * (width - 2 * padding);
-                        const y = (range === 0) ? (height / 2) : (height - padding - ((val - min) / range) * (height - 2 * padding));
-                        return { x, y };
-                    });
-                    
-                    const firstVal = values[0];
-                    const lastVal = values[values.length - 1];
-                    let strokeColor = '#3b82f6'; // Default blue
-                    
-                    if (lastVal > firstVal * 1.05) {
-                        strokeColor = '#10b981'; // Green (significant growth)
-                    } else if (lastVal < firstVal * 0.95) {
-                        strokeColor = '#f43f5e'; // Red (decline)
-                    }
-                    
-                    let pathD = '';
-                    points.forEach((pt, idx) => {
-                        if (idx === 0) {
-                            pathD += `M ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
-                        } else {
-                            pathD += ` L ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
-                        }
-                    });
-                    
-                    return `
-                    <svg width="100" height="24" viewBox="0 0 100 24" style="display: block; margin: 0 auto; overflow: visible;">
-                        <path d="${pathD}" fill="none" stroke="${strokeColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>`;
-                };
 
                 const icons = [
                     `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #a5f3fc, #22d3ee); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(34, 211, 238, 0.2);">
@@ -1971,15 +2330,14 @@ $(document).ready(function() {
                     </div>`
                 ];
 
-                (res.products || []).forEach((p, i) => {
+                globalProductsData = res.products || [];
+                globalProductsData.forEach((p, i) => {
                     const productRevenue = toNumber(p.revenue || p.sales || 0);
                     const productFullTitle = p.name || p.title || 'Unknown Product';
-                    const productName = p.sku || productFullTitle; // Use SKU as the primary name
-                    const productConv = toNumber(p.conv || p.conv_rate || 0);
                     const productUnits = toNumber(p.units || 0);
                     
-                    // Top Grid Cards (Render exactly 4 SKU cards)
-                    if (i < 4) {
+                    // Top Grid Cards (Render up to 10 SKU cards)
+                    if (i < 10) {
                         const cardIcon = icons[i] || icons[0];
                         const rankBg = i === 0 ? '#fbbf24' : '#cbd5e1';
                         const rankColor = i === 0 ? '#ffffff' : '#475569';
@@ -1990,7 +2348,9 @@ $(document).ready(function() {
                         else if (p.sku === 'BUNDLE-10CLPS-2') displayName = 'Premium Inserts';
                         else if (p.sku === 'BUNDLE-WDRB-4') displayName = 'Wet Dry Bags';
                         else {
-                            const words = productFullTitle.split(/[\s-,]+/);
+                            // Strip common brand prefix case-insensitively for cleaner names
+                            let cleanTitle = productFullTitle.replace(/^(LA PETITE OURSE|La Petite Ourse|la petite ourse)\s+/i, '');
+                            const words = cleanTitle.split(/[\s-,]+/);
                             displayName = words[0] + ' ' + (words[1] || '');
                         }
 
@@ -2006,29 +2366,37 @@ $(document).ready(function() {
                             isGrowthUp = (seed % 2 === 0);
                         }
                         const growthSign = isGrowthUp ? '↑' : '↓';
-                        const growthColor = isGrowthUp ? '#10b981' : '#f43f5e';
+                        const growthColor = isGrowthUp ? '#009668' : '#ef4444';
+
+                        const imgUrl = getProductImage(p.sku);
+                        let displayImageHtml = '';
+                        if (imgUrl) {
+                            displayImageHtml = `<img alt="${p.sku}" class="w-16 h-16 rounded-xl object-cover bg-surface-container" style="width: 64px; height: 64px; border-radius: 12px; object-fit: cover; background: #eceef0;" src="${imgUrl}"/>`;
+                        } else {
+                            displayImageHtml = cardIcon;
+                        }
 
                         prodHtml += `
-                        <div style="background: #ffffff; border-radius: 16px; border: 1px solid #f1f5f9; padding: 1.25rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); transition: all 0.3s ease; position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 190px;" class="product-item-card" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.06)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.03)'">
+                        <div style="background: #ffffff; border-radius: 16px; border: 1px solid #c6c6cd; padding: 1.25rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); transition: all 0.3s ease; position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 190px;" class="product-item-card" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.06)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.03)'">
                             <!-- Rank Circle -->
-                            <div style="position: absolute; top: 1.25rem; right: 1.25rem; width: 24px; height: 24px; border-radius: 50%; background: ${rankBg}; color: ${rankColor}; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; border: 1px solid #cbd5e1;">
+                            <div style="position: absolute; top: 1.25rem; right: 1.25rem; width: 24px; height: 24px; border-radius: 50%; background: ${rankBg}; color: ${rankColor}; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; border: 1px solid #c6c6cd;">
                                 ${i+1}
                             </div>
                             
                             <!-- Top row: Icon and SKU -->
                             <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
-                                ${cardIcon}
+                                ${displayImageHtml}
                                 <div style="margin-top: 4px;">
                                     <span style="font-size: 0.7rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; display: block;">SKU: ${p.sku}</span>
-                                    <h5 style="margin: 2px 0 0 0; font-size: 1rem; font-weight: 800; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;" title="${productFullTitle}">${displayName}</h5>
+                                    <h5 style="margin: 2px 0 0 0; font-size: 1.1rem; font-weight: 800; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;" title="${productFullTitle}">${displayName}</h5>
                                 </div>
                             </div>
                             
                             <!-- Bottom row: Revenue and Units -->
-                            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 1rem; border-top: 1px solid #f8fafc; padding-top: 0.75rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 1rem; border-top: 1px solid #f2f4f6; padding-top: 0.75rem;">
                                 <div>
                                     <span style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; display: block;">Revenue</span>
-                                    <span style="font-size: 1.3rem; font-weight: 900; color: #1e40af; line-height: 1;">$${productRevenue.toLocaleString()}</span>
+                                    <span style="font-size: 1.3rem; font-weight: 900; color: #0051d5; line-height: 1;">$${productRevenue.toLocaleString()}</span>
                                 </div>
                                 <div style="text-align: right;">
                                     <span style="font-size: 0.75rem; font-weight: 800; color: ${growthColor}; display: block; margin-bottom: 2px;">
@@ -2039,65 +2407,16 @@ $(document).ready(function() {
                             </div>
                         </div>`;
                     }
-
-                    // Detailed Analysis Table
-                    const adSpend = toNumber(p.ad_spend || 0);
-                    const productOrders = toNumber(p.total_orders || p.orders || 0);
-                    const roasVal = adSpend > 0 ? (productRevenue / adSpend) : 0;
-                    
-                    const roasText = roasVal > 0 ? roasVal.toFixed(1) + 'x' : '0.0x';
-                    const roasBg = roasVal >= 15 ? '#f0fdf4' : (roasVal > 0 ? '#fef2f2' : '#f1f5f9');
-                    const roasColor = roasVal >= 15 ? '#15803d' : (roasVal > 0 ? '#b91c1c' : '#64748b');
-                    const roasBadgeHtml = `<span style="background: ${roasBg}; color: ${roasColor}; padding: 6px 12px; border-radius: 6px; font-weight: 800; font-size: 0.9rem; display: inline-block;">${roasText}</span>`;
-                    
-                    const boxIconHtml = `
-                    <div style="width: 36px; height: 36px; background: #0f172a; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                        </svg>
-                    </div>`;
-                    
-                    const productIdentityHtml = `
-                    <div style="display: flex; align-items: center; gap: 10px; text-align: left;">
-                        ${boxIconHtml}
-                        <div style="display: flex; flex-direction: column; min-width: 0; flex: 1;">
-                            <div style="font-weight: 800; color: #1e293b; font-size: 0.95rem; line-height: 1.2; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${p.sku}">${p.sku}</div>
-                            <div style="font-size: 0.75rem; color: #64748b; font-weight: 500; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;" title="${productFullTitle}">${productFullTitle}</div>
-                        </div>
-                    </div>`;
-
-                    // Generate Sparkline
-                    const pMonthly = (res.monthly_products || []).filter(m => m.asin === p.asin);
-                    let trendValues = [];
-                    if (pMonthly.length >= 2) {
-                        const sortedMonthly = pMonthly.sort((a, b) => a.month.localeCompare(b.month));
-                        trendValues = sortedMonthly.map(m => toNumber(m.revenue));
-                    } else {
-                        // Seeded synthetic generator to ensure beautiful lines
-                        let seed = (p.sku.charCodeAt(0) || 0) + (p.sku.charCodeAt(p.sku.length - 1) || 0) + i;
-                        for (let j = 0; j < 5; j++) {
-                            const factor = 1 + (Math.sin(seed + j) * 0.18); // up to 18% variance
-                            trendValues.push(productRevenue * factor);
-                        }
-                    }
-                    const sparklineHtml = generateSparkline(trendValues, i + 1);
-
-                    tableHtml += `<tr>
-                        <td style="width: 12.5%; text-align: center !important; vertical-align: middle; font-weight: 800; color: #1d4ed8; font-size: 1.05rem;">#${i+1}</td>
-                        <td style="width: 12.5%; text-align: left; vertical-align: middle; padding: 0.75rem 0.5rem;">${productIdentityHtml}</td>
-                        <td style="width: 12.5%; text-align: right !important; vertical-align: middle; font-weight: 800; color: #1e293b; font-size: 1rem; padding-right: 1.25rem;">$${productRevenue.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                        <td style="width: 12.5%; text-align: right !important; vertical-align: middle; font-weight: 700; color: #475569; font-size: 0.95rem; padding-right: 1.25rem;">${productOrders.toLocaleString()}</td>
-                        <td style="width: 12.5%; text-align: right !important; vertical-align: middle; font-weight: 700; color: #475569; font-size: 0.95rem; padding-right: 1.25rem;">${productUnits.toLocaleString()}</td>
-                        <td style="width: 12.5%; text-align: right !important; vertical-align: middle; font-weight: 800; color: #b91c1c; font-size: 1rem; padding-right: 1.25rem;">$${adSpend.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                        <td style="width: 12.5%; text-align: center !important; vertical-align: middle;">${roasBadgeHtml}</td>
-                        <td style="width: 12.5%; text-align: center !important; vertical-align: middle;">${sparklineHtml}</td>
-                    </tr>`;
                 });
+
                 $('#product_list').html(prodHtml);
-                $('#product_analysis_body').html(tableHtml);
-                $('#sku_pl_body').html(skuPlHtml || '<tr><td colspan="6" style="text-align:center;">No SKU data found.</td></tr>');
+                
+                // Render products and SKU P&L tables via Bento pagination renderers
+                productsCurrentPage = 1;
+                renderProductPerformanceTable();
+
+                skuPlCurrentPage = 1;
+                renderSkuPlTable();
 
                 // Populate Monthly SKU Matrix
                 let mHtml = '';
@@ -2117,14 +2436,7 @@ $(document).ready(function() {
                 }
                 $('#monthly_sku_body').html(mHtml);
 
-                // SKU P&L Table initialization
-                if ($.fn.DataTable.isDataTable('#sku_pl_table')) $('#sku_pl_table').DataTable().destroy();
-                $('#sku_pl_table').DataTable({
-                    pageLength: 10,
-                    order: [[2, 'desc']],
-                    dom: 'lf<"analysis-table-container"t>ip',
-                    language: { search: "_INPUT_", searchPlaceholder: "Search SKU P&L..." }
-                });
+                // SKU P&L is now styled with custom Bento pagination/search.
 
                 animateCurrentTab();
             },
@@ -2883,14 +3195,7 @@ $(document).ready(function() {
                     }
                 });
 
-                // Product Performance Table initialization
-                if ($.fn.DataTable.isDataTable('#product_perf_table')) $('#product_perf_table').DataTable().destroy();
-                $('#product_perf_table').DataTable({
-                    pageLength: 10,
-                    order: [[2, 'desc']],
-                    dom: 'lf<"analysis-table-container"t>ip',
-                    language: { search: "_INPUT_", searchPlaceholder: "Search Products..." }
-                });
+                // Product performance table is styled with custom Bento pagination/search.
             }
         });
     }
@@ -2939,6 +3244,25 @@ $(document).ready(function() {
             },
             complete: () => btn.prop('disabled', false).html('SAVE SETTINGS')
         });
+    });
+
+    // Bind Bento Search Input Event Listeners
+    $('#product_search_input').on('keyup input', function() {
+        productsSearchQuery = $(this).val();
+        productsCurrentPage = 1;
+        renderProductPerformanceTable();
+    });
+
+    $('#sku_pl_search_input').on('keyup input', function() {
+        skuPlSearchQuery = $(this).val();
+        skuPlCurrentPage = 1;
+        renderSkuPlTable();
+    });
+
+    $('#traffic_search_input').on('keyup input', function() {
+        trafficSearchQuery = $(this).val();
+        trafficCurrentPage = 1;
+        renderTrafficTable();
     });
 
     $('#apply_filters').click(loadDashboard);
