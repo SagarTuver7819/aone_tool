@@ -11,8 +11,8 @@ if (!isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AOne - Amazon Intelligence</title>
-    <!-- Modern Font: Plus Jakarta Sans -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
+    <!-- Modern Fonts: Plus Jakarta Sans, Hanken Grotesk, Inter -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Hanken+Grotesk:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap">
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Bootstrap 5 for Grid/Utilities -->
@@ -57,10 +57,10 @@ if (!isset($_SESSION['user_id'])) {
         }
         .dataTables_wrapper .dataTables_paginate .paginate_button.current,
         .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover { 
-            background: #3b82f6 !important; /* Premium Indigo/Blue */
+            background: #0f52ff !important; /* Premium Executive Blue */
             color: #ffffff !important; 
-            border-color: #3b82f6 !important; 
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25) !important;
+            border-color: #0f52ff !important; 
+            box-shadow: 0 4px 12px rgba(15, 82, 255, 0.25) !important;
         }
         .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
         .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {

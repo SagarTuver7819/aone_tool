@@ -128,17 +128,17 @@
         </ul>
     </div>
 
-    <div class="sidebar-footer-user" style="padding: 1rem; background: rgba(255,255,255,0.05); border-top: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; transition: 0.3s;">
-        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #064e3b; flex-shrink: 0;">
+    <div class="sidebar-footer-user">
+        <div class="user-profile-summary">
+            <div class="user-avatar-circle">
                 <?php echo strtoupper(substr($_SESSION['username'] ?? 'U', 0, 1)); ?>
             </div>
-            <div class="user-details" style="flex: 1; overflow: hidden;">
-                <p style="font-size: 0.7rem; color: #94A3B8; font-weight: 600; text-transform: capitalize; margin: 0;"><?php echo htmlspecialchars($_SESSION['role'] ?? 'Guest'); ?></p>
-                <p style="font-size: 0.8rem; color: #FFFFFF; font-weight: 500; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo htmlspecialchars($_SESSION['username'] ?? 'User'); ?></p>
+            <div class="user-details">
+                <p class="user-role-label"><?php echo htmlspecialchars($_SESSION['role'] ?? 'Guest'); ?></p>
+                <p class="user-name-label"><?php echo htmlspecialchars($_SESSION['username'] ?? 'User'); ?></p>
             </div>
         </div>
-        <a href="<?php echo BASE_URL; ?>logout.php" style="display: flex; align-items: center; gap: 0.5rem; color: #ef4444; text-decoration: none; font-size: 0.8rem; font-weight: 700; justify-content: center;">
+        <a href="<?php echo BASE_URL; ?>logout.php" class="sidebar-logout-link">
             <i class="fas fa-sign-out-alt"></i> <span class="logout-text">SIGN OUT</span>
         </a>
     </div>

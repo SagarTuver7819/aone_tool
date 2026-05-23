@@ -46,11 +46,11 @@ try {
                     SUM(clicks) as ad_clicks,
                     SUM(impressions) as ad_impr
                 FROM (
-                    SELECT advertised_asin, spend, total_sales, total_orders, total_units, clicks, impressions FROM amazon_advertising_sp WHERE $where_customer AND report_date BETWEEN ? AND ? AND report_type = 'advertised_product'
+                    SELECT advertised_asin, spend, total_sales, total_orders, total_units, clicks, impressions FROM amazon_advertising_sp WHERE $where_customer AND report_date BETWEEN ? AND ? AND report_type = 'general'
                     UNION ALL
-                    SELECT advertised_asin, spend, total_sales, total_orders, total_units, clicks, impressions FROM amazon_advertising_sb WHERE $where_customer AND report_date BETWEEN ? AND ? AND report_type = 'advertised_product'
+                    SELECT advertised_asin, spend, total_sales, total_orders, total_units, clicks, impressions FROM amazon_advertising_sb WHERE $where_customer AND report_date BETWEEN ? AND ? AND report_type = 'campaign'
                     UNION ALL
-                    SELECT advertised_asin, spend, total_sales, total_orders, total_units, clicks, impressions FROM amazon_advertising_sd WHERE $where_customer AND report_date BETWEEN ? AND ? AND report_type = 'advertised_product'
+                    SELECT advertised_asin, spend, total_sales, total_orders, total_units, clicks, impressions FROM amazon_advertising_sd WHERE $where_customer AND report_date BETWEEN ? AND ? AND report_type = 'campaign'
                 ) t GROUP BY advertised_asin";
     
     $stmt_ads = $conn->prepare($sql_ads);

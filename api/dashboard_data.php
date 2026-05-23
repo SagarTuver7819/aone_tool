@@ -262,6 +262,7 @@ try {
         'sales' => getComparison($cmp_current['total_sales'], $totals_prev['total_sales']),
         'orders' => getComparison($cmp_current['total_orders'], $totals_prev['total_orders']),
         'units' => getComparison($cmp_current['total_units'], $totals_prev['total_units']),
+        'sessions' => getComparison($cmp_current['total_sessions'] ?? 0, $totals_prev['total_sessions'] ?? 0),
         'dsr' => getComparison($cmp_current['total_sales'], $totals_prev['total_sales']), // Identical percentage to sales
         'ad_sales' => getComparison($ad_sales_curr, $ad_sales_prev),
         'organic' => getComparison($organic_curr, $organic_prev),
@@ -467,9 +468,11 @@ try {
         GROUP BY d.asin 
         ORDER BY revenue DESC 
         LIMIT 50";
+    $from_bucket = date('Y-m-01', strtotime($from_date));
+    $to_bucket = date('Y-m-01', strtotime($to_date));
     $stmt_p = $conn->prepare($sql_products);
     if (!$stmt_p) throw new Exception("Prepare failed (Products): " . $conn->error);
-    $stmt_p->bind_param("ss", $from_date, $to_date);
+    $stmt_p->bind_param("ss", $from_bucket, $to_bucket);
     $stmt_p->execute();
     $res_p_obj = $stmt_p->get_result();
     $products_data = [];
@@ -668,8 +671,10 @@ function fetchMonthlyProducts($conn, $customer_id, $from, $to) {
             WHERE $where_customer AND report_date BETWEEN ? AND ?
             GROUP BY month, asin
             ORDER BY month DESC, revenue DESC";
+    $from_bucket = date('Y-m-01', strtotime($from));
+    $to_bucket = date('Y-m-01', strtotime($to));
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $from, $to);
+    $stmt->bind_param("ss", $from_bucket, $to_bucket);
     $stmt->execute();
     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }

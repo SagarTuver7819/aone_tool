@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SKU Performance Intelligence | SellerCentral Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#005236",
+                        "secondary-container": "#316bf3",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-surface": "#191c1e",
+                        "on-secondary": "#ffffff",
+                        "outline": "#76777d",
+                        "on-secondary-fixed": "#00174b",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary-container": "#009668",
+                        "on-surface-variant": "#45464d",
+                        "tertiary": "#000000",
+                        "surface-container-high": "#e6e8ea",
+                        "on-primary-container": "#7c839b",
+                        "on-secondary-container": "#fefcff",
+                        "primary-container": "#131b2e",
+                        "secondary-fixed": "#dbe1ff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container": "#eceef0",
+                        "surface-tint": "#565e74",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e0e3e5",
+                        "surface-container-low": "#f2f4f6",
+                        "surface": "#f7f9fb",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "primary-fixed-dim": "#bec6e0",
+                        "primary": "#000000",
+                        "inverse-primary": "#bec6e0",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#d8dadc",
+                        "on-error-container": "#93000a",
+                        "background": "#f7f9fb",
+                        "tertiary-container": "#002113",
+                        "inverse-surface": "#2d3133",
+                        "primary-fixed": "#dae2fd",
+                        "on-primary-fixed": "#131b2e",
+                        "on-tertiary-fixed": "#002113",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#f7f9fb",
+                        "secondary": "#0051d5",
+                        "on-background": "#191c1e",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c6c6cd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "48px",
+                        "base": "8px",
+                        "container-margin-mobile": "16px",
+                        "container-margin-desktop": "40px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        .bento-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0px 4px 20px rgba(15, 23, 42, 0.05);
+            border: 1px solid #E2E8F0;
+            transition: all 0.3s ease;
+        }
+        .bento-card:hover {
+            box-shadow: 0px 10px 30px rgba(15, 23, 42, 0.1);
+        }
+        .donut-segment {
+            transition: stroke-dasharray 1s ease;
+        }
+        .sparkline-path {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: dash 2s linear forwards;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: 0; }
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[280px] bg-surface-container-lowest border-r border-outline-variant flex flex-col py-base z-50">
+<div class="px-6 py-6 mb-8">
+<h1 class="font-headline-md text-headline-md font-bold text-secondary">SellerCentral Pro</h1>
+<p class="text-on-surface-variant text-label-sm mt-1">Amazon Global Seller</p>
+</div>
+<nav class="flex-1 px-4 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/10 transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">dashboard</span> Overview
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/10 transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">bar_chart</span> Sales Analytics
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/10 transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">inventory_2</span> Inventory
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary font-bold border-r-4 border-secondary bg-secondary/5 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined filled-icon">inventory</span> SKU Performance
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/10 transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">campaign</span> Advertising
+            </a>
+</nav>
+<div class="mt-auto px-4 space-y-4">
+<div class="bg-primary-container p-4 rounded-xl">
+<p class="text-on-primary-container text-label-sm font-bold mb-2">PRO ACCESS</p>
+<p class="text-on-primary-container text-body-sm mb-4">Get AI-driven market insights.</p>
+<button class="w-full py-2 bg-secondary text-white rounded-lg font-label-md text-label-md transition-all active:scale-95">Upgrade to Enterprise</button>
+</div>
+<div class="border-t border-outline-variant pt-4 pb-2">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-secondary font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+                </a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-secondary font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">help</span> Support
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Wrapper -->
+<div class="ml-[280px] h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="h-20 bg-surface border-b border-outline-variant flex justify-between items-center px-10 sticky top-0 z-40">
+<div class="flex items-center gap-8">
+<h2 class="font-headline-md text-headline-md font-bold text-primary">SKU Performance Intelligence</h2>
+<div class="flex items-center gap-4 text-on-surface-variant font-label-md text-label-md">
+<span class="px-3 py-1 bg-surface-container rounded-full cursor-pointer hover:bg-surface-container-high transition-colors">Last 30 Days</span>
+<span class="px-3 py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">Custom Range</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-4 py-2 bg-white border border-outline-variant rounded-full font-label-md text-label-md hover:border-secondary hover:text-secondary transition-all">
+<span class="material-symbols-outlined">filter_list</span> Filter By Category
+                </button>
+<button class="flex items-center gap-2 px-6 py-2 bg-secondary text-white rounded-full font-label-md text-label-md hover:bg-secondary-container transition-all active:scale-95">
+<span class="material-symbols-outlined">download</span> Export CSV
+                </button>
+<div class="h-10 w-[1px] bg-outline-variant mx-2"></div>
+<div class="flex gap-4 items-center">
+<button class="p-2 text-on-surface-variant hover:text-secondary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<img alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-surface-container-high shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHJzijnaoCGl5UIpoNSnzKrXtBj_bDelCWeXBRiV0XqAWUS4-gLJesV6OVl1MK7nyCtLf2_urMjdgwG32sIjX4T3IDo_9z_u8pI8WbaP1Tl_YRCtBVqH33ukkqRKQdgOvD99YHEl-7TDppl5zFqRQf4f56-Ape0c4b7NwHbkAZ_xFIcZH3h0-Px-8KRRwatsDhYw1anZ-V7nYlC9xIgjXkIHRuiwZye6QkioAMXlLz_U2GjhVQcfkEPzdvvpa_Sb_906Q0d6RGG5U"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto p-10 space-y-8 bg-surface-bright">
+<!-- Section 1: Hero Cards -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary-container">workspace_premium</span>
+<h3 class="font-headline-md text-headline-md text-primary">Top Performing SKUs</h3>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Top Card 1 -->
+<div class="bento-card p-6 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary-fixed/30 rounded-full blur-2xl group-hover:bg-secondary-fixed/50 transition-all"></div>
+<div class="flex justify-between items-start mb-6">
+<img alt="BUNDLE-ROUL-1" class="w-16 h-16 rounded-xl object-cover bg-surface-container" data-alt="High-resolution studio photograph of a premium cloth diaper bundle set, cleanly arranged on a minimalist white marble surface. The lighting is soft and professional, highlighting textures and vibrant colors. The aesthetic is modern, clean, and high-end retail photography with a soft blue and white color scheme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_t3YGRNgkil9lAhgmKfQ0vH1EPoyjbnNLLHjZ8lP5BEcO4Q9coXd12vKVvHUVa_1pfxM7UUAvtSxanHStBRi6I3JR8ecZkWyEXDmQWjvHYXD9L1yIIZpHEyOwR8tx64ElFWInlNoCSFfR1Zr3qjhMw7pMSqKv3UiEdYI5sJISLfyOgaUQdpjEYCKIJ1Ca79AgvqiijclhmwXtRNpjncV9rhZ0mJOVVrPcMJfSPMKGNSvTAs5GmM8Sm6R7axHZYOnkArEfClcyAoM"/>
+<span class="bg-[#FFD700] text-primary w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm">1</span>
+</div>
+<p class="text-label-sm text-on-surface-variant mb-1">SKU: BUNDLE-ROUL-1</p>
+<h4 class="font-headline-md text-headline-md mb-4 truncate">Diaper Liner Roll</h4>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-label-sm text-on-surface-variant">Revenue</p>
+<p class="font-headline-md text-headline-md text-secondary">$22,788</p>
+</div>
+<div class="text-right">
+<p class="text-label-sm text-on-tertiary-container">↑ 18.2%</p>
+<p class="text-body-sm font-bold">649 Units</p>
+</div>
+</div>
+</div>
+<!-- Top Card 2 -->
+<div class="bento-card p-6 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-surface-container-high rounded-full blur-2xl group-hover:bg-surface-container-highest transition-all"></div>
+<div class="flex justify-between items-start mb-6">
+<img alt="BUNDLE-10CLPS" class="w-16 h-16 rounded-xl object-cover bg-surface-container" data-alt="A professional product shot of an infant cloth diaper snap set featuring animal prints, displayed against a neutral light grey background. Bright, high-key lighting emphasizes the intricate patterns and snap details. The image has a crisp, retail catalog look with clean lines and premium presentation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpieogRIgqm3uCI-gO9J9jdGC7L9JbZCBkxLYTWdkEepML2CsX0i7foQk27ZZT65P2isOS9b4B6K87byojpqUpDNhQZdKjkVBk-59BgakCAysEKO0WKPCaUXEi8Ib9gQ1FAO9HlopqHntKHCNKcfv90A0ZKRIgUz8KaL-oiagaJS2sQ388v8naG9Py-cnC-mrw63tRvVDyQQP0VPLfQd8Qb0ixb6JIpkXQjBA8aUuQKOoAYFUYGrLWz6Ffh9SDoBpRW_vNQ0zMxCg"/>
+<span class="bg-surface-container-high text-on-surface w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm">2</span>
+</div>
+<p class="text-label-sm text-on-surface-variant mb-1">SKU: BUNDLE-10CLPS</p>
+<h4 class="font-headline-md text-headline-md mb-4 truncate">Snap Cloth Set</h4>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-label-sm text-on-surface-variant">Revenue</p>
+<p class="font-headline-md text-headline-md text-secondary">$5,730</p>
+</div>
+<div class="text-right">
+<p class="text-label-sm text-error">↓ 2.1%</p>
+<p class="text-body-sm font-bold">37 Units</p>
+</div>
+</div>
+</div>
+<!-- Top Card 3 -->
+<div class="bento-card p-6 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-surface-container-high rounded-full blur-2xl group-hover:bg-surface-container-highest transition-all"></div>
+<div class="flex justify-between items-start mb-6">
+<img alt="BUNDLE-10CLPS-2" class="w-16 h-16 rounded-xl object-cover bg-surface-container" data-alt="Clean product photography of a premium 20-layer cloth diaper insert set, shown in a pristine white studio setting. The lighting is diffused and even, showcasing the soft fabric quality. The style is sophisticated and minimal, focusing on quality and functionality with a bright corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCX5XXqvCg1ms86FtneFeoKN177_x6bGN3gueftgTGbvaGYyXnSGDpv4tjkFSsRlYVi9H0ILtJ_6F305wLXhtlkE_8tb4AZg213dT7PDm_MT6ni3tqjoz8Ym9KmSltAEfQvtsqhl5aAVvFBj0_GuQTTb7y5YBc6JaKRLBdg2HcFZ20Wel4yEwmCzufkL-jdCZjfohnGgegHe8BzYM5geNvCg1WTtHlVxlXecM4Jt9ksa-J2luxUpIO_iRS3VazEiw20WMs4MZxAGAc"/>
+<span class="bg-surface-container-high text-on-surface w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm">3</span>
+</div>
+<p class="text-label-sm text-on-surface-variant mb-1">SKU: BUNDLE-10CLPS-2</p>
+<h4 class="font-headline-md text-headline-md mb-4 truncate">Premium Inserts</h4>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-label-sm text-on-surface-variant">Revenue</p>
+<p class="font-headline-md text-headline-md text-secondary">$4,100</p>
+</div>
+<div class="text-right">
+<p class="text-label-sm text-on-tertiary-container">↑ 1.9%</p>
+<p class="text-body-sm font-bold">27 Units</p>
+</div>
+</div>
+</div>
+<!-- Top Card 4 -->
+<div class="bento-card p-6 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-surface-container-high rounded-full blur-2xl group-hover:bg-surface-container-highest transition-all"></div>
+<div class="flex justify-between items-start mb-6">
+<img alt="BUNDLE-WDRB-4" class="w-16 h-16 rounded-xl object-cover bg-surface-container" data-alt="High-fidelity product image of a designer wet dry bag with a durable zipper and hanging strap, presented in a modern lifestyle studio setting. Soft daylight from the side creates elegant shadows. The color palette is composed of soft blues and greys, maintaining a premium SaaS dashboard aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGFgjbHN7bQpCKwjGTxU3wooizombqbbttFdZuBUajxtHlTlNg7AULCjdGRJRlNE08eCPw-LI1Np51NYULKNtGQ3H7U2ObrWFzay0JuNjTJGSnrZ9jBIcc_BcpAUyoQuQJQp9VE2rSSyyEzU-teyCtuMZsZcG0lwWzszEElFIoEm2G_3tyYSO3-ZxFiGnjindr60-EB8L-g4TNbFwdVLh226ssdOIyhJ-So8wRhQrQ104mLD3gZ-o04vkmWtV0on8PyMgfNvs07WY"/>
+<span class="bg-surface-container-high text-on-surface w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm">4</span>
+</div>
+<p class="text-label-sm text-on-surface-variant mb-1">SKU: BUNDLE-WDRB-4</p>
+<h4 class="font-headline-md text-headline-md mb-4 truncate">Wet Dry Bags</h4>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-label-sm text-on-surface-variant">Revenue</p>
+<p class="font-headline-md text-headline-md text-secondary">$3,560</p>
+</div>
+<div class="text-right">
+<p class="text-label-sm text-on-tertiary-container">↑ 3.4%</p>
+<p class="text-body-sm font-bold">113 Units</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Mid Section: Chart and Stats -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- SKU Contribution Chart -->
+<div class="lg:col-span-2 bento-card p-8 flex flex-col">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Revenue Contribution by SKU</h3>
+<p class="text-label-sm text-on-surface-variant mt-1">Percentage split of total store revenue across top products.</p>
+</div>
+<button class="text-secondary font-label-md text-label-md flex items-center gap-1 hover:underline">
+                            Details <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<div class="flex items-center justify-center gap-12 flex-1">
+<div class="relative w-64 h-64">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<circle cx="18" cy="18" fill="transparent" r="16" stroke="#E2E8F0" stroke-width="3"></circle>
+<circle class="donut-segment" cx="18" cy="18" fill="transparent" r="16" stroke="#0051d5" stroke-dasharray="55 100" stroke-linecap="round" stroke-width="4"></circle>
+<circle class="donut-segment" cx="18" cy="18" fill="transparent" r="16" stroke="#316bf3" stroke-dasharray="20 100" stroke-dashoffset="-55" stroke-linecap="round" stroke-width="4"></circle>
+<circle class="donut-segment" cx="18" cy="18" fill="transparent" r="16" stroke="#6ffbbe" stroke-dasharray="15 100" stroke-dashoffset="-75" stroke-linecap="round" stroke-width="4"></circle>
+<circle class="donut-segment" cx="18" cy="18" fill="transparent" r="16" stroke="#ffda6a" stroke-dasharray="10 100" stroke-dashoffset="-90" stroke-linecap="round" stroke-width="4"></circle>
+</svg>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+<p class="text-display-lg font-bold leading-none" style="font-size: 32px;">$41k</p>
+<p class="text-label-sm text-on-surface-variant">Total Rev</p>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-4 flex-1 max-w-[280px]">
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-3">
+<span class="w-3 h-3 rounded-full bg-secondary"></span>
+<span class="text-label-md font-medium">BUNDLE-ROUL-1</span>
+</div>
+<span class="text-label-md font-bold">55%</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-3">
+<span class="w-3 h-3 rounded-full bg-secondary-container"></span>
+<span class="text-label-md font-medium">BUNDLE-10CLPS</span>
+</div>
+<span class="text-label-md font-bold">20%</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-3">
+<span class="w-3 h-3 rounded-full bg-tertiary-fixed"></span>
+<span class="text-label-md font-medium">BUNDLE-10CLPS-2</span>
+</div>
+<span class="text-label-md font-bold">15%</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-3">
+<span class="w-3 h-3 rounded-full bg-[#ffda6a]"></span>
+<span class="text-label-md font-medium">Others</span>
+</div>
+<span class="text-label-md font-bold">10%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Summary Stats -->
+<div class="flex flex-col gap-gutter">
+<div class="bento-card p-6 flex flex-col justify-between flex-1">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary-fixed/20 rounded-xl flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined filled-icon">trending_up</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider">Avg. Store ROAS</p>
+<p class="font-headline-md text-headline-md font-bold">4.2x</p>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="text-on-tertiary-container font-label-md text-label-sm bg-tertiary-fixed/30 px-2 py-0.5 rounded">+12.4%</span>
+<span class="text-label-sm text-on-surface-variant">vs last month</span>
+</div>
+</div>
+<div class="bento-card p-6 flex flex-col justify-between flex-1">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-tertiary-fixed/20 rounded-xl flex items-center justify-center text-on-tertiary-container">
+<span class="material-symbols-outlined filled-icon">group</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider">Total Sessions</p>
+<p class="font-headline-md text-headline-md font-bold">12,482</p>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="text-on-tertiary-container font-label-md text-label-sm bg-tertiary-fixed/30 px-2 py-0.5 rounded">+8.1%</span>
+<span class="text-label-sm text-on-surface-variant">organic traffic</span>
+</div>
+</div>
+<div class="bento-card p-6 flex flex-col justify-between flex-1">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary-container/10 rounded-xl flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined filled-icon">layers</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider">Active SKUs</p>
+<p class="font-headline-md text-headline-md font-bold">48</p>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="text-label-sm text-on-surface-variant">3 pending restocking</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 4: Performance Table -->
+<section class="bento-card overflow-hidden">
+<div class="px-8 py-6 border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-primary">Monthly Performance by SKU</h3>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="pl-10 pr-4 py-2 border border-outline-variant rounded-lg font-label-md text-label-md focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none bg-surface-container-low" placeholder="Search products..." type="text"/>
+</div>
+<button class="p-2 border border-outline-variant rounded-lg text-on-surface-variant hover:text-secondary hover:border-secondary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="px-8 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Rank</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Product Identity</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Sales ($)</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Orders</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Units Sold</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Ad Spend</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">ROAS (x)</th>
+<th class="px-8 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Trend</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-8 py-4 font-bold text-secondary">#1</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Product" class="w-10 h-10 rounded-lg bg-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAypBptolpDuxkoye5Nux145mJ8fntxyAedasKc7ggGXv9GRAOwYTND3WZnE8gVw8_QC4n6knRhuFbqXhVpfbmeLUJzfT2OJu90FOvtppXdp6EJtz_cnn9Rqp53U07-0C2LV_QlAVWzyVQFClmsJ7l7j09S52p5VABwhvjZqYUPZKHlScWL8RBRd70al-jgnKWQ2TemWTk9W4xKw8zQiqIdy0tMUh1qpgwouvmdPh6gjN83rk-ny8Lr0ivI_h4MEctFa7Hz5wVWKNg"/>
+<div>
+<p class="font-label-md text-label-md leading-tight">BUNDLE-ROUL-1</p>
+<p class="text-label-sm text-on-surface-variant">Cloth Diaper Liners</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-primary">$22,787.5</td>
+<td class="px-6 py-4">649</td>
+<td class="px-6 py-4">634</td>
+<td class="px-6 py-4 text-error">$849.98</td>
+<td class="px-6 py-4">
+<span class="bg-tertiary-fixed/20 text-on-tertiary-container px-2 py-0.5 rounded font-bold">26.8x</span>
+</td>
+<td class="px-8 py-4">
+<svg class="w-16 h-8 overflow-visible" viewbox="0 0 100 40">
+<path class="sparkline-path" d="M0 35 L20 25 L40 30 L60 10 L80 15 L100 5" fill="none" stroke="#316bf3" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-8 py-4 font-bold text-on-surface-variant">#2</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Product" class="w-10 h-10 rounded-lg bg-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmT6sw81_FEjN_uU0Xo5k1av95t1fid5tCDRYrZcUFGPH5c9boRAi_GYllP7UFxqkEFnS7lAfck_yNroHsEajJ0ks6JCYGNMhEXMN4zSyvJ2dkmDUpLTVMCr7-pA7A0fTNBM2_LMB0PpicfdKvSOkVbpG4-m7qzSyKPIIvffsUvezK_zBxu_OKtbv0sJ1lx7DbwW5QqtFTX0iQKkjZ0RQA4RGcQCKPJ12_RovgMGkkiH1YytdUemk5Qjf0YsxR7nC2kjITbPS9p-g"/>
+<div>
+<p class="font-label-md text-label-md leading-tight">BUNDLE-10CLPS</p>
+<p class="text-label-sm text-on-surface-variant">Animal Printed Snap</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-primary">$5,730.00</td>
+<td class="px-6 py-4">37</td>
+<td class="px-6 py-4">36</td>
+<td class="px-6 py-4 text-error">$483.13</td>
+<td class="px-6 py-4">
+<span class="bg-error-container text-error px-2 py-0.5 rounded font-bold">11.8x</span>
+</td>
+<td class="px-8 py-4">
+<svg class="w-16 h-8 overflow-visible" viewbox="0 0 100 40">
+<path class="sparkline-path" d="M0 5 L20 15 L40 10 L60 25 L80 20 L100 35" fill="none" stroke="#ef4444" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-8 py-4 font-bold text-on-surface-variant">#3</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Product" class="w-10 h-10 rounded-lg bg-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIOn6DIRhGpdB3IuHRkhL7jSDqByNquaripj7uEEQ-DuJj_1GpKb9IJYPE2k4ANmx_RXZQkNFiR0TzeyHjk3iZXNeuy7qqwl7Pc0v2DsYcHZCR6SgmSJ-Atbt8KypYg-7DkUOvUakDlaPi2yq8jNxN1iFoe5ZV9Ly8jBT-FjdpkSYW3N3hz-rnPdsK1XZ5SDdSlSq8RF7okfY_Z8yaaabhXQxyICgy5YzSKdcDVjNUI-nzU7mxZ1RHwbroTmROTlvg6jqGaAvvkmM"/>
+<div>
+<p class="font-label-md text-label-md leading-tight">BUNDLE-10CLPS-2</p>
+<p class="text-label-sm text-on-surface-variant">Printed Snap Cloth</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-primary">$4,100.00</td>
+<td class="px-6 py-4">27</td>
+<td class="px-6 py-4">27</td>
+<td class="px-6 py-4 text-error">$212.64</td>
+<td class="px-6 py-4">
+<span class="bg-tertiary-fixed/20 text-on-tertiary-container px-2 py-0.5 rounded font-bold">19.3x</span>
+</td>
+<td class="px-8 py-4">
+<svg class="w-16 h-8 overflow-visible" viewbox="0 0 100 40">
+<path class="sparkline-path" d="M0 20 L30 15 L50 25 L70 5 L100 10" fill="none" stroke="#10b981" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-8 py-4 bg-surface-container-low border-t border-outline-variant flex justify-between items-center">
+<p class="text-label-sm text-on-surface-variant">Showing 1 to 5 of 48 entries</p>
+<div class="flex gap-2">
+<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+<button class="px-3 py-1 rounded bg-secondary text-white font-label-md text-label-md">1</button>
+<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors">2</button>
+<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors">3</button>
+<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+</div>
+</div>
+</section>
+<!-- Section 5: Bottom Chart Session/Revenue -->
+<section class="bento-card p-8">
+<div class="flex justify-between items-start mb-10">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Traffic vs Revenue Correlation</h3>
+<p class="text-label-sm text-on-surface-variant mt-1">Analyzing sessions (bars) against revenue generation (line) per top 10 SKUs.</p>
+</div>
+<div class="flex gap-6 items-center">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-sm bg-secondary-fixed"></span>
+<span class="text-label-sm text-on-surface-variant">Sessions</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-4 h-0.5 bg-secondary"></span>
+<span class="text-label-sm text-on-surface-variant">Revenue ($)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-4 h-0.5 border-t-2 border-dashed border-on-tertiary-container"></span>
+<span class="text-label-sm text-on-surface-variant">Conv %</span>
+</div>
+</div>
+</div>
+<div class="h-[300px] w-full flex items-end gap-4 px-4 border-b border-l border-outline-variant/30 relative">
+<!-- Y Axis Labels -->
+<div class="absolute -left-12 bottom-0 h-full flex flex-col justify-between py-2 text-label-sm text-on-surface-variant font-medium">
+<span>5,000</span><span>4,000</span><span>3,000</span><span>2,000</span><span>1,000</span><span>0</span>
+</div>
+<!-- Chart Bars and Lines simulation -->
+<div class="flex-1 h-full flex items-end justify-between px-6 relative">
+<!-- Bar Groups (10 SKUs) -->
+<div class="flex flex-col items-center flex-1 h-full justify-end">
+<div class="w-10 bg-secondary-fixed rounded-t h-[90%] opacity-80 hover:opacity-100 transition-opacity"></div>
+<span class="text-[10px] mt-4 font-bold transform -rotate-45 origin-top-left -ml-2 whitespace-nowrap">ROUL-1</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full justify-end">
+<div class="w-10 bg-secondary-fixed rounded-t h-[40%] opacity-80"></div>
+<span class="text-[10px] mt-4 font-bold transform -rotate-45 origin-top-left -ml-2 whitespace-nowrap">10CLPS</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full justify-end">
+<div class="w-10 bg-secondary-fixed rounded-t h-[35%] opacity-80"></div>
+<span class="text-[10px] mt-4 font-bold transform -rotate-45 origin-top-left -ml-2 whitespace-nowrap">10CLPS-2</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full justify-end">
+<div class="w-10 bg-secondary-fixed rounded-t h-[85%] opacity-80"></div>
+<span class="text-[10px] mt-4 font-bold transform -rotate-45 origin-top-left -ml-2 whitespace-nowrap">WDRB-4</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full justify-end">
+<div class="w-10 bg-secondary-fixed rounded-t h-[20%] opacity-80"></div>
+<span class="text-[10px] mt-4 font-bold transform -rotate-45 origin-top-left -ml-2 whitespace-nowrap">10RS-5</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full justify-end">
+<div class="w-10 bg-secondary-fixed rounded-t h-[15%] opacity-80"></div>
+<span class="text-[10px] mt-4 font-bold transform -rotate-45 origin-top-left -ml-2 whitespace-nowrap">12MFI</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full justify-end">
+<div class="w-10 bg-secondary-fixed rounded-t h-[12%] opacity-80"></div>
+<span class="text-[10px] mt-4 font-bold transform -rotate-45 origin-top-left -ml-2 whitespace-nowrap">CLPS-1</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full justify-end">
+<div class="w-10 bg-secondary-fixed rounded-t h-[18%] opacity-80"></div>
+<span class="text-[10px] mt-4 font-bold transform -rotate-45 origin-top-left -ml-2 whitespace-nowrap">6CLPS-1</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full justify-end">
+<div class="w-10 bg-secondary-fixed rounded-t h-[35%] opacity-80"></div>
+<span class="text-[10px] mt-4 font-bold transform -rotate-45 origin-top-left -ml-2 whitespace-nowrap">DC-1</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full justify-end">
+<div class="w-10 bg-secondary-fixed rounded-t h-[25%] opacity-80"></div>
+<span class="text-[10px] mt-4 font-bold transform -rotate-45 origin-top-left -ml-2 whitespace-nowrap">TAB-DUM</span>
+</div>
+<!-- Overlay Line Chart -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none">
+<path d="M40,30 L110,180 L180,210 L250,220 L320,240 L390,260 L460,260 L530,260 L600,260 L670,260" fill="none" stroke="#0051d5" stroke-linecap="round" stroke-width="3"></path>
+<circle cx="40" cy="30" fill="#0051d5" r="4"></circle>
+<circle cx="110" cy="180" fill="#0051d5" r="4"></circle>
+<path d="M40,10 L110,195 L180,200 L250,170 L320,190 L390,140 L460,165 L530,205 L600,205 L670,140" fill="none" stroke="#009668" stroke-dasharray="5,5" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<!-- Strategic Insights -->
+<div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="p-6 bg-surface-container-low border-l-4 border-secondary rounded-r-xl">
+<p class="font-bold text-label-md mb-2">Strategic Correlation</p>
+<p class="text-body-sm text-on-surface-variant">Analyze the relationship between traffic (bars) and financial outcomes (lines). High traffic with low revenue indicates listing optimization is needed.</p>
+</div>
+<div class="p-6 bg-surface-container-low border-l-4 border-on-tertiary-container rounded-r-xl">
+<p class="font-bold text-label-md mb-2 text-on-tertiary-container">Actionable Insight</p>
+<p class="text-body-sm text-on-surface-variant">Prioritize products where the green dashed line (Conv %) is trending upwards, as these are your most efficient growth opportunities.</p>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body></html>
