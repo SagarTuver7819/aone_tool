@@ -1146,15 +1146,8 @@ include '../../includes/sidebar.php';
                 </div>
             </div>
         </div>
-        <div style="height: 300px; width: 100%; display: flex; align-items: flex-end; border-left: 1px solid rgba(198, 198, 205, 0.3); border-bottom: 1px solid rgba(198, 198, 205, 0.3); position: relative; padding-left: 16px; padding-right: 16px; margin-top: 20px; box-sizing: border-box;">
-            <!-- Y Axis Labels -->
-            <div style="position: absolute; left: -48px; bottom: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding-top: 8px; padding-bottom: 8px; font-size: 12px; color: #45464d; font-weight: 500;">
-                <span>5,000</span><span>4,000</span><span>3,000</span><span>2,000</span><span>1,000</span><span>0</span>
-            </div>
-            <!-- Chart Bars and Lines simulation -->
-            <div style="display: flex; align-items: flex-end; justify-content: space-between; width: 100%; height: 100%; position: relative; padding-left: 24px; padding-right: 24px; box-sizing: border-box;" id="correlation_bars_container">
-                <!-- Dynamically populated in JS -->
-            </div>
+        <div style="height: 320px; width: 100%; position: relative; margin-top: 20px; box-sizing: border-box;">
+            <canvas id="productComboChart"></canvas>
         </div>
         
         <!-- Strategic Insights -->
@@ -1707,15 +1700,6 @@ $(document).ready(function() {
     };
 
     function getProductImage(sku) {
-        if (sku === 'BUNDLE-ROUL-1') {
-            return 'https://lh3.googleusercontent.com/aida-public/AB6AXuAypBptolpDuxkoye5Nux145mJ8fntxyAedasKc7ggGXv9GRAOwYTND3WZnE8gVw8_QC4n6knRhuFbqXhVpfbmeLUJzfT2OJu90FOvtppXdp6EJtz_cnn9Rqp53U07-0C2LV_QlAVWzyVQFClmsJ7l7j09S52p5VABwhvjZqYUPZKHlScWL8RBRd70al-jgnKWQ2TemWTk9W4xKw8zQiqIdy0tMUh1qpgwouvmdPh6gjN83rk-ny8Lr0ivI_h4MEctFa7Hz5wVWKNg';
-        } else if (sku === 'BUNDLE-10CLPS') {
-            return 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmT6sw81_FEjN_uU0Xo5k1av95t1fid5tCDRYrZcUFGPH5c9boRAi_GYllP7UFxqkEFnS7lAfck_yNroHsEajJ0ks6JCYGNMhEXMN4zSyvJ2dkmDUpLTVMCr7-pA7A0fTNBM2_LMB0PpicfdKvSOkVbpG4-m7qzSyKPIIvffsUvezK_zBxu_OKtbv0sJ1lx7DbwW5QqtFTX0iQKkjZ0RQA4RGcQCKPJ12_RovgMGkkiH1YytdUemk5Qjf0YsxR7nC2kjITbPS9p-g';
-        } else if (sku === 'BUNDLE-10CLPS-2') {
-            return 'https://lh3.googleusercontent.com/aida-public/AB6AXuCIOn6DIRhGpdB3IuHRkhL7jSDqByNquaripj7uEEQ-DuJj_1GpKb9IJYPE2k4ANmx_RXZQkNFiR0TzeyHjk3iZXNeuy7qqwl7Pc0v2DsYcHZCR6SgmSJ-Atbt8KypYg-7DkUOvUakDlaPi2yq8jNxN1iFoe5ZV9Ly8jBT-FjdpkSYW3N3hz-rnPdsK1XZ5SDdSlSq8RF7okfY_Z8yaaabhXQxyICgy5YzSKdcDVjNUI-nzU7mxZ1RHwbroTmROTlvg6jqGaAvvkmM';
-        } else if (sku === 'BUNDLE-WDRB-4') {
-            return 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGFgjbHN7bQpCKwjGTxU3wooizombqbbttFdZuBUajxtHlTlNg7AULCjdGRJRlNE08eCPw-LI1Np51NYULKNtGQ3H7U2ObrWFzay0JuNjTJGSnrZ9jBIcc_BcpAUyoQuQJQp9VE2rSSyyEzU-teyCtuMZsZcG0lwWzszEElFIoEm2G_3tyYSO3-ZxFiGnjindr60-EB8L-g4TNbFwdVLh226ssdOIyhJ-So8wRhQrQ104mLD3gZ-o04vkmWtV0on8PyMgfNvs07WY';
-        }
         return '';
     }
 
@@ -1947,7 +1931,6 @@ $(document).ready(function() {
                 
                 const productIdentityHtml = `
                 <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
-                    ${visualIdentityHtml}
                     <div style="display: flex; flex-direction: column; min-width: 0; flex: 1;">
                         <div style="font-weight: 800; color: #191c1e; font-size: 0.95rem; line-height: 1.2; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${p.sku}">${p.sku}</div>
                         <div style="font-size: 0.75rem; color: #45464d; font-weight: 500; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;" title="${productFullTitle}">${productFullTitle}</div>
@@ -2385,7 +2368,6 @@ $(document).ready(function() {
                             
                             <!-- Top row: Icon and SKU -->
                             <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
-                                ${displayImageHtml}
                                 <div style="margin-top: 4px;">
                                     <span style="font-size: 0.7rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; display: block;">SKU: ${p.sku}</span>
                                     <h5 style="margin: 2px 0 0 0; font-size: 1.1rem; font-weight: 800; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;" title="${productFullTitle}">${displayName}</h5>
