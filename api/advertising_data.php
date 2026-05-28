@@ -196,7 +196,12 @@ try {
         'placements' => fetchPlacements($conn, $where_customer, $where_brand, $from_date, $to_date),
         'bidding' => fetchBidding($conn, $where_customer, $where_brand, $from_date, $to_date),
         'purchased_products' => fetchPurchasedProducts($conn, $where_customer, $from_date, $to_date),
-        'invalid_traffic' => fetchInvalidTraffic($conn, $where_customer, $where_brand, $from_date, $to_date)
+        'invalid_traffic' => fetchInvalidTraffic($conn, $where_customer, $where_brand, $from_date, $to_date),
+        'sp_skus' => fetchSpSkus($conn, $where_customer, $where_brand, $from_date, $to_date),
+        'sb_skus' => fetchSbSkus($conn, $where_customer, $from_date, $to_date),
+        'match_types' => fetchMatchTypes($conn, $where_customer, $where_brand, $from_date, $to_date),
+        'match_types_daily' => fetchMatchTypesDaily($conn, $where_customer, $where_brand, $from_date, $to_date),
+        'top_keywords' => fetchTopKeywords($conn, $where_customer, $where_brand, $from_date, $to_date)
     ];
 
     echo json_encode($payload);
@@ -204,6 +209,144 @@ try {
 } catch (Throwable $t) {
     http_response_code(500);
     echo json_encode(['error' => $t->getMessage(), 'trace' => $t->getTraceAsString()]);
+}
+
+function fetchMatchTypes($conn, $where_customer, $where_brand, $from, $to) {
+    $sql = "SELECT 
+                LOWER(match_type) as match_type,
+                SUM(spend) as spend,
+                SUM(total_sales) as sales,
+                SUM(clicks) as clicks,
+                SUM(impressions) as impressions,
+                SUM(total_orders) as orders,
+                COALESCE((SUM(spend) / NULLIF(SUM(total_sales), 0)) * 100, 0) as acos,
+                COALESCE(SUM(total_sales) / NULLIF(SUM(spend), 0), 0) as roas,
+                COALESCE((SUM(clicks) / NULLIF(SUM(impressions), 0)) * 100, 0) as ctr
+            FROM (
+                SELECT match_type, spend, total_sales, clicks, impressions, total_orders FROM amazon_advertising_sp WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ? AND match_type != '' AND match_type IS NOT NULL
+                UNION ALL
+                SELECT match_type, spend, total_sales, clicks, impressions, total_orders FROM amazon_advertising_sb WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ? AND match_type != '' AND match_type IS NOT NULL
+                UNION ALL
+                SELECT match_type, spend, total_sales, clicks, impressions, total_orders FROM amazon_advertising_sd WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ? AND match_type != '' AND match_type IS NOT NULL
+            ) as combined
+            GROUP BY LOWER(match_type)
+            ORDER BY spend DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssssss", $from, $to, $from, $to, $from, $to);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+function fetchMatchTypesDaily($conn, $where_customer, $where_brand, $from, $to) {
+    $sql = "SELECT 
+                report_date,
+                LOWER(match_type) as match_type,
+                SUM(spend) as spend,
+                SUM(total_sales) as sales
+            FROM (
+                SELECT report_date, match_type, spend, total_sales FROM amazon_advertising_sp WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ? AND match_type != '' AND match_type IS NOT NULL
+                UNION ALL
+                SELECT report_date, match_type, spend, total_sales FROM amazon_advertising_sb WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ? AND match_type != '' AND match_type IS NOT NULL
+            ) as combined
+            GROUP BY report_date, LOWER(match_type)
+            ORDER BY report_date ASC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssss", $from, $to, $from, $to);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+function fetchTopKeywords($conn, $where_customer, $where_brand, $from, $to) {
+    $sql = "SELECT 
+                targeting as keyword,
+                LOWER(match_type) as match_type,
+                SUM(spend) as spend,
+                SUM(total_sales) as sales,
+                SUM(clicks) as clicks,
+                SUM(impressions) as impressions,
+                SUM(total_orders) as orders,
+                COALESCE((SUM(spend) / NULLIF(SUM(total_sales), 0)) * 100, 0) as acos,
+                COALESCE(SUM(total_sales) / NULLIF(SUM(spend), 0), 0) as roas,
+                COALESCE((SUM(clicks) / NULLIF(SUM(impressions), 0)) * 100, 0) as ctr,
+                'SP' as ad_type
+            FROM amazon_advertising_sp
+            WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ? AND report_type = 'targeting' AND targeting != '' AND targeting IS NOT NULL
+            GROUP BY targeting, match_type
+            UNION ALL
+            SELECT 
+                targeting as keyword,
+                LOWER(match_type) as match_type,
+                SUM(spend) as spend,
+                SUM(total_sales) as sales,
+                SUM(clicks) as clicks,
+                SUM(impressions) as impressions,
+                SUM(total_orders) as orders,
+                COALESCE((SUM(spend) / NULLIF(SUM(total_sales), 0)) * 100, 0) as acos,
+                COALESCE(SUM(total_sales) / NULLIF(SUM(spend), 0), 0) as roas,
+                COALESCE((SUM(clicks) / NULLIF(SUM(impressions), 0)) * 100, 0) as ctr,
+                'SB' as ad_type
+            FROM amazon_advertising_sb
+            WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ? AND report_type = 'targeting' AND targeting != '' AND targeting IS NOT NULL
+            GROUP BY targeting, match_type
+            ORDER BY spend DESC
+            LIMIT 100";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssss", $from, $to, $from, $to);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+
+function fetchSpSkus($conn, $where_customer, $where_brand, $from, $to) {
+    $sql = "SELECT 
+                advertised_sku as sku, 
+                advertised_asin as asin,
+                SUM(impressions) as impressions,
+                SUM(clicks) as clicks,
+                SUM(spend) as spend,
+                SUM(total_sales) as sales,
+                SUM(total_orders) as orders,
+                COALESCE((SUM(spend) / NULLIF(SUM(total_sales), 0)) * 100, 0) as acos,
+                COALESCE(SUM(total_sales) / NULLIF(SUM(spend), 0), 0) as roas,
+                COALESCE((SUM(clicks) / NULLIF(SUM(impressions), 0)) * 100, 0) as ctr,
+                COALESCE((SUM(total_orders) / NULLIF(SUM(clicks), 0)) * 100, 0) as cvr
+            FROM amazon_advertising_sp
+            WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ? AND advertised_sku != '' AND advertised_sku IS NOT NULL
+            GROUP BY advertised_sku, advertised_asin
+            ORDER BY spend DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $from, $to);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+function fetchSbSkus($conn, $where_customer, $from, $to) {
+    $res = $conn->query("SHOW TABLES LIKE 'dyn_sponsored_brands_attributed_purchases_report'");
+    if (!$res || $res->num_rows === 0) return [];
+    
+    $sql = "SELECT 
+                p.purchased_asin as asin,
+                COALESCE(sp.advertised_sku, 'ASIN Lookup Needed') as sku,
+                SUM(CAST(REPLACE(REPLACE(p.col_14_day_total_sales, '$', ''), ',', '') AS DECIMAL(10,2))) as sales,
+                SUM(CAST(p.col_14_day_total_orders AS UNSIGNED)) as orders,
+                SUM(CAST(p.col_14_day_total_units AS UNSIGNED)) as units,
+                p.campaign_name
+            FROM dyn_sponsored_brands_attributed_purchases_report p
+            LEFT JOIN (
+                SELECT advertised_asin, advertised_sku 
+                FROM amazon_advertising_sp 
+                WHERE advertised_sku != '' AND advertised_sku IS NOT NULL 
+                GROUP BY advertised_asin, advertised_sku
+            ) sp ON p.purchased_asin = sp.advertised_asin
+            GROUP BY p.purchased_asin, p.campaign_name
+            ORDER BY sales DESC";
+            
+    $stmt = $conn->prepare($sql);
+    if ($stmt) {
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+    return [];
 }
 
 function fetchPlacements($conn, $where, $where_brand, $from, $to) {
