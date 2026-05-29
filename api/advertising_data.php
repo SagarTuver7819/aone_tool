@@ -201,7 +201,8 @@ try {
         'sb_skus' => fetchSbSkus($conn, $where_customer, $from_date, $to_date),
         'match_types' => fetchMatchTypes($conn, $where_customer, $where_brand, $from_date, $to_date),
         'match_types_daily' => fetchMatchTypesDaily($conn, $where_customer, $where_brand, $from_date, $to_date),
-        'top_keywords' => fetchTopKeywords($conn, $where_customer, $where_brand, $from_date, $to_date)
+        'top_keywords' => fetchTopKeywords($conn, $where_customer, $where_brand, $from_date, $to_date),
+        'heatmap' => fetchHeatmapData($conn, $where_customer, $where_brand, $from_date, $to_date)
     ];
 
     echo json_encode($payload);
@@ -431,4 +432,25 @@ function fetchInvalidTraffic($conn, $where, $where_brand, $from, $to) {
         'invalid_clicks' => $invalid,
         'pct' => number_format($pct, 2) . '%'
     ];
+}
+
+function fetchHeatmapData($conn, $where_customer, $where_brand, $from, $to) {
+    $sql = "SELECT 
+                DAYOFWEEK(report_date) as day_num, 
+                SUM(spend) as spend, 
+                SUM(total_sales) as sales
+            FROM (
+                SELECT report_date, spend, total_sales FROM amazon_advertising_sp WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ?
+                UNION ALL
+                SELECT report_date, spend, total_sales FROM amazon_advertising_sb WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ?
+                UNION ALL
+                SELECT report_date, spend, total_sales FROM amazon_advertising_sd WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ?
+            ) as combined
+            GROUP BY DAYOFWEEK(report_date)
+            ORDER BY day_num ASC";
+            
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssssss", $from, $to, $from, $to, $from, $to);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
