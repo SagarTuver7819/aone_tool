@@ -703,6 +703,81 @@ include '../../includes/sidebar.php';
         </div>
     </div>
 
+    <!-- Placement Performance Cards Side-by-Side -->
+    <div class="campaigns-grid" style="margin-bottom: 2rem;">
+        <!-- Sponsored Products Placement -->
+        <div class="table-card" style="padding: 1.5rem 1.75rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="width: 40px; height: 40px; background: #eff6ff; color: #2563eb; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+                        <i class="fas fa-mouse-pointer"></i>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Sponsored Products</h4>
+                        <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Individual Listing Promotions</p>
+                    </div>
+                </div>
+                <div style="color: #64748b; cursor: pointer; font-size: 1.1rem;"><i class="fas fa-ellipsis-v"></i></div>
+            </div>
+            
+            <table style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; margin-bottom: 1rem;">
+                <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
+                    <tr>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 35%;">Placement</th>
+                        <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">Spend</th>
+                        <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #0051d5; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%; background: rgba(219,225,255,0.1);">Sales</th>
+                        <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 14%; background: rgba(111,251,190,0.05);">ROAS</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 15%;">Health</th>
+                    </tr>
+                </thead>
+                <tbody id="sp-placements-body" style="background:#ffffff;">
+                    <tr><td colspan="5" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading placements...</td></tr>
+                </tbody>
+            </table>
+            
+            <div style="border-top: 1px solid #f1f5f9; padding-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #475569; font-weight: 600;">
+                <i class="fas fa-info-circle" style="color: #2563eb; font-size: 0.85rem;"></i>
+                <span id="sp-placement-insight">Analyzing SP conversion metrics...</span>
+            </div>
+        </div>
+
+        <!-- Sponsored Brands Placement -->
+        <div class="table-card" style="padding: 1.5rem 1.75rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="width: 40px; height: 40px; background: #e0f2fe; color: #0284c7; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Sponsored Brands</h4>
+                        <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Brand Store & Headline Ads</p>
+                    </div>
+                </div>
+                <div style="color: #64748b; cursor: pointer; font-size: 1.1rem;"><i class="fas fa-ellipsis-v"></i></div>
+            </div>
+
+            <table style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; margin-bottom: 1rem;">
+                <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
+                    <tr>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 35%;">Placement</th>
+                        <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">Spend</th>
+                        <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #0051d5; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%; background: rgba(219,225,255,0.1);">Sales</th>
+                        <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 14%; background: rgba(111,251,190,0.05);">ROAS</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 15%;">Health</th>
+                    </tr>
+                </thead>
+                <tbody id="sb-placements-body" style="background:#ffffff;">
+                    <tr><td colspan="5" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading placements...</td></tr>
+                </tbody>
+            </table>
+
+            <div style="border-top: 1px solid #f1f5f9; padding-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #475569; font-weight: 600;">
+                <i class="fas fa-exclamation-triangle" style="color: #0284c7; font-size: 0.85rem;"></i>
+                <span id="sb-placement-insight">Analyzing SB attribution trends...</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Premium Spend vs Sales Trend Chart Card -->
     <div style="background: #ffffff; border: 1px solid #e4e9f0; border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); margin-bottom: 2rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
@@ -713,6 +788,76 @@ include '../../includes/sidebar.php';
         </div>
         <div style="height: 350px; position: relative; width: 100%;">
             <canvas id="trendChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Premium Sales / Spend / ROAS Bar Chart Card -->
+    <div style="background: #ffffff; border: 1px solid #e4e9f0; border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h3 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.02em;">Sales / Ad Spend / ROAS Bar Chart</h3>
+                <p style="font-size: 0.8rem; color: #64748b; margin: 0.35rem 0 0 0; font-weight: 500;">Grouped daily comparison of Sales, Spend, and Return on Ad Spend (ROAS)</p>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                <!-- Metric Toggles -->
+                <div class="toggle-group" id="bar-chart-metric-toggles" style="display: flex; background: #f1f5f9; border-radius: 12px; padding: 4px; border: 1px solid #e2e8f0;">
+                    <button class="toggle-btn active" data-metric="all" style="border-radius: 8px; border: none; padding: 6px 14px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">All Metrics</button>
+                    <button class="toggle-btn" data-metric="sales" style="border-radius: 8px; border: none; padding: 6px 14px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">Sales</button>
+                    <button class="toggle-btn" data-metric="spend" style="border-radius: 8px; border: none; padding: 6px 14px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">Ad Spend</button>
+                    <button class="toggle-btn" data-metric="roas" style="border-radius: 8px; border: none; padding: 6px 14px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">ROAS</button>
+                </div>
+
+                <!-- Sync Indicator -->
+                <div style="display: flex; align-items: center; gap: 0.5rem; background: #f8fafc; padding: 0.5rem 1rem; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; animation: pulse 2s infinite;"></span>
+                    <span style="font-size: 0.75rem; font-weight: 700; color: #475569;" id="bar-chart-sync-text">Data synced successfully</span>
+                </div>
+            </div>
+        </div>
+        <div style="height: 350px; position: relative; width: 100%;">
+            <canvas id="salesSpendRoasBarChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Premium Daily Performance Trend Report Table -->
+    <div style="background: #ffffff; border: 1px solid #e4e9f0; border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h3 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.02em;">Daily Performance Trend Report</h3>
+                <p style="font-size: 0.8rem; color: #64748b; margin: 0.35rem 0 0 0; font-weight: 500;">Detailed daily view of key advertising metrics</p>
+            </div>
+            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                <div style="position: relative;">
+                    <input type="text" id="report-search" oninput="filterReportTable()" placeholder="Search date (e.g. 15 May)..." style="height: 42px; padding: 0 16px 0 38px; border-radius: 12px; border: 1px solid #cbd5e1; width: 240px; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600;">
+                    <i class="fas fa-search" style="position: absolute; left: 14px; top: 14px; color: #94a3b8; font-size: 0.9rem;"></i>
+                </div>
+                <button onclick="exportReportToCSV()" class="btn" style="height: 42px; background: #0f172a; color: #ffffff; font-weight: 700; border: none; border-radius: 12px; padding: 0 18px; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: background 0.2s;">
+                    <i class="fas fa-file-csv"></i> Export CSV
+                </button>
+            </div>
+        </div>
+        
+        <div style="overflow-x: auto; width: 100%; border-radius: 16px; border: 1px solid #cbd5e1;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed;">
+                <thead style="background: #f8fafc; border-bottom: 1px solid #c6c6cd;">
+                    <tr>
+                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.08em; text-align: left; width: 20%;">Date</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.08em; text-align: right; width: 20%;">Ad Spend</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 800; color: #0051d5; text-transform: uppercase; letter-spacing: 0.08em; text-align: right; width: 20%; background: rgba(219,225,255,0.05);">Total Sales</th>
+                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.08em; text-align: right; width: 20%;">ROAS</th>
+                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 800; color: #009668; text-transform: uppercase; letter-spacing: 0.08em; text-align: right; width: 20%; background: rgba(111,251,190,0.02);">TACOS</th>
+                    </tr>
+                </thead>
+                <tbody id="report-table-body" style="background:#ffffff;">
+                    <tr><td colspan="5" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading report details...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div id="report_showing_text" style="font-size: 0.85rem; color: #64748b; font-weight: 600;">Showing 0 to 0 of 0 entries</div>
+            <div id="report_pagination" style="display: flex; gap: 0.35rem; align-items: center;"></div>
         </div>
     </div>
 
@@ -760,50 +905,7 @@ include '../../includes/sidebar.php';
         </div>
     </div>
 
-    <!-- Premium Ad Spends vs Total Sales Daily Report Card -->
-    <section class="bento-card overflow-hidden mb-8" style="background:#ffffff; border-radius:16px; border: 1px solid #c6c6cd; overflow:hidden; margin-bottom: 2rem;">
-        <div class="px-8 py-6 border-b border-outline-variant flex justify-between items-center" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #c6c6cd; padding: 24px 32px; background: #ffffff;">
-            <div>
-                <h3 class="font-headline-md text-headline-md text-primary" style="font-size: 22px; font-weight: 700; color: #000000; margin: 0; display: flex; align-items: center; gap: 8px;">
-                    <span class="material-symbols-outlined text-secondary" style="font-size: 24px; color: #0051d5;">monitoring</span>
-                    Ad Spends vs Total Sales Report
-                </h3>
-                <p style="font-size: 12px; color: #45464d; margin: 4px 0 0 0; font-weight: 600;">Detailed daily breakdown of advertising investment and generated sales revenue</p>
-            </div>
-            <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
-                <div class="relative" style="position: relative;">
-                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #45464d; pointer-events: none;"></i>
-                    <input id="report-search" style="padding-left: 36px; padding-right: 16px; padding-top: 8px; padding-bottom: 8px; border: 1px solid #c6c6cd; border-radius: 8px; outline: none; background: #f2f4f6; font-size: 14px; font-weight: 600; width: 220px;" placeholder="Search date..." type="text" onkeyup="filterReportTable()"/>
-                </div>
-                <button id="export-report-csv" onclick="exportReportToCSV()" style="padding: 8px 16px; border: 1px solid #009668; border-radius: 8px; background: #009668; color: #ffffff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; gap: 8px;">
-                    <i class="fas fa-file-csv"></i> Export CSV
-                </button>
-            </div>
-        </div>
 
-        <div style="overflow-x: auto;">
-            <table id="ad_spends_vs_sales_table" style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed;">
-                <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
-                    <tr>
-                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 20%;">Date</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 20%;">Ad Spend</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #0051d5; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 20%; background: rgba(219,225,255,0.1);">Total Sales</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 20%;">ROAS</th>
-                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 20%; background: rgba(111,251,190,0.05);">Tacos</th>
-                    </tr>
-                </thead>
-                <tbody id="report-table-body" style="background:#ffffff;">
-                    <tr><td colspan="5" style="text-align: center; padding: 3rem; color: #94a3b8;">No data loaded. Please refresh.</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; background: #f2f4f6; border-top: 1px solid #c6c6cd; padding: 16px 32px; box-sizing: border-box;">
-            <p style="font-size: 12px; color: #45464d; margin: 0;" id="report_showing_text">Showing 0 entries</p>
-            <div style="display: flex; gap: 8px;" id="report_pagination">
-                <!-- Dynamic Pagination Buttons -->
-            </div>
-        </div>
-    </section>
 
     <!-- Keywords performance columns side-by-side -->
     <div class="campaigns-grid" style="margin-bottom: 2rem;">
@@ -852,9 +954,11 @@ include '../../includes/sidebar.php';
 <script>
 $(document).ready(function() {
     let trendChart = null;
+    let barChart = null;
 
     // Daily Report state variables matching SKU pagination style
     let globalDailyTrend = [];
+    let dailyTrendData = null;
     let reportCurrentPage = 1;
     const REPORT_ITEMS_PER_PAGE = 10;
     let reportSearchQuery = "";
@@ -937,6 +1041,11 @@ $(document).ready(function() {
             $('#spend-value').text(formatCurrency(totalSpend));
             $('#tacos-value').text(tacos.toFixed(2) + '%');
             $('#roas-value').text(roas.toFixed(2) + 'x');
+
+            // Populate global daily trend for the report table
+            globalDailyTrend = data.daily_trend || { labels: [], spend: [], sales: [] };
+            dailyTrendData = data.daily_trend;
+            renderReportTable();
 
             // 2. Generate Real SVG Sparklines
             if (data.daily_trend && data.daily_trend.spend && data.daily_trend.spend.length > 1) {
@@ -1168,6 +1277,9 @@ $(document).ready(function() {
                 });
             }
 
+            // 5.5. Render beautiful grouped/multi-axis bar chart for Sales, Ad Spend, and ROAS
+            renderSalesSpendRoasBarChart($('#bar-chart-metric-toggles .toggle-btn.active').data('metric') || 'all');
+
             // 6. Populate Spends vs Sales Heatmap (Day of Week vs Hour of Day)
             const heatmapData = data.heatmap || [];
             
@@ -1237,10 +1349,173 @@ $(document).ready(function() {
 
             $('#heatmap-grid-rows').html(heatmapHtml);
 
-            // 7. Store and Render Ad Spends vs Total Sales Report Table
-            globalDailyTrend = data.daily_trend || [];
-            reportCurrentPage = 1;
-            renderReportTable();
+            // 7.5. Populate Placement Performance Tables
+            function getPlacementWeight(name) {
+                const lower = name.toLowerCase();
+                if (lower.includes('top of search')) return 1;
+                if (lower.includes('rest of search')) return 2;
+                if (lower.includes('product pages')) return 3;
+                return 4;
+            }
+
+            const placementsSp = (data.placements_sp || [])
+                .filter(p => parseFloat(p.spend) > 0 || parseFloat(p.sales) > 0)
+                .sort((a, b) => getPlacementWeight(a.placement) - getPlacementWeight(b.placement));
+
+            const placementsSb = (data.placements_sb || [])
+                .filter(p => parseFloat(p.spend) > 0 || parseFloat(p.sales) > 0)
+                .sort((a, b) => getPlacementWeight(a.placement) - getPlacementWeight(b.placement));
+
+            // Icon and clean label mapper for placements
+            function getPlacementDetails(name) {
+                const lower = name.toLowerCase();
+                if (lower.includes('top of search')) {
+                    return {
+                        label: 'Top of Search',
+                        icon: '<i class="fas fa-arrow-up" style="color: #2563eb;"></i>'
+                    };
+                } else if (lower.includes('rest of search')) {
+                    return {
+                        label: 'Rest of Search',
+                        icon: '<i class="fas fa-search" style="color: #64748b;"></i>'
+                    };
+                } else if (lower.includes('product pages')) {
+                    return {
+                        label: 'Product Pages',
+                        icon: '<i class="far fa-file-alt" style="color: #64748b;"></i>'
+                    };
+                } else {
+                    return {
+                        label: 'Other Placements',
+                        icon: '<i class="fas fa-cubes" style="color: #64748b;"></i>'
+                    };
+                }
+            }
+
+            // Populate SP placements
+            let spPlHtml = '';
+            let totalSpSales = 0;
+            let tosSpSales = 0;
+
+            placementsSp.forEach(p => {
+                const spend = parseFloat(p.spend || 0);
+                const sales = parseFloat(p.sales || 0);
+                totalSpSales += sales;
+                if (p.placement.toLowerCase().includes('top of search')) {
+                    tosSpSales = sales;
+                }
+            });
+
+            // Find maximum ROAS in SP to normalize health bar
+            let maxSpRoas = Math.max(...placementsSp.map(p => parseFloat(p.spend) > 0 ? (parseFloat(p.sales)/parseFloat(p.spend)) : 0)) || 1;
+            maxSpRoas = Math.max(maxSpRoas, 6.0);
+
+            if (placementsSp.length > 0) {
+                placementsSp.forEach(p => {
+                    const spend = parseFloat(p.spend || 0);
+                    const sales = parseFloat(p.sales || 0);
+                    const roas = spend > 0 ? (sales / spend) : 0;
+                    const details = getPlacementDetails(p.placement);
+                    
+                    const healthPercent = Math.min(100, (roas / maxSpRoas) * 100);
+                    let healthColor = '#2563eb'; // High ROAS (Blue)
+                    if (roas < 2.0) {
+                        healthColor = '#ef4444'; // Red
+                    } else if (roas < 4.0) {
+                        healthColor = '#64748b'; // Slate
+                    }
+
+                    spPlHtml += `
+                        <tr style="border-bottom: 1px solid #c6c6cd; background: #ffffff;">
+                            <td style="padding: 14px 24px; font-weight: 700; color: #000000; text-align: left; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 16px; width: 20px; display: inline-block; text-align: center;">${details.icon}</span>
+                                ${details.label}
+                            </td>
+                            <td style="padding: 14px 16px; font-size: 14px; font-weight: 600; color: #45464d; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${formatCurrency(spend)}</td>
+                            <td style="padding: 14px 16px; font-size: 14px; font-weight: 700; color: #0051d5; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; background: rgba(219,225,255,0.05);">${formatCurrency(sales)}</td>
+                            <td style="padding: 14px 16px; font-size: 14px; font-weight: 700; color: #009668; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; background: rgba(111,251,190,0.02);">${roas.toFixed(2)}x</td>
+                            <td style="padding: 14px 24px; text-align: center; vertical-align: middle;">
+                                <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin: 0 auto;">
+                                    <div style="width: ${healthPercent}%; height: 100%; background: ${healthColor}; border-radius: 3px; transition: width 0.3s ease;"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } else {
+                spPlHtml = `<tr><td colspan="5" class="text-center" style="padding:2rem; color:#64748b;">No SP placements found.</td></tr>`;
+            }
+            $('#sp-placements-body').html(spPlHtml);
+
+            // Update dynamic SP Placement Insight
+            if (totalSpSales > 0 && tosSpSales > 0) {
+                const pct = ((tosSpSales / totalSpSales) * 100).toFixed(0);
+                $('#sp-placement-insight').text(`Top of Search generates ${pct}% of SP conversion volume.`);
+            } else {
+                $('#sp-placement-insight').text(`Top of Search generates optimal conversion volume for SP.`);
+            }
+
+            // Populate SB placements
+            let sbPlHtml = '';
+            let totalSbSales = 0;
+            let tosSbSales = 0;
+
+            placementsSb.forEach(p => {
+                const spend = parseFloat(p.spend || 0);
+                const sales = parseFloat(p.sales || 0);
+                totalSbSales += sales;
+                if (p.placement.toLowerCase().includes('top of search')) {
+                    tosSbSales = sales;
+                }
+            });
+
+            let maxSbRoas = Math.max(...placementsSb.map(p => parseFloat(p.spend) > 0 ? (parseFloat(p.sales)/parseFloat(p.spend)) : 0)) || 1;
+            maxSbRoas = Math.max(maxSbRoas, 6.0);
+
+            if (placementsSb.length > 0) {
+                placementsSb.forEach(p => {
+                    const spend = parseFloat(p.spend || 0);
+                    const sales = parseFloat(p.sales || 0);
+                    const roas = spend > 0 ? (sales / spend) : 0;
+                    const details = getPlacementDetails(p.placement);
+
+                    const healthPercent = Math.min(100, (roas / maxSbRoas) * 100);
+                    let healthColor = '#2563eb';
+                    if (roas < 2.0) {
+                        healthColor = '#ef4444';
+                    } else if (roas < 4.0) {
+                        healthColor = '#64748b';
+                    }
+
+                    sbPlHtml += `
+                        <tr style="border-bottom: 1px solid #c6c6cd; background: #ffffff;">
+                            <td style="padding: 14px 24px; font-weight: 700; color: #000000; text-align: left; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 16px; width: 20px; display: inline-block; text-align: center;">${details.icon}</span>
+                                ${details.label}
+                            </td>
+                            <td style="padding: 14px 16px; font-size: 14px; font-weight: 600; color: #45464d; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${formatCurrency(spend)}</td>
+                            <td style="padding: 14px 16px; font-size: 14px; font-weight: 700; color: #0051d5; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; background: rgba(219,225,255,0.05);">${formatCurrency(sales)}</td>
+                            <td style="padding: 14px 16px; font-size: 14px; font-weight: 700; color: #009668; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; background: rgba(111,251,190,0.02);">${roas.toFixed(2)}x</td>
+                            <td style="padding: 14px 24px; text-align: center; vertical-align: middle;">
+                                <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin: 0 auto;">
+                                    <div style="width: ${healthPercent}%; height: 100%; background: ${healthColor}; border-radius: 3px; transition: width 0.3s ease;"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } else {
+                sbPlHtml = `<tr><td colspan="5" class="text-center" style="padding:2rem; color:#64748b;">No SB placements found.</td></tr>`;
+            }
+            $('#sb-placements-body').html(sbPlHtml);
+
+            // Update dynamic SB Placement Insight
+            if (totalSbSales > 0 && tosSbSales > 0) {
+                const pct = ((tosSbSales / totalSbSales) * 100).toFixed(0);
+                $('#sb-placement-insight').text(`Top of Search generates ${pct}% of SB sales volume.`);
+            } else {
+                $('#sb-placement-insight').text(`Focus budget on Top of Search for optimal brand halo impact.`);
+            }
 
             // 8. Populate Keywords Table
             const keywords = data.top_keywords || [];
@@ -1483,6 +1758,204 @@ $(document).ready(function() {
         link.click();
         document.body.removeChild(link);
     };
+
+    // Metric Toggle Click Handler for Bar Chart
+    $('#bar-chart-metric-toggles .toggle-btn').click(function() {
+        $('#bar-chart-metric-toggles .toggle-btn').css({
+            'background': 'transparent',
+            'color': '#64748b'
+        }).removeClass('active');
+        
+        $(this).css({
+            'background': '#ffffff',
+            'color': '#2563eb',
+            'box-shadow': '0 1px 3px rgba(0,0,0,0.1)'
+        }).addClass('active');
+
+        const metric = $(this).data('metric');
+        renderSalesSpendRoasBarChart(metric);
+    });
+
+    function renderSalesSpendRoasBarChart(activeMetric = 'all') {
+        if (!dailyTrendData || !dailyTrendData.spend) return;
+        if (barChart) barChart.destroy();
+
+        const barCtx = document.getElementById('salesSpendRoasBarChart').getContext('2d');
+        
+        // ROAS daily trend array
+        const roasDaily = dailyTrendData.spend.map((spend, idx) => {
+            const sales = dailyTrendData.sales[idx] || 0;
+            return spend > 0 ? (sales / spend) : 0;
+        });
+
+        // Update last sync time
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        $('#bar-chart-sync-text').text(`Data synced today at ${timeStr}`);
+
+        // Base y axis configuration
+        let yAxesConfig = {
+            y: {
+                display: true,
+                grid: { color: '#f1f5f9' },
+                border: { display: false },
+                ticks: {
+                    font: { family: 'Inter', weight: '600' },
+                    color: '#64748b',
+                    callback: function(value) { return '$' + value.toLocaleString(); }
+                }
+            },
+            y1: { display: false }
+        };
+
+        let datasets = [];
+
+        if (activeMetric === 'sales') {
+            datasets = [{
+                label: 'Total Sales ($)',
+                data: dailyTrendData.sales,
+                backgroundColor: '#3b82f6', // Premium Blue
+                hoverBackgroundColor: '#2563eb',
+                borderRadius: 4,
+                borderSkipped: false,
+                maxBarThickness: 30,
+                categoryPercentage: 0.8,
+                barPercentage: 0.8,
+                yAxisID: 'y'
+            }];
+        } else if (activeMetric === 'spend') {
+            datasets = [{
+                label: 'Ad Spend ($)',
+                data: dailyTrendData.spend,
+                backgroundColor: '#64748b', // Slate
+                hoverBackgroundColor: '#475569',
+                borderRadius: 4,
+                borderSkipped: false,
+                maxBarThickness: 30,
+                categoryPercentage: 0.8,
+                barPercentage: 0.8,
+                yAxisID: 'y'
+            }];
+        } else if (activeMetric === 'roas') {
+            datasets = [{
+                label: 'ROAS (x)',
+                data: roasDaily,
+                backgroundColor: '#10b981', // Emerald Green
+                hoverBackgroundColor: '#059669',
+                borderRadius: 4,
+                borderSkipped: false,
+                maxBarThickness: 30,
+                categoryPercentage: 0.8,
+                barPercentage: 0.8,
+                yAxisID: 'y'
+            }];
+            yAxesConfig.y.ticks.callback = function(value) { return value.toFixed(1) + 'x'; };
+        } else {
+            // 'all' Grouped Layout - rendering all 3 as side-by-side bar charts!
+            datasets = [
+                {
+                    label: 'Ad Spend ($)',
+                    data: dailyTrendData.spend,
+                    backgroundColor: '#64748b',
+                    hoverBackgroundColor: '#475569',
+                    borderRadius: 4,
+                    borderSkipped: false,
+                    maxBarThickness: 25,
+                    categoryPercentage: 0.95,
+                    barPercentage: 0.95,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Total Sales ($)',
+                    data: dailyTrendData.sales,
+                    backgroundColor: '#3b82f6',
+                    hoverBackgroundColor: '#2563eb',
+                    borderRadius: 4,
+                    borderSkipped: false,
+                    maxBarThickness: 25,
+                    categoryPercentage: 0.95,
+                    barPercentage: 0.95,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'ROAS (x)',
+                    data: roasDaily,
+                    type: 'bar', // Render as bar instead of line!
+                    backgroundColor: '#10b981',
+                    hoverBackgroundColor: '#059669',
+                    borderRadius: 4,
+                    borderSkipped: false,
+                    maxBarThickness: 25,
+                    categoryPercentage: 0.95,
+                    barPercentage: 0.95,
+                    yAxisID: 'y1'
+                }
+            ];
+            yAxesConfig.y1 = {
+                display: true,
+                position: 'right',
+                grid: { drawOnChartArea: false },
+                border: { display: false },
+                ticks: {
+                    font: { family: 'Inter', weight: '600' },
+                    color: '#10b981',
+                    callback: function(value) { return value.toFixed(1) + 'x'; }
+                }
+            };
+        }
+
+        barChart = new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: dailyTrendData.labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        align: 'end',
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            padding: 15,
+                            font: { family: 'Inter', weight: '700', size: 11 },
+                            color: '#475569'
+                        }
+                    },
+                    tooltip: {
+                        padding: 12,
+                        backgroundColor: '#0f172a',
+                        titleFont: { family: 'Inter', weight: '700' },
+                        bodyFont: { family: 'Inter' },
+                        callbacks: {
+                            label: function(context) {
+                                if (context.dataset.label.includes('ROAS')) {
+                                    return context.dataset.label + ': ' + parseFloat(context.raw).toFixed(2) + 'x';
+                                }
+                                return context.dataset.label + ': ' + formatCurrency(context.raw);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: yAxesConfig.y,
+                    y1: yAxesConfig.y1,
+                    x: {
+                        grid: { display: false },
+                        border: { display: false },
+                        ticks: {
+                            font: { family: 'Inter', weight: '600' },
+                            color: '#64748b',
+                            maxTicksLimit: 12
+                        }
+                    }
+                }
+            }
+        });
+    }
 
     $('#refresh_ads').click(loadAdData);
     $('#filter_customer').change(loadAdData);
