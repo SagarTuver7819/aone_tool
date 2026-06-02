@@ -194,6 +194,8 @@ try {
         'campaigns' => $campaigns,
         'daily_trend' => $daily_trend,
         'placements' => fetchPlacements($conn, $where_customer, $where_brand, $from_date, $to_date),
+        'placements_sp' => fetchPlacementsSP($conn, $where_customer, $where_brand, $from_date, $to_date),
+        'placements_sb' => fetchPlacementsSB($conn, $where_customer, $where_brand, $from_date, $to_date),
         'bidding' => fetchBidding($conn, $where_customer, $where_brand, $from_date, $to_date),
         'purchased_products' => fetchPurchasedProducts($conn, $where_customer, $from_date, $to_date),
         'invalid_traffic' => fetchInvalidTraffic($conn, $where_customer, $where_brand, $from_date, $to_date),
@@ -451,6 +453,28 @@ function fetchHeatmapData($conn, $where_customer, $where_brand, $from, $to) {
             
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssssss", $from, $to, $from, $to, $from, $to);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+function fetchPlacementsSP($conn, $where, $where_brand, $from, $to) {
+    $sql = "SELECT placement, SUM(spend) as spend, SUM(total_sales) as sales, SUM(clicks) as clicks, SUM(impressions) as impressions
+            FROM amazon_advertising_sp 
+            WHERE $where AND ($where_brand) AND report_date BETWEEN ? AND ? AND report_type = 'placement'
+            GROUP BY placement ORDER BY spend DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $from, $to);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+function fetchPlacementsSB($conn, $where, $where_brand, $from, $to) {
+    $sql = "SELECT placement, SUM(spend) as spend, SUM(total_sales) as sales, SUM(clicks) as clicks, SUM(impressions) as impressions
+            FROM amazon_advertising_sb 
+            WHERE $where AND ($where_brand) AND report_date BETWEEN ? AND ? AND report_type = 'placement'
+            GROUP BY placement ORDER BY spend DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $from, $to);
     $stmt->execute();
     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
