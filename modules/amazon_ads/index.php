@@ -569,6 +569,14 @@ include '../../includes/sidebar.php';
         </div>
     </div>
 
+    <!-- Section Heading: Campaign Performance -->
+    <div style="margin-top: 2.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.75rem;">
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-bullseye" style="color: #2563eb;"></i> Campaign Performance Overview
+        </h2>
+        <p style="font-size: 0.85rem; color: #64748b; margin: 0.25rem 0 0 0; font-weight: 500;">Analyze your top-performing and budget-critical advertising campaigns</p>
+    </div>
+
     <!-- Campaigns performance columns -->
     <div class="campaigns-grid">
         <!-- Top 5 Performing Campaigns -->
@@ -701,6 +709,14 @@ include '../../includes/sidebar.php';
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Section Heading: Placement Performance -->
+    <div style="margin-top: 3rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.75rem;">
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-layer-group" style="color: #0284c7;"></i> Placement Analysis Report
+        </h2>
+        <p style="font-size: 0.85rem; color: #64748b; margin: 0.25rem 0 0 0; font-weight: 500;">Evaluate where your ads perform best (Top of Search vs. Product Pages vs. Rest of Search)</p>
     </div>
 
     <!-- Placement Performance Cards Side-by-Side -->
@@ -949,12 +965,65 @@ include '../../includes/sidebar.php';
             </table>
         </div>
     </div>
+
+    <!-- Match Type Performance Card Section -->
+    <div class="campaigns-grid" style="margin-bottom: 2rem;">
+        <!-- Match Type Performance Table Card -->
+        <div class="table-card" style="padding: 1.5rem 1.75rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="width: 40px; height: 40px; background: #eff6ff; color: #3b82f6; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Match Type Performance</h4>
+                        <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Performance metrics grouped by keyword match types</p>
+                    </div>
+                </div>
+            </div>
+            
+            <table style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; margin-bottom: 1rem;">
+                <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
+                    <tr>
+                        <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 28%;">Match Type</th>
+                        <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">Spend</th>
+                        <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #0051d5; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 20%;">Sales</th>
+                        <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 16%;">ACoS</th>
+                        <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">ROAS</th>
+                    </tr>
+                </thead>
+                <tbody id="match-types-body" style="background:#ffffff;">
+                    <tr><td colspan="5" style="text-align: center; padding: 2rem; color: #94a3b8;">Loading match types...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Match Type Share Doughnut Chart Card -->
+        <div class="table-card" style="padding: 1.5rem 1.75rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="width: 40px; height: 40px; background: #ecfdf5; color: #10b981; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Spend Share by Match Type</h4>
+                        <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Visualizing share of ad budget distribution</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="height: 220px; position: relative; width: 100%; display: flex; justify-content: center; align-items: center;">
+                <canvas id="matchTypeDoughnutChart" style="max-height: 100%; max-width: 100%;"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
 $(document).ready(function() {
     let trendChart = null;
     let barChart = null;
+    let matchTypeChart = null;
 
     // Daily Report state variables matching SKU pagination style
     let globalDailyTrend = [];
@@ -1190,7 +1259,8 @@ $(document).ready(function() {
                                 borderWidth: 3.5,
                                 pointRadius: 0,
                                 pointHoverRadius: 6,
-                                pointBackgroundColor: '#64748b'
+                                pointBackgroundColor: '#64748b',
+                                yAxisID: 'y1'
                             },
                             {
                                 label: 'Total Sales ($)',
@@ -1202,13 +1272,18 @@ $(document).ready(function() {
                                 borderWidth: 3.5,
                                 pointRadius: 0,
                                 pointHoverRadius: 6,
-                                pointBackgroundColor: '#2563eb'
+                                pointBackgroundColor: '#2563eb',
+                                yAxisID: 'y'
                             }
                         ]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        },
                         plugins: {
                             legend: {
                                 position: 'top',
@@ -1239,8 +1314,32 @@ $(document).ready(function() {
                         },
                         scales: {
                             y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
                                 grid: {
                                     color: '#f1f5f9'
+                                },
+                                border: {
+                                    display: false
+                                },
+                                ticks: {
+                                    font: {
+                                        family: 'Inter',
+                                        weight: '600'
+                                    },
+                                    color: '#2563eb',
+                                    callback: function(value) {
+                                        return '$' + value.toLocaleString();
+                                    }
+                                }
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                grid: {
+                                    drawOnChartArea: false
                                 },
                                 border: {
                                     display: false
@@ -1343,7 +1442,7 @@ $(document).ready(function() {
 
                     const cellTitle = `Day: ${day.label}\nHour: ${hoursLabels[h]}\nEst. Spend: ${formatCurrency(estimatedHourSpend)}\nEst. Sales: ${formatCurrency(estimatedHourSales)}`;
 
-                    heatmapHtml += `<div style="height: 14px; border-radius: 4px; background: rgba(37, 99, 235, ${opacity}); transition: all 0.2s;" title="${cellTitle}"></div>`;
+                    heatmapHtml += `<div class="heatmap-cell" data-day="${day.label}" data-hour="${hoursLabels[h]}" data-spend="${formatCurrency(estimatedHourSpend)}" data-sales="${formatCurrency(estimatedHourSales)}" style="height: 14px; border-radius: 4px; background: rgba(37, 99, 235, ${opacity}); transition: all 0.2s; cursor: pointer;" title="${cellTitle}"></div>`;
                 }
             });
 
@@ -1603,6 +1702,98 @@ $(document).ready(function() {
                 bottomKwHtml = `<tr><td colspan="3" class="text-center" style="padding:2rem; color:#64748b;">No low performing keywords found.</td></tr>`;
             }
             $('#bottom-keywords-body').html(bottomKwHtml);
+
+            // 9. Populate Match Types Performance Table & Chart
+            const matchTypes = data.match_types || [];
+            let matchHtml = '';
+            let chartLabels = [];
+            let chartSpendData = [];
+            let chartColors = [];
+
+            const matchColorsMap = {
+                'exact': '#3b82f6',   // Blue
+                'phrase': '#10b981',  // Emerald Green
+                'broad': '#f59e0b',   // Amber Yellow
+                'other': '#64748b'    // Slate Grey
+            };
+
+            if (matchTypes.length > 0) {
+                matchTypes.forEach(m => {
+                    const name = m.match_type.toLowerCase();
+                    const displayName = m.match_type.charAt(0).toUpperCase() + m.match_type.slice(1);
+                    const spend = parseFloat(m.spend || 0);
+                    const sales = parseFloat(m.sales || 0);
+                    const roas = parseFloat(m.roas || 0);
+                    const acos = parseFloat(m.acos || 0);
+                    
+                    matchHtml += `
+                        <tr style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
+                            <td style="padding: 12px 16px; font-weight: 700; color: #0f172a; text-align: left; font-size: 13px;">
+                                ${displayName}
+                            </td>
+                            <td style="padding: 12px 12px; font-size: 13px; font-weight: 600; color: #475569; text-align: right; font-family: 'Inter', sans-serif;">${formatCurrency(spend)}</td>
+                            <td style="padding: 12px 12px; font-size: 13px; font-weight: 700; color: #0051d5; text-align: right; font-family: 'Inter', sans-serif;">${formatCurrency(sales)}</td>
+                            <td style="padding: 12px 12px; font-size: 13px; font-weight: 600; color: #ef4444; text-align: right; font-family: 'Inter', sans-serif;">${acos.toFixed(1)}%</td>
+                            <td style="padding: 12px 16px; font-size: 13px; font-weight: 700; color: #009668; text-align: right; font-family: 'Inter', sans-serif;">${roas.toFixed(2)}x</td>
+                        </tr>
+                    `;
+
+                    chartLabels.push(displayName);
+                    chartSpendData.push(spend);
+                    chartColors.push(matchColorsMap[name] || matchColorsMap['other']);
+                });
+            } else {
+                matchHtml = `<tr><td colspan="5" class="text-center" style="padding:2rem; color:#64748b;">No match type data found.</td></tr>`;
+            }
+            $('#match-types-body').html(matchHtml);
+
+            // Render/Update Match Type Share Doughnut Chart
+            if (matchTypeChart) matchTypeChart.destroy();
+            
+            if (chartSpendData.length > 0 && chartSpendData.reduce((a, b) => a + b, 0) > 0) {
+                const doughnutCtx = document.getElementById('matchTypeDoughnutChart').getContext('2d');
+                matchTypeChart = new Chart(doughnutCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: chartLabels,
+                        datasets: [{
+                            data: chartSpendData,
+                            backgroundColor: chartColors,
+                            borderWidth: 2,
+                            borderColor: '#ffffff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    boxWidth: 12,
+                                    font: { family: 'Inter', weight: '600', size: 11 },
+                                    color: '#475569'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const val = context.raw || 0;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const pct = ((val / total) * 100).toFixed(1);
+                                        return `${label}: ${formatCurrency(val)} (${pct}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '65%'
+                    }
+                });
+            } else {
+                const doughnutCtx = document.getElementById('matchTypeDoughnutChart').getContext('2d');
+                doughnutCtx.clearRect(0, 0, 200, 200);
+            }
         });
     }
 
@@ -1959,6 +2150,44 @@ $(document).ready(function() {
 
     $('#refresh_ads').click(loadAdData);
     $('#filter_customer').change(loadAdData);
+
+    // Heatmap custom premium tooltip hover handler
+    const heatmapTooltip = $('<div id="heatmap-tooltip" style="position: absolute; display: none; background: #0f172a; color: #ffffff; padding: 10px 14px; border-radius: 8px; font-family: \'Inter\', sans-serif; font-size: 0.8rem; z-index: 9999; box-shadow: 0 4px 15px rgba(0,0,0,0.15); pointer-events: none; line-height: 1.4; border: 1px solid rgba(255,255,255,0.1);"></div>').appendTo('body');
+
+    $(document).on('mouseenter', '.heatmap-cell', function(e) {
+        const day = $(this).data('day');
+        const hour = $(this).data('hour');
+        const spend = $(this).data('spend');
+        const sales = $(this).data('sales');
+        
+        const content = `
+            <div style="font-weight: 800; margin-bottom: 4px; color: #94a3b8;">Day: ${day} - Hour: ${hour}</div>
+            <div style="display: flex; justify-content: space-between; gap: 15px;">
+                <span>Est. Spend:</span>
+                <span style="font-weight: 700; color: #cbd5e1;">${spend}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; gap: 15px;">
+                <span>Est. Sales:</span>
+                <span style="font-weight: 700; color: #60a5fa;">${sales}</span>
+            </div>
+        `;
+        
+        heatmapTooltip.html(content).show();
+    });
+
+    $(document).on('mousemove', '.heatmap-cell', function(e) {
+        const tooltipWidth = heatmapTooltip.outerWidth();
+        const tooltipHeight = heatmapTooltip.outerHeight();
+        
+        heatmapTooltip.css({
+            left: (e.pageX + 15) + 'px',
+            top: (e.pageY - tooltipHeight - 15) + 'px'
+        });
+    });
+
+    $(document).on('mouseleave', '.heatmap-cell', function() {
+        heatmapTooltip.hide();
+    });
 });
 </script>
 </div> <!-- Closing the main-wrapper opened in sidebar.php -->

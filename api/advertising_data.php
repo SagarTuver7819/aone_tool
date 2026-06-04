@@ -442,11 +442,11 @@ function fetchHeatmapData($conn, $where_customer, $where_brand, $from, $to) {
                 SUM(spend) as spend, 
                 SUM(total_sales) as sales
             FROM (
-                SELECT report_date, spend, total_sales FROM amazon_advertising_sp WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ?
+                SELECT report_date, spend, total_sales FROM amazon_advertising_sp WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ? AND report_type IN ('campaign', 'general', 'advertised_product')
                 UNION ALL
-                SELECT report_date, spend, total_sales FROM amazon_advertising_sb WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ?
+                SELECT report_date, spend, total_sales FROM amazon_advertising_sb WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ? AND report_type IN ('campaign', 'general', 'advertised_product')
                 UNION ALL
-                SELECT report_date, spend, total_sales FROM amazon_advertising_sd WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ?
+                SELECT report_date, spend, total_sales FROM amazon_advertising_sd WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ? AND report_type IN ('campaign', 'general', 'advertised_product')
             ) as combined
             GROUP BY DAYOFWEEK(report_date)
             ORDER BY day_num ASC";
