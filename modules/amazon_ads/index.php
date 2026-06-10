@@ -836,46 +836,7 @@ include '../../includes/sidebar.php';
         </div>
     </div>
 
-    <!-- Premium Daily Performance Trend Report Table -->
-    <div style="background: #ffffff; border: 1px solid #e4e9f0; border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); margin-bottom: 2rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-            <div>
-                <h3 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.02em;">Daily Performance Trend Report</h3>
-                <p style="font-size: 0.8rem; color: #64748b; margin: 0.35rem 0 0 0; font-weight: 500;">Detailed daily view of key advertising metrics</p>
-            </div>
-            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
-                <div style="position: relative;">
-                    <input type="text" id="report-search" oninput="filterReportTable()" placeholder="Search date (e.g. 15 May)..." style="height: 42px; padding: 0 16px 0 38px; border-radius: 12px; border: 1px solid #cbd5e1; width: 240px; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600;">
-                    <i class="fas fa-search" style="position: absolute; left: 14px; top: 14px; color: #94a3b8; font-size: 0.9rem;"></i>
-                </div>
-                <button onclick="exportReportToCSV()" class="btn" style="height: 42px; background: #0f172a; color: #ffffff; font-weight: 700; border: none; border-radius: 12px; padding: 0 18px; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: background 0.2s;">
-                    <i class="fas fa-file-csv"></i> Export CSV
-                </button>
-            </div>
-        </div>
-        
-        <div style="overflow-x: auto; width: 100%; border-radius: 16px; border: 1px solid #cbd5e1;">
-            <table style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed;">
-                <thead style="background: #f8fafc; border-bottom: 1px solid #c6c6cd;">
-                    <tr>
-                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.08em; text-align: left; width: 20%;">Date</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.08em; text-align: right; width: 20%;">Ad Spend</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 800; color: #0051d5; text-transform: uppercase; letter-spacing: 0.08em; text-align: right; width: 20%; background: rgba(219,225,255,0.05);">Total Sales</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.08em; text-align: right; width: 20%;">ROAS</th>
-                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 800; color: #009668; text-transform: uppercase; letter-spacing: 0.08em; text-align: right; width: 20%; background: rgba(111,251,190,0.02);">TACOS</th>
-                    </tr>
-                </thead>
-                <tbody id="report-table-body" style="background:#ffffff;">
-                    <tr><td colspan="5" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading report details...</td></tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-            <div id="report_showing_text" style="font-size: 0.85rem; color: #64748b; font-weight: 600;">Showing 0 to 0 of 0 entries</div>
-            <div id="report_pagination" style="display: flex; gap: 0.35rem; align-items: center;"></div>
-        </div>
-    </div>
+
 
     <!-- Premium Spends vs Sales Heatmap Card -->
     <div style="background: #ffffff; border: 1px solid #e4e9f0; border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); margin-bottom: 2rem;">
