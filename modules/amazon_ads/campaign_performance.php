@@ -52,34 +52,287 @@ include '../../includes/sidebar.php';
     </div>
 </div>
 
-<div class="card border-0 shadow-sm mb-4" style="border-radius: 16px; overflow: hidden; background: #ffffff;">
-    <div style="background: #ffffff; padding: 1.5rem 2rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-            <h5 style="margin: 0; font-weight: 900; color: #1e293b;"><i class="fas fa-layer-group text-primary me-2"></i> Campaign Performance Breakdown</h5>
-            <p style="margin: 0; font-size: 0.75rem; color: #64748b; font-weight: 600;">Cross-channel advertising efficiency metrics</p>
+<!-- Section Heading: Campaign Performance Overview -->
+<div style="margin-top: 1rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.75rem;">
+    <h2 style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+        <i class="fas fa-bullseye" style="color: #2563eb;"></i> Campaign Performance Overview
+    </h2>
+    <p style="font-size: 0.85rem; color: #64748b; margin: 0.25rem 0 0 0; font-weight: 500;">Top and bottom performing campaigns in this range</p>
+</div>
+
+<!-- Campaigns performance columns -->
+<div class="campaigns-grid">
+    <!-- Top 5 Performing Campaigns -->
+    <div class="table-card">
+        <div class="table-card-header">
+            <div class="table-card-title">Top 5 Performing Campaigns</div>
+            <span class="status-badge high-roas">HIGH ROAS</span>
         </div>
-        <div class="badge" style="background: #eff6ff; color: #3b82f6; font-size: 0.7rem; padding: 8px 16px; border-radius: 50px; font-weight: 800; border: 1px solid #dbeafe;">SP, SB, SD ACTIVE</div>
-    </div>
-    <div style="padding: 1.5rem;">
-        <table class="table table-hover align-middle mb-0" id="campaignTable" style="width: 100%;">
-            <thead style="background: #f8fafc;">
+        <table class="premium-table">
+            <thead>
                 <tr>
-                    <th class="px-4 py-3 text-uppercase small fw-800 text-muted">Campaign & Ad Group</th>
-                    <th class="text-uppercase small fw-800 text-muted">Targeting</th>
-                    <th class="text-center text-uppercase small fw-800 text-muted">Match</th>
-                    <th class="text-end text-uppercase small fw-800 text-muted">Spend</th>
-                    <th class="text-end text-uppercase small fw-800 text-muted">Sales</th>
-                    <th class="text-center text-uppercase small fw-800 text-muted">ACoS</th>
-                    <th class="text-center text-uppercase small fw-800 text-muted">ROAS</th>
-                    <th class="text-center text-uppercase small fw-800 text-muted px-4">Bid Action</th>
+                    <th>CAMPAIGN NAME</th>
+                    <th class="right">SPEND</th>
+                    <th class="right">ROAS</th>
                 </tr>
             </thead>
-            <tbody id="campaign_body" style="border-top: none;"></tbody>
+            <tbody id="top-campaigns-body">
+                <tr><td colspan="3" class="text-center" style="padding:2rem; color:#64748b;">Loading campaigns...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bottom 5 Low-Performing Campaigns -->
+    <div class="table-card">
+        <div class="table-card-header">
+            <div class="table-card-title">Bottom 5 Low-Performing Campaigns</div>
+            <span class="status-badge check-budget">CHECK BUDGET</span>
+        </div>
+        <table class="premium-table">
+            <thead>
+                <tr>
+                    <th>CAMPAIGN NAME</th>
+                    <th class="right">SPEND</th>
+                    <th class="right">ACOS</th>
+                </tr>
+            </thead>
+            <tbody id="bottom-campaigns-body">
+                <tr><td colspan="3" class="text-center" style="padding:2rem; color:#64748b;">Loading campaigns...</td></tr>
+            </tbody>
         </table>
     </div>
 </div>
 
-<div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 2rem;">
+<!-- Section Heading: Keywords Performance Overview -->
+<div style="margin-top: 2rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.75rem;">
+    <h2 style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+        <i class="fas fa-key" style="color: #6366f1;"></i> Keywords Performance Overview
+    </h2>
+    <p style="font-size: 0.85rem; color: #64748b; margin: 0.25rem 0 0 0; font-weight: 500;">Top and bottom performing keywords in this range</p>
+</div>
+
+<!-- Keywords performance columns side-by-side -->
+<div class="campaigns-grid" style="margin-bottom: 2rem;">
+    <!-- Top 10 Performing Keywords -->
+    <div class="table-card">
+        <div class="table-card-header">
+            <div class="table-card-title">Top 10 Performing Keywords</div>
+            <span class="status-badge high-roas">HIGH ROAS</span>
+        </div>
+        <table class="premium-table">
+            <thead>
+                <tr>
+                    <th>KEYWORD</th>
+                    <th class="right">SPEND</th>
+                    <th class="right">ROAS</th>
+                </tr>
+            </thead>
+            <tbody id="top-keywords-body">
+                <tr><td colspan="3" class="text-center" style="padding:2rem; color:#64748b;">Loading keywords...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Worst 10 Low-Performing Keywords -->
+    <div class="table-card">
+        <div class="table-card-header">
+            <div class="table-card-title">Worst 10 Low-Performing Keywords</div>
+            <span class="status-badge check-budget">CHECK BUDGET</span>
+        </div>
+        <table class="premium-table">
+            <thead>
+                <tr>
+                    <th>KEYWORD</th>
+                    <th class="right">SPEND</th>
+                    <th class="right">ACoS</th>
+                </tr>
+            </thead>
+            <tbody id="bottom-keywords-body">
+                <tr><td colspan="3" class="text-center" style="padding:2rem; color:#64748b;">Loading keywords...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Section Heading: Match Type Performance -->
+<div style="margin-top: 2rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.75rem;">
+    <h2 style="font-size: 1.5rem; font-weight: 800; color: #10b981; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+        <i class="fas fa-tags" style="color: #10b981;"></i> Match Type Performance
+    </h2>
+    <p style="font-size: 0.85rem; color: #64748b; margin: 0.25rem 0 0 0; font-weight: 500;">Compare spend efficiency across Broad, Phrase, and Exact match types</p>
+</div>
+
+<!-- Match Type performance columns side-by-side -->
+<div class="campaigns-grid" style="margin-bottom: 2rem;">
+    <!-- Match Type Performance Table Card -->
+    <div class="table-card" style="padding: 1.5rem 1.75rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 40px; height: 40px; background: #eff6ff; color: #3b82f6; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Match Type Performance</h4>
+                    <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Performance metrics grouped by keyword match types</p>
+                </div>
+            </div>
+        </div>
+        
+        <table style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; margin-bottom: 1rem;">
+            <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
+                <tr>
+                    <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 28%;">Match Type</th>
+                    <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">Spend</th>
+                    <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #0051d5; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 20%;">Sales</th>
+                    <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 16%;">ACoS</th>
+                    <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">ROAS</th>
+                </tr>
+            </thead>
+            <tbody id="match-types-body" style="background:#ffffff;">
+                <tr><td colspan="5" style="text-align: center; padding: 2rem; color: #94a3b8;">Loading match types...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Match Type Share Doughnut Chart Card -->
+    <div class="table-card" style="padding: 1.5rem 1.75rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 40px; height: 40px; background: #ecfdf5; color: #10b981; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Spend Share by Match Type</h4>
+                    <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Visualizing share of ad budget distribution</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="height: 220px; position: relative; width: 100%; display: flex; justify-content: center; align-items: center;">
+            <canvas id="matchTypeDoughnutChart" style="max-height: 100%; max-width: 100%;"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Section Heading: Placement Analysis Report - SP & SB -->
+<div style="margin-top: 2rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.75rem;">
+    <h2 style="font-size: 1.5rem; font-weight: 800; color: #0284c7; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+        <i class="fas fa-layer-group" style="color: #0284c7;"></i> Placement Analysis Report - SP & SB
+    </h2>
+    <p style="font-size: 0.85rem; color: #64748b; margin: 0.25rem 0 0 0; font-weight: 500;">Analyze placement breakdown across Sponsored Products & Sponsored Brands</p>
+</div>
+
+<!-- Placement Performance Cards Side-by-Side -->
+<div class="campaigns-grid" style="margin-bottom: 2rem;">
+    <!-- Sponsored Products Placement -->
+    <div class="table-card" style="padding: 1.5rem 1.75rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 40px; height: 40px; background: #eff6ff; color: #2563eb; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+                    <i class="fas fa-mouse-pointer"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Sponsored Products</h4>
+                    <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Individual Listing Promotions</p>
+                </div>
+            </div>
+        </div>
+        
+        <table style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; margin-bottom: 1rem;">
+            <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
+                <tr>
+                    <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 35%;">Placement</th>
+                    <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">Spend</th>
+                    <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #0051d5; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%; background: rgba(219,225,255,0.1);">Sales</th>
+                    <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 14%; background: rgba(111,251,190,0.05);">ROAS</th>
+                    <th style="padding: 12px 24px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 15%;">Health</th>
+                </tr>
+            </thead>
+            <tbody id="sp-placements-body" style="background:#ffffff;">
+                <tr><td colspan="5" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading placements...</td></tr>
+            </tbody>
+        </table>
+        
+        <div style="border-top: 1px solid #f1f5f9; padding-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #475569; font-weight: 600;">
+            <i class="fas fa-info-circle" style="color: #2563eb; font-size: 0.85rem;"></i>
+            <span id="sp-placement-insight">Analyzing SP conversion metrics...</span>
+        </div>
+    </div>
+
+    <!-- Sponsored Brands Placement -->
+    <div class="table-card" style="padding: 1.5rem 1.75rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 40px; height: 40px; background: #e0f2fe; color: #0284c7; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Sponsored Brands</h4>
+                    <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Brand Store & Headline Ads</p>
+                </div>
+            </div>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; margin-bottom: 1rem;">
+            <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
+                <tr>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 35%;">Placement</th>
+                    <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">Spend</th>
+                    <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #0051d5; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%; background: rgba(219,225,255,0.1);">Sales</th>
+                    <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 14%; background: rgba(111,251,190,0.05);">ROAS</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 15%;">Health</th>
+                </tr>
+            </thead>
+            <tbody id="sb-placements-body" style="background:#ffffff;">
+                <tr><td colspan="5" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading placements...</td></tr>
+            </tbody>
+        </table>
+
+        <div style="border-top: 1px solid #f1f5f9; padding-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #475569; font-weight: 600;">
+            <i class="fas fa-exclamation-triangle" style="color: #0284c7; font-size: 0.85rem;"></i>
+            <span id="sb-placement-insight">Analyzing SB attribution trends...</span>
+        </div>
+    </div>
+</div>
+
+<section class="bento-card overflow-hidden mb-8" style="background:#ffffff; border-radius:16px; border: 1px solid #c6c6cd; overflow:hidden;">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #c6c6cd; padding: 24px 32px; background: #ffffff;">
+        <div>
+            <h3 style="font-size: 22px; font-weight: 700; color: #000000; margin: 0; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-layer-group text-primary me-2" style="font-size: 24px; color: #0051d5 !important;"></i>
+                Campaign Performance Breakdown
+            </h3>
+            <p style="margin: 4px 0 0 0; font-size: 12px; color: #45464d; font-weight: 600;">Cross-channel advertising efficiency metrics</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="position: relative;">
+                <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #45464d; pointer-events: none;"></i>
+                <input id="campaign_search_input" style="padding-left: 36px; padding-right: 16px; padding-top: 8px; padding-bottom: 8px; border: 1px solid #c6c6cd; border-radius: 8px; outline: none; background: #f2f4f6; font-size: 14px; font-weight: 600; width: 220px;" placeholder="Search campaigns..." type="text"/>
+            </div>
+            <span style="background: rgba(111, 251, 190, 0.2); color: #009668; padding: 6px 12px; border-radius: 6px; font-weight: 800; font-size: 0.8rem; height: 32px; display: inline-flex; align-items: center;">SP, SB, SD ACTIVE</span>
+        </div>
+    </div>
+    <div style="overflow-x: auto;">
+        <table id="campaignTable" style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; margin: 0;">
+            <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
+                <tr>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 8%;">Rank</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 22%;">Campaign & Ad Group</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 14%;">Targeting</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 10%;">Match</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 12%;">Spend</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 12%;">Sales</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 10%;">ACoS</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 8%;">ROAS</th>
+                    <th style="padding: 16px 32px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 12%;">Bid Action</th>
+                </tr>
+            </thead>
+            <tbody id="campaign_body" style="background:#ffffff;"></tbody>
+        </table>
+    </div>
+</section>
+
+<div style="display: none; flex-direction: column; gap: 2rem; margin-bottom: 2rem;">
     <!-- Placement Performance -->
     <div class="card" style="border-radius: 16px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); overflow: hidden;">
         <div style="background: #f8fafc; padding: 1rem 1.5rem; border-bottom: 1px solid #e2e8f0; font-weight: 700; color: #334155;">
@@ -123,6 +376,7 @@ include '../../includes/sidebar.php';
 
 <script>
 $(document).ready(function() {
+    let matchTypeChart = null;
     function formatCurrency(v) {
         return '$' + parseFloat(v || 0).toLocaleString(undefined, {minimumFractionDigits: 2});
     }
@@ -174,10 +428,394 @@ $(document).ready(function() {
             $('#refresh_campaigns').prop('disabled', false).html('<i class="fas fa-sync-alt"></i> ANALYZE PERFORMANCE');
             $('#campaign_body, #placement_body, #bidding_body').css('opacity', '1');
             
+            // Top/Bottom Campaigns Population
+            const campaigns = data.campaigns || [];
+            
+            // Top 5 Performing
+            const topCampaigns = [...campaigns]
+                .filter(c => parseFloat(c.spend) > 0)
+                .sort((a, b) => (parseFloat(b.sales) / parseFloat(b.spend)) - (parseFloat(a.sales) / parseFloat(a.spend)))
+                .slice(0, 5);
+
+            let topHtml = '';
+            if (topCampaigns.length > 0) {
+                topCampaigns.forEach(c => {
+                    const spend = parseFloat(c.spend || 0);
+                    const sales = parseFloat(c.sales || 0);
+                    const cRoas = spend > 0 ? (sales / spend) : 0;
+                    const typeLabel = c.type === 'SP' ? 'Sponsored Products' : (c.type === 'SB' ? 'Sponsored Brands' : 'Sponsored Display');
+                    topHtml += `
+                        <tr>
+                            <td style="text-align: left;">
+                                <p class="campaign-name" title="${c.campaign_name}">${c.campaign_name}</p>
+                                <p class="campaign-sub">${typeLabel}</p>
+                            </td>
+                            <td class="campaign-spend">${formatCurrency(spend)}</td>
+                            <td class="campaign-metric roas">${cRoas.toFixed(2)}x</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                topHtml = `<tr><td colspan="3" class="text-center" style="padding:2rem; color:#64748b;">No high performing campaigns found in this range.</td></tr>`;
+            }
+            $('#top-campaigns-body').html(topHtml);
+
+            // Bottom 5 Low Performing
+            const bottomCampaigns = [...campaigns]
+                .filter(c => parseFloat(c.spend) > 10)
+                .sort((a, b) => {
+                    const acosA = parseFloat(a.sales) > 0 ? (parseFloat(a.spend) / parseFloat(a.sales)) : 999;
+                    const acosB = parseFloat(b.sales) > 0 ? (parseFloat(b.spend) / parseFloat(b.sales)) : 999;
+                    return acosB - acosA;
+                })
+                .slice(0, 5);
+
+            let bottomHtml = '';
+            if (bottomCampaigns.length > 0) {
+                bottomCampaigns.forEach(c => {
+                    const spend = parseFloat(c.spend || 0);
+                    const sales = parseFloat(c.sales || 0);
+                    const cAcos = sales > 0 ? (spend / sales) * 100 : (spend > 0 ? 100 : 0);
+                    const typeLabel = c.type === 'SP' ? 'Sponsored Products' : (c.type === 'SB' ? 'Sponsored Brands' : 'Sponsored Display');
+                    bottomHtml += `
+                        <tr>
+                            <td style="text-align: left;">
+                                <p class="campaign-name" title="${c.campaign_name}">${c.campaign_name}</p>
+                                <p class="campaign-sub">${typeLabel}</p>
+                            </td>
+                            <td class="campaign-spend">${formatCurrency(spend)}</td>
+                            <td class="campaign-metric acos" style="color: #ef4444; font-weight:800;">${cAcos.toFixed(1)}%</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                bottomHtml = `<tr><td colspan="3" class="text-center" style="padding:2rem; color:#64748b;">No low performing campaigns found.</td></tr>`;
+            }
+            $('#bottom-campaigns-body').html(bottomHtml);
+
+            // Keywords Performance Overview Population
+            const keywords = data.top_keywords || [];
+            
+            // Top 10 Performing Keywords: spend > 0, sorted by ROAS desc
+            const topKeywordsList = [...keywords]
+                .filter(k => parseFloat(k.spend) > 0)
+                .sort((a, b) => {
+                    const roasA = parseFloat(a.spend) > 0 ? (parseFloat(a.sales) / parseFloat(a.spend)) : 0;
+                    const roasB = parseFloat(b.spend) > 0 ? (parseFloat(b.sales) / parseFloat(b.spend)) : 0;
+                    return roasB - roasA;
+                })
+                .slice(0, 10);
+
+            let topKwHtml = '';
+            if (topKeywordsList.length > 0) {
+                topKeywordsList.forEach(k => {
+                    const spend = parseFloat(k.spend || 0);
+                    const sales = parseFloat(k.sales || 0);
+                    const kRoas = spend > 0 ? (sales / spend) : 0;
+                    const typeLabel = k.ad_type === 'SP' ? 'Sponsored Products' : 'Sponsored Brands';
+                    const matchTypeLabel = k.match_type ? `[${k.match_type.toUpperCase()}]` : '';
+                    
+                    topKwHtml += `
+                        <tr>
+                            <td style="text-align: left;">
+                                <p class="campaign-name" title="${k.keyword}">${k.keyword} <span style="font-size:0.75rem; color:#64748b; font-weight:600;">${matchTypeLabel}</span></p>
+                                <p class="campaign-sub">${typeLabel}</p>
+                            </td>
+                            <td class="campaign-spend">${formatCurrency(spend)}</td>
+                            <td class="campaign-metric roas">${kRoas.toFixed(2)}x</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                topKwHtml = `<tr><td colspan="3" class="text-center" style="padding:2rem; color:#64748b;">No high performing keywords found.</td></tr>`;
+            }
+            $('#top-keywords-body').html(topKwHtml);
+
+            // Worst 10 Performing Keywords: spend > 0, sorted by ROAS asc (or ACOS desc)
+            const worstKeywordsList = [...keywords]
+                .filter(k => parseFloat(k.spend) > 0)
+                .sort((a, b) => {
+                    const salesA = parseFloat(a.sales || 0);
+                    const salesB = parseFloat(b.sales || 0);
+                    const spendA = parseFloat(a.spend || 0);
+                    const spendB = parseFloat(b.spend || 0);
+
+                    if (salesA === 0 && salesB === 0) {
+                        return spendB - spendA;
+                    }
+                    if (salesA === 0) return -1;
+                    if (salesB === 0) return 1;
+
+                    const roasA = salesA / spendA;
+                    const roasB = salesB / spendB;
+                    return roasA - roasB;
+                })
+                .slice(0, 10);
+
+            let bottomKwHtml = '';
+            if (worstKeywordsList.length > 0) {
+                worstKeywordsList.forEach(k => {
+                    const spend = parseFloat(k.spend || 0);
+                    const sales = parseFloat(k.sales || 0);
+                    const kAcos = sales > 0 ? (spend / sales * 100) : 100.0;
+                    const typeLabel = k.ad_type === 'SP' ? 'Sponsored Products' : 'Sponsored Brands';
+                    const matchTypeLabel = k.match_type ? `[${k.match_type.toUpperCase()}]` : '';
+
+                    bottomKwHtml += `
+                        <tr>
+                            <td style="text-align: left;">
+                                <p class="campaign-name" title="${k.keyword}">${k.keyword} <span style="font-size:0.75rem; color:#64748b; font-weight:600;">${matchTypeLabel}</span></p>
+                                <p class="campaign-sub">${typeLabel}</p>
+                            </td>
+                            <td class="campaign-spend">${formatCurrency(spend)}</td>
+                            <td class="campaign-metric acos" style="color: #ef4444; font-weight:800;">${kAcos.toFixed(1)}%</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                bottomKwHtml = `<tr><td colspan="3" class="text-center" style="padding:2rem; color:#64748b;">No low performing keywords found.</td></tr>`;
+            }
+            $('#bottom-keywords-body').html(bottomKwHtml);
+
+            // Match Type Performance Table & Chart Population
+            const matchTypes = data.match_types || [];
+            let matchHtml = '';
+            let chartLabels = [];
+            let chartSpendData = [];
+            let chartColors = [];
+
+            const matchColorsMap = {
+                'exact': '#3b82f6',   // Blue
+                'phrase': '#10b981',  // Emerald Green
+                'broad': '#f59e0b',   // Amber Yellow
+                'other': '#64748b'    // Slate Grey
+            };
+
+            if (matchTypes.length > 0) {
+                matchTypes.forEach(m => {
+                    const name = m.match_type.toLowerCase();
+                    const displayName = m.match_type.charAt(0).toUpperCase() + m.match_type.slice(1);
+                    const spend = parseFloat(m.spend || 0);
+                    const sales = parseFloat(m.sales || 0);
+                    const roas = parseFloat(m.roas || 0);
+                    const acos = parseFloat(m.acos || 0);
+                    
+                    matchHtml += `
+                        <tr style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
+                            <td style="padding: 12px 16px; font-weight: 700; color: #0f172a; text-align: left; font-size: 13px;">
+                                ${displayName}
+                            </td>
+                            <td style="padding: 12px 12px; font-size: 13px; font-weight: 600; color: #475569; text-align: right; font-family: 'Inter', sans-serif;">${formatCurrency(spend)}</td>
+                            <td style="padding: 12px 12px; font-size: 13px; font-weight: 700; color: #0051d5; text-align: right; font-family: 'Inter', sans-serif;">${formatCurrency(sales)}</td>
+                            <td style="padding: 12px 12px; font-size: 13px; font-weight: 600; color: #ef4444; text-align: right; font-family: 'Inter', sans-serif;">${acos.toFixed(1)}%</td>
+                            <td style="padding: 12px 16px; font-size: 13px; font-weight: 700; color: #009668; text-align: right; font-family: 'Inter', sans-serif;">${roas.toFixed(2)}x</td>
+                        </tr>
+                    `;
+
+                    chartLabels.push(displayName);
+                    chartSpendData.push(spend);
+                    chartColors.push(matchColorsMap[name] || matchColorsMap['other']);
+                });
+            } else {
+                matchHtml = `<tr><td colspan="5" class="text-center" style="padding: 2rem; color: #94a3b8;">No match type data found.</td></tr>`;
+            }
+            $('#match-types-body').html(matchHtml);
+
+            // Render/Update Match Type Share Doughnut Chart
+            if (matchTypeChart) matchTypeChart.destroy();
+            
+            if (chartSpendData.length > 0 && chartSpendData.reduce((a, b) => a + b, 0) > 0) {
+                const doughnutCtx = document.getElementById('matchTypeDoughnutChart').getContext('2d');
+                matchTypeChart = new Chart(doughnutCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: chartLabels,
+                        datasets: [{
+                            data: chartSpendData,
+                            backgroundColor: chartColors,
+                            borderWidth: 2,
+                            borderColor: '#ffffff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    boxWidth: 12,
+                                    font: { family: 'Inter', weight: '600', size: 11 },
+                                    color: '#475569'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const val = context.raw || 0;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const pct = ((val / total) * 100).toFixed(1);
+                                        return `${label}: ${formatCurrency(val)} (${pct}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '65%'
+                    }
+                });
+            } else {
+                const doughnutCtx = document.getElementById('matchTypeDoughnutChart');
+                if (doughnutCtx) {
+                    const ctx2d = doughnutCtx.getContext('2d');
+                    ctx2d.clearRect(0, 0, 200, 200);
+                }
+            }
+
+            // SP & SB PLACEMENT ANALYSIS REPORT POPULATION
+            function getPlacementWeight(name) {
+                const lower = name.toLowerCase();
+                if (lower.includes('top of search')) return 1;
+                if (lower.includes('rest of search')) return 2;
+                if (lower.includes('product pages')) return 3;
+                return 4;
+            }
+
+            const placementsSp = (data.placements_sp || [])
+                .filter(p => parseFloat(p.spend) > 0 || parseFloat(p.sales) > 0)
+                .sort((a, b) => getPlacementWeight(a.placement) - getPlacementWeight(b.placement));
+
+            const placementsSb = (data.placements_sb || [])
+                .filter(p => parseFloat(p.spend) > 0 || parseFloat(p.sales) > 0)
+                .sort((a, b) => getPlacementWeight(a.placement) - getPlacementWeight(b.placement));
+
+            function getPlacementDetails(name) {
+                const lower = name.toLowerCase();
+                if (lower.includes('top of search')) {
+                    return { label: 'Top of Search', icon: '<i class="fas fa-arrow-up" style="color: #2563eb;"></i>' };
+                } else if (lower.includes('rest of search')) {
+                    return { label: 'Rest of Search', icon: '<i class="fas fa-search" style="color: #64748b;"></i>' };
+                } else if (lower.includes('product pages')) {
+                    return { label: 'Product Pages', icon: '<i class="far fa-file-alt" style="color: #64748b;"></i>' };
+                } else {
+                    return { label: 'Other Placements', icon: '<i class="fas fa-cubes" style="color: #64748b;"></i>' };
+                }
+            }
+
+            // Populate SP placements
+            let spPlHtml = '';
+            let totalSpSales = 0;
+            let tosSpSales = 0;
+
+            placementsSp.forEach(p => {
+                const spend = parseFloat(p.spend || 0);
+                const sales = parseFloat(p.sales || 0);
+                totalSpSales += sales;
+                if (p.placement.toLowerCase().includes('top of search')) tosSpSales = sales;
+            });
+
+            let maxSpRoas = Math.max(...placementsSp.map(p => parseFloat(p.spend) > 0 ? (parseFloat(p.sales)/parseFloat(p.spend)) : 0)) || 1;
+            maxSpRoas = Math.max(maxSpRoas, 6.0);
+
+            if (placementsSp.length > 0) {
+                placementsSp.forEach(p => {
+                    const spend = parseFloat(p.spend || 0);
+                    const sales = parseFloat(p.sales || 0);
+                    const roas = spend > 0 ? (sales / spend) : 0;
+                    const details = getPlacementDetails(p.placement);
+                    const healthPercent = Math.min(100, (roas / maxSpRoas) * 100);
+                    let healthColor = '#2563eb';
+                    if (roas < 2.0) healthColor = '#ef4444';
+                    else if (roas < 4.0) healthColor = '#64748b';
+
+                    spPlHtml += `
+                        <tr style="border-bottom: 1px solid #cbd5e1; background: #ffffff;">
+                            <td style="padding: 14px 24px; font-weight: 700; color: #000000; text-align: left; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 16px; width: 20px; display: inline-block; text-align: center;">${details.icon}</span>
+                                ${details.label}
+                            </td>
+                            <td style="padding: 14px 16px; font-size: 14px; font-weight: 600; color: #45464d; text-align: right; font-family: 'Inter', sans-serif;">${formatCurrency(spend)}</td>
+                            <td style="padding: 14px 16px; font-size: 14px; font-weight: 700; color: #0051d5; text-align: right; font-family: 'Inter', sans-serif; background: rgba(219,225,255,0.05);">${formatCurrency(sales)}</td>
+                            <td style="padding: 14px 16px; font-size: 14px; font-weight: 700; color: #009668; text-align: right; font-family: 'Inter', sans-serif; background: rgba(111,251,190,0.02);">${roas.toFixed(2)}x</td>
+                            <td style="padding: 14px 24px; text-align: center; vertical-align: middle;">
+                                <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin: 0 auto;">
+                                    <div style="width: ${healthPercent}%; height: 100%; background: ${healthColor}; border-radius: 3px; transition: width 0.3s ease;"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } else {
+                spPlHtml = `<tr><td colspan="5" class="text-center" style="padding:2rem; color:#64748b;">No SP placements found.</td></tr>`;
+            }
+            $('#sp-placements-body').html(spPlHtml);
+
+            if (totalSpSales > 0 && tosSpSales > 0) {
+                const pct = ((tosSpSales / totalSpSales) * 100).toFixed(0);
+                $('#sp-placement-insight').text(`Top of Search generates ${pct}% of SP conversion volume.`);
+            } else {
+                $('#sp-placement-insight').text(`Top of Search generates optimal conversion volume for SP.`);
+            }
+
+            // Populate SB placements
+            let sbPlHtml = '';
+            let totalSbSales = 0;
+            let tosSbSales = 0;
+
+            placementsSb.forEach(p => {
+                const spend = parseFloat(p.spend || 0);
+                const sales = parseFloat(p.sales || 0);
+                totalSbSales += sales;
+                if (p.placement.toLowerCase().includes('top of search')) tosSbSales = sales;
+            });
+
+            let maxSbRoas = Math.max(...placementsSb.map(p => parseFloat(p.spend) > 0 ? (parseFloat(p.sales)/parseFloat(p.spend)) : 0)) || 1;
+            maxSbRoas = Math.max(maxSbRoas, 6.0);
+
+            if (placementsSb.length > 0) {
+                placementsSb.forEach(p => {
+                    const spend = parseFloat(p.spend || 0);
+                    const sales = parseFloat(p.sales || 0);
+                    const roas = spend > 0 ? (sales / spend) : 0;
+                    const details = getPlacementDetails(p.placement);
+                    const healthPercent = Math.min(100, (roas / maxSbRoas) * 100);
+                    let healthColor = '#2563eb';
+                    if (roas < 2.0) healthColor = '#ef4444';
+                    else if (roas < 4.0) healthColor = '#64748b';
+
+                    sbPlHtml += `
+                        <tr style="border-bottom: 1px solid #cbd5e1; background: #ffffff;">
+                            <td style="padding: 14px 24px; font-weight: 700; color: #000000; text-align: left; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 16px; width: 20px; display: inline-block; text-align: center;">${details.icon}</span>
+                                ${details.label}
+                            </td>
+                            <td style="padding: 14px 16px; font-size: 14px; font-weight: 600; color: #45464d; text-align: right; font-family: 'Inter', sans-serif;">${formatCurrency(spend)}</td>
+                            <td style="padding: 14px 16px; font-size: 14px; font-weight: 700; color: #0051d5; text-align: right; font-family: 'Inter', sans-serif; background: rgba(219,225,255,0.05);">${formatCurrency(sales)}</td>
+                            <td style="padding: 14px 16px; font-size: 14px; font-weight: 700; color: #009668; text-align: right; font-family: 'Inter', sans-serif; background: rgba(111,251,190,0.02);">${roas.toFixed(2)}x</td>
+                            <td style="padding: 14px 24px; text-align: center; vertical-align: middle;">
+                                <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin: 0 auto;">
+                                    <div style="width: ${healthPercent}%; height: 100%; background: ${healthColor}; border-radius: 3px; transition: width 0.3s ease;"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } else {
+                sbPlHtml = `<tr><td colspan="5" class="text-center" style="padding:2rem; color:#64748b;">No SB placements found.</td></tr>`;
+            }
+            $('#sb-placements-body').html(sbPlHtml);
+
+            if (totalSbSales > 0 && tosSbSales > 0) {
+                const pct = ((tosSbSales / totalSbSales) * 100).toFixed(0);
+                $('#sb-placement-insight').text(`Top of Search generates ${pct}% of SB sales volume.`);
+            } else {
+                $('#sb-placement-insight').text(`Focus budget on Top of Search for optimal brand halo impact.`);
+            }
+
             // Campaigns Table
             let html = '';
             if (data.campaigns && data.campaigns.length > 0) {
-                data.campaigns.forEach(c => {
+                data.campaigns.forEach((c, idx) => {
                 const acos = c.sales > 0 ? (c.spend / c.sales * 100).toFixed(2) : '0.00';
                 const roas = c.spend > 0 ? (c.sales / c.spend).toFixed(2) : '0.00';
                 const clicks = parseInt(c.clicks || 0);
@@ -200,37 +838,48 @@ $(document).ready(function() {
                     bidStyle = 'background: #f8fafc; color: #64748b;';
                 }
 
-                html += `<tr>
-                    <td class="px-4 py-3">
-                        <div style="font-weight: 800; color: #1e293b; font-size: 0.85rem;">${c.campaign_name}</div>
-                        <div style="font-size: 0.65rem; color: #64748b; font-weight: 600;"><i class="fas fa-layer-group me-1"></i> ${c.ad_group_name || 'N/A'}</div>
+                const roasVal = parseFloat(roas);
+                const roasBg = roasVal >= 4.0 ? '#e6fcf5' : (roasVal > 0 ? '#fff1f2' : '#f2f4f6');
+                const roasColor = roasVal >= 4.0 ? '#009668' : (roasVal > 0 ? '#ef4444' : '#45464d');
+                const roasBadgeHtml = `<span style="background: ${roasBg}; color: ${roasColor}; padding: 6px 12px; border-radius: 6px; font-weight: 800; font-size: 0.9rem; display: inline-block;">${roasVal.toFixed(1)}x</span>`;
+
+                const acosVal = parseFloat(acos);
+                const acosBg = acosVal > 35 ? '#fff1f2' : (acosVal < 25 ? '#e6fcf5' : '#fffbeb');
+                const acosColor = acosVal > 35 ? '#ef4444' : (acosVal < 25 ? '#009668' : '#b45309');
+                const acosBadgeHtml = `<span style="background: ${acosBg}; color: ${acosColor}; padding: 6px 12px; border-radius: 6px; font-weight: 800; font-size: 0.9rem; display: inline-block;">${acosVal.toFixed(1)}%</span>`;
+
+                html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3); background:#ffffff;">
+                    <td style="padding: 14px 24px; font-weight: 800; color: #0051d5; text-align: center;">#${idx + 1}</td>
+                    <td style="padding: 14px 24px; text-align: left;">
+                        <div style="display: flex; flex-direction: column; min-width: 0; flex: 1;">
+                            <div style="font-weight: 800; color: #191c1e; font-size: 0.95rem; line-height: 1.2; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${c.campaign_name}">${c.campaign_name}</div>
+                            <div style="font-size: 0.75rem; color: #45464d; font-weight: 500; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${c.ad_group_name || 'N/A'}"><i class="fas fa-layer-group me-1"></i> ${c.ad_group_name || 'N/A'}</div>
+                        </div>
                     </td>
-                    <td style="font-weight: 700; color: #334155; font-size: 0.8rem;">${c.targeting || 'N/A'}</td>
-                    <td class="text-center"><span class="badge bg-light text-dark border" style="font-size: 0.6rem;">${c.match_type || 'N/A'}</span></td>
-                    <td class="text-end fw-700" style="color: #475569;">${formatCurrency(c.spend)}</td>
-                    <td class="text-end fw-900" style="color: #10b981;">${formatCurrency(c.sales)}</td>
-                    <td class="text-center">
-                        <span style="color: ${acos > 35 ? '#ef4444' : (acos < 25 ? '#10b981' : '#f59e0b')}; font-weight: 900; background: ${acos > 35 ? '#fff1f2' : (acos < 25 ? '#f0fdf4' : '#fffbeb')}; padding: 4px 10px; border-radius: 8px; font-size: 0.75rem;">${acos}%</span>
-                    </td>
-                    <td class="text-center fw-800 text-primary">${roas}</td>
-                    <td class="text-center px-4">
-                        <span style="${bidStyle} font-size: 0.6rem; font-weight: 900; padding: 4px 8px; border-radius: 6px; letter-spacing: 0.02em;">${bidAction}</span>
+                    <td style="padding: 14px 24px; font-weight: 700; color: #45464d; font-size: 0.85rem; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${c.targeting || 'N/A'}">${c.targeting || 'N/A'}</td>
+                    <td style="padding: 14px 24px; text-align: left; vertical-align: middle;"><span style="background: #f2f4f6; color: #45464d; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 0.75rem; display: inline-block;">${c.match_type || 'N/A'}</span></td>
+                    <td style="padding: 14px 24px; font-weight: 800; color: #ef4444; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${formatCurrency(spend)}</td>
+                    <td style="padding: 14px 24px; font-weight: 800; color: #0051d5; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; background: rgba(219,225,255,0.05);">${formatCurrency(sales)}</td>
+                    <td style="padding: 14px 24px; text-align: right; vertical-align: middle;">${acosBadgeHtml}</td>
+                    <td style="padding: 14px 24px; text-align: right; vertical-align: middle;">${roasBadgeHtml}</td>
+                    <td style="padding: 14px 32px; text-align: center; vertical-align: middle;">
+                        <span style="${bidStyle} font-size: 0.75rem; font-weight: 900; padding: 6px 12px; border-radius: 6px; letter-spacing: 0.02em; display: inline-block;">${bidAction}</span>
                     </td>
                 </tr>`;
                 });
             }
-            $('#campaign_body').html(html || '<tr><td colspan="8" class="text-center" style="padding: 3rem; color: #94a3b8; font-weight: 600;">No targeting data found for the selected criteria.</td></tr>');
+            $('#campaign_body').html(html || '<tr><td colspan="9" class="text-center" style="padding: 3rem; color: #94a3b8; font-weight: 600;">No targeting data found for the selected criteria.</td></tr>');
 
             if ($.fn.DataTable.isDataTable('#campaignTable')) {
                 $('#campaignTable').DataTable().destroy();
             }
-            $('#campaignTable').DataTable({ 
-                order: [[3, 'desc']], 
-                pageLength: 25,
-                language: {
-                    search: "_INPUT_",
-                    searchPlaceholder: "Quick filter campaigns..."
-                }
+            const table = $('#campaignTable').DataTable({ 
+                dom: 'rtip',
+                order: [[4, 'desc']], 
+                pageLength: 10
+            });
+            $('#campaign_search_input').off('keyup').on('keyup', function() {
+                table.search(this.value).draw();
             });
 
             // Placements
@@ -275,10 +924,260 @@ $(document).ready(function() {
 </script>
 
 <style>
+/* Premium overrides for campaignTable DataTables styling */
+#campaignTable {
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+}
+#campaignTable th {
+    background: #f2f4f6 !important;
+    border-bottom: 1px solid #c6c6cd !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #45464d !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    padding: 16px 24px !important;
+    vertical-align: middle !important;
+    border-top: none !important;
+    position: relative !important;
+}
+#campaignTable th.sorting::after,
+#campaignTable th.sorting_asc::after,
+#campaignTable th.sorting_desc::after,
+#campaignTable th.sorting::before,
+#campaignTable th.sorting_asc::before,
+#campaignTable th.sorting_desc::before {
+    display: none !important; /* Hide ugly standard datatable arrow icons */
+}
+#campaignTable td {
+    border-bottom: 1px solid rgba(198,198,205,0.3) !important;
+    padding: 14px 24px !important;
+    vertical-align: middle !important;
+}
+#campaignTable tr:hover td {
+    background: #f8fafc !important;
+}
+/* Datatable control styles */
+.dataTables_wrapper {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+#campaignTable_wrapper > .row:first-child,
+#campaignTable_wrapper > div:first-child,
+.dataTables_wrapper > .row:first-child,
+.dataTables_wrapper > div:first-child {
+    display: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+}
+#campaignTable {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}.dataTables_wrapper > .row:last-child {
+    background: #f2f4f6 !important;
+    border-top: 1px solid #c6c6cd !important;
+    padding: 16px 32px !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+}
+.dataTables_wrapper > .row:last-child > div {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+.dataTables_wrapper > .row:last-child > div:first-child {
+    justify-content: flex-start !important;
+    max-width: 35% !important;
+}
+.dataTables_wrapper > .row:last-child > div:last-child {
+    justify-content: flex-end !important;
+    max-width: 65% !important;
+}
+.dataTables_wrapper .dataTables_info {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 12px !important;
+    color: #45464d !important;
+    width: auto !important;
+    float: none !important;
+}
+.dataTables_wrapper .dataTables_paginate {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+    float: none !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+/* Style datatable pagination buttons */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 6px 12px !important;
+    margin: 0 4px !important;
+    border-radius: 6px !important;
+    border: 1px solid #c6c6cd !important;
+    background: #ffffff !important;
+    color: #45464d !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    transition: all 0.2s !important;
+    display: inline-block !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, 
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: #64748b !important;
+    color: #ffffff !important;
+    border-color: #64748b !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #f2f4f6 !important;
+    color: #000000 !important;
+    border-color: #c6c6cd !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+    background: #ffffff !important;
+    color: #45464d !important;
+}
+
 .badge-sp { background: #eff6ff; color: #3b82f6; border: 1px solid #bfdbfe; padding: 4px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 800; }
 .badge-sb { background: #faf5ff; color: #a855f7; border: 1px solid #e9d5ff; padding: 4px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 800; }
 .badge-sd { background: #fff1f2; color: #f43f5e; border: 1px solid #fecdd3; padding: 4px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 800; }
 .bg-soft-primary { background-color: #e0e7ff; }
+
+/* Campaigns performance columns */
+.campaigns-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.table-card {
+    background: #ffffff;
+    border: 1px solid #e4e9f0;
+    border-radius: 20px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.table-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.table-card-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+}
+
+.status-badge {
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-badge.high-roas {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.status-badge.check-budget {
+    background: #fef2f2;
+    color: #ef4444;
+}
+
+.premium-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.premium-table th {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1rem 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+    text-align: left;
+}
+
+.premium-table th.right {
+    text-align: right;
+}
+
+.premium-table td {
+    padding: 1.25rem 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.campaign-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
+
+.campaign-sub {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin: 0.15rem 0 0 0;
+    font-weight: 500;
+}
+
+.campaign-spend {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #475569;
+    text-align: right;
+}
+
+.campaign-metric {
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-align: right;
+}
+
+.campaign-metric.roas {
+    color: #2563eb;
+}
+
+.campaign-metric.acos {
+    color: #ef4444;
+}
 </style>
 
 <?php include '../../includes/footer.php'; ?>
