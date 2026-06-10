@@ -1111,6 +1111,92 @@ $(document).ready(function() {
             $('#tacos-value').text(tacos.toFixed(2) + '%');
             $('#roas-value').text(roas.toFixed(2) + 'x');
 
+            // Calculate growth trends from prev_summary (dynamic comparison)
+            let prevSales = data.prev_summary ? parseFloat(data.prev_summary.total_sales || 0) : 0;
+            let prevSpend = data.prev_summary ? parseFloat(data.prev_summary.total_spend || 0) : 0;
+            let prevTacos = data.prev_summary ? parseFloat(data.prev_summary.tacos || 0) : 0;
+            let prevRoas = data.prev_summary ? parseFloat(data.prev_summary.roas || 0) : 0;
+
+            let compSales = totalSales;
+            let compSpend = totalSpend;
+            let compTacos = tacos;
+            let compRoas = roas;
+
+            // Fallback: If database has no data prior to start date (prev period is 0),
+            // split the current period in half to compare second half vs first half.
+            if (prevSales === 0 && data.daily_trend && data.daily_trend.sales && data.daily_trend.sales.length > 1) {
+                const len = data.daily_trend.sales.length;
+                const half = Math.floor(len / 2);
+                
+                let sales1 = 0, sales2 = 0;
+                let spend1 = 0, spend2 = 0;
+                
+                for (let i = 0; i < len; i++) {
+                    if (i < half) {
+                        sales1 += data.daily_trend.sales[i];
+                        spend1 += data.daily_trend.spend[i];
+                    } else {
+                        sales2 += data.daily_trend.sales[i];
+                        spend2 += data.daily_trend.spend[i];
+                    }
+                }
+                
+                prevSales = sales1;
+                prevSpend = spend1;
+                prevTacos = sales1 > 0 ? (spend1 / sales1) * 100 : 0;
+                prevRoas = spend1 > 0 ? (sales1 / spend1) : 0;
+
+                compSales = sales2;
+                compSpend = spend2;
+                compTacos = sales2 > 0 ? (spend2 / sales2) * 100 : 0;
+                compRoas = spend2 > 0 ? (sales2 / spend2) : 0;
+            }
+
+            // Sales Trend
+            const salesGrowth = prevSales > 0 ? ((compSales - prevSales) / prevSales) * 100 : 0;
+            if (salesGrowth >= 0) {
+                $('#sales-trend').html(`<i class="fas fa-arrow-up" style="margin-right: 2px;"></i>${salesGrowth.toFixed(1)}%`);
+                $('#sales-trend-container').removeClass('down neutral').addClass('up').css('color', '#10b981');
+            } else {
+                $('#sales-trend').html(`<i class="fas fa-arrow-down" style="margin-right: 2px;"></i>${Math.abs(salesGrowth).toFixed(1)}%`);
+                $('#sales-trend-container').removeClass('up neutral').addClass('down').css('color', '#ef4444');
+            }
+            $('#sales-trend-container .trend-label').text('vs previous period');
+
+            // Spend Trend
+            const spendGrowth = prevSpend > 0 ? ((compSpend - prevSpend) / prevSpend) * 100 : 0;
+            if (spendGrowth >= 0) {
+                $('#spend-trend').html(`<i class="fas fa-arrow-up" style="margin-right: 2px;"></i>${spendGrowth.toFixed(1)}%`);
+                $('#spend-trend-container').removeClass('down neutral').addClass('up').css('color', '#10b981');
+            } else {
+                $('#spend-trend').html(`<i class="fas fa-arrow-down" style="margin-right: 2px;"></i>${Math.abs(spendGrowth).toFixed(1)}%`);
+                $('#spend-trend-container').removeClass('up neutral').addClass('down').css('color', '#ef4444');
+            }
+            $('#spend-trend-container .trend-label').text('vs previous period');
+
+            // TACOS Trend
+            const tacosGrowth = compTacos - prevTacos;
+            if (tacosGrowth >= 0) {
+                $('#tacos-trend').html(`<i class="fas fa-arrow-up" style="margin-right: 2px;"></i>${tacosGrowth.toFixed(1)}%`);
+                $('#tacos-trend-container').removeClass('down neutral').addClass('up').css('color', '#10b981');
+                $('#tacos-trend-container .trend-label').text('vs previous period');
+            } else {
+                $('#tacos-trend').html(`<i class="fas fa-arrow-down" style="margin-right: 2px;"></i>${Math.abs(tacosGrowth).toFixed(1)}%`);
+                $('#tacos-trend-container').removeClass('up neutral').addClass('down').css('color', '#ef4444');
+                $('#tacos-trend-container .trend-label').text('vs previous period');
+            }
+
+            // ROAS Trend
+            const roasGrowth = compRoas - prevRoas;
+            if (roasGrowth >= 0) {
+                $('#roas-trend').html(`<i class="fas fa-arrow-up" style="margin-right: 2px;"></i>${roasGrowth.toFixed(2)}x`);
+                $('#roas-trend-container').removeClass('down neutral').addClass('up').css('color', '#10b981');
+            } else {
+                $('#roas-trend').html(`<i class="fas fa-arrow-down" style="margin-right: 2px;"></i>${Math.abs(roasGrowth).toFixed(2)}x`);
+                $('#roas-trend-container').removeClass('up neutral').addClass('down').css('color', '#ef4444');
+            }
+            $('#roas-trend-container .trend-label').text('vs previous period');
+
             // Populate global daily trend for the report table
             globalDailyTrend = data.daily_trend || { labels: [], spend: [], sales: [] };
             dailyTrendData = data.daily_trend;

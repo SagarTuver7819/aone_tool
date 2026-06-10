@@ -90,6 +90,37 @@ try {
     $stmt->execute();
     $sd_summary = $stmt->get_result()->fetch_assoc() ?: ['impressions'=>0,'clicks'=>0,'spend'=>0,'sales'=>0,'orders'=>0];
 
+    // Calculate previous period dates for comparison
+    $date_from_ts = strtotime($from_date);
+    $date_to_ts = strtotime($to_date);
+    $diff_seconds = $date_to_ts - $date_from_ts;
+    $prev_to_date = date('Y-m-d', $date_from_ts - 86400);
+    $prev_from_date = date('Y-m-d', $date_from_ts - $diff_seconds - 86400);
+
+    // Fetch previous SP summary
+    $stmt_prev_sp = $conn->prepare($sql_sp);
+    $stmt_prev_sp->bind_param("ss", $prev_from_date, $prev_to_date);
+    $stmt_prev_sp->execute();
+    $prev_sp_res = $stmt_prev_sp->get_result()->fetch_assoc();
+    $prev_sp_summary = $prev_sp_res ?: ['spend'=>0,'sales'=>0,'clicks'=>0,'orders'=>0];
+
+    // Fetch previous SB summary
+    $stmt_prev_sb = $conn->prepare($sql_sb);
+    $stmt_prev_sb->bind_param("ss", $prev_from_date, $prev_to_date);
+    $stmt_prev_sb->execute();
+    $prev_sb_res = $stmt_prev_sb->get_result()->fetch_assoc();
+    $prev_sb_summary = $prev_sb_res ?: ['spend'=>0,'sales'=>0,'clicks'=>0,'orders'=>0];
+
+    // Fetch previous SD summary
+    $stmt_prev_sd = $conn->prepare($sql_sd);
+    $stmt_prev_sd->bind_param("ss", $prev_from_date, $prev_to_date);
+    $stmt_prev_sd->execute();
+    $prev_sd_res = $stmt_prev_sd->get_result()->fetch_assoc();
+    $prev_sd_summary = $prev_sd_res ?: ['spend'=>0,'sales'=>0,'clicks'=>0,'orders'=>0];
+
+    $prev_total_spend = floatval($prev_sp_summary['spend']) + floatval($prev_sb_summary['spend']) + floatval($prev_sd_summary['spend']);
+    $prev_total_sales = floatval($prev_sp_summary['sales']) + floatval($prev_sb_summary['sales']) + floatval($prev_sd_summary['sales']);
+
     // 4. Campaign & Target Performance (Granular)
     $sql_campaigns = "SELECT 
                         campaign_name, 
@@ -190,6 +221,12 @@ try {
             'total_sales' => $sp_summary['sales'] + $sb_summary['sales'] + $sd_summary['sales'],
             'total_clicks' => $sp_summary['clicks'] + $sb_summary['clicks'] + $sd_summary['clicks'],
             'total_orders' => $sp_summary['orders'] + $sb_summary['orders'] + $sd_summary['orders']
+        ],
+        'prev_summary' => [
+            'total_spend' => $prev_total_spend,
+            'total_sales' => $prev_total_sales,
+            'tacos' => $prev_total_sales > 0 ? ($prev_total_spend / $prev_total_sales) * 100 : 0,
+            'roas' => $prev_total_spend > 0 ? ($prev_total_sales / $prev_total_spend) : 0
         ],
         'campaigns' => $campaigns,
         'daily_trend' => $daily_trend,
