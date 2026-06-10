@@ -963,28 +963,6 @@ include '../../includes/sidebar.php';
         </div>
     </div>
 
-    <!-- SECTION 4: Fees Breakdown (Full Width Platform Fee Analysis) -->
-    <div class="card" style="overflow: hidden; margin-bottom: 2rem; padding: 0;">
-        <div style="padding: 1.25rem 2rem; background: var(--surface-container-low); border-bottom: 1px solid var(--outline-variant); display: flex; align-items: center; gap: 10px;">
-            <div style="width: 36px; height: 36px; background: var(--error); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(186, 26, 26, 0.2);"><i class="fas fa-receipt"></i></div>
-            <div>
-                <span style="font-weight: 800; color: var(--on-surface); font-size: 1.1rem; display: block;">Amazon Platform Fee Analysis</span>
-                <span style="font-size: 0.75rem; color: var(--on-surface-variant); font-weight: 600;">Granular breakdown of Amazon platform charges and adjustment categories</span>
-            </div>
-        </div>
-        <div style="padding: 2rem; display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; align-items: center;">
-            <div style="height: 280px; display: flex; align-items: center; justify-content: center; position: relative;">
-                <canvas id="feesChart"></canvas>
-                <div id="fee_chart_center_text" style="position: absolute; text-align: center; pointer-events: none;">
-                    <div style="font-size: 0.8rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Total Fees</div>
-                    <div id="total_fees_donut_val" style="font-size: 1.5rem; font-weight: 900; color: #1e293b;">$0.00</div>
-                </div>
-            </div>
-            <div id="fees_breakdown_list" style="max-height: 280px; overflow-y: auto; padding-right: 10px;">
-                <div style="text-align: center; padding: 2rem; color: #94a3b8; font-weight: 700;">Analyzing fee categories...</div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <div id="tab_products" class="tab-content" <?php echo ($active_tab !== 'products') ? 'style="display: none;"' : ''; ?>>
@@ -2664,39 +2642,6 @@ $(document).ready(function() {
             success: function(res) {
                 if (!res) return;
                 
-                // Populating Fee Breakdown List (Premium Styled)
-                if (res.fee_breakdown) {
-                    const colors = ['#f43f5e', '#8b5cf6', '#3b82f6', '#f59e0b', '#10b981', '#6366f1', '#94a3b8'];
-                    let feeHtml = '<div style="display: flex; flex-direction: column; gap: 0.75rem;">';
-                    const totalFeesVal = res.fee_breakdown.values.reduce((a, b) => a + b, 0);
-                    
-                    res.fee_breakdown.labels.forEach((label, idx) => {
-                        const val = res.fee_breakdown.values[idx];
-                        const pct = totalFeesVal > 0 ? ((val / totalFeesVal) * 100).toFixed(1) : 0;
-                        const color = colors[idx % colors.length];
-                        
-                        feeHtml += `
-                            <div style="padding: 1rem; background: #fff; border: 1px solid #f1f5f9; border-radius: 12px; transition: all 0.3s; cursor: default; position: relative; overflow: hidden;">
-                                <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: ${color};"></div>
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                    <span style="font-weight: 800; color: #1e293b; font-size: 0.85rem;">${label}</span>
-                                    <span style="font-weight: 900; color: ${color};">$${val.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <div style="flex: 1; height: 6px; background: #f1f5f9; border-radius: 10px;">
-                                        <div style="height: 100%; width: ${pct}%; background: ${color}; border-radius: 10px;"></div>
-                                    </div>
-                                    <span style="font-size: 0.7rem; font-weight: 800; color: #94a3b8; min-width: 35px;">${pct}%</span>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    feeHtml += '</div>';
-                    $('#fees_breakdown_list').html(feeHtml);
-                    $('#total_fees_donut_val').text('$' + totalFeesVal.toLocaleString(undefined, {maximumFractionDigits: 0}));
-                    renderFeeChart(res.fee_breakdown);
-                }
-
                 // Populating Region Table with SKU Breakdown
                 if (res.province_breakdown) {
                     let regionList = res.province_breakdown;
@@ -2784,24 +2729,6 @@ $(document).ready(function() {
 
                 renderFinancialInsights(res.insights);
             }
-        });
-    }
-
-    function renderFeeChart(feeData) {
-        const ctx = document.getElementById('feesChart').getContext('2d');
-        if (window.feesChartInst) window.feesChartInst.destroy();
-        window.feesChartInst = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: feeData.labels,
-                datasets: [{
-                    data: feeData.values,
-                    backgroundColor: ['#f43f5e', '#8b5cf6', '#3b82f6', '#f59e0b', '#10b981', '#6366f1', '#94a3b8'],
-                    borderWidth: 2,
-                    borderColor: '#ffffff'
-                }]
-            },
-            options: { cutout: '60%', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
         });
     }
 
