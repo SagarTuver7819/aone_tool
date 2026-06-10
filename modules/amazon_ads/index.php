@@ -569,57 +569,6 @@ include '../../includes/sidebar.php';
         </div>
     </div>
 
-    <!-- Section Heading: Campaign Performance -->
-    <div style="margin-top: 2.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.75rem;">
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-            <i class="fas fa-bullseye" style="color: #2563eb;"></i> Campaign Performance Overview
-        </h2>
-        <p style="font-size: 0.85rem; color: #64748b; margin: 0.25rem 0 0 0; font-weight: 500;">Analyze your top-performing and budget-critical advertising campaigns</p>
-    </div>
-
-    <!-- Campaigns performance columns -->
-    <div class="campaigns-grid">
-        <!-- Top 5 Performing Campaigns -->
-        <div class="table-card">
-            <div class="table-card-header">
-                <div class="table-card-title">Top 5 Performing Campaigns</div>
-                <span class="status-badge high-roas">HIGH ROAS</span>
-            </div>
-            <table class="premium-table">
-                <thead>
-                    <tr>
-                        <th>CAMPAIGN NAME</th>
-                        <th class="right">SPEND</th>
-                        <th class="right">ROAS</th>
-                    </tr>
-                </thead>
-                <tbody id="top-campaigns-body">
-                    <tr><td colspan="3" class="text-center" style="padding:2rem; color:#64748b;">Loading campaigns...</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Bottom 5 Low-Performing Campaigns -->
-        <div class="table-card">
-            <div class="table-card-header">
-                <div class="table-card-title">Bottom 5 Low-Performing Campaigns</div>
-                <span class="status-badge check-budget">CHECK BUDGET</span>
-            </div>
-            <table class="premium-table">
-                <thead>
-                    <tr>
-                        <th>CAMPAIGN NAME</th>
-                        <th class="right">SPEND</th>
-                        <th class="right">ACOS</th>
-                    </tr>
-                </thead>
-                <tbody id="bottom-campaigns-body">
-                    <tr><td colspan="3" class="text-center" style="padding:2rem; color:#64748b;">Loading campaigns...</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
     <!-- Ad Type Performance Section -->
     <div class="ad-performance-card" style="margin-bottom: 2rem;">
         <div class="ad-perf-header">
@@ -707,89 +656,6 @@ include '../../includes/sidebar.php';
                         <p class="mini-value" id="sd-roas">0.00x</p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section Heading: Placement Performance -->
-    <div style="margin-top: 3rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.75rem;">
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-            <i class="fas fa-layer-group" style="color: #0284c7;"></i> Placement Analysis Report
-        </h2>
-        <p style="font-size: 0.85rem; color: #64748b; margin: 0.25rem 0 0 0; font-weight: 500;">Evaluate where your ads perform best (Top of Search vs. Product Pages vs. Rest of Search)</p>
-    </div>
-
-    <!-- Placement Performance Cards Side-by-Side -->
-    <div class="campaigns-grid" style="margin-bottom: 2rem;">
-        <!-- Sponsored Products Placement -->
-        <div class="table-card" style="padding: 1.5rem 1.75rem;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <div style="width: 40px; height: 40px; background: #eff6ff; color: #2563eb; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
-                        <i class="fas fa-mouse-pointer"></i>
-                    </div>
-                    <div>
-                        <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Sponsored Products</h4>
-                        <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Individual Listing Promotions</p>
-                    </div>
-                </div>
-                <div style="color: #64748b; cursor: pointer; font-size: 1.1rem;"><i class="fas fa-ellipsis-v"></i></div>
-            </div>
-            
-            <table style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; margin-bottom: 1rem;">
-                <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
-                    <tr>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 35%;">Placement</th>
-                        <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">Spend</th>
-                        <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #0051d5; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%; background: rgba(219,225,255,0.1);">Sales</th>
-                        <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 14%; background: rgba(111,251,190,0.05);">ROAS</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 15%;">Health</th>
-                    </tr>
-                </thead>
-                <tbody id="sp-placements-body" style="background:#ffffff;">
-                    <tr><td colspan="5" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading placements...</td></tr>
-                </tbody>
-            </table>
-            
-            <div style="border-top: 1px solid #f1f5f9; padding-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #475569; font-weight: 600;">
-                <i class="fas fa-info-circle" style="color: #2563eb; font-size: 0.85rem;"></i>
-                <span id="sp-placement-insight">Analyzing SP conversion metrics...</span>
-            </div>
-        </div>
-
-        <!-- Sponsored Brands Placement -->
-        <div class="table-card" style="padding: 1.5rem 1.75rem;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <div style="width: 40px; height: 40px; background: #e0f2fe; color: #0284c7; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
-                        <i class="fas fa-bullhorn"></i>
-                    </div>
-                    <div>
-                        <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Sponsored Brands</h4>
-                        <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Brand Store & Headline Ads</p>
-                    </div>
-                </div>
-                <div style="color: #64748b; cursor: pointer; font-size: 1.1rem;"><i class="fas fa-ellipsis-v"></i></div>
-            </div>
-
-            <table style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; margin-bottom: 1rem;">
-                <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
-                    <tr>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 35%;">Placement</th>
-                        <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">Spend</th>
-                        <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #0051d5; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%; background: rgba(219,225,255,0.1);">Sales</th>
-                        <th style="padding: 16px 16px; font-size: 12px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 14%; background: rgba(111,251,190,0.05);">ROAS</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 15%;">Health</th>
-                    </tr>
-                </thead>
-                <tbody id="sb-placements-body" style="background:#ffffff;">
-                    <tr><td colspan="5" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading placements...</td></tr>
-                </tbody>
-            </table>
-
-            <div style="border-top: 1px solid #f1f5f9; padding-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #475569; font-weight: 600;">
-                <i class="fas fa-exclamation-triangle" style="color: #0284c7; font-size: 0.85rem;"></i>
-                <span id="sb-placement-insight">Analyzing SB attribution trends...</span>
             </div>
         </div>
     </div>
@@ -884,100 +750,19 @@ include '../../includes/sidebar.php';
 
 
 
-    <!-- Keywords performance columns side-by-side -->
-    <div class="campaigns-grid" style="margin-bottom: 2rem;">
-        <!-- Top 10 Performing Keywords -->
-        <div class="table-card">
-            <div class="table-card-header">
-                <div class="table-card-title">Top 10 Performing Keywords</div>
-                <span class="status-badge high-roas">HIGH ROAS</span>
+    <!-- Heatmap Legend -->
+        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; margin-top: 2rem;">
+            <span style="font-size: 0.75rem; font-weight: 700; color: #64748b;">Lower Intensity</span>
+            <div style="display: flex; gap: 0.25rem;">
+                <div style="width: 16px; height: 16px; border-radius: 4px; background: rgba(37, 99, 235, 0.15);"></div>
+                <div style="width: 16px; height: 16px; border-radius: 4px; background: rgba(37, 99, 235, 0.4);"></div>
+                <div style="width: 16px; height: 16px; border-radius: 4px; background: rgba(37, 99, 235, 0.7);"></div>
+                <div style="width: 16px; height: 16px; border-radius: 4px; background: rgba(37, 99, 235, 1.0);"></div>
             </div>
-            <table class="premium-table">
-                <thead>
-                    <tr>
-                        <th>KEYWORD</th>
-                        <th class="right">SPEND</th>
-                        <th class="right">ROAS</th>
-                    </tr>
-                </thead>
-                <tbody id="top-keywords-body">
-                    <tr><td colspan="3" class="text-center" style="padding:2rem; color:#64748b;">Loading keywords...</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Worst 10 Low-Performing Keywords -->
-        <div class="table-card">
-            <div class="table-card-header">
-                <div class="table-card-title">Worst 10 Low-Performing Keywords</div>
-                <span class="status-badge check-budget">CHECK BUDGET</span>
-            </div>
-            <table class="premium-table">
-                <thead>
-                    <tr>
-                        <th>KEYWORD</th>
-                        <th class="right">SPEND</th>
-                        <th class="right">ACoS</th>
-                    </tr>
-                </thead>
-                <tbody id="bottom-keywords-body">
-                    <tr><td colspan="3" class="text-center" style="padding:2rem; color:#64748b;">Loading keywords...</td></tr>
-                </tbody>
-            </table>
+            <span style="font-size: 0.75rem; font-weight: 700; color: #64748b;">Higher Intensity</span>
         </div>
     </div>
 
-    <!-- Match Type Performance Card Section -->
-    <div class="campaigns-grid" style="margin-bottom: 2rem;">
-        <!-- Match Type Performance Table Card -->
-        <div class="table-card" style="padding: 1.5rem 1.75rem;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <div style="width: 40px; height: 40px; background: #eff6ff; color: #3b82f6; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
-                        <i class="fas fa-tags"></i>
-                    </div>
-                    <div>
-                        <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Match Type Performance</h4>
-                        <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Performance metrics grouped by keyword match types</p>
-                    </div>
-                </div>
-            </div>
-            
-            <table style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; margin-bottom: 1rem;">
-                <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
-                    <tr>
-                        <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 28%;">Match Type</th>
-                        <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">Spend</th>
-                        <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #0051d5; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 20%;">Sales</th>
-                        <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 16%;">ACoS</th>
-                        <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">ROAS</th>
-                    </tr>
-                </thead>
-                <tbody id="match-types-body" style="background:#ffffff;">
-                    <tr><td colspan="5" style="text-align: center; padding: 2rem; color: #94a3b8;">Loading match types...</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Match Type Share Doughnut Chart Card -->
-        <div class="table-card" style="padding: 1.5rem 1.75rem;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <div style="width: 40px; height: 40px; background: #ecfdf5; color: #10b981; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
-                        <i class="fas fa-chart-pie"></i>
-                    </div>
-                    <div>
-                        <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Spend Share by Match Type</h4>
-                        <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Visualizing share of ad budget distribution</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div style="height: 220px; position: relative; width: 100%; display: flex; justify-content: center; align-items: center;">
-                <canvas id="matchTypeDoughnutChart" style="max-height: 100%; max-width: 100%;"></canvas>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script>
@@ -2035,11 +1820,14 @@ $(document).ready(function() {
         let yAxesConfig = {
             y: {
                 display: true,
+                beginAtZero: true,
                 grid: { color: '#f1f5f9' },
                 border: { display: false },
+                title: { display: true, text: 'Amount ($)', color: '#64748b', font: { family: 'Inter', weight: '700' } },
                 ticks: {
                     font: { family: 'Inter', weight: '600' },
                     color: '#64748b',
+                    padding: 10,
                     callback: function(value) { return '$' + value.toLocaleString(); }
                 }
             },
@@ -2048,17 +1836,22 @@ $(document).ready(function() {
 
         let datasets = [];
 
+        const defaultBarStyles = {
+            borderRadius: 6,
+            borderSkipped: false,
+            maxBarThickness: 24,
+            barThickness: 18,
+            categoryPercentage: 0.7,
+            barPercentage: 0.72
+        };
+
         if (activeMetric === 'sales') {
             datasets = [{
                 label: 'Total Sales ($)',
                 data: dailyTrendData.sales,
                 backgroundColor: '#3b82f6', // Premium Blue
                 hoverBackgroundColor: '#2563eb',
-                borderRadius: 4,
-                borderSkipped: false,
-                maxBarThickness: 30,
-                categoryPercentage: 0.8,
-                barPercentage: 0.8,
+                ...defaultBarStyles,
                 yAxisID: 'y'
             }];
         } else if (activeMetric === 'spend') {
@@ -2067,11 +1860,7 @@ $(document).ready(function() {
                 data: dailyTrendData.spend,
                 backgroundColor: '#64748b', // Slate
                 hoverBackgroundColor: '#475569',
-                borderRadius: 4,
-                borderSkipped: false,
-                maxBarThickness: 30,
-                categoryPercentage: 0.8,
-                barPercentage: 0.8,
+                ...defaultBarStyles,
                 yAxisID: 'y'
             }];
         } else if (activeMetric === 'roas') {
@@ -2080,14 +1869,11 @@ $(document).ready(function() {
                 data: roasDaily,
                 backgroundColor: '#10b981', // Emerald Green
                 hoverBackgroundColor: '#059669',
-                borderRadius: 4,
-                borderSkipped: false,
-                maxBarThickness: 30,
-                categoryPercentage: 0.8,
-                barPercentage: 0.8,
+                ...defaultBarStyles,
                 yAxisID: 'y'
             }];
             yAxesConfig.y.ticks.callback = function(value) { return value.toFixed(1) + 'x'; };
+            yAxesConfig.y.title = { display: true, text: 'ROAS (x)', color: '#10b981', font: { family: 'Inter', weight: '700' } };
         } else {
             // 'all' Grouped Layout - rendering all 3 as side-by-side bar charts!
             datasets = [
@@ -2096,11 +1882,7 @@ $(document).ready(function() {
                     data: dailyTrendData.spend,
                     backgroundColor: '#64748b',
                     hoverBackgroundColor: '#475569',
-                    borderRadius: 4,
-                    borderSkipped: false,
-                    maxBarThickness: 25,
-                    categoryPercentage: 0.95,
-                    barPercentage: 0.95,
+                    ...defaultBarStyles,
                     yAxisID: 'y'
                 },
                 {
@@ -2108,11 +1890,7 @@ $(document).ready(function() {
                     data: dailyTrendData.sales,
                     backgroundColor: '#3b82f6',
                     hoverBackgroundColor: '#2563eb',
-                    borderRadius: 4,
-                    borderSkipped: false,
-                    maxBarThickness: 25,
-                    categoryPercentage: 0.95,
-                    barPercentage: 0.95,
+                    ...defaultBarStyles,
                     yAxisID: 'y'
                 },
                 {
@@ -2121,22 +1899,21 @@ $(document).ready(function() {
                     type: 'bar', // Render as bar instead of line!
                     backgroundColor: '#10b981',
                     hoverBackgroundColor: '#059669',
-                    borderRadius: 4,
-                    borderSkipped: false,
-                    maxBarThickness: 25,
-                    categoryPercentage: 0.95,
-                    barPercentage: 0.95,
+                    ...defaultBarStyles,
                     yAxisID: 'y1'
                 }
             ];
             yAxesConfig.y1 = {
                 display: true,
+                beginAtZero: true,
                 position: 'right',
                 grid: { drawOnChartArea: false },
                 border: { display: false },
+                title: { display: true, text: 'ROAS (x)', color: '#10b981', font: { family: 'Inter', weight: '700' } },
                 ticks: {
                     font: { family: 'Inter', weight: '600' },
                     color: '#10b981',
+                    padding: 10,
                     callback: function(value) { return value.toFixed(1) + 'x'; }
                 }
             };
@@ -2151,6 +1928,10 @@ $(document).ready(function() {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
                 plugins: {
                     legend: {
                         position: 'top',
@@ -2158,16 +1939,22 @@ $(document).ready(function() {
                         labels: {
                             usePointStyle: true,
                             pointStyle: 'circle',
-                            padding: 15,
-                            font: { family: 'Inter', weight: '700', size: 11 },
+                            boxWidth: 10,
+                            boxHeight: 10,
+                            padding: 16,
+                            font: { family: 'Inter', weight: '700', size: 12 },
                             color: '#475569'
                         }
                     },
                     tooltip: {
-                        padding: 12,
+                        padding: 14,
                         backgroundColor: '#0f172a',
-                        titleFont: { family: 'Inter', weight: '700' },
-                        bodyFont: { family: 'Inter' },
+                        titleFont: { family: 'Inter', weight: '700', size: 13 },
+                        bodyFont: { family: 'Inter', size: 12 },
+                        bodySpacing: 8,
+                        displayColors: false,
+                        cornerRadius: 10,
+                        caretPadding: 10,
                         callbacks: {
                             label: function(context) {
                                 if (context.dataset.label.includes('ROAS')) {
@@ -2182,12 +1969,14 @@ $(document).ready(function() {
                     y: yAxesConfig.y,
                     y1: yAxesConfig.y1,
                     x: {
+                        offset: true,
                         grid: { display: false },
                         border: { display: false },
                         ticks: {
                             font: { family: 'Inter', weight: '600' },
                             color: '#64748b',
-                            maxTicksLimit: 12
+                            maxTicksLimit: 12,
+                            padding: 8
                         }
                     }
                 }
