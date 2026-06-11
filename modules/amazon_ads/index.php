@@ -748,19 +748,6 @@ include '../../includes/sidebar.php';
         </div>
     </div>
 
-
-
-    <!-- Heatmap Legend -->
-        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; margin-top: 2rem;">
-            <span style="font-size: 0.75rem; font-weight: 700; color: #64748b;">Lower Intensity</span>
-            <div style="display: flex; gap: 0.25rem;">
-                <div style="width: 16px; height: 16px; border-radius: 4px; background: rgba(37, 99, 235, 0.15);"></div>
-                <div style="width: 16px; height: 16px; border-radius: 4px; background: rgba(37, 99, 235, 0.4);"></div>
-                <div style="width: 16px; height: 16px; border-radius: 4px; background: rgba(37, 99, 235, 0.7);"></div>
-                <div style="width: 16px; height: 16px; border-radius: 4px; background: rgba(37, 99, 235, 1.0);"></div>
-            </div>
-            <span style="font-size: 0.75rem; font-weight: 700; color: #64748b;">Higher Intensity</span>
-        </div>
     </div>
 
 </div>
@@ -1837,12 +1824,11 @@ $(document).ready(function() {
         let datasets = [];
 
         const defaultBarStyles = {
-            borderRadius: 6,
+            borderRadius: 3,
             borderSkipped: false,
-            maxBarThickness: 24,
-            barThickness: 18,
-            categoryPercentage: 0.7,
-            barPercentage: 0.72
+            maxBarThickness: 6,
+            categoryPercentage: 0.8,
+            barPercentage: 0.9
         };
 
         if (activeMetric === 'sales') {
@@ -1952,15 +1938,17 @@ $(document).ready(function() {
                         titleFont: { family: 'Inter', weight: '700', size: 13 },
                         bodyFont: { family: 'Inter', size: 12 },
                         bodySpacing: 8,
-                        displayColors: false,
+                        displayColors: true,
+                        boxWidth: 10,
+                        boxHeight: 10,
                         cornerRadius: 10,
                         caretPadding: 10,
                         callbacks: {
                             label: function(context) {
                                 if (context.dataset.label.includes('ROAS')) {
-                                    return context.dataset.label + ': ' + parseFloat(context.raw).toFixed(2) + 'x';
+                                    return ' ' + context.dataset.label + ': ' + parseFloat(context.raw).toFixed(2) + 'x';
                                 }
-                                return context.dataset.label + ': ' + formatCurrency(context.raw);
+                                return ' ' + context.dataset.label + ': ' + formatCurrency(context.raw);
                             }
                         }
                     }

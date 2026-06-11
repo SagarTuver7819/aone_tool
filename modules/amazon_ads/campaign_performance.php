@@ -322,35 +322,14 @@ include '../../includes/sidebar.php';
     </div>
 </section>
 
-<div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 2rem;">
-    <!-- Placement Performance -->
-    <div class="card" style="border-radius: 16px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); overflow: hidden;">
-        <div style="background: #f8fafc; padding: 1rem 1.5rem; border-bottom: 1px solid #e2e8f0; font-weight: 700; color: #334155;">
-            <i class="fas fa-map-marker-alt" style="color: #10b981; margin-right: 0.5rem;"></i> Placement Performance
-        </div>
-        <div style="padding: 1rem;">
-            <table class="table" id="placementTable" style="width: 100%; font-size: 0.85rem;">
-                <thead style="background: #f1f5f9;">
-                    <tr>
-                        <th>Placement</th>
-                        <th style="text-align: right;">Spend</th>
-                        <th style="text-align: center;">ACoS</th>
-                        <th style="text-align: center;">CTR</th>
-                    </tr>
-                </thead>
-                <tbody id="placement_body"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Bidding Strategy -->
+<!-- Bidding Strategy Efficiency -->
+<div style="margin-bottom: 2rem; margin-top: 2rem;">
     <div class="card" style="border-radius: 16px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); overflow: hidden;">
         <div style="background: #f8fafc; padding: 1rem 1.5rem; border-bottom: 1px solid #e2e8f0; font-weight: 700; color: #334155;">
             <i class="fas fa-gavel" style="color: #f59e0b; margin-right: 0.5rem;"></i> Bidding Strategy Efficiency
         </div>
         <div style="padding: 1rem;">
- 
-        <table class="table" id="biddingTable" style="width: 100%; font-size: 0.85rem;">
+            <table class="table" id="biddingTable" style="width: 100%; font-size: 0.85rem;">
                 <thead style="background: #f1f5f9;">
                     <tr>
                         <th>Strategy</th>
@@ -364,6 +343,7 @@ include '../../includes/sidebar.php';
         </div>
     </div>
 </div>
+
 
 <script>
 $(document).ready(function() {

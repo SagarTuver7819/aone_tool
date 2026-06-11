@@ -52,10 +52,72 @@ try {
         $repeat_purchases[] = array_merge(['report_date' => $row['report_date']], $data);
     }
 
+    // Compute Funnel Metrics dynamically from the database
+    // 1. Query Vol & Imps from SQP
+    $sql_sqp_agg = "SELECT data_json FROM amazon_brand_reports WHERE $where_customer AND report_type = 'search_query' AND report_date BETWEEN ? AND ?";
+    $stmt_sqp = $conn->prepare($sql_sqp_agg);
+    $stmt_sqp->bind_param("ss", $from_date, $to_date);
+    $stmt_sqp->execute();
+    $res_sqp = $stmt_sqp->get_result();
+
+    $total_volume = 0;
+    $total_imps = 0;
+    while($row = $res_sqp->fetch_assoc()) {
+        $data = json_decode($row['data_json'], true);
+        if (isset($data['brandlapetiteourse']) && $data['brandlapetiteourse'] === 'Search Query') {
+            continue;
+        }
+        foreach($data as $k => $v) {
+            if (stripos($k, 'selectyear') !== false && is_numeric($v)) {
+                $total_volume += intval($v);
+            }
+            if ((stripos($k, 'january') !== false || stripos($k, 'february') !== false || stripos($k, 'march') !== false) && is_numeric($v)) {
+                $total_imps += intval($v);
+            }
+        }
+    }
+
+    // 2. PPC impressions & clicks
+    $sql_sp = "SELECT SUM(impressions) as imps, SUM(clicks) as clicks FROM amazon_advertising_sp WHERE $where_customer AND report_date BETWEEN ? AND ?";
+    $stmt_sp = $conn->prepare($sql_sp);
+    $stmt_sp->bind_param("ss", $from_date, $to_date);
+    $stmt_sp->execute();
+    $ad_sp = $stmt_sp->get_result()->fetch_assoc();
+
+    $sql_sb = "SELECT SUM(impressions) as imps, SUM(clicks) as clicks FROM amazon_advertising_sb WHERE $where_customer AND report_date BETWEEN ? AND ?";
+    $stmt_sb = $conn->prepare($sql_sb);
+    $stmt_sb->bind_param("ss", $from_date, $to_date);
+    $stmt_sb->execute();
+    $ad_sb = $stmt_sb->get_result()->fetch_assoc();
+
+    $sql_sd = "SELECT SUM(impressions) as imps, SUM(clicks) as clicks FROM amazon_advertising_sd WHERE $where_customer AND report_date BETWEEN ? AND ?";
+    $stmt_sd = $conn->prepare($sql_sd);
+    $stmt_sd->bind_param("ss", $from_date, $to_date);
+    $stmt_sd->execute();
+    $ad_sd = $stmt_sd->get_result()->fetch_assoc();
+
+    $brand_imps = intval($ad_sp['imps'] ?? 0) + intval($ad_sb['imps'] ?? 0) + intval($ad_sd['imps'] ?? 0);
+    $brand_clicks = intval($ad_sp['clicks'] ?? 0) + intval($ad_sb['clicks'] ?? 0) + intval($ad_sd['clicks'] ?? 0);
+
+    // 3. Brand units (Purchases)
+    $sql_bus = "SELECT SUM(units_ordered) as units FROM amazon_business_report WHERE $where_customer AND report_date BETWEEN ? AND ?";
+    $stmt_bus = $conn->prepare($sql_bus);
+    $stmt_bus->bind_param("ss", $from_date, $to_date);
+    $stmt_bus->execute();
+    $bus = $stmt_bus->get_result()->fetch_assoc();
+    $brand_purchases = intval($bus['units'] ?? 0);
+
     echo json_encode([
         'search_queries' => $search_queries,
         'repeat_purchases' => $repeat_purchases,
-        'trends' => fetchBrandTrends($conn, $where_customer, $from_date, $to_date)
+        'trends' => fetchBrandTrends($conn, $where_customer, $from_date, $to_date),
+        'funnel_metrics' => [
+            'market_search_volume' => $total_volume,
+            'market_impressions' => $total_imps,
+            'brand_impressions' => $brand_imps,
+            'brand_clicks' => $brand_clicks,
+            'brand_purchases' => $brand_purchases
+        ]
     ]);
 
 } catch (Throwable $t) {

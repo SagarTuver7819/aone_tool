@@ -55,6 +55,13 @@
             </li>
 
             <li class="nav-item">
+                <a href="<?php echo BASE_URL; ?>modules/amazon_ads/brand_analytics.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'brand_analytics') !== false) ? 'active' : ''; ?>">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Brand Analytics</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="<?php echo BASE_URL; ?>modules/amazon_ads/pro_keywords.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'pro_keywords') !== false) ? 'active' : ''; ?>">
                     <i class="fas fa-key"></i>
                     <span>Search Term & Keywords</span>
