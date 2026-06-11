@@ -252,11 +252,6 @@ include '../../includes/sidebar.php';
                 <tr><td colspan="5" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading placements...</td></tr>
             </tbody>
         </table>
-        
-        <div style="border-top: 1px solid #f1f5f9; padding-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #475569; font-weight: 600;">
-            <i class="fas fa-info-circle" style="color: #2563eb; font-size: 0.85rem;"></i>
-            <span id="sp-placement-insight">Analyzing SP conversion metrics...</span>
-        </div>
     </div>
 
     <!-- Sponsored Brands Placement -->
@@ -287,11 +282,6 @@ include '../../includes/sidebar.php';
                 <tr><td colspan="5" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading placements...</td></tr>
             </tbody>
         </table>
-
-        <div style="border-top: 1px solid #f1f5f9; padding-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #475569; font-weight: 600;">
-            <i class="fas fa-exclamation-triangle" style="color: #0284c7; font-size: 0.85rem;"></i>
-            <span id="sb-placement-insight">Analyzing SB attribution trends...</span>
-        </div>
     </div>
 </div>
 
@@ -332,28 +322,8 @@ include '../../includes/sidebar.php';
     </div>
 </section>
 
-<div style="display: none; flex-direction: column; gap: 2rem; margin-bottom: 2rem;">
-    <!-- Placement Performance -->
-    <div class="card" style="border-radius: 16px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); overflow: hidden;">
-        <div style="background: #f8fafc; padding: 1rem 1.5rem; border-bottom: 1px solid #e2e8f0; font-weight: 700; color: #334155;">
-            <i class="fas fa-map-marker-alt" style="color: #10b981; margin-right: 0.5rem;"></i> Placement Performance
-        </div>
-        <div style="padding: 1rem;">
-            <table class="table" id="placementTable" style="width: 100%; font-size: 0.85rem;">
-                <thead style="background: #f1f5f9;">
-                    <tr>
-                        <th>Placement</th>
-                        <th style="text-align: right;">Spend</th>
-                        <th style="text-align: center;">ACoS</th>
-                        <th style="text-align: center;">CTR</th>
-                    </tr>
-                </thead>
-                <tbody id="placement_body"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Bidding Strategy -->
+<!-- Bidding Strategy Efficiency -->
+<div style="margin-bottom: 2rem; margin-top: 2rem;">
     <div class="card" style="border-radius: 16px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); overflow: hidden;">
         <div style="background: #f8fafc; padding: 1rem 1.5rem; border-bottom: 1px solid #e2e8f0; font-weight: 700; color: #334155;">
             <i class="fas fa-gavel" style="color: #f59e0b; margin-right: 0.5rem;"></i> Bidding Strategy Efficiency
@@ -373,6 +343,7 @@ include '../../includes/sidebar.php';
         </div>
     </div>
 </div>
+
 
 <script>
 $(document).ready(function() {
@@ -429,10 +400,10 @@ $(document).ready(function() {
             $('#campaign_body, #placement_body, #bidding_body').css('opacity', '1');
             
             // Top/Bottom Campaigns Population
-            const campaigns = data.campaigns || [];
+            const allCampaigns = data.campaigns || [];
             
             // Top 5 Performing
-            const topCampaigns = [...campaigns]
+            const topCampaigns = [...allCampaigns]
                 .filter(c => parseFloat(c.spend) > 0)
                 .sort((a, b) => (parseFloat(b.sales) / parseFloat(b.spend)) - (parseFloat(a.sales) / parseFloat(a.spend)))
                 .slice(0, 5);
@@ -461,7 +432,7 @@ $(document).ready(function() {
             $('#top-campaigns-body').html(topHtml);
 
             // Bottom 5 Low Performing
-            const bottomCampaigns = [...campaigns]
+            const bottomCampaigns = [...allCampaigns]
                 .filter(c => parseFloat(c.spend) > 10)
                 .sort((a, b) => {
                     const acosA = parseFloat(a.sales) > 0 ? (parseFloat(a.spend) / parseFloat(a.sales)) : 999;
@@ -750,13 +721,6 @@ $(document).ready(function() {
             }
             $('#sp-placements-body').html(spPlHtml);
 
-            if (totalSpSales > 0 && tosSpSales > 0) {
-                const pct = ((tosSpSales / totalSpSales) * 100).toFixed(0);
-                $('#sp-placement-insight').text(`Top of Search generates ${pct}% of SP conversion volume.`);
-            } else {
-                $('#sp-placement-insight').text(`Top of Search generates optimal conversion volume for SP.`);
-            }
-
             // Populate SB placements
             let sbPlHtml = '';
             let totalSbSales = 0;
@@ -805,17 +769,38 @@ $(document).ready(function() {
             }
             $('#sb-placements-body').html(sbPlHtml);
 
-            if (totalSbSales > 0 && tosSbSales > 0) {
-                const pct = ((tosSbSales / totalSbSales) * 100).toFixed(0);
-                $('#sb-placement-insight').text(`Top of Search generates ${pct}% of SB sales volume.`);
-            } else {
-                $('#sb-placement-insight').text(`Focus budget on Top of Search for optimal brand halo impact.`);
-            }
-
             // Campaigns Table
             let html = '';
-            if (data.campaigns && data.campaigns.length > 0) {
-                data.campaigns.forEach((c, idx) => {
+            const rawCampaigns = data.campaigns || [];
+            const activeCampaigns = rawCampaigns
+                .filter(c => parseFloat(c.spend || 0) > 0 || parseInt(c.clicks || 0) > 0 || parseFloat(c.sales || 0) > 0)
+                .reduce((map, c) => {
+                    const key = c.campaign_name || `${c.type}-${c.ad_group_name}-${c.targeting}`;
+                    const existing = map.get(key);
+                    if (!existing) {
+                        map.set(key, {
+                            ...c,
+                            spend: parseFloat(c.spend || 0),
+                            sales: parseFloat(c.sales || 0),
+                            clicks: parseInt(c.clicks || 0),
+                            impressions: parseInt(c.impressions || 0),
+                            orders: parseInt(c.orders || 0)
+                        });
+                    } else {
+                        existing.spend += parseFloat(c.spend || 0);
+                        existing.sales += parseFloat(c.sales || 0);
+                        existing.clicks += parseInt(c.clicks || 0);
+                        existing.impressions += parseInt(c.impressions || 0);
+                        existing.orders += parseInt(c.orders || 0);
+                        existing.ad_group_name = existing.ad_group_name || c.ad_group_name;
+                        existing.targeting = existing.targeting || c.targeting;
+                        existing.match_type = existing.match_type || c.match_type;
+                    }
+                    return map;
+                }, new Map());
+            const campaigns = Array.from(activeCampaigns.values()).sort((a, b) => parseFloat(b.spend || 0) - parseFloat(a.spend || 0));
+            if (campaigns.length > 0) {
+                campaigns.forEach((c, idx) => {
                 const acos = c.sales > 0 ? (c.spend / c.sales * 100).toFixed(2) : '0.00';
                 const roas = c.spend > 0 ? (c.sales / c.spend).toFixed(2) : '0.00';
                 const clicks = parseInt(c.clicks || 0);
@@ -852,11 +837,11 @@ $(document).ready(function() {
                     <td style="padding: 14px 24px; font-weight: 800; color: #0051d5; text-align: center;">#${idx + 1}</td>
                     <td style="padding: 14px 24px; text-align: left;">
                         <div style="display: flex; flex-direction: column; min-width: 0; flex: 1;">
-                            <div style="font-weight: 800; color: #191c1e; font-size: 0.95rem; line-height: 1.2; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${c.campaign_name}">${c.campaign_name}</div>
-                            <div style="font-size: 0.75rem; color: #45464d; font-weight: 500; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${c.ad_group_name || 'N/A'}"><i class="fas fa-layer-group me-1"></i> ${c.ad_group_name || 'N/A'}</div>
+                            <div style="font-weight: 800; color: #191c1e; font-size: 0.95rem; line-height: 1.35; margin-bottom: 4px; word-break: break-word; white-space: normal;" title="${c.campaign_name}">${c.campaign_name}</div>
+                            <div style="font-size: 0.78rem; color: #45464d; font-weight: 500; line-height: 1.4; word-break: break-word; white-space: normal;" title="${c.ad_group_name || 'N/A'}"><i class="fas fa-layer-group me-1"></i> ${c.ad_group_name || 'N/A'}</div>
                         </div>
                     </td>
-                    <td style="padding: 14px 24px; font-weight: 700; color: #45464d; font-size: 0.85rem; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${c.targeting || 'N/A'}">${c.targeting || 'N/A'}</td>
+                    <td style="padding: 14px 24px; font-weight: 700; color: #45464d; font-size: 0.85rem; text-align: left; word-break: break-word; white-space: normal;" title="${c.targeting || 'N/A'}">${c.targeting || 'N/A'}</td>
                     <td style="padding: 14px 24px; text-align: left; vertical-align: middle;"><span style="background: #f2f4f6; color: #45464d; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 0.75rem; display: inline-block;">${c.match_type || 'N/A'}</span></td>
                     <td style="padding: 14px 24px; font-weight: 800; color: #ef4444; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${formatCurrency(spend)}</td>
                     <td style="padding: 14px 24px; font-weight: 800; color: #0051d5; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; background: rgba(219,225,255,0.05);">${formatCurrency(sales)}</td>
@@ -956,6 +941,17 @@ $(document).ready(function() {
     border-bottom: 1px solid rgba(198,198,205,0.3) !important;
     padding: 14px 24px !important;
     vertical-align: middle !important;
+}
+#campaignTable td:nth-child(2),
+#campaignTable td:nth-child(3),
+#campaignTable td:nth-child(4) {
+    text-align: left !important;
+}
+#campaignTable td:nth-child(5),
+#campaignTable td:nth-child(6),
+#campaignTable td:nth-child(7),
+#campaignTable td:nth-child(8) {
+    text-align: right !important;
 }
 #campaignTable tr:hover td {
     background: #f8fafc !important;
