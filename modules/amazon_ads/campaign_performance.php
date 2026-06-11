@@ -307,14 +307,12 @@ include '../../includes/sidebar.php';
             <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
                 <tr>
                     <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 8%;">Rank</th>
-                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 22%;">Campaign & Ad Group</th>
-                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 14%;">Targeting</th>
-                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 10%;">Match</th>
-                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 12%;">Spend</th>
-                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 12%;">Sales</th>
-                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 10%;">ACoS</th>
-                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 8%;">ROAS</th>
-                    <th style="padding: 16px 32px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 12%;">Bid Action</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 34%;">Campaign & Ad Group</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 14%;">Spend</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 14%;">Sales</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 11%;">ACoS</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 9%;">ROAS</th>
+                    <th style="padding: 16px 32px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 10%;">Bid Action</th>
                 </tr>
             </thead>
             <tbody id="campaign_body" style="background:#ffffff;"></tbody>
@@ -841,26 +839,24 @@ $(document).ready(function() {
                             <div style="font-size: 0.78rem; color: #45464d; font-weight: 500; line-height: 1.4; word-break: break-word; white-space: normal;" title="${c.ad_group_name || 'N/A'}"><i class="fas fa-layer-group me-1"></i> ${c.ad_group_name || 'N/A'}</div>
                         </div>
                     </td>
-                    <td style="padding: 14px 24px; font-weight: 700; color: #45464d; font-size: 0.85rem; text-align: left; word-break: break-word; white-space: normal;" title="${c.targeting || 'N/A'}">${c.targeting || 'N/A'}</td>
-                    <td style="padding: 14px 24px; text-align: left; vertical-align: middle;"><span style="background: #f2f4f6; color: #45464d; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 0.75rem; display: inline-block;">${c.match_type || 'N/A'}</span></td>
-                    <td style="padding: 14px 24px; font-weight: 800; color: #ef4444; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${formatCurrency(spend)}</td>
-                    <td style="padding: 14px 24px; font-weight: 800; color: #0051d5; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; background: rgba(219,225,255,0.05);">${formatCurrency(sales)}</td>
-                    <td style="padding: 14px 24px; text-align: right; vertical-align: middle;">${acosBadgeHtml}</td>
-                    <td style="padding: 14px 24px; text-align: right; vertical-align: middle;">${roasBadgeHtml}</td>
+                    <td style="padding: 14px 24px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${formatCurrency(spend)}</td>
+                    <td style="padding: 14px 24px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${formatCurrency(sales)}</td>
+                    <td style="padding: 14px 24px; font-weight: 700; color: #45464d; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${acosVal.toFixed(2)}%</td>
+                    <td style="padding: 14px 24px; font-weight: 700; color: #45464d; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${roasVal.toFixed(2)}x</td>
                     <td style="padding: 14px 32px; text-align: center; vertical-align: middle;">
                         <span style="${bidStyle} font-size: 0.75rem; font-weight: 900; padding: 6px 12px; border-radius: 6px; letter-spacing: 0.02em; display: inline-block;">${bidAction}</span>
                     </td>
                 </tr>`;
                 });
             }
-            $('#campaign_body').html(html || '<tr><td colspan="9" class="text-center" style="padding: 3rem; color: #94a3b8; font-weight: 600;">No targeting data found for the selected criteria.</td></tr>');
+            $('#campaign_body').html(html || '<tr><td colspan="7" class="text-center" style="padding: 3rem; color: #94a3b8; font-weight: 600;">No targeting data found for the selected criteria.</td></tr>');
 
             if ($.fn.DataTable.isDataTable('#campaignTable')) {
                 $('#campaignTable').DataTable().destroy();
             }
             const table = $('#campaignTable').DataTable({ 
                 dom: 'rtip',
-                order: [[4, 'desc']], 
+                order: [[2, 'desc']], 
                 pageLength: 10
             });
             $('#campaign_search_input').off('keyup').on('keyup', function() {
@@ -942,15 +938,17 @@ $(document).ready(function() {
     padding: 14px 24px !important;
     vertical-align: middle !important;
 }
-#campaignTable td:nth-child(2),
-#campaignTable td:nth-child(3),
-#campaignTable td:nth-child(4) {
+#campaignTable td:nth-child(1),
+#campaignTable td:nth-child(7) {
+    text-align: center !important;
+}
+#campaignTable td:nth-child(2) {
     text-align: left !important;
 }
+#campaignTable td:nth-child(3),
+#campaignTable td:nth-child(4),
 #campaignTable td:nth-child(5),
-#campaignTable td:nth-child(6),
-#campaignTable td:nth-child(7),
-#campaignTable td:nth-child(8) {
+#campaignTable td:nth-child(6) {
     text-align: right !important;
 }
 #campaignTable tr:hover td {
