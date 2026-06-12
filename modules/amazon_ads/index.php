@@ -1261,7 +1261,7 @@ $(document).ready(function() {
 
                     const cellTitle = `Day: ${day.label}\nHour: ${hoursLabels[h]}\nEst. Spend: ${formatCurrency(estimatedHourSpend)}\nEst. Sales: ${formatCurrency(estimatedHourSales)}`;
 
-                    heatmapHtml += `<div class="heatmap-cell" data-day="${day.label}" data-hour="${hoursLabels[h]}" data-spend="${formatCurrency(estimatedHourSpend)}" data-sales="${formatCurrency(estimatedHourSales)}" style="height: 14px; border-radius: 4px; background: rgba(37, 99, 235, ${opacity}); transition: all 0.2s; cursor: pointer;" title="${cellTitle}"></div>`;
+                    heatmapHtml += `<div class="heatmap-cell" data-day="${day.label}" data-hour="${hoursLabels[h]}" data-spend="${formatCurrency(estimatedHourSpend)}" data-sales="${formatCurrency(estimatedHourSales)}" style="height: 32px; border-radius: 6px; background: rgba(37, 99, 235, ${opacity}); transition: all 0.2s; cursor: pointer;" title="${cellTitle}"></div>`;
                 }
             });
 
@@ -1821,71 +1821,88 @@ $(document).ready(function() {
             y1: { display: false }
         };
 
-        let datasets = [];
+        // Linear Gradients
+        const spendGrad = barCtx.createLinearGradient(0, 0, 0, 300);
+        spendGrad.addColorStop(0, 'rgba(100, 116, 139, 0.12)');
+        spendGrad.addColorStop(1, 'rgba(100, 116, 139, 0.0)');
 
-        const defaultBarStyles = {
-            borderRadius: 3,
-            borderSkipped: false,
-            maxBarThickness: 6,
-            categoryPercentage: 0.8,
-            barPercentage: 0.9
+        const salesGrad = barCtx.createLinearGradient(0, 0, 0, 300);
+        salesGrad.addColorStop(0, 'rgba(37, 99, 235, 0.12)');
+        salesGrad.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+
+        const roasGrad = barCtx.createLinearGradient(0, 0, 0, 300);
+        roasGrad.addColorStop(0, 'rgba(16, 185, 129, 0.12)');
+        roasGrad.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
+
+        const defaultLineStyles = {
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3.5,
+            pointRadius: 0,
+            pointHoverRadius: 6
         };
+
+        let datasets = [];
 
         if (activeMetric === 'sales') {
             datasets = [{
                 label: 'Total Sales ($)',
                 data: dailyTrendData.sales,
-                backgroundColor: '#3b82f6', // Premium Blue
-                hoverBackgroundColor: '#2563eb',
-                ...defaultBarStyles,
+                borderColor: '#2563eb', // Premium Blue
+                backgroundColor: salesGrad,
+                pointBackgroundColor: '#2563eb',
+                ...defaultLineStyles,
                 yAxisID: 'y'
             }];
         } else if (activeMetric === 'spend') {
             datasets = [{
                 label: 'Ad Spend ($)',
                 data: dailyTrendData.spend,
-                backgroundColor: '#64748b', // Slate
-                hoverBackgroundColor: '#475569',
-                ...defaultBarStyles,
+                borderColor: '#64748b', // Slate
+                backgroundColor: spendGrad,
+                pointBackgroundColor: '#64748b',
+                ...defaultLineStyles,
                 yAxisID: 'y'
             }];
         } else if (activeMetric === 'roas') {
             datasets = [{
                 label: 'ROAS (x)',
                 data: roasDaily,
-                backgroundColor: '#10b981', // Emerald Green
-                hoverBackgroundColor: '#059669',
-                ...defaultBarStyles,
+                borderColor: '#10b981', // Emerald Green
+                backgroundColor: roasGrad,
+                pointBackgroundColor: '#10b981',
+                ...defaultLineStyles,
                 yAxisID: 'y'
             }];
             yAxesConfig.y.ticks.callback = function(value) { return value.toFixed(1) + 'x'; };
             yAxesConfig.y.title = { display: true, text: 'ROAS (x)', color: '#10b981', font: { family: 'Inter', weight: '700' } };
         } else {
-            // 'all' Grouped Layout - rendering all 3 as side-by-side bar charts!
             datasets = [
                 {
                     label: 'Ad Spend ($)',
                     data: dailyTrendData.spend,
-                    backgroundColor: '#64748b',
-                    hoverBackgroundColor: '#475569',
-                    ...defaultBarStyles,
+                    borderColor: '#64748b',
+                    backgroundColor: spendGrad,
+                    pointBackgroundColor: '#64748b',
+                    ...defaultLineStyles,
                     yAxisID: 'y'
                 },
                 {
                     label: 'Total Sales ($)',
                     data: dailyTrendData.sales,
-                    backgroundColor: '#3b82f6',
-                    hoverBackgroundColor: '#2563eb',
-                    ...defaultBarStyles,
+                    borderColor: '#2563eb',
+                    backgroundColor: salesGrad,
+                    pointBackgroundColor: '#2563eb',
+                    ...defaultLineStyles,
                     yAxisID: 'y'
                 },
                 {
                     label: 'ROAS (x)',
                     data: roasDaily,
-                    type: 'bar', // Render as bar instead of line!
-                    backgroundColor: '#10b981',
-                    hoverBackgroundColor: '#059669',
-                    ...defaultBarStyles,
+                    borderColor: '#10b981',
+                    backgroundColor: roasGrad,
+                    pointBackgroundColor: '#10b981',
+                    ...defaultLineStyles,
                     yAxisID: 'y1'
                 }
             ];
@@ -1906,7 +1923,7 @@ $(document).ready(function() {
         }
 
         barChart = new Chart(barCtx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: dailyTrendData.labels,
                 datasets: datasets
@@ -1957,7 +1974,6 @@ $(document).ready(function() {
                     y: yAxesConfig.y,
                     y1: yAxesConfig.y1,
                     x: {
-                        offset: true,
                         grid: { display: false },
                         border: { display: false },
                         ticks: {

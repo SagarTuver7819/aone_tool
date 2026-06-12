@@ -239,6 +239,8 @@ try {
         'sp_skus' => fetchSpSkus($conn, $where_customer, $where_brand, $from_date, $to_date),
         'sb_skus' => fetchSbSkus($conn, $where_customer, $from_date, $to_date),
         'match_types' => fetchMatchTypes($conn, $where_customer, $where_brand, $from_date, $to_date),
+        'match_types_sp' => fetchMatchTypesSP($conn, $where_customer, $where_brand, $from_date, $to_date),
+        'match_types_sb' => fetchMatchTypesSB($conn, $where_customer, $where_brand, $from_date, $to_date),
         'match_types_daily' => fetchMatchTypesDaily($conn, $where_customer, $where_brand, $from_date, $to_date),
         'top_keywords' => fetchTopKeywords($conn, $where_customer, $where_brand, $from_date, $to_date),
         'heatmap' => fetchHeatmapData($conn, $where_customer, $where_brand, $from_date, $to_date)
@@ -249,6 +251,48 @@ try {
 } catch (Throwable $t) {
     http_response_code(500);
     echo json_encode(['error' => $t->getMessage(), 'trace' => $t->getTraceAsString()]);
+}
+
+function fetchMatchTypesSP($conn, $where_customer, $where_brand, $from, $to) {
+    $sql = "SELECT 
+                LOWER(match_type) as match_type,
+                SUM(spend) as spend,
+                SUM(total_sales) as sales,
+                SUM(clicks) as clicks,
+                SUM(impressions) as impressions,
+                SUM(total_orders) as orders,
+                COALESCE((SUM(spend) / NULLIF(SUM(total_sales), 0)) * 100, 0) as acos,
+                COALESCE(SUM(total_sales) / NULLIF(SUM(spend), 0), 0) as roas,
+                COALESCE((SUM(clicks) / NULLIF(SUM(impressions), 0)) * 100, 0) as ctr
+            FROM amazon_advertising_sp 
+            WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ? AND match_type != '' AND match_type IS NOT NULL
+            GROUP BY LOWER(match_type)
+            ORDER BY spend DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $from, $to);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+function fetchMatchTypesSB($conn, $where_customer, $where_brand, $from, $to) {
+    $sql = "SELECT 
+                LOWER(match_type) as match_type,
+                SUM(spend) as spend,
+                SUM(total_sales) as sales,
+                SUM(clicks) as clicks,
+                SUM(impressions) as impressions,
+                SUM(total_orders) as orders,
+                COALESCE((SUM(spend) / NULLIF(SUM(total_sales), 0)) * 100, 0) as acos,
+                COALESCE(SUM(total_sales) / NULLIF(SUM(spend), 0), 0) as roas,
+                COALESCE((SUM(clicks) / NULLIF(SUM(impressions), 0)) * 100, 0) as ctr
+            FROM amazon_advertising_sb 
+            WHERE $where_customer AND ($where_brand) AND report_date BETWEEN ? AND ? AND match_type != '' AND match_type IS NOT NULL
+            GROUP BY LOWER(match_type)
+            ORDER BY spend DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $from, $to);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
 function fetchMatchTypes($conn, $where_customer, $where_brand, $from, $to) {
@@ -404,23 +448,59 @@ function fetchPlacements($conn, $where, $where_brand, $from, $to) {
 }
 
 function fetchBidding($conn, $where, $where_brand, $from, $to) {
-    $sql = "SELECT bidding_strategy, SUM(spend) as spend, SUM(total_sales) as sales
+    $sql = "SELECT bidding_strategy, SUM(spend) as spend, SUM(sales) as sales
             FROM (
                 SELECT 
                     CASE 
-                        WHEN bidding_strategy LIKE '%down only%' THEN 'Dynamic bids - down only'
-                        WHEN bidding_strategy LIKE '%up and down%' THEN 'Dynamic bids - up and down'
-                        WHEN bidding_strategy = 'Fixed bids' OR bidding_strategy = 'manual' OR bidding_strategy = '' THEN 'Fixed bids'
+                        WHEN resolved_strategy LIKE '%down only%' THEN 'Dynamic Bids - Down Only'
+                        WHEN resolved_strategy LIKE '%up and down%' THEN 'Dynamic Bids - Up and Down'
+                        WHEN resolved_strategy LIKE '%fixed%' OR resolved_strategy = 'manual' THEN 'Fixed Bids'
                         ELSE 'Other / Auto'
-                    END as bidding_strategy, 
-                    spend, total_sales 
-                FROM amazon_advertising_sp WHERE $where AND ($where_brand) AND report_date BETWEEN ? AND ? AND report_type IN ('campaign', 'general')
+                    END as bidding_strategy,
+                    spend,
+                    sales
+                FROM (
+                    SELECT 
+                        campaign_name,
+                        MAX(CASE WHEN bidding_strategy != 'N/A' AND bidding_strategy IS NOT NULL AND bidding_strategy != '' THEN bidding_strategy END) as resolved_strategy,
+                        SUM(CASE WHEN report_type IN ('campaign', 'general') THEN spend ELSE 0 END) as spend,
+                        SUM(CASE WHEN report_type IN ('campaign', 'general') THEN total_sales ELSE 0 END) as sales
+                    FROM amazon_advertising_sp
+                    WHERE $where AND ($where_brand) AND report_date BETWEEN ? AND ?
+                    GROUP BY campaign_name
+                ) as campaign_strategies
             ) as b
             GROUP BY bidding_strategy ORDER BY spend DESC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $from, $to);
     $stmt->execute();
-    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $results = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+    $strategies = [
+        'Dynamic Bids - Down Only' => ['bidding_strategy' => 'Dynamic Bids - Down Only', 'spend' => 0.00, 'sales' => 0.00],
+        'Dynamic Bids - Up and Down' => ['bidding_strategy' => 'Dynamic Bids - Up and Down', 'spend' => 0.00, 'sales' => 0.00],
+        'Fixed Bids' => ['bidding_strategy' => 'Fixed Bids', 'spend' => 0.00, 'sales' => 0.00]
+    ];
+
+    foreach ($results as $row) {
+        $strat = $row['bidding_strategy'];
+        if (isset($strategies[$strat])) {
+            $strategies[$strat]['spend'] = floatval($row['spend']);
+            $strategies[$strat]['sales'] = floatval($row['sales']);
+        } else {
+            $strategies[$strat] = [
+                'bidding_strategy' => $strat,
+                'spend' => floatval($row['spend']),
+                'sales' => floatval($row['sales'])
+            ];
+        }
+    }
+
+    uasort($strategies, function($a, $b) {
+        return $b['spend'] <=> $a['spend'];
+    });
+
+    return array_values($strategies);
 }
 function fetchPurchasedProducts($conn, $where, $from, $to) {
     $products = [];
