@@ -164,7 +164,7 @@ include '../../includes/sidebar.php';
 
 <!-- Match Type performance columns side-by-side -->
 <div class="campaigns-grid" style="margin-bottom: 2rem;">
-    <!-- Match Type Performance Table Card -->
+    <!-- Sponsored Products (SP) Match Type Performance -->
     <div class="table-card" style="padding: 1.5rem 1.75rem;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
             <div style="display: flex; align-items: center; gap: 0.75rem;">
@@ -172,8 +172,8 @@ include '../../includes/sidebar.php';
                     <i class="fas fa-tags"></i>
                 </div>
                 <div>
-                    <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Match Type Performance</h4>
-                    <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Performance metrics grouped by keyword match types</p>
+                    <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Sponsored Products (SP) Match Type</h4>
+                    <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Performance metrics grouped by SP keyword match types</p>
                 </div>
             </div>
         </div>
@@ -188,29 +188,40 @@ include '../../includes/sidebar.php';
                     <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">ROAS</th>
                 </tr>
             </thead>
-            <tbody id="match-types-body" style="background:#ffffff;">
+            <tbody id="match-types-sp-body" style="background:#ffffff;">
                 <tr><td colspan="5" style="text-align: center; padding: 2rem; color: #94a3b8;">Loading match types...</td></tr>
             </tbody>
         </table>
     </div>
 
-    <!-- Match Type Share Doughnut Chart Card -->
+    <!-- Sponsored Brands (SB) Match Type Performance -->
     <div class="table-card" style="padding: 1.5rem 1.75rem;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
             <div style="display: flex; align-items: center; gap: 0.75rem;">
                 <div style="width: 40px; height: 40px; background: #ecfdf5; color: #10b981; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
-                    <i class="fas fa-chart-pie"></i>
+                    <i class="fas fa-tags"></i>
                 </div>
                 <div>
-                    <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Spend Share by Match Type</h4>
-                    <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Visualizing share of ad budget distribution</p>
+                    <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em;">Sponsored Brands (SB) Match Type</h4>
+                    <p style="font-size: 0.75rem; color: #64748b; margin: 0.15rem 0 0 0; font-weight: 600;">Performance metrics grouped by SB keyword match types</p>
                 </div>
             </div>
         </div>
         
-        <div style="height: 220px; position: relative; width: 100%; display: flex; justify-content: center; align-items: center;">
-            <canvas id="matchTypeDoughnutChart" style="max-height: 100%; max-width: 100%;"></canvas>
-        </div>
+        <table style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; margin-bottom: 1rem;">
+            <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
+                <tr>
+                    <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 28%;">Match Type</th>
+                    <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">Spend</th>
+                    <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #0051d5; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 20%;">Sales</th>
+                    <th style="padding: 12px 12px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 16%;">ACoS</th>
+                    <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">ROAS</th>
+                </tr>
+            </thead>
+            <tbody id="match-types-sb-body" style="background:#ffffff;">
+                <tr><td colspan="5" style="text-align: center; padding: 2rem; color: #94a3b8;">Loading match types...</td></tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -321,26 +332,31 @@ include '../../includes/sidebar.php';
 </section>
 
 <!-- Bidding Strategy Efficiency -->
-<div style="margin-bottom: 2rem; margin-top: 2rem;">
-    <div class="card" style="border-radius: 16px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); overflow: hidden;">
-        <div style="background: #f8fafc; padding: 1rem 1.5rem; border-bottom: 1px solid #e2e8f0; font-weight: 700; color: #334155;">
-            <i class="fas fa-gavel" style="color: #f59e0b; margin-right: 0.5rem;"></i> Bidding Strategy Efficiency
-        </div>
-        <div style="padding: 1rem;">
-            <table class="table" id="biddingTable" style="width: 100%; font-size: 0.85rem;">
-                <thead style="background: #f1f5f9;">
-                    <tr>
-                        <th>Strategy</th>
-                        <th style="text-align: right;">Spend</th>
-                        <th style="text-align: center;">Sales</th>
-                        <th style="text-align: center;">ROAS</th>
-                    </tr>
-                </thead>
-                <tbody id="bidding_body"></tbody>
-            </table>
+<section class="bento-card overflow-hidden mb-8" style="background:#ffffff; border-radius:16px; border: 1px solid #c6c6cd; overflow:hidden; margin-top: 2rem; margin-bottom: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #c6c6cd; padding: 24px 32px; background: #ffffff;">
+        <div>
+            <h3 style="font-size: 22px; font-weight: 700; color: #000000; margin: 0; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-gavel text-primary me-2" style="font-size: 24px; color: #f59e0b !important;"></i>
+                Bidding Strategy Efficiency
+            </h3>
+            <p style="margin: 4px 0 0 0; font-size: 12px; color: #45464d; font-weight: 600;">Performance metrics analyzed by bid strategy type</p>
         </div>
     </div>
-</div>
+    <div style="overflow-x: auto;">
+        <table id="biddingTable" style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; margin: 0;">
+            <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
+                <tr>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 10%;">Rank</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 40%;">Strategy</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">Spend</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 18%;">Sales</th>
+                    <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 14%;">ROAS</th>
+                </tr>
+            </thead>
+            <tbody id="bidding_body" style="background:#ffffff;"></tbody>
+        </table>
+    </div>
+</section>
 
 
 <script>
@@ -546,100 +562,37 @@ $(document).ready(function() {
             }
             $('#bottom-keywords-body').html(bottomKwHtml);
 
-            // Match Type Performance Table & Chart Population
-            const matchTypes = data.match_types || [];
-            let matchHtml = '';
-            let chartLabels = [];
-            let chartSpendData = [];
-            let chartColors = [];
-
-            const matchColorsMap = {
-                'exact': '#3b82f6',   // Blue
-                'phrase': '#10b981',  // Emerald Green
-                'broad': '#f59e0b',   // Amber Yellow
-                'other': '#64748b'    // Slate Grey
-            };
-
-            if (matchTypes.length > 0) {
-                matchTypes.forEach(m => {
-                    const name = m.match_type.toLowerCase();
-                    const displayName = m.match_type.charAt(0).toUpperCase() + m.match_type.slice(1);
-                    const spend = parseFloat(m.spend || 0);
-                    const sales = parseFloat(m.sales || 0);
-                    const roas = parseFloat(m.roas || 0);
-                    const acos = parseFloat(m.acos || 0);
-                    
-                    matchHtml += `
-                        <tr style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
-                            <td style="padding: 12px 16px; font-weight: 700; color: #0f172a; text-align: left; font-size: 13px;">
-                                ${displayName}
-                            </td>
-                            <td style="padding: 12px 12px; font-size: 13px; font-weight: 600; color: #475569; text-align: right; font-family: 'Inter', sans-serif;">${formatCurrency(spend)}</td>
-                            <td style="padding: 12px 12px; font-size: 13px; font-weight: 700; color: #0051d5; text-align: right; font-family: 'Inter', sans-serif;">${formatCurrency(sales)}</td>
-                            <td style="padding: 12px 12px; font-size: 13px; font-weight: 600; color: #ef4444; text-align: right; font-family: 'Inter', sans-serif;">${acos.toFixed(1)}%</td>
-                            <td style="padding: 12px 16px; font-size: 13px; font-weight: 700; color: #009668; text-align: right; font-family: 'Inter', sans-serif;">${roas.toFixed(2)}x</td>
-                        </tr>
-                    `;
-
-                    chartLabels.push(displayName);
-                    chartSpendData.push(spend);
-                    chartColors.push(matchColorsMap[name] || matchColorsMap['other']);
-                });
-            } else {
-                matchHtml = `<tr><td colspan="5" class="text-center" style="padding: 2rem; color: #94a3b8;">No match type data found.</td></tr>`;
-            }
-            $('#match-types-body').html(matchHtml);
-
-            // Render/Update Match Type Share Doughnut Chart
-            if (matchTypeChart) matchTypeChart.destroy();
-            
-            if (chartSpendData.length > 0 && chartSpendData.reduce((a, b) => a + b, 0) > 0) {
-                const doughnutCtx = document.getElementById('matchTypeDoughnutChart').getContext('2d');
-                matchTypeChart = new Chart(doughnutCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: chartLabels,
-                        datasets: [{
-                            data: chartSpendData,
-                            backgroundColor: chartColors,
-                            borderWidth: 2,
-                            borderColor: '#ffffff'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'right',
-                                labels: {
-                                    boxWidth: 12,
-                                    font: { family: 'Inter', weight: '600', size: 11 },
-                                    color: '#475569'
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        const label = context.label || '';
-                                        const val = context.raw || 0;
-                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                        const pct = ((val / total) * 100).toFixed(1);
-                                        return `${label}: ${formatCurrency(val)} (${pct}%)`;
-                                    }
-                                }
-                            }
-                        },
-                        cutout: '65%'
-                    }
-                });
-            } else {
-                const doughnutCtx = document.getElementById('matchTypeDoughnutChart');
-                if (doughnutCtx) {
-                    const ctx2d = doughnutCtx.getContext('2d');
-                    ctx2d.clearRect(0, 0, 200, 200);
+            // Match Type Performance Table Population (SP & SB)
+            function populateMatchTypeTable(targetId, list) {
+                let html = '';
+                if (list && list.length > 0) {
+                    list.forEach(m => {
+                        const displayName = m.match_type.charAt(0).toUpperCase() + m.match_type.slice(1);
+                        const spend = parseFloat(m.spend || 0);
+                        const sales = parseFloat(m.sales || 0);
+                        const roas = parseFloat(m.roas || 0);
+                        const acos = parseFloat(m.acos || 0);
+                        
+                        html += `
+                            <tr style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
+                                <td style="padding: 12px 16px; font-weight: 700; color: #0f172a; text-align: left; font-size: 13px;">
+                                    ${displayName}
+                                </td>
+                                <td style="padding: 12px 12px; font-size: 13px; font-weight: 600; color: #475569; text-align: right; font-family: 'Inter', sans-serif;">${formatCurrency(spend)}</td>
+                                <td style="padding: 12px 12px; font-size: 13px; font-weight: 700; color: #0051d5; text-align: right; font-family: 'Inter', sans-serif;">${formatCurrency(sales)}</td>
+                                <td style="padding: 12px 12px; font-size: 13px; font-weight: 600; color: #ef4444; text-align: right; font-family: 'Inter', sans-serif;">${acos.toFixed(1)}%</td>
+                                <td style="padding: 12px 16px; font-size: 13px; font-weight: 700; color: #009668; text-align: right; font-family: 'Inter', sans-serif;">${roas.toFixed(2)}x</td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    html = `<tr><td colspan="5" class="text-center" style="padding: 2rem; color: #94a3b8;">No match type data found.</td></tr>`;
                 }
+                $(targetId).html(html);
             }
+
+            populateMatchTypeTable('#match-types-sp-body', data.match_types_sp || []);
+            populateMatchTypeTable('#match-types-sb-body', data.match_types_sb || []);
 
             // SP & SB PLACEMENT ANALYSIS REPORT POPULATION
             function getPlacementWeight(name) {
@@ -884,16 +837,29 @@ $(document).ready(function() {
 
             // Bidding
             let b_html = '';
-            data.bidding.forEach(b => {
-                const roas = b.spend > 0 ? (b.sales / b.spend).toFixed(2) : '0.00';
-                b_html += `<tr>
-                    <td style="font-weight: 800; color: #1e293b;">${b.bidding_strategy}</td>
-                    <td style="text-align: right; font-weight: 700; color: #475569;">${formatCurrency(b.spend)}</td>
-                    <td style="text-align: right; font-weight: 800; color: #10b981;">${formatCurrency(b.sales)}</td>
-                    <td style="text-align: center; font-weight: 800; color: #3b82f6;">${roas}</td>
+            data.bidding.forEach((b, idx) => {
+                const spend = parseFloat(b.spend || 0);
+                const sales = parseFloat(b.sales || 0);
+                const roas = spend > 0 ? (sales / spend).toFixed(2) : '0.00';
+                
+                const roasVal = parseFloat(roas);
+                const roasBg = roasVal >= 4.0 ? '#e6fcf5' : (roasVal > 0 ? '#fff1f2' : '#f2f4f6');
+                const roasColor = roasVal >= 4.0 ? '#009668' : (roasVal > 0 ? '#ef4444' : '#45464d');
+                const roasBadgeHtml = `<span style="background: ${roasBg}; color: ${roasColor}; padding: 6px 12px; border-radius: 6px; font-weight: 800; font-size: 0.9rem; display: inline-block;">${roasVal.toFixed(2)}x</span>`;
+
+                b_html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3); background:#ffffff;">
+                    <td style="padding: 14px 24px; font-weight: 800; color: #0051d5; text-align: center;">#${idx + 1}</td>
+                    <td style="padding: 14px 24px; text-align: left;">
+                        <div style="font-weight: 800; color: #191c1e; font-size: 0.95rem; line-height: 1.35;">${b.bidding_strategy}</div>
+                    </td>
+                    <td style="padding: 14px 24px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${formatCurrency(spend)}</td>
+                    <td style="padding: 14px 24px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${formatCurrency(sales)}</td>
+                    <td style="padding: 14px 24px; text-align: center; vertical-align: middle;">
+                        ${roasBadgeHtml}
+                    </td>
                 </tr>`;
             });
-            $('#bidding_body').html(b_html || '<tr><td colspan="4" class="text-center">No data</td></tr>');
+            $('#bidding_body').html(b_html || '<tr><td colspan="5" class="text-center" style="padding: 3rem; color: #94a3b8; font-weight: 600;">No data</td></tr>');
         }).fail(function() {
             $('#refresh_campaigns').prop('disabled', false).html('<i class="fas fa-sync-alt"></i> ANALYZE PERFORMANCE');
             $('#campaign_body').html('<tr><td colspan="8" class="text-center text-danger py-5">Error loading data.</td></tr>');
