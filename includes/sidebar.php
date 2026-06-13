@@ -61,53 +61,13 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a href="<?php echo BASE_URL; ?>modules/amazon_ads/pro_keywords.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'pro_keywords') !== false) ? 'active' : ''; ?>">
-                    <i class="fas fa-key"></i>
-                    <span>Search Term & Keywords</span>
-                </a>
-            </li>
+
+
 
             <li class="nav-item">
-                <a href="<?php echo BASE_URL; ?>modules/amazon_ads/sqp.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'sqp') !== false) ? 'active' : ''; ?>">
-                    <i class="fas fa-search-dollar"></i>
-                    <span>Search Query (SQP)</span>
-                    <span class="badge bg-primary" style="font-size: 0.5rem; margin-left: auto;">V2</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a href="<?php echo BASE_URL; ?>modules/amazon_ads/placement.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'placement') !== false) ? 'active' : ''; ?>">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Placement Analysis</span>
-                    <span class="badge bg-primary" style="font-size: 0.5rem; margin-left: auto;">V2</span>
-                </a>
-            </li>
-
-            <li class="nav-header" style="padding: 1rem 1rem 0.5rem; font-size: 0.65rem; color: #64748b; font-weight: 800; text-transform: capitalize; letter-spacing: 0.05em;">Operations & Finance</li>
-
-           
-
-            <li class="nav-item">
-                <a href="<?php echo BASE_URL; ?>modules/amazon_ops/index.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'amazon_ops/index') !== false) ? 'active' : ''; ?>">
-                    <i class="fas fa-undo-alt"></i>
-                    <span>Returns & Reimbursements</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a href="<?php echo BASE_URL; ?>modules/amazon_ops/loyalty.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'loyalty') !== false) ? 'active' : ''; ?>">
-                    <i class="fas fa-user-check"></i>
-                    <span>Repeat Purchase</span>
-                    <span class="badge bg-primary" style="font-size: 0.5rem; margin-left: auto;">V3</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a href="<?php echo BASE_URL; ?>modules/action_center/index.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'action_center') !== false) ? 'active' : ''; ?>">
-                    <i class="fas fa-magic"></i>
-                    <span>Action Center</span>
-                    <span class="badge bg-danger" style="font-size: 0.6rem; margin-left: auto;">HOT</span>
+                <a href="<?php echo BASE_URL; ?>modules/report_upload/tracking.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'report_upload/tracking') !== false) ? 'active' : ''; ?>">
+                    <i class="fas fa-history"></i>
+                    <span>Data Source Tracking</span>
                 </a>
             </li>
 

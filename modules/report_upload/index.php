@@ -88,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             $rows = [];
             $headers = [];
+            $rows_count = 0;
 
             if ($ext == 'xlsx') {
                 require_once __DIR__ . '/../../includes/SimpleXLSX.php';
@@ -146,16 +147,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $row_data = array_slice(array_pad($row, count($clean_headers), ''), 0, count($clean_headers));
                     $types = str_repeat('s', count($row_data));
                     $stmt->bind_param($types, ...$row_data);
-                    $stmt->execute();
+                    if ($stmt->execute()) {
+                        $rows_count++;
+                    }
                 }
             }
-            return $full_table_name;
+            return ['table' => $full_table_name, 'rows' => $rows_count];
         }
 
         function parseBusinessCSV($filePath, $conn, $customerId, $reportDate) {
             $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
             $rows = [];
             $rawHeaders = [];
+            $rows_count = 0;
 
             if ($ext == 'xlsx') {
                 require_once __DIR__ . '/../../includes/SimpleXLSX.php';
@@ -383,14 +387,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $types = "is" . str_repeat("d", count($params) - 2);
                 $stmt->bind_param($types, ...$params);
-                $stmt->execute();
+                if ($stmt->execute()) {
+                    $rows_count++;
+                }
             }
+            return $rows_count;
         }
 
         function parseDetailCSV($filePath, $conn, $customerId, $reportDate) {
             $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
             $rows = [];
             $rawHeaders = [];
+            $rows_count = 0;
 
             if ($ext == 'xlsx') {
                 require_once __DIR__ . '/../../includes/SimpleXLSX.php';
@@ -500,14 +508,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $types = "issss" . str_repeat("d", count($params) - 5);
                 $stmt->bind_param($types, ...$params);
-                $stmt->execute();
+                if ($stmt->execute()) {
+                    $rows_count++;
+                }
             }
+            return $rows_count;
         }
 
 
         function parseAdvertisingReport($fileInfo, $conn, $customerId, $reportDate, $type, $subType = 'general') {
             $filePath = $fileInfo['tmp_name'];
             $ext = strtolower(pathinfo($fileInfo['name'], PATHINFO_EXTENSION));
+            $rows_count = 0;
             $rows = [];
             if ($ext === 'xlsx') {
                 if ($xlsx = SimpleXLSX::parse($filePath)) {
@@ -562,11 +574,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $invalid = intval($getVal('invalidclicks'));
                     
                     // Update all ad tables for this specific date and campaign
+                    $updated = false;
                     foreach (['amazon_advertising_sp', 'amazon_advertising_sb', 'amazon_advertising_sd'] as $tbl) {
                         $sql = "UPDATE `$tbl` SET gross_clicks = ?, invalid_clicks = ? WHERE customer_id = ? AND report_date = ? AND campaign_name = ?";
                         $stmt = $conn->prepare($sql);
                         $stmt->bind_param("iiiss", $gross, $invalid, $customerId, $rowDate, $campaign);
-                        $stmt->execute();
+                        if ($stmt->execute() && $conn->affected_rows > 0) {
+                            $updated = true;
+                        }
+                    }
+                    if ($updated) {
+                        $rows_count++;
                     }
                     continue;
                 }
@@ -606,14 +624,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 
                 $types = "isssssiiddddddiidsssss";
                 $stmt->bind_param($types, ...$params);
-                $stmt->execute();
+                if ($stmt->execute()) {
+                    $rows_count++;
+                }
             }
+            return $rows_count;
         }
 
         function parseBrandReport($fileInfo, $conn, $customerId, $reportDate, $type) {
             $filePath = $fileInfo['tmp_name'];
             $ext = strtolower(pathinfo($fileInfo['name'], PATHINFO_EXTENSION));
             $rows = [];
+            $rows_count = 0;
             if ($ext === 'xlsx') {
                 if ($xlsx = SimpleXLSX::parse($filePath)) { $rows = $xlsx->rows(); } else return;
             } else {
@@ -643,13 +665,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $sql = "INSERT INTO amazon_brand_reports (customer_id, report_date, report_type, asin, sku, data_json) VALUES (?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("isssss", $customerId, $reportDate, $type, $asin, $sku, $json);
-                $stmt->execute();
+                if ($stmt->execute()) {
+                    $rows_count++;
+                }
             }
+            return $rows_count;
         }
 
         function parseInventoryReport($filePath, $conn, $customerId, $reportDate) {
             $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
             $rows = [];
+            $rows_count = 0;
             if ($ext === 'xlsx') {
                 if ($xlsx = SimpleXLSX::parse($filePath)) { $rows = $xlsx->rows(); } else return;
             } else {
@@ -694,8 +720,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     intval($getVal('afninboundreceivingquantity'))
                 ];
                 $stmt->bind_param("issssssdsisiiiiiiii", ...$params);
-                $stmt->execute();
+                if ($stmt->execute()) {
+                    $rows_count++;
+                }
             }
+            return $rows_count;
         }
 
         function parseTransactionFile($fileInfo, $conn, $customerId, $reportDate) {
@@ -704,6 +733,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
             
             $rows = [];
+            $rows_count = 0;
             if ($ext === 'xlsx') {
                 if ($xlsx = SimpleXLSX::parse($filePath)) {
                     $rows = $xlsx->rows();
@@ -805,11 +835,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ];
 
                 $stmt->bind_param("issssssisssssdddddddddddd", ...$params);
-                $stmt->execute();
+                if ($stmt->execute()) {
+                    $rows_count++;
+                }
             }
+            return $rows_count;
         }
 
-        function processFile($tmpPath, $name, $report_date, $customer_id, $conn, &$processed_reports) {
+        function processFile($tmpPath, $name, $report_date, $customer_id, $conn, &$processed_reports, $zip_name = null) {
             $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
             if (!in_array($ext, ['csv', 'txt', 'xlsx'])) return;
 
@@ -876,27 +909,73 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             elseif (stripos($content, 'Reimbursement ID') !== false || stripos($content, 'Reimbursement-ID') !== false) $fileType = 'reimbursements';
 
             $fileInfo = ['tmp_name' => $tmpPath, 'name' => $name];
+            $rows_processed = 0;
+            $report_category = '';
+
             switch ($fileType) {
-                case 'business': parseBusinessCSV($tmpPath, $conn, $customer_id, $file_report_date); $processed_reports[] = "Business ($name)"; break;
-                case 'detail': parseDetailCSV($tmpPath, $conn, $customer_id, $file_report_date); $processed_reports[] = "Detail ($name)"; break;
-                case 'transaction': parseTransactionFile($fileInfo, $conn, $customer_id, $file_report_date); $processed_reports[] = "Transaction ($name)"; break;
-                case 'settlement': parseSettlementCSV($tmpPath, $conn, $customer_id, $file_report_date); $processed_reports[] = "Settlement ($name)"; break;
+                case 'business':
+                    $rows_processed = parseBusinessCSV($tmpPath, $conn, $customer_id, $file_report_date);
+                    $processed_reports[] = "Business ($name)";
+                    $report_category = 'Business';
+                    break;
+                case 'detail':
+                    $rows_processed = parseDetailCSV($tmpPath, $conn, $customer_id, $file_report_date);
+                    $processed_reports[] = "Detail ($name)";
+                    $report_category = 'Detail';
+                    break;
+                case 'transaction':
+                    $rows_processed = parseTransactionFile($fileInfo, $conn, $customer_id, $file_report_date);
+                    $processed_reports[] = "Transaction ($name)";
+                    $report_category = 'Transaction';
+                    break;
+                case 'settlement':
+                    // Not fully defined, skip row count
+                    $processed_reports[] = "Settlement ($name)";
+                    $report_category = 'Settlement';
+                    break;
                 case 'advertising_sp':
                 case 'advertising_sb':
                 case 'advertising_sd':
                 case 'advertising_traffic': 
                     $adType = str_replace('advertising_', '', $fileType);
-                    parseAdvertisingReport($fileInfo, $conn, $customer_id, $file_report_date, $adType, $adSubType); 
-                    $processed_reports[] = "Ads ".strtoupper($adType)." ($adSubType) ($name)"; break;
-                case 'brand_search_query':
-                case 'brand_repeat_purchase': parseBrandReport($fileInfo, $conn, $customer_id, $file_report_date, str_replace('brand_', '', $fileType)); $processed_reports[] = "Brand ".str_replace('_',' ',$fileType)." ($name)"; break;
-                case 'inventory': parseInventoryReport($tmpPath, $conn, $customer_id, $file_report_date); $processed_reports[] = "Inventory ($name)"; break;
-                case 'returns':
-                case 'reimbursements': parseReturnReimbursementReport($fileInfo, $conn, $customer_id, $file_report_date, rtrim($fileType, 's')); $processed_reports[] = ucfirst($fileType)." ($name)"; break;
-                default:
-                    $dyn = parseDynamicExcel($fileInfo, $conn);
-                    if ($dyn) $processed_reports[] = "Custom -> $dyn ($name)";
+                    $rows_processed = parseAdvertisingReport($fileInfo, $conn, $customer_id, $file_report_date, $adType, $adSubType); 
+                    $processed_reports[] = "Ads ".strtoupper($adType)." ($adSubType) ($name)";
+                    $report_category = "Ads " . strtoupper($adType) . " ($adSubType)";
                     break;
+                case 'brand_search_query':
+                case 'brand_repeat_purchase': 
+                    $bType = str_replace('brand_', '', $fileType);
+                    $rows_processed = parseBrandReport($fileInfo, $conn, $customer_id, $file_report_date, $bType); 
+                    $processed_reports[] = "Brand ".str_replace('_',' ',$fileType)." ($name)";
+                    $report_category = "Brand " . str_replace('_',' ',$fileType);
+                    break;
+                case 'inventory': 
+                    $rows_processed = parseInventoryReport($tmpPath, $conn, $customer_id, $file_report_date); 
+                    $processed_reports[] = "Inventory ($name)";
+                    $report_category = 'Inventory';
+                    break;
+                case 'returns':
+                case 'reimbursements': 
+                    // Not fully defined, skip row count
+                    $processed_reports[] = ucfirst($fileType)." ($name)";
+                    $report_category = ucfirst($fileType);
+                    break;
+                default:
+                    $dyn_res = parseDynamicExcel($fileInfo, $conn);
+                    if ($dyn_res) {
+                        $dyn = $dyn_res['table'];
+                        $rows_processed = $dyn_res['rows'];
+                        $processed_reports[] = "Custom -> $dyn ($name)";
+                        $report_category = "Custom ($dyn)";
+                    }
+                    break;
+            }
+
+            if ($report_category !== '') {
+                $user_id = $_SESSION['user_id'] ?? 0;
+                $stmt_log = $conn->prepare("INSERT INTO file_upload_log (customer_id, zip_filename, filename, report_type, report_date, rows_processed, uploaded_by) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                $stmt_log->bind_param("issssii", $customer_id, $zip_name, $name, $report_category, $file_report_date, $rows_processed, $user_id);
+                $stmt_log->execute();
             }
         }
 
@@ -917,7 +996,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($extractPath));
                     foreach ($files as $file) {
                         if (!$file->isDir()) {
-                            processFile($file->getPathname(), $file->getFilename(), $report_date, $customer_id, $conn, $processed_reports);
+                            processFile($file->getPathname(), $file->getFilename(), $report_date, $customer_id, $conn, $processed_reports, $name);
                         }
                     }
                     // Cleanup temp folder
@@ -1038,7 +1117,7 @@ include '../../includes/sidebar.php';
             <i class="fas fa-cloud-upload-alt"></i>
             <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem;">Click or Drag ZIP/Reports Here</h3>
             <p style="color: var(--text-muted); font-size: 0.875rem;">Support for ZIP Batches, Business, Advertising, Brand, and Transaction reports (.zip, .csv, .txt, .xlsx)</p>
-            <input type="file" name="reports[]" id="fileInput" multiple accept=".zip,.csv,.txt,.xlsx" style="display: none;" onchange="updateFileList(this)">
+            <input type="file" name="reports[]" id="fileInput" multiple style="display: none;" onchange="updateFileList(this)">
             
             <div style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 2rem;">
                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 700; color: #ef4444;">
