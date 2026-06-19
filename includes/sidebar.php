@@ -61,6 +61,20 @@
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a href="<?php echo BASE_URL; ?>modules/returns/index.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'returns') !== false) ? 'active' : ''; ?>">
+                    <i class="fas fa-undo"></i>
+                    <span>Return Page</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="<?php echo BASE_URL; ?>modules/reimbursements/index.php" class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'reimbursements') !== false) ? 'active' : ''; ?>">
+                    <i class="fas fa-money-check-alt"></i>
+                    <span>Reimbursement</span>
+                </a>
+            </li>
+
 
 
 

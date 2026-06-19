@@ -839,6 +839,122 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $rows_count++;
                 }
             }
+        function parseReturnsOrReimbursements($filePath, $conn, $customerId, $reportDate, $fileType) {
+            $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+            $rows = [];
+            $rows_count = 0;
+            if ($ext === 'xlsx') {
+                require_once __DIR__ . '/../../includes/SimpleXLSX.php';
+                if ($xlsx = \Shuchkin\SimpleXLSX::parse($filePath)) {
+                    $rows = $xlsx->rows();
+                } else return 0;
+            } else {
+                $fileContent = file_get_contents($filePath);
+                $fileContent = preg_replace('/^\xEF\xBB\xBF/', '', $fileContent);
+                $lines = explode("\n", str_replace("\r", "", $fileContent));
+                if (empty($lines)) return 0;
+                $headerLine = array_shift($lines);
+                $delimiter = ",";
+                if (strpos($headerLine, "\t") !== false) $delimiter = "\t";
+                elseif (strpos($headerLine, ";") !== false) $delimiter = ";";
+                $rawHeaders = str_getcsv($headerLine, $delimiter);
+                foreach ($lines as $line) {
+                    if (trim($line)) $rows[] = str_getcsv($line, $delimiter);
+                }
+            }
+
+            if (empty($rows)) return 0;
+            if (!isset($rawHeaders)) {
+                $rawHeaders = array_shift($rows);
+            }
+            $headers = array_map('slugify', $rawHeaders);
+            $colMap = array_flip($headers);
+
+            $type = ($fileType === 'reimbursements') ? 'Reimbursement' : 'Return';
+
+            $monthStart = date('Y-m-01', strtotime($reportDate));
+            $monthEnd = date('Y-m-t', strtotime($reportDate));
+            $stmt_clear = $conn->prepare("DELETE FROM amazon_returns_reimbursements WHERE customer_id = ? AND type = ? AND report_date BETWEEN ? AND ?");
+            $stmt_clear->bind_param("isss", $customerId, $type, $monthStart, $monthEnd);
+            $stmt_clear->execute();
+
+            $sql = "INSERT INTO amazon_returns_reimbursements 
+                    (customer_id, report_date, type, order_id, sku, asin, quantity, reason, status, amount) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+
+            foreach ($rows as $data) {
+                if (empty($data[0]) || count($data) < count($rawHeaders) / 2) continue;
+
+                $get = function($slugs) use ($colMap, $data) {
+                    foreach ((array)$slugs as $slug) {
+                        if (isset($colMap[$slug])) return $data[$colMap[$slug]] ?? '';
+                    }
+                    return '';
+                };
+
+                $getVal = function($slugs) use ($colMap, $data) {
+                    foreach ((array)$slugs as $slug) {
+                        if (isset($colMap[$slug])) return cleanVal($data[$colMap[$slug]] ?? 0);
+                    }
+                    return 0;
+                };
+
+                $dateVal = '';
+                if ($type === 'Return') {
+                    $dateVal = $get(['returndate', 'date']);
+                } else {
+                    $dateVal = $get(['approvaldate', 'reimbursementdate', 'date']);
+                }
+
+                $rowDate = $reportDate;
+                if (!empty($dateVal)) {
+                    $parsedDate = date('Y-m-d', strtotime($dateVal));
+                    if ($parsedDate && $parsedDate != '1970-01-01') $rowDate = $parsedDate;
+                }
+
+                $orderId = '';
+                if ($type === 'Return') {
+                    $orderId = $get(['orderid', 'amazonorderid']);
+                } else {
+                    $orderId = $get(['amazonorderid', 'orderid']);
+                }
+
+                $qty = 1;
+                if ($type === 'Return') {
+                    $qty = intval($getVal(['quantity']));
+                } else {
+                    $qty = intval($getVal(['quantityreimbursedtotal', 'quantityreimbursedcash', 'quantityreimbursedinventory', 'quantity']));
+                }
+                if ($qty <= 0) $qty = 1;
+
+                $sku = $get(['sku']);
+                $asin = $get(['asin']);
+                $reason = $get(['reason']);
+
+                $status = '';
+                if ($type === 'Return') {
+                    $status = $get(['detaileddisposition', 'status', 'disposition']);
+                } else {
+                    $status = $get(['reimbursementid', 'status']);
+                    if (empty($status)) {
+                        $status = 'Approved';
+                    }
+                }
+
+                $amount = 0;
+                if ($type === 'Reimbursement') {
+                    $amount = floatval($getVal(['amounttotal', 'amountperunit']));
+                    if (isset($colMap['amountperunit']) && !isset($colMap['amounttotal'])) {
+                        $amount = $amount * $qty;
+                    }
+                }
+
+                $stmt->bind_param("isssssissd", $customerId, $rowDate, $type, $orderId, $sku, $asin, $qty, $reason, $status, $amount);
+                if ($stmt->execute()) {
+                    $rows_count++;
+                }
+            }
             return $rows_count;
         }
 
@@ -956,7 +1072,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     break;
                 case 'returns':
                 case 'reimbursements': 
-                    // Not fully defined, skip row count
+                    $rows_processed = parseReturnsOrReimbursements($tmpPath, $conn, $customer_id, $file_report_date, $fileType);
                     $processed_reports[] = ucfirst($fileType)." ($name)";
                     $report_category = ucfirst($fileType);
                     break;
