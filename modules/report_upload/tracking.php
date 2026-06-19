@@ -76,6 +76,18 @@ function getContributedDataSummary($row, $conn) {
             return "📦 <b>SKUs Active:</b> " . number_format($res['total_skus']) . " | <b>Fulfillable Qty:</b> " . number_format(($res['afn_qty'] ?? 0) + ($res['mfn_qty'] ?? 0));
         }
     }
+    elseif ($type === 'Reimbursement') {
+        $sql = "SELECT SUM(amount) as sales, SUM(quantity) as units 
+                FROM amazon_returns_reimbursements 
+                WHERE customer_id = ? AND type = 'Reimbursement' AND report_date BETWEEN ? AND ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("iss", $customerId, $monthStart, $monthEnd);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+        if ($res && $res['sales'] > 0) {
+            return "💸 <b>Reimbursed:</b> $" . number_format($res['sales'] ?? 0, 2) . " | <b>Units:</b> " . number_format($res['units'] ?? 0);
+        }
+    }
     
     return "<span style='color: #94a3b8; font-style: italic;'>Processed in database</span>";
 }
@@ -204,19 +216,24 @@ $menu_mapping = [
         'target_file' => 'modules/amazon_ads/index.php',
         'sections' => [
             'ad_performance_cards' => [
-                'label' => 'Ad Performance Cards (Total Ad Spend, Ad Sales, ACOS, CTR, CPC, ROAS)',
+                'label' => 'Ad Performance Cards (Total Ad Sales, Spend, TACOS, ROAS)',
                 'types' => ['Ads'],
-                'description' => 'Displays total impressions, clicks, CPC, CTR, ROAS, and ACOS metrics for the given period.'
+                'description' => 'Displays total PPC impressions, clicks, CTR, ROAS, and ACOS metrics for the given period.'
+            ],
+            'ad_type_performance' => [
+                'label' => 'Ad Type Performance (Sponsored Products, Brands & Display Mini-Grid)',
+                'types' => ['Ads'],
+                'description' => 'Groups advertising metrics by Sponsored Products (SP), Sponsored Brands (SB), and Sponsored Display (SD).'
             ],
             'daily_ad_trends_chart' => [
-                'label' => 'Daily Advertising Trends Chart',
+                'label' => 'Ad Spend vs Sales Trend & Bar Charts',
                 'types' => ['Ads'],
                 'description' => 'Plots daily PPC ad spend, clicks, impressions, and ad sales over time.'
             ],
-            'campaign_type_breakdown' => [
-                'label' => 'Campaign Type Breakdown (SP vs SB vs SD Tables & Pie Charts)',
+            'heatmap' => [
+                'label' => 'Spends vs Sales Heatmap',
                 'types' => ['Ads'],
-                'description' => 'Groups advertising metrics by Sponsored Products (SP), Sponsored Brands (SB), and Sponsored Display (SD).'
+                'description' => 'Visualizes PPC spend and ad sales intensity by day of week versus hour of day.'
             ]
         ]
     ],
@@ -253,6 +270,39 @@ $menu_mapping = [
                 'label' => 'Repeat Purchase Behavior Statistics',
                 'types' => ['Brand repeat purchase'],
                 'description' => 'Identifies repeating customer cohorts, repeat unit counts, and order statistics.'
+            ]
+        ]
+    ],
+    'reimbursements' => [
+        'label' => 'Reimbursements',
+        'types' => ['Reimbursement'],
+        'description' => 'Tracks recovered revenue, units recovered, and case tracker for refunds/reimbursements.',
+        'target_file' => 'modules/reimbursements/index.php',
+        'sections' => [
+            'overview' => [
+                'label' => 'Executive Recovery Overview (Cards: Total, Units, Rate, Pending)',
+                'types' => ['Reimbursement'],
+                'description' => 'Displays total cash recovered, recovery rate, units reimbursed, and pending values.'
+            ],
+            'trend' => [
+                'label' => 'Reimbursement Value Trend Chart',
+                'types' => ['Reimbursement'],
+                'description' => 'Plots timeline charts of aggregate reimbursed funds over the selected period.'
+            ],
+            'reasons' => [
+                'label' => 'Reimbursement Reason Analysis',
+                'types' => ['Reimbursement'],
+                'description' => 'Analyzes return vs warehouse loss reasons for reimbursed funds.'
+            ],
+            'leaderboard' => [
+                'label' => 'Product Recovery Leaderboard',
+                'types' => ['Reimbursement'],
+                'description' => 'Ranks top SKUs by total reimbursement value and recovery efficiency.'
+            ],
+            'cases' => [
+                'label' => 'Case Recovery Tracker',
+                'types' => ['Reimbursement'],
+                'description' => 'Audit logs of individual reimbursement cases, case IDs, and statuses.'
             ]
         ]
     ],
