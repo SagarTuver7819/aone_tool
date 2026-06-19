@@ -257,52 +257,80 @@ $menu_mapping = [
     ],
     'brand' => [
         'label' => 'Brand Analytics',
-        'types' => ['Brand search query', 'Brand repeat purchase'],
+        'types' => ['Brand brand search query', 'Brand brand repeat purchase'],
         'description' => 'Analyzes brand search query frequency, brand impression/click share, and repeat customer acquisition.',
         'target_file' => 'modules/amazon_ads/brand_analytics.php',
         'sections' => [
             'search_query_performance' => [
                 'label' => 'Search Query Performance Summary & Search Volume Charts',
-                'types' => ['Brand search query'],
+                'types' => ['Brand brand search query'],
                 'description' => 'Analyzes search queries frequency, impression share, click shares, and cart additions for brand keywords.'
             ],
             'repeat_purchase' => [
                 'label' => 'Repeat Purchase Behavior Statistics',
-                'types' => ['Brand repeat purchase'],
+                'types' => ['Brand brand repeat purchase'],
                 'description' => 'Identifies repeating customer cohorts, repeat unit counts, and order statistics.'
             ]
         ]
     ],
     'reimbursements' => [
         'label' => 'Reimbursements',
-        'types' => ['Reimbursement'],
+        'types' => ['Reimbursements', 'Transaction'],
         'description' => 'Tracks recovered revenue, units recovered, and case tracker for refunds/reimbursements.',
         'target_file' => 'modules/reimbursements/index.php',
         'sections' => [
             'overview' => [
                 'label' => 'Executive Recovery Overview (Cards: Total, Units, Rate, Pending)',
-                'types' => ['Reimbursement'],
+                'types' => ['Reimbursements', 'Transaction'],
                 'description' => 'Displays total cash recovered, recovery rate, units reimbursed, and pending values.'
             ],
             'trend' => [
                 'label' => 'Reimbursement Value Trend Chart',
-                'types' => ['Reimbursement'],
+                'types' => ['Reimbursements', 'Transaction'],
                 'description' => 'Plots timeline charts of aggregate reimbursed funds over the selected period.'
             ],
             'reasons' => [
                 'label' => 'Reimbursement Reason Analysis',
-                'types' => ['Reimbursement'],
+                'types' => ['Reimbursements', 'Transaction'],
                 'description' => 'Analyzes return vs warehouse loss reasons for reimbursed funds.'
             ],
             'leaderboard' => [
                 'label' => 'Product Recovery Leaderboard',
-                'types' => ['Reimbursement'],
+                'types' => ['Reimbursements', 'Transaction'],
                 'description' => 'Ranks top SKUs by total reimbursement value and recovery efficiency.'
             ],
             'cases' => [
                 'label' => 'Case Recovery Tracker',
-                'types' => ['Reimbursement'],
+                'types' => ['Reimbursements', 'Transaction'],
                 'description' => 'Audit logs of individual reimbursement cases, case IDs, and statuses.'
+            ]
+        ]
+    ],
+    'returns' => [
+        'label' => 'Return Page',
+        'types' => ['Returns', 'Transaction'],
+        'description' => 'Tracks return statistics, return reasons distribution, daily/monthly trend and product performance.',
+        'target_file' => 'modules/returns/index.php',
+        'sections' => [
+            'kpis' => [
+                'label' => 'Return Performance KPIs (Total, Sellable, Damaged, Defect Rate)',
+                'types' => ['Returns', 'Transaction'],
+                'description' => 'Tracks return counts, sellable vs damaged units, top reasons, and critical defect rates.'
+            ],
+            'reasons' => [
+                'label' => 'Return Reasons Chart',
+                'types' => ['Returns', 'Transaction'],
+                'description' => 'Visualizes buyer return reasons (defective, unwanted, etc.) using returns report data.'
+            ],
+            'trend' => [
+                'label' => 'Time Trend Analysis',
+                'types' => ['Returns', 'Transaction'],
+                'description' => 'Plots daily and monthly trends of returned units over time.'
+            ],
+            'products' => [
+                'label' => 'Product Performance Table',
+                'types' => ['Returns', 'Transaction'],
+                'description' => 'Ranks products and SKUs by return frequency and sellable ratio.'
             ]
         ]
     ],
