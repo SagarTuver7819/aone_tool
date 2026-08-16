@@ -204,16 +204,16 @@ td, .kpi-body h3, .kpi-card span, .pl-row span, .product-metrics b, .trend-table
 }
 
 .nav-link.active {
-    background: rgba(0, 81, 213, 0.05) !important;
-    color: var(--secondary) !important;
+    background: #0f52ff !important;
+    color: #ffffff !important;
     font-weight: 700;
-    border-right: 4px solid var(--secondary); /* Active border */
-    border-radius: 10px 0 0 10px;
-    box-shadow: none;
+    border-right: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(15, 82, 255, 0.28);
 }
 
 .nav-link.active i {
-    color: var(--secondary) !important;
+    color: #ffffff !important;
     opacity: 1;
 }
 
