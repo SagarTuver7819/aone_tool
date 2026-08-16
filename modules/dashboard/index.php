@@ -5,12 +5,30 @@ require_once '../../includes/functions.php';
 $customers = get_all_customers();
 $active_tab = $_GET['tab'] ?? 'kpi';
 
-$page_title = "Diamond OS Dashboard";
-$page_subtitle = "Real-time Amazon Business Intelligence & Analytics";
+if ($active_tab === 'financial') {
+    $page_title = 'Profit & Fees';
+    $page_subtitle = 'Complete waterfall breakdown of your shop parameters';
+} elseif ($active_tab === 'products') {
+    $page_title = 'Product Performance';
+    $page_subtitle = 'SKU-level revenue, traffic & contribution analysis';
+} else {
+    $page_title = 'Overview';
+    $page_subtitle = 'Real-time Amazon Business Intelligence & Analytics';
+}
 
 include '../../includes/header.php';
 include '../../includes/sidebar.php';
 ?>
+<?php if ($active_tab === 'kpi'): ?>
+<style>
+.top-header { display: none; }
+.main-wrapper { padding-top: 1.25rem; }
+@media (max-width: 768px) {
+    .main-wrapper { padding: 1rem !important; margin-left: 0 !important; }
+    body.sidebar-collapsed .main-wrapper { margin-left: 0 !important; }
+}
+</style>
+<?php endif; ?>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script>
     tailwind.config = {
@@ -85,6 +103,476 @@ include '../../includes/sidebar.php';
     grid-template-columns: repeat(4, 1fr);
     gap: 1.25rem;
     margin-bottom: 1rem;
+}
+
+/* Figma Overview layout */
+#tab_kpi.tab-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.overview-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 0.85rem 1.1rem;
+    background: #fff;
+    border: 1px solid #e8eaed;
+    border-radius: 12px;
+    margin-bottom: 0.25rem;
+}
+.overview-topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+.overview-topbar-left select {
+    min-width: 200px;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #334155;
+    background: #fff;
+}
+.overview-breadcrumb {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #94a3b8;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+.overview-breadcrumb strong { color: #475569; font-weight: 700; }
+.overview-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+.overview-topbar-right .btn-figma-primary {
+    background: #0f52ff;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.55rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.overview-topbar-right .btn-figma-outline {
+    background: #fff;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.55rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.overview-page-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.35rem;
+}
+.overview-page-head h2 {
+    margin: 0;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+}
+.overview-page-head p {
+    margin: 0.2rem 0 0;
+    font-size: 0.82rem;
+    color: #64748b;
+    font-weight: 500;
+}
+.overview-date-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0.45rem 0.65rem;
+}
+.overview-date-bar input[type="date"] {
+    border: none;
+    background: transparent;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #334155;
+    padding: 0.25rem 0.35rem;
+    outline: none;
+    width: 118px;
+}
+.overview-date-bar .date-sep { color: #94a3b8; font-size: 0.75rem; font-weight: 600; }
+.overview-date-bar .btn-refresh-icon {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #475569;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.overview-date-bar .btn-refresh-icon:hover { background: #e2e8f0; color: #0f172a; }
+
+.overview-hero-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 0.85rem;
+}
+.ov-card {
+    background: #ffffff;
+    border: 1px solid #e8eaed;
+    border-radius: 14px;
+    padding: 1.15rem 1.25rem;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    min-height: 132px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+.ov-card .ov-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+.ov-card .ov-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #64748b;
+}
+.ov-card .ov-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+.ov-card .ov-icon.green { background: #ecfdf5; color: #10b981; }
+.ov-card .ov-icon.blue { background: #eff6ff; color: #2563eb; }
+.ov-card .ov-icon.amber { background: #fffbeb; color: #d97706; }
+.ov-card .ov-value {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin-bottom: 0.65rem;
+}
+.ov-card .ov-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    width: fit-content;
+}
+.ov-card.hero {
+    background: linear-gradient(145deg, #0f52ff 0%, #2563eb 45%, #1d4ed8 100%);
+    border: none;
+    color: #fff;
+}
+.ov-card.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 88% 12%, rgba(255,255,255,0.22) 0%, transparent 38%),
+        repeating-linear-gradient(0deg, transparent, transparent 18px, rgba(255,255,255,0.06) 18px, rgba(255,255,255,0.06) 19px),
+        repeating-linear-gradient(90deg, transparent, transparent 18px, rgba(255,255,255,0.06) 18px, rgba(255,255,255,0.06) 19px);
+    pointer-events: none;
+}
+.ov-card.hero > * { position: relative; z-index: 1; }
+.ov-card.hero .ov-label { color: rgba(255,255,255,0.88); }
+.ov-card.hero .ov-value { color: #ffffff; font-size: 2.1rem; }
+.ov-card.hero .ov-icon {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+}
+.ov-card.hero .cmp-tag.up {
+    background: rgba(255,255,255,0.95) !important;
+    color: #059669 !important;
+}
+.ov-card.hero .cmp-tag.down {
+    background: rgba(255,255,255,0.95) !important;
+    color: #dc2626 !important;
+}
+.ov-card.hero .cmp-tag.none {
+    background: rgba(255,255,255,0.2) !important;
+    color: #fff !important;
+}
+
+.overview-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+.overview-row {
+    display: grid;
+    grid-template-columns: minmax(280px, 38%) minmax(0, 1fr);
+    gap: 0.85rem;
+    align-items: stretch;
+}
+.overview-panel {
+    background: #ffffff;
+    border: 1px solid #e8eaed;
+    border-radius: 14px;
+    padding: 1.15rem 1.25rem;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+.overview-panel-chart {
+    min-height: 100%;
+}
+.overview-chart-wrap {
+    flex: 1;
+    min-height: 220px;
+    height: 240px;
+}
+#tab_kpi .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -0.25rem;
+    padding: 0 0.25rem;
+}
+#tab_kpi .trend-table {
+    min-width: 520px;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+}
+#tab_kpi .trend-table th {
+    background: #f8fafc !important;
+    color: #64748b !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    padding: 0.75rem 0.85rem !important;
+    border: none !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+#tab_kpi .trend-table td {
+    padding: 0.85rem 0.85rem !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    border: none !important;
+    border-bottom: 1px solid #f8fafc !important;
+    color: #1e293b !important;
+}
+#tab_kpi .trend-table td:first-child {
+    color: #475569 !important;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
+}
+#tab_kpi .trend-table tr:last-child td { border-bottom: none !important; }
+#tab_kpi .trend-table tr:hover td { background: #fafbfc !important; }
+.overview-panel-title {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.85rem 0;
+}
+
+.overview-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+    flex: 1;
+}
+.overview-metric-card {
+    background: #ffffff;
+    border: 1px solid #eef0f3;
+    border-radius: 12px;
+    padding: 0.85rem 0.95rem;
+    min-height: 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+.overview-metric-card .om-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #64748b;
+    line-height: 1.2;
+}
+.overview-metric-card .om-value {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    line-height: 1.15;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+.overview-metric-card .cmp-tag,
+.ov-card .cmp-tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    width: fit-content;
+    line-height: 1.2;
+}
+.overview-metric-card .cmp-tag {
+    margin-top: auto;
+    align-self: flex-start;
+}
+.overview-metric-card .cmp-tag.up,
+.ov-card:not(.hero) .cmp-tag.up { background: #ecfdf5; color: #059669; }
+.overview-metric-card .cmp-tag.down,
+.ov-card:not(.hero) .cmp-tag.down { background: #fef2f2; color: #dc2626; }
+.overview-metric-card .cmp-tag.none,
+.ov-card:not(.hero) .cmp-tag.none { background: #f1f5f9; color: #64748b; }
+.overview-chart-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+.overview-chart-head h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+    font-family: 'Hanken Grotesk', sans-serif;
+    text-transform: capitalize;
+}
+.overview-chart-head p {
+    margin: 4px 0 0;
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 600;
+}
+#tab_kpi .chart-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    background: #f1f5f9;
+    padding: 3px;
+    border-radius: 999px;
+}
+#tab_kpi .chart-tab-btn {
+    border: none;
+    background: transparent;
+    padding: 0.38rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+    white-space: nowrap;
+}
+#tab_kpi .chart-tab-btn.active {
+    background: #0f52ff;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(15, 82, 255, 0.28);
+}
+#tab_kpi .trend-table th.growth-col {
+    background: transparent !important;
+    color: #94a3b8 !important;
+    border: none !important;
+    padding: 0.5rem 0.25rem !important;
+    width: auto;
+    min-width: 52px;
+    font-size: 0 !important;
+}
+#tab_kpi .trend-table td.growth-col {
+    text-align: center !important;
+    padding: 0.65rem 0.25rem !important;
+    border: none !important;
+    background: transparent !important;
+    vertical-align: middle !important;
+    width: 52px;
+    min-width: 52px;
+}
+#tab_kpi .trend-growth-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+#tab_kpi .trend-growth-pill.up { background: #ecfdf5; color: #059669; }
+#tab_kpi .trend-growth-pill.down { background: #fef2f2; color: #dc2626; }
+
+@media (max-width: 992px) {
+    .overview-hero-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 1024px) {
+    .overview-row {
+        grid-template-columns: 1fr;
+    }
+    .overview-chart-wrap { height: 260px; }
+}
+@media (max-width: 768px) {
+    #tab_kpi.tab-content { gap: 0.75rem; }
+    .overview-topbar { padding: 0.75rem; }
+    .overview-topbar-left { flex-direction: column; align-items: stretch; }
+    .overview-topbar-left select { width: 100%; min-width: 0; }
+    .overview-topbar-right { width: 100%; }
+    .overview-topbar-right .btn-figma-primary,
+    .overview-topbar-right .btn-figma-outline { flex: 1; justify-content: center; }
+    .overview-page-head { flex-direction: column; align-items: stretch; }
+    .overview-page-head h2 { font-size: 1.35rem; }
+    .overview-date-bar { width: 100%; justify-content: space-between; }
+    .overview-date-bar input[type="date"] { flex: 1; width: auto; min-width: 0; }
+    .overview-hero-grid { grid-template-columns: 1fr; }
+    .overview-metric-grid { grid-template-columns: 1fr; }
+    .overview-chart-head { flex-direction: column; }
+    #tab_kpi .chart-tabs { width: 100%; overflow-x: auto; flex-wrap: nowrap; border-radius: 12px; }
+    .ov-card .ov-value { font-size: 1.55rem; }
+    .ov-card.hero .ov-value { font-size: 1.75rem; }
+}
+@media (max-width: 480px) {
+    .overview-metric-card .om-value { font-size: 1.25rem; }
 }
 
 .kpi-card { 
@@ -416,6 +904,9 @@ include '../../includes/sidebar.php';
 </style>
 
 <!-- Filter Section -->
+<?php if ($active_tab === 'kpi'): ?>
+<!-- Figma toolbar lives inside #tab_kpi -->
+<?php else: ?>
 <div class="card" style="margin-bottom: 2rem;">
     <div style="display: flex; gap: 1.5rem; align-items: flex-end; flex-wrap: wrap;">
         <div class="form-group" style="flex: 1; min-width: 280px;">
@@ -452,6 +943,7 @@ include '../../includes/sidebar.php';
         </button>
     </div>
 </div>
+<?php endif; ?>
 
 
 <!-- Loading State -->
@@ -460,179 +952,173 @@ include '../../includes/sidebar.php';
     <p style="margin-top: 1rem; font-weight: 700; color: #064e3b;">Syncing Amazon Reports...</p>
 </div>
 
-<!-- KPI TAB -->
+<!-- KPI TAB - Figma Overview layout -->
 <div id="tab_kpi" class="tab-content" <?php echo ($active_tab !== 'kpi') ? 'style="display: none;"' : ''; ?>>
-    
-    <!-- Revenue Breakdown Section -->
-    <div style="text-transform: capitalize; font-size: 1.15rem; font-weight: 800; color: #475569; letter-spacing: 0.05em; margin: 0.75rem 0 0.5rem 0.5rem; display: flex; align-items: center; gap: 8px;"><i class="fas fa-chart-line" style="color: var(--primary-light);"></i> Revenue Breakdown</div>
-    <div class="kpi-grid">
-        <div class="card kpi-card blue-theme">
-            <div class="kpi-header" style="align-items: center;">
-            <div class="kpi-footer"><i class="fas fa-money-bill-wave"></i><span id="kpi_sales_sub">Total Revenue</span></div>
-            <div class="kpi-icon"><i class="fas fa-dollar-sign"></i></div>
+
+    <div class="overview-topbar">
+        <div class="overview-topbar-left">
+            <select id="filter_customer" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
+                <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                    <option value="">All Amazon Profiles</option>
+                <?php endif; ?>
+                <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()): ?>
+                <?php 
+                    $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
+                    if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id']) continue;
+                ?>
+                    <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($row['customer_name']); ?></option>
+                <?php endwhile; ?>
+            </select>
+            <?php if (($_SESSION['role'] ?? '') === 'customer'): ?>
+                <input type="hidden" id="customer_id_hidden" value="<?php echo $_SESSION['customer_id'] ?? 0; ?>">
+            <?php endif; ?>
+            <span class="overview-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Overview</strong></span>
         </div>
-        <div class="kpi-body"><h3><span id="kpi_sales">$0.00</span></h3></div>
-        <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-            <span id="cmp_sales" class="cmp-tag"></span>
-        </div>
-        </div>
-        
-        <div class="card kpi-card emerald-theme">
-            <div class="kpi-header" style="align-items: center;">
-            <div class="kpi-footer"><i class="fas fa-seedling"></i><span id="kpi_organic_sub">Organic Sales</span></div>
-            <div class="kpi-icon"><i class="fas fa-leaf"></i></div>
-        </div>
-        <div class="kpi-body"><h3><span id="kpi_organic">$0.00</span></h3></div>
-        <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-            <span id="cmp_organic" class="cmp-tag"></span>
-        </div>
-        </div>
-        
-        <div class="card kpi-card purple-theme">
-            <div class="kpi-header" style="align-items: center;">
-            <div class="kpi-footer"><i class="fas fa-bullhorn"></i><span id="kpi_ad_sales_sub">Ad Sales</span></div>
-            <div class="kpi-icon"><i class="fas fa-ad"></i></div>
-        </div>
-        <div class="kpi-body"><h3><span id="kpi_ad_sales">$0.00</span></h3></div>
-        <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-            <span id="cmp_ad_sales" class="cmp-tag"></span>
-        </div>
-        </div>
-        
-        <div class="card kpi-card green-theme">
-            <div class="kpi-header" style="align-items: center;">
-            <div class="kpi-footer"><i class="fas fa-tachometer-alt"></i><span id="kpi_dsr_sub">Daily Sales Rate</span></div>
-            <div class="kpi-icon"><i class="fas fa-calendar-day"></i></div>
-        </div>
-        <div class="kpi-body"><h3><span id="kpi_dsr">$0.00</span></h3></div>
-        <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-            <span id="cmp_dsr" class="cmp-tag"></span>
-        </div>
-        </div>
-    </div>
-    
-    <!-- Advertising Performance Section -->
-    <div style="text-transform: capitalize; font-size: 1.15rem; font-weight: 800; color: #475569; letter-spacing: 0.05em; margin: 1rem 0 0.5rem 0.5rem; display: flex; align-items: center; gap: 8px;"><i class="fas fa-bullseye" style="color: var(--primary-light);"></i> Advertising Performance</div>
-    <div class="kpi-grid">
-        <div class="card kpi-card rose-theme">
-            <div class="kpi-header" style="align-items: center;">
-            <div class="kpi-footer"><i class="fas fa-file-invoice-dollar"></i><span id="kpi_spend_sub">Ad Spend</span></div>
-            <div class="kpi-icon"><i class="fas fa-wallet"></i></div>
-        </div>
-        <div class="kpi-body"><h3><span id="kpi_spend">$0.00</span></h3></div>
-        <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-            <span id="cmp_spend" class="cmp-tag"></span>
-        </div>
-        </div>
-        
-        <div class="card kpi-card cyan-theme">
-            <div class="kpi-header" style="align-items: center;">
-            <div class="kpi-footer"><i class="fas fa-reply-all"></i><span id="kpi_roas_sub">ROAS</span></div>
-            <div class="kpi-icon"><i class="fas fa-chart-area"></i></div>
-        </div>
-        <div class="kpi-body"><h3><span id="kpi_roas">0.00</span></h3></div>
-        <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-            <span id="cmp_roas" class="cmp-tag"></span>
-        </div>
-        </div>
-        
-        <div class="card kpi-card yellow-theme">
-            <div class="kpi-header" style="align-items: center;">
-            <div class="kpi-footer"><i class="fas fa-stethoscope"></i><span id="kpi_acos_sub">ACOS</span></div>
-            <div class="kpi-icon"><i class="fas fa-percent"></i></div>
-        </div>
-        <div class="kpi-body"><h3><span id="kpi_acos">0.00%</span></h3></div>
-        <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-            <span id="cmp_acos" class="cmp-tag"></span>
-        </div>
-        </div>
-        
-        <div class="card kpi-card purple-theme">
-            <div class="kpi-header" style="align-items: center;">
-            <div class="kpi-footer"><i class="fas fa-calculator"></i><span id="kpi_tacos_sub">TACOS</span></div>
-            <div class="kpi-icon"><i class="fas fa-chart-line"></i></div>
-        </div>
-        <div class="kpi-body"><h3><span id="kpi_tacos">0.00%</span></h3></div>
-        <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-            <span id="cmp_tacos" class="cmp-tag"></span>
-        </div>
-        </div>
-    </div>
-    
-    <!-- Traffic and Conversion Section -->
-    <div style="text-transform: capitalize; font-size: 1.15rem; font-weight: 800; color: #475569; letter-spacing: 0.05em; margin: 1rem 0 0.5rem 0.5rem; display: flex; align-items: center; gap: 8px;"><i class="fas fa-users" style="color: var(--primary-light);"></i> Traffic And Conversion</div>
-    <div class="kpi-grid">
-        <div class="card kpi-card blue-theme">
-            <div class="kpi-header" style="align-items: center;">
-            <div class="kpi-footer"><i class="fas fa-globe"></i><span id="kpi_sessions_t_sub">Sessions</span></div>
-            <div class="kpi-icon"><i class="fas fa-users"></i></div>
-        </div>
-        <div class="kpi-body"><h3><span id="kpi_sessions_t">0</span></h3></div>
-        <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-            <span id="cmp_sessions_t" class="cmp-tag"></span>
-        </div>
-        </div>
-        
-        <div class="card kpi-card indigo-theme">
-            <div class="kpi-header" style="align-items: center;">
-            <div class="kpi-footer"><i class="fas fa-check-circle"></i><span id="kpi_orders_sub">Orders</span></div>
-            <div class="kpi-icon"><i class="fas fa-box"></i></div>
-        </div>
-        <div class="kpi-body"><h3><span id="kpi_orders">0</span></h3></div>
-        <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-            <span id="cmp_orders" class="cmp-tag"></span>
-        </div>
-        </div>
-        
-        <div class="card kpi-card teal-theme">
-            <div class="kpi-header" style="align-items: center;">
-            <div class="kpi-footer"><i class="fas fa-shopping-cart"></i><span id="kpi_units_sub">Units Sold</span></div>
-            <div class="kpi-icon"><i class="fas fa-layer-group"></i></div>
-        </div>
-        <div class="kpi-body"><h3><span id="kpi_units">0</span></h3></div>
-        <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-            <span id="cmp_units" class="cmp-tag"></span>
-        </div>
-        </div>
-        
-        <div class="card kpi-card teal-theme">
-            <div class="kpi-header" style="align-items: center;">
-            <div class="kpi-footer"><i class="fas fa-percentage"></i><span id="kpi_conversion_sub">Conversion Rate</span></div>
-            <div class="kpi-icon"><i class="fas fa-rocket"></i></div>
-        </div>
-        <div class="kpi-body"><h3><span id="kpi_conversion">0.00%</span></h3></div>
-        <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-            <span id="cmp_conv" class="cmp-tag"></span>
-        </div>
-        </div>
-    </div>
-    <!-- KPI Trend Comparison (Moved Up) -->
-    <div class="card">
-        <div class="section-title"><i class="fas fa-history"></i> <span>KPI Trend - 3-Month Comparison</span></div>
-        <div class="table-container">
-            <table class="trend-table">
-                <thead><tr id="trend_head"></tr></thead>
-                <tbody id="trend_body"></tbody>
-            </table>
+        <div class="overview-topbar-right">
+            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
+            <?php endif; ?>
+            <button type="button" id="export_csv" class="btn-figma-outline"><i class="fas fa-file-export"></i> Export CSV</button>
         </div>
     </div>
 
-    <div class="card" style="padding-top: 1.5rem;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-            <div>
-                <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #1e293b;">Daily performance trends</h3>
-                <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: #64748b; font-weight: 600;">Pick a metric to inspect day by day</p>
+    <div class="overview-page-head">
+        <div>
+            <h2>Overview</h2>
+            <p>Real-time Amazon Business Intelligence &amp; Analytics</p>
+        </div>
+        <div class="overview-date-bar">
+            <input type="date" id="filter_from" value="">
+            <span class="date-sep">-</span>
+            <input type="date" id="filter_to" value="">
+            <button type="button" id="apply_filters" class="btn-refresh-icon" title="Refresh"><i class="fas fa-sync-alt"></i></button>
+        </div>
+    </div>
+
+    <!-- Top row: key revenue metrics -->
+    <div class="overview-hero-grid">
+        <div class="ov-card hero">
+            <div class="ov-top">
+                <span class="ov-label" id="kpi_sales_sub">Total Revenue</span>
+                <span class="ov-icon"><i class="fas fa-eye"></i></span>
             </div>
-            <div class="chart-tabs" style="margin-bottom: 0;">
-                <div class="chart-tab-btn active" data-chart="sales">Sales</div>
-                <div class="chart-tab-btn" data-chart="units_orders">Orders vs Units</div>
-                <div class="chart-tab-btn" data-chart="page_views">Page Views</div>
-                <div class="chart-tab-btn" data-chart="sessions">Sessions</div>
-                <div class="chart-tab-btn" data-chart="conversion">Conversion</div>
-                <div class="chart-tab-btn" data-chart="refund_rate">Refunds</div>
+            <div class="ov-value" id="kpi_sales">$0.00</div>
+            <span id="cmp_sales" class="cmp-tag"></span>
+        </div>
+
+        <div class="ov-card">
+            <div class="ov-top">
+                <span class="ov-label" id="kpi_organic_sub">Organic Sales</span>
+                <span class="ov-icon green"><i class="fas fa-leaf"></i></span>
+            </div>
+            <div class="ov-value" id="kpi_organic">$0.00</div>
+            <span id="cmp_organic" class="cmp-tag"></span>
+        </div>
+
+        <div class="ov-card">
+            <div class="ov-top">
+                <span class="ov-label" id="kpi_ad_sales_sub">Ad Sales</span>
+                <span class="ov-icon blue"><i class="fas fa-bullhorn"></i></span>
+            </div>
+            <div class="ov-value" id="kpi_ad_sales">$0.00</div>
+            <span id="cmp_ad_sales" class="cmp-tag"></span>
+        </div>
+
+        <div class="ov-card">
+            <div class="ov-top">
+                <span class="ov-label" id="kpi_dsr_sub">Daily Sales Rate</span>
+                <span class="ov-icon amber"><i class="fas fa-calendar-day"></i></span>
+            </div>
+            <div class="ov-value" id="kpi_dsr">$0.00</div>
+            <span id="cmp_dsr" class="cmp-tag"></span>
+        </div>
+    </div>
+
+    <!-- Body: Figma 2 rows (Ad|Chart, Traffic|Table) -->
+    <div class="overview-rows">
+        <div class="overview-row">
+            <div class="overview-panel overview-panel-ad">
+                <h3 class="overview-panel-title">Advertising Performance</h3>
+                <div class="overview-metric-grid">
+                    <div class="overview-metric-card">
+                        <span class="om-label">Ad Spend</span>
+                        <div class="om-value" id="kpi_spend">$0.00</div>
+                        <span id="cmp_spend" class="cmp-tag"></span>
+                    </div>
+                    <div class="overview-metric-card">
+                        <span class="om-label">ROAS</span>
+                        <div class="om-value" id="kpi_roas">0.00</div>
+                        <span id="cmp_roas" class="cmp-tag"></span>
+                    </div>
+                    <div class="overview-metric-card">
+                        <span class="om-label">ACOS</span>
+                        <div class="om-value" id="kpi_acos">0.00%</div>
+                        <span id="cmp_acos" class="cmp-tag"></span>
+                    </div>
+                    <div class="overview-metric-card">
+                        <span class="om-label">TACOS</span>
+                        <div class="om-value" id="kpi_tacos">0.00%</div>
+                        <span id="cmp_tacos" class="cmp-tag"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overview-panel overview-panel-chart">
+                <div class="overview-chart-head">
+                    <div>
+                        <h3>Daily performance trends</h3>
+                        <p>Pick a metric to inspect day by day</p>
+                    </div>
+                    <div class="chart-tabs">
+                        <button type="button" class="chart-tab-btn active" data-chart="sales">Sales</button>
+                        <button type="button" class="chart-tab-btn" data-chart="units_orders">Orders vs Units</button>
+                        <button type="button" class="chart-tab-btn" data-chart="page_views">Page Views</button>
+                        <button type="button" class="chart-tab-btn" data-chart="sessions">Sessions</button>
+                        <button type="button" class="chart-tab-btn" data-chart="conversion">Conversion</button>
+                        <button type="button" class="chart-tab-btn" data-chart="refund_rate">Refunds</button>
+                    </div>
+                </div>
+                <div class="overview-chart-wrap"><canvas id="mainChart"></canvas></div>
             </div>
         </div>
-        <div style="height: 480px;"><canvas id="mainChart"></canvas></div>
+
+        <div class="overview-row">
+            <div class="overview-panel overview-panel-traffic">
+                <h3 class="overview-panel-title">Traffic And Conversion</h3>
+                <div class="overview-metric-grid">
+                    <div class="overview-metric-card">
+                        <span class="om-label">Sessions</span>
+                        <div class="om-value" id="kpi_sessions_t">0</div>
+                        <span id="cmp_sessions_t" class="cmp-tag"></span>
+                    </div>
+                    <div class="overview-metric-card">
+                        <span class="om-label">Orders</span>
+                        <div class="om-value" id="kpi_orders">0</div>
+                        <span id="cmp_orders" class="cmp-tag"></span>
+                    </div>
+                    <div class="overview-metric-card">
+                        <span class="om-label">Units Sold</span>
+                        <div class="om-value" id="kpi_units">0</div>
+                        <span id="cmp_units" class="cmp-tag"></span>
+                    </div>
+                    <div class="overview-metric-card">
+                        <span class="om-label">Conversion Rate</span>
+                        <div class="om-value" id="kpi_conversion">0.00%</div>
+                        <span id="cmp_conv" class="cmp-tag"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overview-panel overview-panel-table">
+                <h3 class="overview-panel-title">KPI Trend - 3-Month Comparison</h3>
+                <div class="table-container">
+                    <table class="trend-table">
+                        <thead><tr id="trend_head"></tr></thead>
+                        <tbody id="trend_body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -1167,27 +1653,22 @@ $(document).ready(function() {
     const ITEMS_PER_PAGE = 10;
     const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function updateComparison(selector, cmp) {
+    function setCmpTag(selector, pct, dir) {
         const $el = $(selector);
-        $el.removeClass('up down none show');
-        
-        if (!cmp || cmp.dir === 'none') {
-            $el.addClass('none').html('--%');
-        } else {
-            const icon = cmp.dir === 'up' ? 'fa-arrow-up' : 'fa-arrow-down';
-            $el.addClass(cmp.dir).html(`<i class="fas ${icon}"></i> ${cmp.pct}%`);
+        if (!$el.length) return;
+        const p = Math.abs(parseFloat(pct || 0)).toFixed(1);
+        const icon = dir === 'up' ? 'fa-arrow-up' : (dir === 'down' ? 'fa-arrow-down' : '');
+        $el.removeClass('up down none').addClass(dir || 'none');
+        if (!dir || dir === 'none') {
+            $el.html('--%');
+            return;
         }
-        
-        // Always show the tag to indicate comparison is active
-        setTimeout(() => $el.addClass('show'), 600);
+        $el.html(`${p}% ${icon ? `<i class="fas ${icon}"></i>` : ''}`);
     }
 
-    function staggerIn(selector, baseDelay = 0, step = 50) {
-        $(selector).each(function(i) {
-            const $el = $(this);
-            $el.removeClass('visible');
-            setTimeout(() => $el.addClass('visible'), baseDelay + (i * step));
-        });
+    function updateComparison(selector, data) {
+        if (!data) return;
+        setCmpTag(selector, data.pct, data.dir);
     }
 
     function showLoader() {
@@ -1306,24 +1787,6 @@ $(document).ready(function() {
         const $el = $(selector);
         const d = decimals || 0;
         animateNumber($el, parseNumberFromText(val), (v) => toNumber(v).toFixed(d), 720);
-    }
-
-    function setCmpTag(selector, pct, dir) {
-        const $el = $(selector);
-        if (!$el.length) return;
-        const p = parseFloat(pct || 0);
-        const color = dir === 'up' ? '#10b981' : (dir === 'down' ? '#ef4444' : '#64748b');
-        const icon = dir === 'up' ? 'fa-arrow-up' : (dir === 'down' ? 'fa-arrow-down' : '');
-        const bg = dir === 'up' ? '#f0fdf4' : (dir === 'down' ? '#fef2f2' : '#f8fafc');
-        
-        $el.html(`<span style="background:${bg}; color:${color}; padding:4px 8px; border-radius:6px; font-size:0.75rem; font-weight:800; display:inline-flex; align-items:center; gap:4px;">
-            ${icon ? `<i class="fas ${icon}"></i>` : ''} ${p}%
-        </span>`);
-    }
-
-    function updateComparison(selector, data) {
-        if (!data) return;
-        setCmpTag(selector, data.pct, data.dir);
     }
 
     function staggerIn(selector, baseDelayMs, stepMs) {
@@ -1590,8 +2053,12 @@ $(document).ready(function() {
         if (!trends || typeof trends !== 'object') return;
         const months = Object.keys(trends);
         if (months.length === 0) return;
-        let headHtml = '<th style="text-align: left;">KPI Metrics</th>';
-        months.forEach((m, i) => headHtml += `<th class="${i === 2 ? 'highlight-col' : ''}">${m}</th>`);
+
+        let headHtml = '<th style="text-align:left;">KPI Metrics</th>';
+        months.forEach((m, i) => {
+            if (i > 0) headHtml += '<th class="growth-col"></th>';
+            headHtml += `<th>${m}</th>`;
+        });
         $('#trend_head').html(headHtml);
 
         const rows = [
@@ -1604,36 +2071,33 @@ $(document).ready(function() {
 
         let bodyHtml = '';
         rows.forEach(r => {
-            bodyHtml += `<tr><td><i class="fas ${r.icon}" style="opacity:0.4; width: 1.5rem; text-align: center;"></i> ${r.label}</td>`;
-            let v1 = 0, v2 = 0;
+            bodyHtml += `<tr><td><i class="fas ${r.icon}" style="opacity:0.35; width:1.25rem; text-align:center;"></i> ${r.label}</td>`;
             let prevVal = null;
             months.forEach((m, i) => {
                 const raw = (trends[m] && trends[m][r.key] != null) ? trends[m][r.key] : 0;
                 let n = Number(raw);
                 if (!Number.isFinite(n)) n = 0;
-                if (i === 1) v1 = n;
-                if (i === 2) v2 = n;
-                
+
+                if (i > 0) {
+                    let growthHtml = '<td class="growth-col"></td>';
+                    if (prevVal !== null && prevVal !== 0) {
+                        const pct = ((n - prevVal) / prevVal) * 100;
+                        if (Math.abs(pct) >= 0.1) {
+                            const isUp = pct > 0;
+                            const cls = isUp ? 'up' : 'down';
+                            const icon = isUp ? 'fa-arrow-up' : 'fa-arrow-down';
+                            growthHtml = `<td class="growth-col"><span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% <i class="fas ${icon}"></i></span></td>`;
+                        }
+                    }
+                    bodyHtml += growthHtml;
+                }
+
                 let displayVal = n.toLocaleString();
                 if (r.isRate) displayVal = n.toFixed(1) + '%';
                 else if (r.isMoney) displayVal = '$' + n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                
-                let changeHtml = '';
-                if (prevVal !== null && prevVal !== 0) {
-                    const diff = n - prevVal;
-                    const pct = (diff / prevVal) * 100;
-                    if (Math.abs(pct) >= 0.1) {
-                        const isUp = pct > 0;
-                        const color = isUp ? '#10b981' : '#ef4444';
-                        const icon = isUp ? 'fa-caret-up' : 'fa-caret-down';
-                        changeHtml = `<span style="font-size: 0.75rem; font-weight: 700; color: ${color}; margin-right: 6px; display: inline-flex; align-items: center; gap: 2px;">
-                            <i class="fas ${icon}"></i> ${Math.abs(pct).toFixed(1)}%
-                        </span>`;
-                    }
-                }
-                prevVal = n;
 
-                bodyHtml += `<td class="${i === 2 ? 'highlight-col' : ''}" style="white-space: nowrap;">${changeHtml}${displayVal}</td>`;
+                bodyHtml += `<td style="white-space:nowrap;">${displayVal}</td>`;
+                prevVal = n;
             });
             bodyHtml += `</tr>`;
         });
@@ -1647,8 +2111,8 @@ $(document).ready(function() {
         setTimeout(() => $content.removeClass('animating'), prefersReducedMotion ? 0 : 260);
 
         if (tab === 'kpi') {
-            staggerIn('#tab_kpi .kpi-card', 0, 70);
-            staggerIn('#tab_kpi > .card', 260, 120);
+            staggerIn('#tab_kpi .ov-card', 0, 70);
+            staggerIn('#tab_kpi .overview-row', 220, 100);
         } else if (tab === 'financial') {
             staggerIn('#tab_financial .card', 0, 100);
         } else if (tab === 'products') {

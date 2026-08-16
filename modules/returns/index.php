@@ -12,76 +12,110 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
+/* Figma-aligned Return Page theme */
+.returns-page {
+    padding-bottom: 2rem;
+}
+.returns-page .filter-card {
+    background: #ffffff;
+    border: 1px solid #e7e8e9;
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
 .returns-page .kpi-grid-6 {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 1rem;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.85rem;
     margin-bottom: 1.5rem;
 }
 .returns-page .kpi-card {
     background: #ffffff;
     border: 1px solid #e7e8e9;
     border-radius: 16px;
-    padding: 1.25rem !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-    min-height: 130px;
+    padding: 1.15rem 1.1rem !important;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    min-height: 128px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
 }
 .returns-page .kpi-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.08);
 }
 .returns-page .kpi-top {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.45rem;
 }
 .returns-page .kpi-label {
-    font-size: 0.7rem;
-    font-weight: 800;
+    font-family: Inter, sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
     color: #64748b;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
 }
 .returns-page .kpi-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.85rem;
-    background: #f1f5f9;
-    color: #475569;
+    background: #eff6ff;
+    color: #2563eb;
+    flex-shrink: 0;
 }
+.returns-page .kpi-icon.green { background: #ecfdf5; color: #10b981; }
+.returns-page .kpi-icon.amber { background: #fffbeb; color: #d97706; }
+.returns-page .kpi-icon.purple { background: #f5f3ff; color: #7c3aed; }
+.returns-page .kpi-icon.slate { background: #f1f5f9; color: #475569; }
+.returns-page .kpi-icon.rose { background: #fff1f2; color: #e11d48; }
 .returns-page .kpi-value {
     font-family: 'Hanken Grotesk', sans-serif;
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: #0f172a;
-    line-height: 1.1;
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: #191c1d;
+    line-height: 1.15;
     letter-spacing: -0.02em;
+    word-break: break-word;
 }
 .returns-page .kpi-sub {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    margin-top: 0.35rem;
-    display: flex;
+    margin-top: 0.45rem;
+    display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.3rem;
+    width: fit-content;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: #64748b;
 }
-.returns-page .kpi-sub.up { color: #10b981; }
-.returns-page .kpi-sub.down { color: #ef4444; }
-.returns-page .kpi-sub.neutral { color: #64748b; }
-.returns-page .kpi-sub.critical { color: #ef4444; }
+.returns-page .kpi-sub.up {
+    background: #ecfdf5;
+    color: #059669;
+}
+.returns-page .kpi-sub.down,
+.returns-page .kpi-sub.critical {
+    background: #fef2f2;
+    color: #dc2626;
+}
+.returns-page .kpi-sub.neutral {
+    background: #f1f5f9;
+    color: #64748b;
+}
 
 .returns-charts-row {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr);
     gap: 1.25rem;
     margin-bottom: 1.5rem;
 }
@@ -90,7 +124,7 @@ include '../../includes/sidebar.php';
     border: 1px solid #e7e8e9;
     border-radius: 16px;
     padding: 1.5rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
 }
 .returns-card-header {
     display: flex;
@@ -99,24 +133,25 @@ include '../../includes/sidebar.php';
     margin-bottom: 1rem;
 }
 .returns-card-title {
-    font-size: 1rem;
-    font-weight: 800;
-    color: #0f172a;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #191c1d;
     letter-spacing: -0.01em;
 }
 .returns-trend-toggle {
     display: flex;
-    gap: 0.35rem;
+    gap: 0.25rem;
     background: #f1f5f9;
     padding: 3px;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 .returns-trend-btn {
     border: none;
     background: transparent;
-    padding: 0.35rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.7rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 8px;
+    font-size: 0.72rem;
     font-weight: 800;
     color: #64748b;
     cursor: pointer;
@@ -124,12 +159,12 @@ include '../../includes/sidebar.php';
 }
 .returns-trend-btn.active {
     background: #ffffff;
-    color: #0f172a;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    color: #0f52ff;
+    box-shadow: 0 1px 4px rgba(15, 82, 255, 0.12);
 }
 .donut-wrap {
     position: relative;
-    height: 220px;
+    height: 230px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -140,22 +175,25 @@ include '../../includes/sidebar.php';
     pointer-events: none;
 }
 .donut-center .total-val {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #0f172a;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: #191c1d;
     line-height: 1;
 }
 .donut-center .total-lbl {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 700;
     color: #94a3b8;
     text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 0.2rem;
 }
 .reason-legend {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
+    gap: 0.55rem;
+    margin-top: 0.85rem;
 }
 .reason-legend-item {
     display: flex;
@@ -194,14 +232,15 @@ include '../../includes/sidebar.php';
 .product-thumb {
     width: 36px;
     height: 36px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #e2e8f0, #f8fafc);
+    border-radius: 10px;
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
     display: flex;
     align-items: center;
     justify-content: center;
     color: #94a3b8;
     font-size: 0.85rem;
     flex-shrink: 0;
+    border: 1px solid #e7e8e9;
 }
 .product-cell {
     display: flex;
@@ -210,47 +249,49 @@ include '../../includes/sidebar.php';
 }
 .product-cell .name {
     font-weight: 700;
-    color: #0f172a;
+    color: #191c1d;
     font-size: 0.85rem;
 }
 .sellable-bar-wrap {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.55rem;
+    min-width: 120px;
 }
 .sellable-bar {
     flex: 1;
-    height: 6px;
+    height: 7px;
     background: #e2e8f0;
     border-radius: 99px;
     overflow: hidden;
-    min-width: 60px;
+    min-width: 70px;
 }
 .sellable-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    background: linear-gradient(90deg, #0f52ff, #60a5fa);
     border-radius: 99px;
     transition: width 0.4s ease;
 }
 .sellable-pct {
     font-size: 0.8rem;
     font-weight: 800;
-    color: #0f172a;
+    color: #191c1d;
     min-width: 36px;
     text-align: right;
 }
 .status-tag {
     display: inline-block;
-    padding: 0.25rem 0.6rem;
-    border-radius: 6px;
+    padding: 0.28rem 0.7rem;
+    border-radius: 999px;
     font-size: 0.65rem;
     font-weight: 800;
     letter-spacing: 0.04em;
     border: 1px solid;
+    background: transparent;
 }
-.status-tag.optimal { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
-.status-tag.watch { background: #fffbeb; color: #d97706; border-color: #fde68a; }
-.status-tag.critical { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+.status-tag.optimal { color: #16a34a; border-color: #86efac; background: #f0fdf4; }
+.status-tag.watch { color: #d97706; border-color: #fcd34d; background: #fffbeb; }
+.status-tag.critical { color: #dc2626; border-color: #fca5a5; background: #fef2f2; }
 
 .empty-state {
     text-align: center;
@@ -258,6 +299,13 @@ include '../../includes/sidebar.php';
     color: #94a3b8;
     font-weight: 600;
     font-size: 0.85rem;
+}
+
+.returns-page .report-table thead th {
+    background: #f8fafc !important;
+    color: #475569 !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.04em;
 }
 
 @media (max-width: 1400px) {
@@ -271,7 +319,7 @@ include '../../includes/sidebar.php';
 
 <div class="returns-page">
     <!-- Filters -->
-    <div class="card" style="margin-bottom: 1.5rem;">
+    <div class="filter-card">
         <div style="display: flex; gap: 1.25rem; align-items: flex-end; flex-wrap: wrap;">
             <div class="form-group" style="flex: 1; min-width: 260px;">
                 <label>Account Selection</label>
@@ -315,7 +363,7 @@ include '../../includes/sidebar.php';
         <div class="kpi-card">
             <div class="kpi-top">
                 <span class="kpi-label">Sellable %</span>
-                <div class="kpi-icon"><i class="fas fa-box-open"></i></div>
+                <div class="kpi-icon green"><i class="fas fa-box-open"></i></div>
             </div>
             <div class="kpi-value" id="kpi_sellable_pct">0%</div>
             <div class="kpi-sub up" id="cmp_sellable_pct"><i class="fas fa-arrow-up"></i> — vs LW</div>
@@ -323,7 +371,7 @@ include '../../includes/sidebar.php';
         <div class="kpi-card">
             <div class="kpi-top">
                 <span class="kpi-label">Damaged %</span>
-                <div class="kpi-icon"><i class="fas fa-exclamation-circle"></i></div>
+                <div class="kpi-icon amber"><i class="fas fa-exclamation-circle"></i></div>
             </div>
             <div class="kpi-value" id="kpi_damaged_pct">0%</div>
             <div class="kpi-sub neutral" id="cmp_damaged_pct">Stable</div>
@@ -331,23 +379,23 @@ include '../../includes/sidebar.php';
         <div class="kpi-card">
             <div class="kpi-top">
                 <span class="kpi-label">Top Reason</span>
-                <div class="kpi-icon"><i class="fas fa-brain"></i></div>
+                <div class="kpi-icon purple"><i class="fas fa-brain"></i></div>
             </div>
-            <div class="kpi-value" id="kpi_top_reason" style="font-size: 1.25rem;">—</div>
+            <div class="kpi-value" id="kpi_top_reason" style="font-size: 1.15rem;">—</div>
             <div class="kpi-sub neutral" id="kpi_top_reason_sub">— of total</div>
         </div>
         <div class="kpi-card">
             <div class="kpi-top">
                 <span class="kpi-label">Top SKU</span>
-                <div class="kpi-icon"><i class="fas fa-shopping-bag"></i></div>
+                <div class="kpi-icon slate"><i class="fas fa-shopping-bag"></i></div>
             </div>
-            <div class="kpi-value" id="kpi_top_sku" style="font-size: 1.1rem;">—</div>
+            <div class="kpi-value" id="kpi_top_sku" style="font-size: 1.05rem;">—</div>
             <div class="kpi-sub neutral" id="kpi_top_sku_sub">—</div>
         </div>
         <div class="kpi-card">
             <div class="kpi-top">
                 <span class="kpi-label">Defect Rate</span>
-                <div class="kpi-icon"><i class="fas fa-times-circle"></i></div>
+                <div class="kpi-icon rose"><i class="fas fa-times-circle"></i></div>
             </div>
             <div class="kpi-value" id="kpi_defect_rate">0%</div>
             <div class="kpi-sub critical" id="cmp_defect_rate"><i class="fas fa-arrow-up"></i> — Critical</div>
@@ -441,8 +489,16 @@ $(document).ready(function() {
 
     function setCmp(el, cmp, suffix, invert) {
         const $el = $(el);
-        if (!cmp || cmp.dir === 'none') {
+        if (!cmp || cmp.dir === 'none' || !cmp.pct) {
             $el.removeClass('up down neutral critical').addClass('neutral').html('Stable');
+            return;
+        }
+        // Avoid noisy +100% when prior period had zero
+        if (Number(cmp.pct) >= 100) {
+            const isUp = cmp.dir === 'up';
+            const good = invert ? !isUp : isUp;
+            $el.removeClass('up down neutral critical').addClass(good ? 'up' : 'critical')
+                .html(`<i class="fas ${isUp ? 'fa-arrow-up' : 'fa-arrow-down'}"></i> New vs LW`);
             return;
         }
         const isUp = cmp.dir === 'up';
