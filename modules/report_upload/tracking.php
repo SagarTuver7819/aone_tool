@@ -395,6 +395,28 @@ $sql = "SELECT f.*, c.customer_name, u.username
 $result = $conn->query($sql);
 ?>
 
+<style>.top-header { display: none !important; } .main-wrapper { padding-top: 1.25rem !important; }</style>
+<!-- Figma-style Top Bar -->
+<div class="figma-page-topbar" style="margin-bottom:0.5rem;">
+    <div class="figma-page-topbar-left">
+        <span class="figma-page-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Data Source Tracking</strong></span>
+    </div>
+    <div class="figma-page-topbar-right">
+        <?php if ($user_role === 'admin'): ?>
+        <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
+        <?php endif; ?>
+        <button type="button" class="btn-figma-icon-sm"><i class="fas fa-search"></i></button>
+    </div>
+</div>
+
+<!-- Page Title -->
+<div class="figma-page-head">
+    <div>
+        <h2>Data Source Tracking</h2>
+        <p>Detailed audit trail of uploaded reports & database ingestion counts</p>
+    </div>
+</div>
+
 <div class="card" style="margin-bottom: 1.5rem;">
     <form method="GET" id="filter-form" style="display: flex; gap: 1.5rem; align-items: flex-end; flex-wrap: wrap;">
         <div class="form-group" style="flex: 1; min-width: 220px;">

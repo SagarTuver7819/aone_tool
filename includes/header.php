@@ -18,7 +18,7 @@ if (!isset($_SESSION['user_id'])) {
     <!-- Bootstrap 5 for Grid/Utilities -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Main Style -->
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>style.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>style.css?v=<?php echo filemtime(dirname(__DIR__) . '/style.css'); ?>">
     <!-- Chart.js (pinned to match reference) & JQuery -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

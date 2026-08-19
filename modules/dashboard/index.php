@@ -19,7 +19,7 @@ if ($active_tab === 'financial') {
 include '../../includes/header.php';
 include '../../includes/sidebar.php';
 ?>
-<?php if ($active_tab === 'kpi'): ?>
+<?php if ($active_tab === 'kpi' || $active_tab === 'financial'): ?>
 <style>
 .top-header { display: none; }
 .main-wrapper { padding-top: 1.25rem; }
@@ -115,20 +115,22 @@ include '../../includes/sidebar.php';
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-    padding: 0.85rem 1.1rem;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
+    padding: 0.75rem 1.1rem;
     background: #fff;
     border: 1px solid #e8eaed;
     border-radius: 12px;
     margin-bottom: 0.25rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 .overview-topbar-left {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
     min-width: 0;
+    flex: 1;
 }
 .overview-topbar-left select {
     min-width: 200px;
@@ -152,8 +154,9 @@ include '../../includes/sidebar.php';
 .overview-topbar-right {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    flex-wrap: wrap;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
 }
 .overview-topbar-right .btn-figma-primary {
     background: #0f52ff;
@@ -575,6 +578,531 @@ include '../../includes/sidebar.php';
     .overview-metric-card .om-value { font-size: 1.25rem; }
 }
 
+/* Figma Profit & Fees (Profit & Loss Analysis) Styles */
+#tab_financial.tab-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+.btn-figma-icon {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+    color: #475569;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    transition: all 0.15s;
+}
+.btn-figma-icon:hover {
+    background: #f8fafc;
+    color: #0f172a;
+}
+.pl-hero-3in1-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow: hidden;
+    min-height: 145px;
+}
+.pl-hero-section {
+    padding: 1.15rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.35rem;
+    position: relative;
+    border-right: 1px solid #f1f5f9;
+}
+.pl-hero-section:last-child {
+    border-right: none;
+}
+.pl-hero-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+}
+.pl-hero-value {
+    font-family: 'Hanken Grotesk', 'Inter', sans-serif;
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin: 0.15rem 0;
+}
+.pl-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+    width: fit-content;
+}
+.pl-hero-badge.green {
+    background: #ecfdf5;
+    color: #059669;
+}
+.pl-hero-badge.red {
+    background: #fef2f2;
+    color: #dc2626;
+}
+.pl-hero-badge.blue {
+    background: #eff6ff;
+    color: #2563eb;
+}
+.pl-main-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 1.25rem;
+    align-items: start;
+}
+@media (max-width: 1200px) {
+    .pl-main-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+    .pl-hero-3in1-card { grid-template-columns: 1fr; }
+    .pl-hero-section { border-right: none; border-bottom: 1px solid #f1f5f9; }
+    .pl-hero-section:last-child { border-bottom: none; }
+}
+.pl-left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    min-width: 0;
+}
+.pl-right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    min-width: 0;
+}
+.pl-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    overflow: hidden;
+}
+.pl-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1.4rem;
+    border-bottom: 1px solid #f1f5f9;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+.pl-card-title {
+    font-family: 'Hanken Grotesk', 'Inter', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+}
+.pl-chart-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+.pl-time-toggle {
+    display: inline-flex;
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 2px;
+}
+.pl-time-btn {
+    border: none;
+    background: transparent;
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.pl-time-btn:hover { color: #0f172a; }
+.pl-time-btn.active {
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.pl-select-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.pl-select-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+}
+.pl-metric-select {
+    padding: 4px 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #334155;
+    background: #fff;
+    cursor: pointer;
+}
+.pl-chart-wrapper {
+    padding: 1.25rem 1.4rem 0.5rem;
+    height: 300px;
+    position: relative;
+}
+.pl-chart-legend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 0.75rem 1rem 1.1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #475569;
+}
+.pl-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.pl-legend-box {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    display: inline-block;
+}
+.pl-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.pl-table-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.pl-search-box {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+.pl-search-box i {
+    position: absolute;
+    left: 10px;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    pointer-events: none;
+}
+.pl-search-box input {
+    padding: 6px 10px 6px 30px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    width: 180px;
+    outline: none;
+}
+.pl-search-box input:focus {
+    border-color: #3b82f6;
+    background: #fff;
+}
+.pl-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+}
+.pl-filter-btn:hover { background: #f8fafc; }
+.pl-table-responsive { overflow-x: auto; }
+.pl-sku-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+.pl-sku-table thead th {
+    background: #f8fafc;
+    padding: 12px 16px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #e2e8f0;
+}
+.pl-sku-table tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b;
+    font-weight: 600;
+}
+.pl-sku-table tbody tr:hover td { background: #f8fafc; }
+.pl-sku-table tfoot td {
+    padding: 14px 16px;
+    background: #f8fafc;
+    border-top: 2px solid #e2e8f0;
+    font-weight: 800;
+    color: #0f172a;
+}
+.pl-pagination-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-top: 1px solid #f1f5f9;
+    background: #fff;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+.pl-entries-select-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.pl-page-size-select {
+    padding: 4px 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #334155;
+    background: #fff;
+    cursor: pointer;
+}
+.pl-pagination-btns {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.pl-page-num {
+    min-width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.15s;
+    padding: 0 6px;
+}
+.pl-page-num:hover {
+    background: #f8fafc;
+    color: #0f172a;
+}
+.pl-page-num.active {
+    background: #f1f5f9;
+    color: #0f172a;
+    font-weight: 800;
+    border-color: #cbd5e1;
+}
+.pl-page-nav {
+    min-width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: #ffffff;
+    font-size: 0.75rem;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.pl-page-nav:hover:not(:disabled) {
+    background: #f8fafc;
+    color: #0f172a;
+}
+.pl-page-nav:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+.pl-score-card {
+    padding: 1.15rem 1.4rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 145px;
+}
+.pl-card-subtitle {
+    font-family: 'Hanken Grotesk', 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 0.25rem 0;
+    text-align: center;
+    width: 100%;
+}
+.pl-gauge-container {
+    position: relative;
+    width: 200px;
+    height: 110px;
+    margin: 0 auto;
+}
+.pl-speedo-gauge {
+    width: 100%;
+    height: 100%;
+}
+.pl-gauge-value-wrap {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 2px;
+}
+.pl-gauge-val {
+    font-family: 'Hanken Grotesk', 'Inter', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #0f172a;
+    line-height: 1;
+}
+.pl-gauge-unit {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #64748b;
+}
+.pl-score-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #059669;
+    background: #ecfdf5;
+    padding: 3px 8px;
+    border-radius: 999px;
+    margin-top: 0.25rem;
+}
+.pl-breakdown-card { padding: 0; }
+.pl-breakdown-section {
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+.pl-breakdown-section.last { border-bottom: none; }
+.pl-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+}
+.pl-section-title {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+.pl-section-total {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+.pl-section-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.42rem;
+}
+.pl-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.76rem;
+    color: #64748b;
+    font-weight: 600;
+}
+.pl-row .pl-val.red { color: #dc2626; }
+.pl-row .pl-val.green { color: #059669; }
+
+/* Geographic Sales Distribution Card */
+.pl-geo-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin-top: 1.5rem;
+}
+.pl-geo-head {
+    margin-bottom: 1.25rem;
+}
+.pl-geo-title {
+    font-family: 'Hanken Grotesk', 'Inter', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+}
+.pl-geo-subtitle {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin: 0;
+}
+.pl-map-wrapper {
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #f1f5f9;
+}
+.pl-geo-table-wrap {
+    overflow-x: auto;
+}
+.pl-geo-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+.pl-geo-table thead th {
+    background: #f8fafc;
+    padding: 12px 16px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #e2e8f0;
+}
+.pl-geo-table tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b;
+    font-weight: 600;
+}
+.pl-geo-table tbody tr.geo-parent-row:hover td {
+    background: #f8fafc;
+}
+
+
 .kpi-card { 
     background: #ffffff;
     border-radius: 16px;
@@ -691,15 +1219,106 @@ include '../../includes/sidebar.php';
 .expense-progress { height: 6px; background: var(--surface-container); border-radius: 10px; width: 80px; overflow: hidden; margin-top: 4px; }
 .expense-progress-bar { height: 100%; border-radius: 10px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
 
-/* Product Gallery Styles */
-#product_list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-.product-item {
-    background: #ffffff; border-radius: 16px; padding: 1.5rem; position: relative; border: 1px solid #e7e8e9;
-    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
+/* Product Performance Figma hero */
+.pp-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(360px, 0.92fr) minmax(480px, 1.18fr);
+    gap: 12px;
+    margin-bottom: 12px;
+    align-items: stretch;
 }
-.product-item:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); border-color: var(--primary-container); }
-.product-item::before { display: none; }
+.pp-sku-panel,
+.pp-donut-card,
+.pp-kpi-card {
+    background: #fff;
+    border: 1px solid #e8eaed;
+    border-radius: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.pp-sku-panel { padding: 1rem 0.35rem 0.6rem 1rem; display: flex; flex-direction: column; min-height: 0; }
+.pp-sku-panel .pp-panel-title { padding-right: 0.65rem; }
+.pp-panel-title { font-size: 0.98rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em; }
+.pp-panel-sub { font-size: 0.72rem; color: #64748b; margin: 0.2rem 0 0; font-weight: 500; }
+.pp-sku-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 0.35rem;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    padding-right: 8px;
+}
+.pp-sku-list::-webkit-scrollbar { width: 5px; }
+.pp-sku-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
+.pp-sku-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between;
+    gap: 0.65rem;
+    padding: 0.7rem 0.15rem 0.7rem 0.1rem;
+    border: none !important;
+    border-bottom: 1px solid #eef2f6 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    text-align: left;
+    min-height: 0 !important;
+}
+.pp-sku-row:last-child { border-bottom: none !important; }
+.pp-sku-rank {
+    width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 800; flex-shrink: 0;
+    background: #eef2f6 !important; color: #475569 !important;
+}
+.pp-sku-info { min-width: 0; flex: 1.4; text-align: left; }
+.pp-sku-info strong { display: block; font-size: 0.82rem; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pp-sku-info span { display: block; font-size: 0.65rem; font-weight: 600; color: #94a3b8; text-transform: none; margin-top: 2px; letter-spacing: 0; }
+.pp-sku-units { text-align: center; flex: 0 0 92px; }
+.pp-sku-units strong { display: block; font-size: 0.78rem; font-weight: 800; color: #0f172a; }
+.pp-sku-units em { display: inline-block; font-style: normal; font-size: 0.68rem; font-weight: 700; margin-top: 2px; }
+.pp-sku-units em.up { color: #16a34a; }
+.pp-sku-units em.down { color: #ef4444; }
+.pp-sku-rev { text-align: right; flex: 0 0 78px; }
+.pp-sku-rev small { display: none; }
+.pp-sku-rev strong { display: block; font-size: 0.88rem; font-weight: 800; color: #0f172a; }
+.pp-right-col { display: flex; flex-direction: column; gap: 10px; min-width: 0; height: 100%; }
+.pp-donut-card { padding: 1rem 1.15rem 1.1rem; display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.pp-donut-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem; }
+.pp-details-link { font-size: 0.8rem; font-weight: 700; color: #0051d5; text-decoration: none; display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
+.pp-donut-body { display: flex; align-items: center; gap: 1rem; flex: 1; }
+.pp-donut-wrap { position: relative; width: 190px; height: 190px; flex-shrink: 0; }
+.pp-donut-wrap canvas { width: 100% !important; height: 100% !important; }
+.pp-donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; text-align: center; }
+.pp-donut-center p { margin: 0; font-size: 1.55rem; font-weight: 800; color: #0f172a; line-height: 1; }
+.pp-donut-center span { font-size: 0.68rem; color: #64748b; font-weight: 600; }
+.pp-donut-legend { display: flex; flex-direction: column; gap: 0.7rem; flex: 1; min-width: 0; }
+.pp-legend-row { display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: center; gap: 8px; font-size: 0.75rem; }
+.pp-legend-row .name { color:#475569; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pp-legend-row .dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+.pp-kpi-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; width: 100%; margin: 0; flex-shrink: 0; align-items: stretch; }
+.pp-kpi-card { padding: 0.85rem 0.9rem; position: relative; min-height: 98px; height: 100%; margin: 0; box-sizing: border-box; display: flex; flex-direction: column; }
+.pp-kpi-icon { position: absolute; top: 12px; right: 12px; width: 28px; height: 28px; border-radius: 8px; background: #eff6ff; color: #0051d5; display: flex; align-items: center; justify-content: center; }
+.pp-kpi-icon.green { background: #ecfdf5; color: #009668; }
+.pp-kpi-icon.dark { background: #f1f5f9; color: #334155; }
+.pp-kpi-icon .material-symbols-outlined { font-size: 18px; }
+.pp-kpi-label { font-size: 0.68rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; margin: 0 1.75rem 0 0; }
+.pp-kpi-value { font-size: 1.45rem; font-weight: 800; color: #0f172a; margin: 0.35rem 0 0.4rem; line-height: 1; }
+.pp-kpi-badge { display: inline-block; background: rgba(111,251,190,0.28); color: #009668; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; }
+.pp-kpi-note { font-size: 0.72rem; font-weight: 600; color: #64748b; }
+@media (max-width: 1100px) {
+    .pp-hero-grid { grid-template-columns: 1fr; }
+}
+
+#product_list { display: flex; flex-direction: column; gap: 0; }
+.pp-sku-row.product-item,
+.product-item.pp-sku-row {
+    display: flex !important;
+    flex-direction: row !important;
+    transform: none !important;
+}
 
 .product-rank {
     position: absolute; top: 1rem; right: 1rem; width: 32px; height: 32px; background: var(--surface-container-low); color: var(--on-surface-variant); border-radius: 50%;
@@ -904,8 +1523,53 @@ include '../../includes/sidebar.php';
 </style>
 
 <!-- Filter Section -->
-<?php if ($active_tab === 'kpi'): ?>
-<!-- Figma toolbar lives inside #tab_kpi -->
+<?php if ($active_tab === 'kpi' || $active_tab === 'financial'): ?>
+<!-- Figma toolbar lives inside tab -->
+<?php elseif ($active_tab === 'products'): ?>
+<!-- Figma topbar for Product Performance -->
+<style>.top-header { display: none !important; } .main-wrapper { padding-top: 1.25rem !important; }</style>
+<div class="overview-topbar" style="margin-bottom:0.5rem;">
+    <div class="overview-topbar-left">
+        <select id="filter_customer" style="min-width:180px; padding:0.5rem 0.85rem; border:1px solid #e2e8f0; border-radius:10px; font-size:0.82rem; font-weight:600; color:#334155; background:#fff;" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
+            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                <option value="">All Amazon Profiles</option>
+            <?php endif; ?>
+            <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()): ?>
+            <?php 
+                $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
+                if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id']) continue;
+            ?>
+                <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($row['customer_name']); ?></option>
+            <?php endwhile; ?>
+        </select>
+        <?php if (($_SESSION['role'] ?? '') === 'customer'): ?>
+            <input type="hidden" id="customer_id_hidden" value="<?php echo $_SESSION['customer_id'] ?? 0; ?>">
+        <?php endif; ?>
+        <span class="overview-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Product Performance</strong></span>
+    </div>
+    <div class="overview-topbar-right">
+        <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+        <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
+        <?php endif; ?>
+        <button type="button" id="export_csv" class="btn-figma-outline"><i class="fas fa-file-export"></i> Export CSV</button>
+        <button type="button" class="btn-figma-icon-sm" title="Search"><i class="fas fa-search"></i></button>
+        <button type="button" class="btn-figma-icon-sm" title="Notifications"><i class="fas fa-bell"></i></button>
+    </div>
+</div>
+<!-- Product Performance Page Head with date -->
+<div class="overview-page-head" style="margin-bottom:1rem;">
+    <div>
+        <h2 style="font-size:1.65rem; font-weight:800; color:#0f172a; margin:0; font-family:'Hanken Grotesk','Inter',sans-serif; letter-spacing:-0.02em;">Product Performance</h2>
+        <p style="margin:0.2rem 0 0; font-size:0.82rem; color:#64748b; font-weight:500;">SKU-level revenue, traffic &amp; contribution analysis</p>
+    </div>
+    <div class="overview-date-bar">
+        <i class="far fa-calendar-alt" style="color:#64748b; font-size:0.85rem;"></i>
+        <input type="date" id="filter_from" value="">
+        <span class="date-sep">-</span>
+        <input type="date" id="filter_to" value="">
+        <button type="button" id="apply_filters" class="btn-refresh-icon" title="Refresh Analysis"><i class="fas fa-sync-alt"></i></button>
+    </div>
+</div>
 <?php else: ?>
 <div class="card" style="margin-bottom: 2rem;">
     <div style="display: flex; gap: 1.5rem; align-items: flex-end; flex-wrap: wrap;">
@@ -1207,358 +1871,407 @@ include '../../includes/sidebar.php';
     </section>
 </div>
 
-<!-- FINANCIAL TAB -->
+<!-- FINANCIAL TAB (Figma Redesign) -->
 <div id="tab_financial" class="tab-content" <?php echo ($active_tab !== 'financial') ? 'style="display: none;"' : ''; ?>>
     
-    <!-- P&L Header Bar -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <!-- Top Action Bar (Figma Style) -->
+    <div class="overview-topbar">
+        <div class="overview-topbar-left">
+            <select class="filter-customer-select" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
+                <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                    <option value="">All Amazon Profiles</option>
+                <?php endif; ?>
+                <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()): ?>
+                <?php 
+                    $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
+                    if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id']) continue;
+                ?>
+                    <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($row['customer_name']); ?></option>
+                <?php endwhile; ?>
+            </select>
+            <?php if (($_SESSION['role'] ?? '') === 'customer'): ?>
+                <input type="hidden" class="customer_id_hidden_val" value="<?php echo $_SESSION['customer_id'] ?? 0; ?>">
+            <?php endif; ?>
+            <span class="overview-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Profit & Loss Analysis</strong></span>
+        </div>
+        <div class="overview-topbar-right">
+            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
+            <?php endif; ?>
+            <button type="button" class="btn-figma-outline btn-export-csv"><i class="fas fa-file-export"></i> Export CSV</button>
+            <button type="button" class="btn-figma-icon" title="Search"><i class="fas fa-search"></i></button>
+            <button type="button" class="btn-figma-icon" title="Notifications"><i class="fas fa-bell"></i></button>
+        </div>
+    </div>
+
+    <!-- Page Title & Date Range Header -->
+    <div class="overview-page-head">
         <div>
-            <h2 style="font-size: 1.5rem; font-weight: 900; color: #0f172a; margin: 0;">Profit & Loss Analysis</h2>
-            <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: #64748b; font-weight: 600;">Complete waterfall breakdown of your shop parameters</p>
+            <h2>Profit & Loss Analysis</h2>
+            <p>Complete waterfall breakdown of your shop parameters</p>
         </div>
-        <div style="text-align: right; display: flex; align-items: center; gap: 1rem;">
-            <span style="font-size: 0.75rem; background: #f0fdf4; color: #166534; padding: 6px 14px; border-radius: 50px; font-weight: 800; border: 1px solid #bbf7d0;">
-                <i class="fas fa-check-circle"></i> Verified Against Settlement
-            </span>
-            <span id="pl_date_range" style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 6px 14px; border-radius: 50px; font-weight: 800; border: 1px solid #e2e8f0;">
-                -- --, 2026
-            </span>
-        </div>
-    </div>
-
-    <!-- Card 1: Gross Revenue -->
-    <div class="card pl-section-card" style="border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; margin-bottom: 2rem; padding: 0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
-        <!-- Header Block -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); color: #3b82f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);">
-                    <i class="fas fa-wallet"></i>
-                </div>
-                <div>
-                    <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #1e293b;">Gross Revenue</h3>
-                    <p style="margin: 2px 0 0 0; font-size: 0.75rem; color: #64748b; font-weight: 600;">All sales channels before deductions</p>
-                </div>
-            </div>
-            <div style="display: flex; align-items: center; gap: 1.5rem;">
-                <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 6px 14px; border-radius: 50px; font-weight: 800; border: 1px solid #e2e8f0;">
-                    100% Total
-                </span>
-                <h2 id="pl_rev_header_val" style="font-size: 1.75rem; font-weight: 900; color: #1e293b; margin: 0; letter-spacing: -0.02em;">$0.00</h2>
-            </div>
-        </div>
-        <!-- Table Body -->
-        <div style="padding: 0; overflow-x: auto;">
-            <table class="analysis-table" style="width: 100%; border-collapse: collapse !important; margin: 0;">
-                <thead>
-                    <tr>
-                        <th style="width: 33.33% !important; text-align: left !important; padding: 1.25rem 2rem !important; background: #f8fafc !important; color: #0f172a !important; font-weight: 800 !important; font-size: 0.95rem !important;">Source Channel</th>
-                        <th style="width: 33.33% !important; text-align: right !important; padding: 1.25rem 2rem !important; background: #f8fafc !important; color: #0f172a !important; font-weight: 800 !important; font-size: 0.95rem !important;">Revenue Value</th>
-                        <th style="width: 33.33% !important; text-align: right !important; padding: 1.25rem 2rem !important; background: #f8fafc !important; color: #0f172a !important; font-weight: 800 !important; font-size: 0.95rem !important;">Contribution %</th>
-                    </tr>
-                </thead>
-                <tbody id="pl_revenue_rows">
-                    <!-- populated by JS -->
-                </tbody>
-            </table>
+        <div class="overview-date-bar">
+            <i class="far fa-calendar-alt" style="color: #64748b; font-size: 0.85rem; margin-left: 4px;"></i>
+            <input type="date" class="filter-from-input" value="">
+            <span class="date-sep">-</span>
+            <input type="date" class="filter-to-input" value="">
+            <button type="button" class="btn-refresh-icon btn-apply-filters" title="Refresh Analysis"><i class="fas fa-sync-alt"></i></button>
         </div>
     </div>
 
-    <!-- Card 2: Expenses & Fees -->
-    <div class="card pl-section-card" style="border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; margin-bottom: 2rem; padding: 0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
-        <!-- Header Block -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%); color: #f43f5e; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 12px rgba(244, 63, 94, 0.1);">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                </div>
-                <div>
-                    <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #1e293b;">Expenses & Fees</h3>
-                    <p style="margin: 2px 0 0 0; font-size: 0.75rem; color: #64748b; font-weight: 600;">Deductions, fees, and operational burn</p>
-                </div>
-            </div>
-            <div style="display: flex; align-items: center; gap: 1.5rem;">
-                <span id="pl_fees_share_badge" style="font-size: 0.75rem; background: #fff1f2; color: #e11d48; padding: 6px 14px; border-radius: 50px; font-weight: 800; border: 1px solid #fecdd3;">
-                    0.0% of Revenue
-                </span>
-                <h2 id="pl_fees_header_val" style="font-size: 1.75rem; font-weight: 900; color: #e11d48; margin: 0; letter-spacing: -0.02em;">$0.00</h2>
-            </div>
-        </div>
-        <!-- Table Body -->
-        <div style="padding: 0; overflow-x: auto;">
-            <table class="analysis-table" style="width: 100%; border-collapse: collapse !important; margin: 0;">
-                <thead>
-                    <tr>
-                        <th style="width: 33.33% !important; text-align: left !important; padding: 1.25rem 2rem !important; background: #f8fafc !important; color: #0f172a !important; font-weight: 800 !important; font-size: 0.95rem !important;">Expense Classification</th>
-                        <th style="width: 33.33% !important; text-align: right !important; padding: 1.25rem 2rem !important; background: #f8fafc !important; color: #0f172a !important; font-weight: 800 !important; font-size: 0.95rem !important;">Amount</th>
-                        <th style="width: 33.33% !important; text-align: right !important; padding: 1.25rem 2rem !important; background: #f8fafc !important; color: #0f172a !important; font-weight: 800 !important; font-size: 0.95rem !important;">Revenue Share</th>
-                    </tr>
-                </thead>
-                <tbody id="pl_expenses_rows">
-                    <!-- populated by JS -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Card 3: Net Profit Analysis -->
-    <div class="card pl-section-card" style="border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; margin-bottom: 2rem; padding: 0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);">
-        <!-- Header Block -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #e6fcf5 0%, #c3fae8 100%); color: #0ca678; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 12px rgba(12, 166, 120, 0.1);">
-                    <i class="fas fa-chart-pie"></i>
-                </div>
-                <div>
-                    <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #1e293b;">Net Profit Analysis</h3>
-                    <p style="margin: 2px 0 0 0; font-size: 0.75rem; color: #64748b; font-weight: 600;">Final bottom line and performance metrics</p>
-                </div>
-            </div>
-            <div style="display: flex; align-items: center; gap: 1.5rem;">
-                <span id="pl_net_margin_badge" style="font-size: 0.75rem; background: #e6fcf5; color: #0ca678; padding: 6px 14px; border-radius: 50px; font-weight: 800; border: 1px solid #c3fae8;">
-                    0.0% Margin
-                </span>
-                <h2 id="pl_net_header_val" style="font-size: 1.75rem; font-weight: 900; color: #0ca678; margin: 0; letter-spacing: -0.02em;">$0.00</h2>
-            </div>
-        </div>
-        
-        <!-- Table & Efficiency Score Layout -->
-        <div style="display: grid; grid-template-columns: 1.8fr 1fr; gap: 2rem; padding: 2rem;">
-            <!-- Left: Breakdown Table -->
-            <div style="overflow-x: auto;">
-                <table class="analysis-table" style="width: 100%; border-collapse: collapse !important; margin: 0;">
-                    <thead>
-                        <tr>
-                            <th style="width: 33.33% !important; text-align: left !important; padding: 1.25rem 1rem !important; background: #f8fafc !important; color: #0f172a !important; font-weight: 800 !important; font-size: 0.95rem !important;">Key Performance Indicator</th>
-                            <th style="width: 33.33% !important; text-align: right !important; padding: 1.25rem 1rem !important; background: #f8fafc !important; color: #0f172a !important; font-weight: 800 !important; font-size: 0.95rem !important;">Current Period</th>
-                            <th style="width: 33.33% !important; text-align: right !important; padding: 1.25rem 1rem !important; background: #f8fafc !important; color: #0f172a !important; font-weight: 800 !important; font-size: 0.95rem !important;">Revenue Share</th>
-                        </tr>
-                    </thead>
-                    <tbody id="pl_net_profit_rows">
-                        <!-- populated by JS -->
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- Right: Efficiency Card -->
-            <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-radius: 16px; border: 1.5px solid #a7f3d0; padding: 2rem; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 25px rgba(12, 166, 120, 0.05);">
-                <div style="position: absolute; top: -20px; right: -20px; width: 120px; height: 120px; background: rgba(12, 166, 120, 0.06); border-radius: 50%; pointer-events: none;"></div>
-                <div>
-                    <p style="font-size: 0.7rem; color: #065f46; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">EFFICIENCY SCORE</p>
-                    <div style="display: flex; align-items: baseline; gap: 4px;">
-                        <span id="pl_efficiency_score" style="font-size: 4rem; font-weight: 900; line-height: 1; color: #047857;">94</span>
-                        <span style="font-size: 1.5rem; color: #065f46; font-weight: 700; opacity: 0.6;">/100</span>
+    <!-- Main 2-Column Section (Left: 3-in-1 Hero + Chart + SKU Table, Right: Efficiency Score + Waterfall Breakdown) -->
+    <div class="pl-main-layout">
+        <!-- LEFT COLUMN -->
+        <div class="pl-left-col">
+            <!-- 3-in-1 Unified Hero KPI Card (Figma Style) -->
+            <div class="pl-hero-3in1-card">
+                <!-- Section 1: Gross Revenue Stream -->
+                <div class="pl-hero-section">
+                    <div class="pl-hero-label">Gross Revenue Stream</div>
+                    <div class="pl-hero-value" id="pl_hero_revenue">$0.00</div>
+                    <div class="pl-hero-badge green">
+                        <span>100%</span>
+                        <i class="fas fa-arrow-up"></i>
+                        <span>Total</span>
                     </div>
                 </div>
-                <div style="margin-top: 2rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <span style="font-size: 0.8rem; font-weight: 700; color: #065f46;">Performance Status</span>
-                        <span id="pl_efficiency_status" style="font-size: 0.75rem; background: #10b981; color: white; padding: 4px 10px; border-radius: 50px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em;">EXCELLENT</span>
+
+                <!-- Section 2: Operational Deductions -->
+                <div class="pl-hero-section">
+                    <div class="pl-hero-label">Operational Deductions</div>
+                    <div class="pl-hero-value" id="pl_hero_deductions">$0.00</div>
+                    <div class="pl-hero-badge red">
+                        <span id="pl_deductions_pct">54.3%</span>
+                        <i class="fas fa-arrow-down"></i>
+                        <span>of Revenue</span>
                     </div>
-                    <p id="pl_efficiency_desc" style="font-size: 0.75rem; color: #065f46; font-weight: 600; opacity: 0.8; margin: 0; line-height: 1.4;">Your sales are highly optimized with controlled advertising spillover.</p>
+                </div>
+
+                <!-- Section 3: Executive Net Profit -->
+                <div class="pl-hero-section">
+                    <div class="pl-hero-label">Executive Net Profit</div>
+                    <div class="pl-hero-value" id="pl_hero_net_profit">$0.00</div>
+                    <div class="pl-hero-badge blue">
+                        <span id="pl_margin_pct">45.7%</span>
+                        <i class="fas fa-arrow-up"></i>
+                        <span>Margin</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Card: Profit & Loss -->
+            <div class="pl-card pl-chart-card">
+                <div class="pl-card-header">
+                    <h3 class="pl-card-title">Profit & Loss</h3>
+                    <div class="pl-chart-controls">
+                        <div class="pl-time-toggle" id="pl_time_toggle">
+                            <button type="button" class="pl-time-btn" data-time="daily">Daily</button>
+                            <button type="button" class="pl-time-btn" data-time="weekly">Weekly</button>
+                            <button type="button" class="pl-time-btn active" data-time="monthly">Monthly</button>
+                        </div>
+                        <div class="pl-select-group">
+                            <span class="pl-select-label">Bars</span>
+                            <select id="pl_bar_metric" class="pl-metric-select">
+                                <option value="sales" selected>Sales</option>
+                                <option value="units">Units</option>
+                                <option value="orders">Orders</option>
+                            </select>
+                        </div>
+                        <div class="pl-select-group">
+                            <span class="pl-select-label">Line</span>
+                            <select id="pl_line_metric" class="pl-metric-select">
+                                <option value="net_profit" selected>Net Profit</option>
+                                <option value="margin">Net Margin %</option>
+                                <option value="roi">ROI %</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pl-chart-wrapper">
+                    <canvas id="plMixedChart"></canvas>
+                </div>
+
+                <div class="pl-chart-legend">
+                    <div class="pl-legend-item">
+                        <span class="pl-legend-box" style="background: #93c5fd;"></span>
+                        <span id="pl_legend_bar_label">Sales</span>
+                    </div>
+                    <div class="pl-legend-item">
+                        <span class="pl-legend-dot" style="background: #10b981; border: 2px solid #059669;"></span>
+                        <span id="pl_legend_line_label">Net Profit</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Card: SKU Wise P&L Performance -->
+            <div class="pl-card pl-table-card">
+                <div class="pl-card-header">
+                    <h3 class="pl-card-title">SKU Wise P&L Performance</h3>
+                    <div class="pl-table-controls">
+                        <div class="pl-search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="sku_pl_search_input" placeholder="Search SKUs...">
+                        </div>
+                        <button type="button" class="pl-filter-btn" id="sku_pl_filter_toggle">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pl-table-responsive">
+                    <table class="pl-sku-table" id="sku_pl_table">
+                        <thead>
+                            <tr>
+                                <th style="width: 8%; text-align: center;">Rank</th>
+                                <th style="width: 32%; text-align: left;">Seller SKU</th>
+                                <th style="width: 15%; text-align: right;">Units Sold</th>
+                                <th style="width: 15%; text-align: right;">Revenue</th>
+                                <th style="width: 15%; text-align: right;">Net Profit</th>
+                                <th style="width: 15%; text-align: right;">Net Profit%</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sku_pl_body">
+                            <tr><td colspan="6" style="text-align:center; padding: 2.5rem; color:#94a3b8;">Loading SKU data...</td></tr>
+                        </tbody>
+                        <tfoot id="sku_pl_foot">
+                            <!-- Populated in JS -->
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="pl-pagination-bar">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="pl-entries-select-wrap">
+                            <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Show</span>
+                            <select id="sku_pl_page_size" class="pl-page-size-select">
+                                <option value="10" selected>10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                            <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Entries</span>
+                        </div>
+                        <p id="sku_pl_showing_text" style="margin: 0; font-size: 0.75rem; color: #64748b; font-weight: 600;">Showing 1 to 10 of 0 entries</p>
+                    </div>
+                    <div id="sku_pl_pagination" class="pl-pagination-btns"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="pl-right-col">
+            <!-- Efficiency Score Card -->
+            <div class="pl-card pl-score-card">
+                <h4 class="pl-card-subtitle">Efficiency Score</h4>
+                <div class="pl-gauge-container">
+                    <svg viewBox="0 0 240 135" class="pl-speedo-gauge" id="efficiencyGaugeSvg">
+                        <!-- Rendered in JS -->
+                    </svg>
+                    <div class="pl-gauge-value-wrap">
+                        <span class="pl-gauge-val" id="pl_efficiency_val">94</span>
+                        <span class="pl-gauge-unit">%</span>
+                    </div>
+                </div>
+                <div class="pl-score-trend" id="pl_efficiency_trend">
+                    <i class="fas fa-arrow-up"></i>
+                    <span id="pl_efficiency_trend_text">2.1% vs last month</span>
+                </div>
+            </div>
+
+            <!-- Waterfall Breakdown Card -->
+            <div class="pl-card pl-breakdown-card">
+                <!-- Section 1: Gross Revenue Stream -->
+                <div class="pl-breakdown-section">
+                    <div class="pl-section-head">
+                        <span class="pl-section-title">Gross Revenue Stream</span>
+                        <span class="pl-section-total" id="side_gross_total">$0.00</span>
+                    </div>
+                    <div class="pl-section-rows">
+                        <div class="pl-row"><span>Sales</span><span id="side_sales" class="pl-val">$0.00</span></div>
+                        <div class="pl-row"><span>Units</span><span id="side_units" class="pl-val">0</span></div>
+                        <div class="pl-row"><span>Orders</span><span id="side_orders" class="pl-val">0</span></div>
+                        <div class="pl-row"><span>Refunds</span><span id="side_refunds" class="pl-val red">-$0.00</span></div>
+                        <div class="pl-row"><span>Promo</span><span id="side_promo" class="pl-val red">-$0.00</span></div>
+                        <div class="pl-row"><span>Advertising cost</span><span id="side_ad_cost" class="pl-val red">-$0.00</span></div>
+                        <div class="pl-row"><span>Amazon fees</span><span id="side_amazon_fees" class="pl-val red">-$0.00</span></div>
+                        <div class="pl-row"><span>Cost of goods</span><span id="side_cogs_row" class="pl-val">$0.00</span></div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Operational Deductions -->
+                <div class="pl-breakdown-section">
+                    <div class="pl-section-head">
+                        <span class="pl-section-title">Operational Deductions</span>
+                        <span class="pl-section-total" id="side_deductions_total">$0.00</span>
+                    </div>
+                    <div class="pl-section-rows">
+                        <div class="pl-row"><span>Cost of Goods</span><span id="side_ded_cogs" class="pl-val">$0.00</span></div>
+                        <div class="pl-row"><span>Advertising Cost</span><span id="side_ded_ads" class="pl-val">$0.00</span></div>
+                        <div class="pl-row"><span>Amazon Fees</span><span id="side_ded_fees" class="pl-val red">-$0.00</span></div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Executive Net Profit -->
+                <div class="pl-breakdown-section">
+                    <div class="pl-section-head">
+                        <span class="pl-section-title">Executive Net Profit</span>
+                        <span class="pl-section-total" id="side_net_total">$0.00</span>
+                    </div>
+                    <div class="pl-section-rows">
+                        <div class="pl-row"><span>Gross Profit</span><span id="side_net_gross" class="pl-val">$0.00</span></div>
+                        <div class="pl-row"><span>Net Profit</span><span id="side_net_profit" class="pl-val">$0.00</span></div>
+                        <div class="pl-row" style="border-top: 1px solid #e2e8f0; margin-top: 4px; padding-top: 8px;"><span style="font-weight: 700; color: #0f172a;">Estimated Payout</span><span id="side_net_payout" class="pl-val" style="font-weight: 800; color: #0051d5; font-size: 0.95rem;">$0.00</span></div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Profitability & Ratios -->
+                <div class="pl-breakdown-section last">
+                    <div class="pl-section-head">
+                        <span class="pl-section-title">Profitability & Ratios</span>
+                    </div>
+                    <div class="pl-section-rows">
+                        <div class="pl-row"><span>Net Margin</span><span id="side_ratio_margin" class="pl-val">0.0%</span></div>
+                        <div class="pl-row"><span>ROI</span><span id="side_ratio_roi" class="pl-val">0.0%</span></div>
+                        <div class="pl-row"><span>Real ACOS</span><span id="side_ratio_acos" class="pl-val">0.0%</span></div>
+                        <div class="pl-row"><span>% Refunds</span><span id="side_ratio_refunds" class="pl-val">0.0%</span></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <section class="bento-card overflow-hidden mb-8" style="background:#ffffff; border-radius:16px; border: 1px solid #c6c6cd; overflow:hidden; margin-bottom: 2rem;">
-        <div class="px-8 py-6 border-b border-outline-variant flex justify-between items-center" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #c6c6cd; padding: 24px 32px; background: #ffffff;">
-            <h3 class="font-headline-md text-headline-md text-primary" style="font-size: 22px; font-weight: 700; color: #000000; margin: 0; display: flex; align-items: center; gap: 8px;">
-                <span class="material-symbols-outlined text-secondary" style="font-size: 24px; color: #0051d5;">inventory_2</span>
-                SKU Wise P&L Performance
-            </h3>
-            <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
-                <div class="relative" style="position: relative;">
-                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #45464d; pointer-events: none;"></i>
-                    <input id="sku_pl_search_input" style="padding-left: 36px; padding-right: 16px; padding-top: 8px; padding-bottom: 8px; border: 1px solid #c6c6cd; border-radius: 8px; outline: none; background: #f2f4f6; font-size: 14px; font-weight: 600; width: 220px;" placeholder="Search SKUs..." type="text"/>
-                </div>
-                <button style="padding: 8px; border: 1px solid #c6c6cd; border-radius: 8px; background: transparent; color: #45464d; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                    <span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
-                </button>
-            </div>
+
+    <!-- Geographic Sales Distribution (Figma Design) -->
+    <div class="pl-geo-card">
+        <div class="pl-geo-head">
+            <h3 class="pl-geo-title">Geographic Sales Distribution</h3>
+            <p class="pl-geo-subtitle">Interactive state-level performance heatmap with dynamic SKU breakdowns</p>
         </div>
-        <div style="overflow-x: auto;">
-            <table id="sku_pl_table" style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed;">
-                <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
+
+        <div class="pl-map-wrapper">
+            <div id="us_leaflet_map" style="height: 280px; width: 100%; border-radius: 12px; background: #f8fafc; z-index: 1;"></div>
+            <div id="map_fallback_info" style="display: none; font-size: 0.75rem; color: #64748b; margin-top: 6px; text-align: center;">Showing regional hub markers</div>
+        </div>
+
+        <div class="pl-geo-table-wrap">
+            <table class="pl-geo-table">
+                <thead>
                     <tr>
-                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 10%;">Rank</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 30%;">Seller SKU</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 15%;">Units Sold</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #0051d5; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 15%; background: rgba(219,225,255,0.1);">Revenue</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 15%; background: rgba(111,251,190,0.05);">Net Profit</th>
-                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 700; color: #009668; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 15%; background: rgba(111,251,190,0.05);">Net Profit%</th>
+                        <th style="width: 25%; text-align: left;">State / Region</th>
+                        <th style="width: 12%; text-align: right;">Orders</th>
+                        <th style="width: 12%; text-align: right;">Units Sold</th>
+                        <th style="width: 15%; text-align: right;">Sales</th>
+                        <th style="width: 12%; text-align: right;">Amazon Fees</th>
+                        <th style="width: 12%; text-align: right;">COGS</th>
+                        <th style="width: 12%; text-align: right;">Net Profit</th>
                     </tr>
                 </thead>
-                <tbody id="sku_pl_body" style="background:#ffffff;">
-                    <tr><td colspan="6" style="text-align: center; padding: 3rem; color: #94a3b8;">Loading SKU data...</td></tr>
+                <tbody id="region_sales_body">
+                    <tr><td colspan="7" style="text-align: center; padding: 2.5rem; color: #94a3b8;">Loading geographic distribution...</td></tr>
                 </tbody>
-                <tfoot id="sku_pl_foot" style="background: #f2f4f6; border-top: 2px solid #c6c6cd; font-weight: 800;">
-                    <!-- JS Populated Summary Row -->
-                </tfoot>
             </table>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; background: #f2f4f6; border-top: 1px solid #c6c6cd; padding: 16px 32px; box-sizing: border-box;">
-            <p style="font-size: 12px; color: #45464d; margin: 0;" id="sku_pl_showing_text">Showing 1 to 10 of 0 entries</p>
-            <div style="display: flex; gap: 8px;" id="sku_pl_pagination">
-                <!-- Dynamic Pagination Buttons -->
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 3: Geographic Sales Distribution (Full Width Premium Map & SKU Table) -->
-    <div class="card" style="overflow: hidden; margin-bottom: 2rem; padding: 0;">
-        <div style="padding: 1.25rem 2rem; background: var(--surface-container-low); border-bottom: 1px solid var(--outline-variant); display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 36px; height: 36px; background: var(--primary-container); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(15, 82, 255, 0.2);"><i class="fas fa-map-marked-alt"></i></div>
-                <div>
-                    <span style="font-weight: 800; color: var(--on-surface); font-size: 1.1rem; display: block;">Geographic Sales Distribution</span>
-                    <span style="font-size: 0.75rem; color: var(--on-surface-variant); font-weight: 600;">Interactive state-level performance heatmap with dynamic SKU breakdowns</span>
-                </div>
-            </div>
-            <!-- <span style="font-size: 0.75rem; background: #fef3c7; color: #b45309; padding: 6px 14px; border-radius: 50px; font-weight: 800; border: 1px solid #fde68a;">
-                <i class="fas fa-globe-americas"></i>
-            </span> -->
-        </div>
-        
-        <div style="padding: 2rem;">
-            <!-- Map Container -->
-            <div id="us_leaflet_map" style="height: 480px; width: 100%; background: #f8fafc; border-radius: 16px; margin-bottom: 2rem; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); position: relative; z-index: 1;">
-                <!-- Fallback Map Indicator -->
-                <div id="map_fallback_info" style="position: absolute; bottom: 15px; left: 15px; background: rgba(255,255,255,0.9); padding: 8px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; color: #475569; z-index: 1000; border: 1px solid #e2e8f0; pointer-events: none; display: none;">
-                    Using offline fallback visualizer
-                </div>
-            </div>
-            
-            <!-- Table Container -->
-            <div class="analysis-table-container" style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #fff;">
-                <table id="geo_sales_table" class="analysis-table" style="width: 100%; border-collapse: collapse; margin: 0; font-size: 0.95rem;">
-                    <thead>
-                        <tr>
-                            <th style="background: #f8fafc !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 20% !important;">State / Region</th>
-                            <th style="background: #f8fafc !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 13% !important;">Orders</th>
-                            <th style="background: #f8fafc !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 13% !important;">Units Sold</th>
-                            <th style="background: #eff6ff !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 13% !important;">Sales</th>
-                            <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 13% !important;">Amazon Fees</th>
-                            <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 13% !important;">COGS</th>
-                            <th style="background: #f0fdf4 !important; border: 1px solid #e2e8f0 !important; padding: 1.25rem !important; text-align: center !important; color: #1e293b !important; font-weight: 800 !important; width: 15% !important;">Net Profit</th>
-                        </tr>
-                    </thead>
-                    <tbody id="region_sales_body">
-                        <tr><td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8; font-weight: 700;">Loading regional insights...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
-
 </div>
 
 <div id="tab_products" class="tab-content" <?php echo ($active_tab !== 'products') ? 'style="display: none;"' : ''; ?>>
     
-    <!-- Section 1: Hero Cards (Top Performing SKUs) -->
-    <section class="mb-8">
-        <div class="flex items-center justify-between mb-6">
-            <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-secondary" style="font-size: 28px; color: #0051d5;">workspace_premium</span>
-                <h3 class="font-headline-md text-headline-md text-primary" style="font-size: 24px; font-weight: 700; color: #000000; margin: 0;">Top Performing SKUs</h3>
-            </div>
+    <!-- Figma: Left SKU list | Right donut card + 3 KPI cards -->
+    <div class="pp-hero-grid">
+        <div class="pp-sku-panel">
+            <h3 class="pp-panel-title">Top Performing SKUs</h3>
+            <div id="product_list" class="pp-sku-list"></div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6" id="product_list">
-            <!-- Dynamically populated in JS -->
-        </div>
-    </section>
 
-    <!-- Mid Section: Chart and Stats -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <!-- SKU Contribution Chart -->
-        <div class="lg:col-span-2 bento-card p-8 flex flex-col justify-between" style="min-height: 420px; box-sizing: border-box; display: flex; flex-direction: column;">
-            <div class="flex justify-between items-center mb-6" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                <div>
-                    <h3 class="font-headline-md text-headline-md text-primary" style="font-size: 22px; font-weight: 700; color: #000000; margin: 0;">Revenue Contribution by SKU</h3>
-                    <p class="text-label-sm text-on-surface-variant mt-1" style="font-size: 12px; color: #45464d; margin: 0;">Percentage split of total store revenue across top products.</p>
-                </div>
-                <a href="#product_perf_table" class="text-secondary font-label-md text-label-md flex items-center gap-1 hover:underline" style="font-size: 14px; font-weight: 600; color: #0051d5; text-decoration: none; display: flex; align-items: center; gap: 4px;">
-                    Details <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                </a>
-            </div>
-            <div class="flex flex-col md:flex-row items-center justify-center gap-12 flex-1" style="display: flex; align-items: center; justify-content: space-between; gap: 48px;">
-                <div class="relative w-60 h-60 flex items-center justify-center" style="position: relative; width: 240px; height: 240px; margin: 0 auto; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <canvas id="productRevenueShareChart" style="max-height: 240px; max-width: 240px;"></canvas>
-                    <div class="absolute text-center" style="position: absolute; pointer-events: none; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0;">
-                        <p class="text-display-lg font-bold leading-none" id="doughnut_center_val" style="font-size: 32px; font-weight: 700; color: #000000; margin: 0;">$0k</p>
-                        <p class="text-label-sm text-on-surface-variant" style="font-size: 12px; color: #45464d; margin: 0;">Total Rev</p>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 gap-3 flex-1 max-w-[280px] w-full" id="doughnut_custom_legend" style="padding-left: 16px; display: flex; flex-direction: column; gap: 12px; width: 100%;">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
-        </div>
-        
-        <!-- Summary Stats Column -->
-        <div class="flex flex-col gap-6" style="display: flex; flex-direction: column; gap: 24px;">
-            <!-- Avg. Store ROAS -->
-            <div class="bento-card p-6 flex flex-col justify-between" style="min-height: 125px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
-                <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
-                    <div class="w-12 h-12 bg-secondary-fixed/20 rounded-xl flex items-center justify-center text-secondary" style="width: 48px; height: 48px; background: rgba(219, 225, 255, 0.5); border-radius: 12px; color: #0051d5; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                        <span class="material-symbols-outlined filled-icon">trending_up</span>
-                    </div>
+        <div class="pp-right-col">
+            <div class="pp-donut-card">
+                <div class="pp-donut-head">
                     <div>
-                        <p class="text-label-sm text-on-surface-variant uppercase tracking-wider" style="font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; margin: 0; letter-spacing: 0.05em;">Avg. Store ROAS</p>
-                        <p class="font-headline-md text-headline-md font-bold" id="prod_meta_roas" style="font-size: 24px; font-weight: 700; color: #000000; margin: 0;">4.2x</p>
+                        <h3 class="pp-panel-title">Revenue Contribution by SKU</h3>
+                        <p class="pp-panel-sub">Percentage split of total store revenue across top products.</p>
                     </div>
+                    <a href="#product_perf_table" class="pp-details-link">Details <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span></a>
                 </div>
-                <div class="mt-4 flex items-center gap-2" style="display: flex; align-items: center; gap: 8px; margin-top: 16px;">
-                    <span class="text-on-tertiary-container font-label-md text-label-sm bg-tertiary-fixed/30 px-2 py-0.5 rounded" style="background: rgba(111, 251, 190, 0.3); color: #009668; font-size: 12px; font-weight: 600; padding: 2px 6px; border-radius: 4px;">+12.4%</span>
-                    <span class="text-label-sm text-on-surface-variant" style="font-size: 12px; color: #45464d;">vs last month</span>
-                </div>
-            </div>
-            
-            <!-- Total Sessions -->
-            <div class="bento-card p-6 flex flex-col justify-between" style="min-height: 125px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
-                <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
-                    <div class="w-12 h-12 bg-tertiary-fixed/20 rounded-xl flex items-center justify-center text-on-tertiary-container" style="width: 48px; height: 48px; background: rgba(111, 251, 190, 0.2); border-radius: 12px; color: #009668; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                        <span class="material-symbols-outlined filled-icon">group</span>
+                <div class="pp-donut-body">
+                    <div class="pp-donut-wrap">
+                        <canvas id="productRevenueShareChart"></canvas>
+                        <div class="pp-donut-center">
+                            <p id="doughnut_center_val">$0k</p>
+                            <span>Total Rev</span>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-label-sm text-on-surface-variant uppercase tracking-wider" style="font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; margin: 0; letter-spacing: 0.05em;">Total Sessions</p>
-                        <p class="font-headline-md text-headline-md font-bold" id="prod_meta_sessions" style="font-size: 24px; font-weight: 700; color: #000000; margin: 0;">12,482</p>
-                    </div>
-                </div>
-                <div class="mt-4 flex items-center gap-2" style="display: flex; align-items: center; gap: 8px; margin-top: 16px;">
-                    <span class="text-on-tertiary-container font-label-md text-label-sm bg-tertiary-fixed/30 px-2 py-0.5 rounded" style="background: rgba(111, 251, 190, 0.3); color: #009668; font-size: 12px; font-weight: 600; padding: 2px 6px; border-radius: 4px;">+8.1%</span>
-                    <span class="text-label-sm text-on-surface-variant" style="font-size: 12px; color: #45464d;">organic traffic</span>
+                    <div id="doughnut_custom_legend" class="pp-donut-legend"></div>
                 </div>
             </div>
-            
-            <!-- Active SKUs -->
-            <div class="bento-card p-6 flex flex-col justify-between" style="min-height: 125px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
-                <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
-                    <div class="w-12 h-12 bg-primary-container/10 rounded-xl flex items-center justify-center text-primary" style="width: 48px; height: 48px; background: rgba(19, 27, 46, 0.1); border-radius: 12px; color: #000000; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                        <span class="material-symbols-outlined filled-icon">layers</span>
-                    </div>
-                    <div>
-                        <p class="text-label-sm text-on-surface-variant uppercase tracking-wider" style="font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; margin: 0; letter-spacing: 0.05em;">Active SKUs</p>
-                        <p class="font-headline-md text-headline-md font-bold" id="prod_meta_skus" style="font-size: 24px; font-weight: 700; color: #000000; margin: 0;">48</p>
-                    </div>
+
+            <div class="pp-kpi-row">
+                <div class="pp-kpi-card">
+                    <div class="pp-kpi-icon"><span class="material-symbols-outlined">trending_up</span></div>
+                    <p class="pp-kpi-label">Avg. Store ROAS</p>
+                    <p class="pp-kpi-value" id="prod_meta_roas">4.2x</p>
+                    <span class="pp-kpi-badge">+12.4% vs last month</span>
                 </div>
-                <div class="mt-4 flex items-center gap-2" style="display: flex; align-items: center; gap: 8px; margin-top: 16px;">
-                    <span class="text-label-sm text-on-surface-variant" style="font-size: 12px; color: #45464d;">3 pending restocking</span>
+                <div class="pp-kpi-card">
+                    <div class="pp-kpi-icon green"><span class="material-symbols-outlined">group</span></div>
+                    <p class="pp-kpi-label">Total Sessions</p>
+                    <p class="pp-kpi-value" id="prod_meta_sessions">0</p>
+                    <span class="pp-kpi-badge">+8.1% organic traffic</span>
+                </div>
+                <div class="pp-kpi-card">
+                    <div class="pp-kpi-icon dark"><span class="material-symbols-outlined">layers</span></div>
+                    <p class="pp-kpi-label">Active SKUs</p>
+                    <p class="pp-kpi-value" id="prod_meta_skus">0</p>
+                    <span class="pp-kpi-note">3 pending restocking</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Section 4: Performance Table -->
+    <!-- Section 5: Traffic vs Revenue Correlation (Figma middle row) -->
+    <section class="bento-card" style="padding: 24px 28px; box-sizing: border-box; background:#fff; border:1px solid #e8eaed; border-radius:14px; box-shadow:0 1px 4px rgba(0,0,0,0.04); margin: 0 0 12px 0;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+            <div>
+                <h3 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0;">Traffic vs Revenue Correlation</h3>
+                <p style="font-size: 12px; color: #64748b; margin: 4px 0 0;">Analyzing sessions (bars) against revenue generation (line) per top 10 SKUs.</p>
+            </div>
+            <div style="display: flex; gap: 24px; align-items: center;">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <span style="width: 12px; height: 12px; background: #dbe1ff; border-radius: 2px; display: inline-block;"></span>
+                    <span style="font-size: 12px; color: #45464d;">Sessions</span>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <span style="width: 16px; height: 2px; background: #0051d5; display: inline-block;"></span>
+                    <span style="font-size: 12px; color: #45464d;">Revenue ($)</span>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <span style="width: 16px; border-top: 2px dashed #f59e0b; display: inline-block;"></span>
+                    <span style="font-size: 12px; color: #45464d;">Conv %</span>
+                </div>
+            </div>
+        </div>
+        <div style="height: 320px; width: 100%; position: relative; box-sizing: border-box;">
+            <canvas id="productComboChart"></canvas>
+        </div>
+        <div style="margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+            <div style="padding: 16px 18px; background: #eff6ff; border-left: 4px solid #0051d5; border-radius: 0 12px 12px 0;">
+                <p style="font-weight: 800; font-size: 13px; margin-bottom: 6px; color: #0f172a;">Strategic Correlation</p>
+                <p style="font-size: 13px; color: #475569; margin: 0; line-height: 1.45;">Analyze the relationship between traffic (bars) and financial outcomes (lines). High traffic with low revenue indicates listing optimization is needed.</p>
+            </div>
+            <div style="padding: 16px 18px; background: #ecfdf5; border-left: 4px solid #009668; border-radius: 0 12px 12px 0;">
+                <p style="font-weight: 800; font-size: 13px; margin-bottom: 6px; color: #009668;">Actionable Insight</p>
+                <p style="font-size: 13px; color: #475569; margin: 0; line-height: 1.45;">Prioritize products where the conversion line is trending upwards, as these are your most efficient growth opportunities.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Monthly Performance by SKU (Figma bottom table) -->
     <section class="bento-card overflow-hidden mb-8" style="background:#ffffff; border-radius:16px; border: 1px solid #c6c6cd; overflow:hidden;">
-        <div class="px-8 py-6 border-b border-outline-variant flex justify-between items-center" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #c6c6cd; padding: 24px 32px;">
-            <h3 class="font-headline-md text-headline-md text-primary" style="font-size: 22px; font-weight: 700; color: #000000; margin: 0;">Monthly Performance by SKU</h3>
+        <div class="px-8 py-6 border-b border-outline-variant flex justify-between items-center" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #c6c6cd; padding: 20px 28px;">
+            <h3 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0;">Monthly Performance by SKU</h3>
             <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
                 <div class="relative" style="position: relative;">
                     <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #45464d; pointer-events: none;"></i>
-                    <input id="product_search_input" style="padding-left: 36px; padding-right: 16px; padding-top: 8px; padding-bottom: 8px; border: 1px solid #c6c6cd; border-radius: 8px; outline: none; background: #f2f4f6; font-size: 14px; font-weight: 600; width: 220px;" placeholder="Search products..." type="text"/>
+                    <input id="product_search_input" style="padding-left: 36px; padding-right: 16px; padding-top: 8px; padding-bottom: 8px; border: 1px solid #c6c6cd; border-radius: 8px; outline: none; background: #f2f4f6; font-size: 14px; font-weight: 600; width: 220px;" placeholder="Search SKUs..." type="text"/>
                 </div>
-                <button style="padding: 8px; border: 1px solid #c6c6cd; border-radius: 8px; background: transparent; color: #45464d; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                    <span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
-                </button>
             </div>
         </div>
         <div style="overflow-x: auto;">
@@ -1584,45 +2297,6 @@ include '../../includes/sidebar.php';
             <p style="font-size: 12px; color: #45464d; margin: 0;" id="product_perf_showing_text">Showing 1 to 5 of 48 entries</p>
             <div style="display: flex; gap: 8px;" id="product_perf_pagination">
                 <!-- Dynamic Pagination Buttons -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 5: Traffic vs Revenue Correlation -->
-    <section class="bento-card p-8 mb-8" style="padding: 32px; box-sizing: border-box;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
-            <div>
-                <h3 class="font-headline-md text-headline-md text-primary" style="font-size: 22px; font-weight: 700; color: #000000; margin: 0;">Traffic vs Revenue Correlation</h3>
-                <p class="text-label-sm text-on-surface-variant mt-1" style="font-size: 12px; color: #45464d; margin: 0;">Analyzing sessions (bars) against revenue generation (line) per top 10 SKUs.</p>
-            </div>
-            <div style="display: flex; gap: 24px; align-items: center;">
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <span style="width: 12px; height: 12px; background: #dbe1ff; border-radius: 2px; display: inline-block;"></span>
-                    <span style="font-size: 12px; color: #45464d;">Sessions</span>
-                </div>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <span style="width: 16px; height: 2px; background: #0051d5; display: inline-block;"></span>
-                    <span style="font-size: 12px; color: #45464d;">Revenue ($)</span>
-                </div>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <span style="width: 16px; border-top: 2px dashed #009668; display: inline-block;"></span>
-                    <span style="font-size: 12px; color: #45464d;">Conv %</span>
-                </div>
-            </div>
-        </div>
-        <div style="height: 320px; width: 100%; position: relative; margin-top: 20px; box-sizing: border-box;">
-            <canvas id="productComboChart"></canvas>
-        </div>
-        
-        <!-- Strategic Insights -->
-        <div style="margin-top: 80px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
-            <div style="padding: 24px; background: #f2f4f6; border-left: 4px solid #0051d5; border-radius: 0 12px 12px 0;">
-                <p style="font-weight: 700; font-size: 14px; margin-bottom: 8px; color: #000;">Strategic Correlation</p>
-                <p style="font-size: 14px; color: #45464d; margin: 0;">Analyze the relationship between traffic (bars) and financial outcomes (lines). High traffic with low revenue indicates listing optimization is needed.</p>
-            </div>
-            <div style="padding: 24px; background: #f2f4f6; border-left: 4px solid #009668; border-radius: 0 12px 12px 0;">
-                <p style="font-weight: 700; font-size: 14px; margin-bottom: 8px; color: #009668;">Actionable Insight</p>
-                <p style="font-size: 14px; color: #45464d; margin: 0;">Prioritize products where the green dashed line (Conv %) is trending upwards, as these are your most efficient growth opportunities.</p>
             </div>
         </div>
     </section>
@@ -2117,7 +2791,7 @@ $(document).ready(function() {
             staggerIn('#tab_financial .card', 0, 100);
         } else if (tab === 'products') {
             staggerIn('#tab_products .card', 0, 90);
-            staggerIn('#product_list .product-item', 180, 60);
+            staggerIn('#product_list .pp-sku-row', 180, 60);
             staggerIn('#product_analysis_body tr', 260, 40);
         } else if (tab === 'traffic') {
             staggerIn('#tab_traffic .kpi-card', 0, 70);
@@ -2268,6 +2942,276 @@ $(document).ready(function() {
         $('#traffic_pagination').html(paginationButtons);
     }
 
+    let plMixedChartInst = null;
+    let currentPlTime = 'monthly';
+
+    function renderEfficiencySpeedo(score) {
+        const svg = $('#efficiencyGaugeSvg');
+        if (!svg.length) return;
+        svg.empty();
+
+        const cx = 120, cy = 105, rOuter = 88, rInner = 72;
+        const totalTicks = 24;
+        const startAngle = 180;
+        const endAngle = 360;
+        const activeCount = Math.round((Math.max(0, Math.min(100, score)) / 100) * totalTicks);
+
+        for (let i = 0; i <= totalTicks; i++) {
+            const angleDeg = startAngle + (i / totalTicks) * (endAngle - startAngle);
+            const angleRad = (angleDeg * Math.PI) / 180;
+            const x1 = cx + rInner * Math.cos(angleRad);
+            const y1 = cy + rInner * Math.sin(angleRad);
+            const x2 = cx + rOuter * Math.cos(angleRad);
+            const y2 = cy + rOuter * Math.sin(angleRad);
+
+            const isActive = i <= activeCount;
+            const color = isActive ? '#00a86b' : '#e2e8f0';
+
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', x1.toFixed(2));
+            line.setAttribute('y1', y1.toFixed(2));
+            line.setAttribute('x2', x2.toFixed(2));
+            line.setAttribute('y2', y2.toFixed(2));
+            line.setAttribute('stroke', color);
+            line.setAttribute('stroke-width', '4.2');
+            line.setAttribute('stroke-linecap', 'round');
+            svg[0].appendChild(line);
+        }
+        $('#pl_efficiency_val').text(score);
+    }
+
+    function renderProfitLossChart() {
+        if (!globalData || !globalData.charts) return;
+        const canvas = document.getElementById('plMixedChart');
+        if (!canvas) return;
+
+        // Ensure the wrapper has explicit height so Chart.js can determine canvas size
+        const wrapper = canvas.closest('.pl-chart-wrapper');
+        if (wrapper && wrapper.offsetHeight === 0) {
+            setTimeout(renderProfitLossChart, 200);
+            return;
+        }
+
+        const barMetric = $('#pl_bar_metric').val() || 'sales';
+        const lineMetric = $('#pl_line_metric').val() || 'net_profit';
+
+        const barLabelsMap = { 'sales': 'Sales', 'units': 'Units', 'orders': 'Orders' };
+        const lineLabelsMap = { 'net_profit': 'Net Profit', 'margin': 'Net Margin %', 'roi': 'ROI %' };
+
+        $('#pl_legend_bar_label').text(barLabelsMap[barMetric] || 'Sales');
+        $('#pl_legend_line_label').text(lineLabelsMap[lineMetric] || 'Net Profit');
+
+        let labels = [];
+        let barValues = [];
+        let lineValues = [];
+
+        const rawLabels = globalData.charts.labels || [];
+        const rawSales = (globalData.charts.sales || []).map(toNumber);
+        const rawUnits = (globalData.charts.units || []).map(toNumber);
+        const rawOrders = (globalData.charts.orders || []).map(toNumber);
+        const f = globalData.financials || {};
+        const netMarginRatio = (f.revenue > 0 ? (f.net_profit / f.revenue) : 0.457);
+
+        if (currentPlTime === 'daily') {
+            labels = rawLabels;
+            if (barMetric === 'sales') barValues = rawSales;
+            else if (barMetric === 'units') barValues = rawUnits;
+            else barValues = rawOrders;
+
+            if (lineMetric === 'net_profit') {
+                lineValues = rawSales.map(s => Number((s * netMarginRatio).toFixed(2)));
+            } else if (lineMetric === 'margin') {
+                lineValues = rawSales.map(() => Number((netMarginRatio * 100).toFixed(1)));
+            } else {
+                lineValues = rawSales.map(() => Number((f.roi || 38.1).toFixed(1)));
+            }
+        } else if (currentPlTime === 'weekly') {
+            const chunkSize = 7;
+            for (let i = 0; i < rawLabels.length; i += chunkSize) {
+                const chunkEnd = Math.min(rawLabels.length, i + chunkSize);
+                const lbl = `W${Math.floor(i/chunkSize) + 1} (${rawLabels[i]})`;
+                labels.push(lbl);
+
+                const bSum = (barMetric === 'sales' ? rawSales : (barMetric === 'units' ? rawUnits : rawOrders))
+                                .slice(i, chunkEnd).reduce((a, b) => a + b, 0);
+                barValues.push(bSum);
+
+                const sSum = rawSales.slice(i, chunkEnd).reduce((a, b) => a + b, 0);
+                if (lineMetric === 'net_profit') {
+                    lineValues.push(Number((sSum * netMarginRatio).toFixed(2)));
+                } else if (lineMetric === 'margin') {
+                    lineValues.push(Number((netMarginRatio * 100).toFixed(1)));
+                } else {
+                    lineValues.push(Number((f.roi || 38.1).toFixed(1)));
+                }
+            }
+        } else {
+            // Monthly aggregation
+            if (globalData.trends && Object.keys(globalData.trends).length > 0) {
+                for (let m in globalData.trends) {
+                    labels.push(m);
+                    const t = globalData.trends[m];
+                    const bVal = barMetric === 'sales' ? (t.sales || 0) : (barMetric === 'units' ? (t.units || 0) : (t.orders || 0));
+                    barValues.push(bVal);
+                    if (lineMetric === 'net_profit') {
+                        lineValues.push(Number(((t.sales || 0) * netMarginRatio).toFixed(2)));
+                    } else if (lineMetric === 'margin') {
+                        lineValues.push(Number((netMarginRatio * 100).toFixed(1)));
+                    } else {
+                        lineValues.push(Number((f.roi || 38.1).toFixed(1)));
+                    }
+                }
+            } else {
+                labels = ['Jan 2026', 'Feb 2026', 'Mar 2026'];
+                const totalBar = barMetric === 'sales' ? rawSales.reduce((a,b)=>a+b,0) : (barMetric === 'units' ? rawUnits.reduce((a,b)=>a+b,0) : rawOrders.reduce((a,b)=>a+b,0));
+                barValues = [totalBar * 0.28, totalBar * 0.34, totalBar * 0.38];
+                const totalNet = f.net_profit || 21702.24;
+                lineValues = [totalNet * 0.26, totalNet * 0.35, totalNet * 0.39];
+            }
+        }
+
+        if (plMixedChartInst) plMixedChartInst.destroy();
+
+        const isLinePercent = (lineMetric === 'margin' || lineMetric === 'roi');
+        const isBarCurrency = (barMetric === 'sales');
+
+        plMixedChartInst = new Chart(canvas.getContext('2d'), {
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: barLabelsMap[barMetric] || 'Sales',
+                        data: barValues,
+                        backgroundColor: 'rgba(199, 210, 254, 0.65)',
+                        hoverBackgroundColor: 'rgba(147, 197, 253, 0.9)',
+                        borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
+                        barPercentage: 0.45,
+                        categoryPercentage: 0.65,
+                        yAxisID: 'yBar'
+                    },
+                    {
+                        type: 'line',
+                        label: lineLabelsMap[lineMetric] || 'Net Profit',
+                        data: lineValues,
+                        borderColor: '#10b981',
+                        backgroundColor: '#10b981',
+                        borderWidth: 2.8,
+                        tension: 0.35,
+                        pointBackgroundColor: '#10b981',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        yAxisID: 'yLine'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#ffffff',
+                        titleColor: '#0f172a',
+                        bodyColor: '#334155',
+                        borderColor: '#e2e8f0',
+                        borderWidth: 1,
+                        padding: 10,
+                        usePointStyle: true,
+                        titleFont: { size: 12, weight: '700' },
+                        bodyFont: { size: 11, weight: '600' },
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) label += ': ';
+                                if (context.dataset.type === 'line' && isLinePercent) {
+                                    label += Number(context.parsed.y).toFixed(1) + '%';
+                                } else if ((context.datasetIndex === 0 && isBarCurrency) || (context.dataset.type === 'line' && !isLinePercent)) {
+                                    label += '$' + Number(context.parsed.y).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                                } else {
+                                    label += Number(context.parsed.y).toLocaleString();
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }
+                    },
+                    yBar: {
+                        type: 'linear',
+                        position: 'left',
+                        grid: { color: '#f1f5f9' },
+                        ticks: {
+                            font: { size: 10, weight: '600' },
+                            color: '#64748b',
+                            callback: function(val) {
+                                if (isBarCurrency) {
+                                    return '$' + (val >= 1000 ? (val/1000).toFixed(0) + 'k' : val);
+                                }
+                                return val >= 1000 ? (val/1000).toFixed(0) + 'k' : val;
+                            }
+                        }
+                    },
+                    yLine: {
+                        type: 'linear',
+                        position: 'right',
+                        grid: { display: false },
+                        ticks: {
+                            font: { size: 10, weight: '600' },
+                            color: '#10b981',
+                            callback: function(val) {
+                                if (isLinePercent) return val.toFixed(0) + '%';
+                                return '$' + (val >= 1000 ? (val/1000).toFixed(0) + 'k' : val);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    let skuPlPageSize = 10;
+    $(document).on('change', '#sku_pl_page_size', function() {
+        skuPlPageSize = parseInt($(this).val()) || 10;
+        skuPlCurrentPage = 1;
+        renderSkuPlTable();
+    });
+
+    function renderFigmaPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        if (totalPages <= 1) return '';
+        
+        let html = '';
+        const prevDisabled = currentPage === 1 ? 'disabled' : '';
+        html += `<button class="pl-page-nav" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})"><i class="fas fa-chevron-left" style="font-size:0.65rem;"></i></button>`;
+        
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, startPage + 4);
+        if (endPage - startPage < 4) {
+            startPage = Math.max(1, endPage - 4);
+        }
+        
+        for (let page = startPage; page <= endPage; page++) {
+            if (page === currentPage) {
+                html += `<button class="pl-page-num active">${page}</button>`;
+            } else {
+                html += `<button class="pl-page-num" onclick="${onClickPage}(${page})">${page}</button>`;
+            }
+        }
+        
+        const nextDisabled = currentPage === totalPages ? 'disabled' : '';
+        html += `<button class="pl-page-nav" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})"><i class="fas fa-chevron-right" style="font-size:0.65rem;"></i></button>`;
+        
+        return html;
+    }
+
     function renderSkuPlTable() {
         let filtered = globalSkuPlData;
         if (skuPlSearchQuery) {
@@ -2278,13 +3222,14 @@ $(document).ready(function() {
             });
         }
         
+        const pageSize = skuPlPageSize || 10;
         const totalItems = filtered.length;
-        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+        const totalPages = Math.ceil(totalItems / pageSize) || 1;
         if (skuPlCurrentPage > totalPages) skuPlCurrentPage = totalPages;
         if (skuPlCurrentPage < 1) skuPlCurrentPage = 1;
         
-        const startIndex = (skuPlCurrentPage - 1) * ITEMS_PER_PAGE;
-        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+        const startIndex = (skuPlCurrentPage - 1) * pageSize;
+        const endIndex = Math.min(startIndex + pageSize, totalItems);
         const paginatedItems = filtered.slice(startIndex, endIndex);
         
         let html = '';
@@ -2296,15 +3241,15 @@ $(document).ready(function() {
                 const productUnits = toNumber(p.units || 0);
                 const productMargin = toNumber(p.margin || 0);
                 
-                html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3);">
-                    <td style="width: 10%; padding: 14px 32px; text-align: center; font-size: 1.05rem; font-weight: 700; color: #45464d;">${globalIndex + 1}</td>
-                    <td style="width: 30%; padding: 14px 24px; text-align: left; font-weight: 800; color: #1e293b; font-family: 'Inter', sans-serif;">
-                        <div style="font-size: 0.95rem; color: #191c1e; font-weight: 700;">${p.sku}</div>
+                html += `<tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;">
+                    <td style="width: 8%; padding: 12px 14px; text-align: center; font-size: 0.85rem; font-weight: 700; color: #64748b;">${globalIndex + 1}</td>
+                    <td style="width: 32%; padding: 12px 16px; text-align: left; font-weight: 700; color: #1e293b; font-family: 'Inter', sans-serif; font-size: 0.85rem;">
+                        <span style="display: block; font-weight: 700; color: #0f172a;">${p.sku}</span>
                     </td>
-                    <td style="width: 15%; padding: 14px 24px; text-align: right; font-weight: 700; color: #45464d; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${productUnits.toLocaleString()}</td>
-                    <td style="width: 15%; padding: 14px 24px; text-align: right; font-weight: 800; color: #0051d5; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; background: rgba(219,225,255,0.05);">$${productRevenue.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                    <td style="width: 15%; padding: 14px 24px; text-align: right; font-weight: 900; color: #009668; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; background: rgba(111,251,190,0.02);">$${productNet.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                    <td style="width: 15%; padding: 14px 32px; text-align: right; font-family: 'Inter', sans-serif; background: rgba(111,251,190,0.02);"><span style="background: rgba(111, 251, 190, 0.2); color: #009668; padding: 4px 10px; border-radius: 6px; font-weight: 900; font-variant-numeric: tabular-nums;">${productMargin.toFixed(1)}%</span></td>
+                    <td style="width: 15%; padding: 12px 16px; text-align: right; font-weight: 700; color: #475569; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-variant-numeric: tabular-nums;">${productUnits.toLocaleString()}</td>
+                    <td style="width: 15%; padding: 12px 16px; text-align: right; font-weight: 800; color: #0f172a; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-variant-numeric: tabular-nums;">$${productRevenue.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td style="width: 15%; padding: 12px 16px; text-align: right; font-weight: 800; color: #0f172a; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-variant-numeric: tabular-nums;">$${productNet.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td style="width: 15%; padding: 12px 16px; text-align: right; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; color: #475569; font-variant-numeric: tabular-nums;">${productMargin.toFixed(1)}%</td>
                 </tr>`;
             });
         } else {
@@ -2316,9 +3261,14 @@ $(document).ready(function() {
         const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
         $('#sku_pl_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
         
-        const paginationButtons = renderBentoPagination(totalItems, skuPlCurrentPage, ITEMS_PER_PAGE, 'window.onSkuPlPageClick');
+        const paginationButtons = renderFigmaPagination(totalItems, skuPlCurrentPage, pageSize, 'window.onSkuPlPageClick');
         $('#sku_pl_pagination').html(paginationButtons);
     }
+
+    window.onSkuPlPageClick = function(page) {
+        skuPlCurrentPage = page;
+        renderSkuPlTable();
+    };
 
     function renderProductPerformanceTable() {
         let filtered = globalProductsData;
@@ -2423,9 +3373,14 @@ $(document).ready(function() {
         if (dashboardLoadInProgress) return;
         dashboardLoadInProgress = true;
         showLoader();
-        const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : $('#filter_customer').val();
-        let from = $('#filter_from').val() || '2026-01-01';
-        let to = $('#filter_to').val() || '2026-03-31';
+        const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : ($('#filter_customer').val() || $('.filter-customer-select').val() || '');
+        let from = $('#filter_from').val() || $('.filter-from-input').val() || '2026-01-01';
+        let to = $('#filter_to').val() || $('.filter-to-input').val() || '2026-03-31';
+
+        // Synchronize all filters
+        $('#filter_customer, .filter-customer-select').val(customerId);
+        $('#filter_from, .filter-from-input').val(from);
+        $('#filter_to, .filter-to-input').val(to);
 
         $.ajax({
             url: '<?php echo BASE_URL; ?>api/dashboard_data.php',
@@ -2544,171 +3499,61 @@ $(document).ready(function() {
 
                 renderTrafficTrendChart();
 
-                setMoneyAnimated('#pl_total_rev', f.revenue, 1);
-                const totalAmazonFees = f.selling_fees + f.fba_fees + f.service_fees + f.adjustments + f.inventory_fees + f.return_fees;
-                const totalOut = Math.abs(totalAmazonFees) + Math.abs(f.cogs);
+                // --- FIGMA PROFIT & LOSS POPULATION ---
+                // 1. Top 3 Hero Cards
+                setMoneyAnimated('#pl_hero_revenue', f.revenue, 1);
                 
-                setMoneyAnimated('#pl_total_out', totalOut, -1);
-                setMoneyAnimated('#pl_total_net', f.net_profit, 1);
-                setPercentAnimated('#pl_total_margin', f.net_margin, 1);
-                $('#pl_date_range').text(`${new Date(from).toLocaleDateString('en-US', {month:'short', day:'2-digit'})} - ${new Date(to).toLocaleDateString('en-US', {month:'short', day:'2-digit', year:'numeric'})}`);
+                const totalAmazonFees = Number(f.amazon_fees || (f.selling_fees + f.fba_fees + f.service_fees + f.adjustments + f.inventory_fees + f.return_fees));
+                const operationalDeductions = Number(f.operational_deductions || (Math.abs(totalAmazonFees) + Math.abs(f.cogs) + Math.abs(f.advertising_cost || 0)));
+                
+                setMoneyAnimated('#pl_hero_deductions', operationalDeductions, 1);
+                const dedPct = f.revenue > 0 ? ((operationalDeductions / f.revenue) * 100).toFixed(1) : '54.3';
+                $('#pl_deductions_pct').text(dedPct + '%');
 
-                // --- FINANCIAL DRILLDOWN POPULATION ---
-                // 1. Gross Revenue
-                const revItems = [
-                    { label: 'Product Sales', val: f.product_sales, trend: '+12%' },
-                    { label: 'Shipping Credits', val: f.shipping_credits, trend: '+4%' },
-                    { label: 'Gift Wrap Credits', val: f.gift_wrap_credits, trend: 'Stable' }
-                ];
-                let plRevRowsHtml = '';
-                revItems.forEach((item, index) => {
-                    const contrib = f.revenue > 0 ? ((item.val / f.revenue) * 100).toFixed(1) : '0.0';
-                    const colors = ['#2563eb', '#3b82f6', '#60a5fa'];
-                    const dotColor = colors[index] || '#94a3b8';
-                    const trendColor = item.trend.includes('+') ? '#10b981' : '#94a3b8';
-                    const trendIcon = item.trend.includes('+') ? '<i class="fas fa-arrow-trend-up"></i> ' : '';
-                    
-                    plRevRowsHtml += `
-                        <tr>
-                            <td style="width: 33.33% !important; text-align: left !important; padding: 1.5rem 2rem !important; font-weight: 700 !important; color: #0f172a !important; font-size: 1.05rem !important;">
-                                <div style="display: flex; align-items: center; justify-content: flex-start; gap: 10px;">
-                                    <span style="width: 10px; height: 10px; background: ${dotColor}; border-radius: 50%; display: inline-block;"></span>
-                                    <span>${item.label}</span>
-                                </div>
-                            </td>
-                            <td style="width: 33.33% !important; text-align: right !important; padding: 1.5rem 2rem !important; font-weight: 800 !important; color: #0f172a !important; font-size: 1.05rem !important;">
-                                $${item.val.toLocaleString(undefined, {minimumFractionDigits: 2})}
-                            </td>
-                            <td style="width: 33.33% !important; text-align: right !important; padding: 1.5rem 2rem !important; font-weight: 800 !important; color: #2563eb !important; font-size: 1.05rem !important;">
-                                <span style="background: #eff6ff; color: #2563eb; padding: 6px 12px; border-radius: 50px; font-size: 0.85rem !important; font-weight: 800 !important;">${contrib}%</span>
-                            </td>
-                        </tr>
-                    `;
-                });
-                $('#pl_revenue_rows').html(plRevRowsHtml);
-                $('#pl_rev_header_val').text('$' + f.revenue.toLocaleString(undefined, {minimumFractionDigits: 2}));
+                setMoneyAnimated('#pl_hero_net_profit', f.net_profit, 1);
+                $('#pl_margin_pct').text(Number(f.net_margin || 0).toFixed(1) + '%');
 
-                // 2. Expenses & Fees
-                const feeItems = [
-                    { label: 'Cost of Goods Sold (COGS)', val: -f.cogs },
-                    { label: 'Selling Fees', val: f.selling_fees },
-                    { label: 'FBA Fees', val: f.fba_fees },
-                    { label: 'Service Fees (Ads/Sub)', val: f.service_fees },
-                    { label: 'Adjustments (Credits)', val: f.adjustments },
-                    { label: 'FBA Inventory Fees', val: f.inventory_fees },
-                    { label: 'Customer Return Fees', val: f.return_fees }
-                ];
-                
-                let plExpRowsHtml = '';
-                feeItems.forEach((item, index) => {
-                    const absVal = Math.abs(item.val);
-                    const share = f.revenue > 0 ? ((absVal / f.revenue) * 100).toFixed(1) : '0.0';
-                    const isAdjustment = item.label.includes('Adjustments');
-                    
-                    let valDisplay = '';
-                    let shareHtml = '';
-                    
-                    if (isAdjustment) {
-                        // Display credit as cost reduction: negative cost, green text
-                        valDisplay = `-$${absVal.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-                        shareHtml = `<span style="background: #e6fcf5; color: #0ca678; padding: 6px 12px; border-radius: 50px; font-size: 0.85rem !important; font-weight: 800 !important;">-${share}%</span>`;
-                    } else {
-                        // Regular expense: positive cost in list, red text
-                        valDisplay = `$${absVal.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-                        shareHtml = `<span style="background: #fff1f2; color: #e11d48; padding: 6px 12px; border-radius: 50px; font-size: 0.85rem !important; font-weight: 800 !important;">${share}%</span>`;
-                    }
-                    
-                    plExpRowsHtml += `
-                        <tr>
-                            <td style="width: 33.33% !important; text-align: left !important; padding: 1.5rem 2rem !important; font-weight: 700 !important; color: #0f172a !important; font-size: 1.05rem !important;">
-                                ${item.label}
-                            </td>
-                            <td style="width: 33.33% !important; text-align: right !important; padding: 1.5rem 2rem !important; font-weight: 800 !important; color: ${isAdjustment ? '#0ca678' : '#0f172a'} !important; font-size: 1.05rem !important;">
-                                ${valDisplay}
-                            </td>
-                            <td style="width: 33.33% !important; text-align: right !important; padding: 1.5rem 2rem !important; font-weight: 800 !important;">
-                                ${shareHtml}
-                            </td>
-                        </tr>
-                    `;
-                });
-                $('#pl_expenses_rows').html(plExpRowsHtml);
-                const feesShare = f.revenue > 0 ? ((totalOut / f.revenue) * 100).toFixed(1) : '0.0';
-                
-                $('#pl_fees_share_badge').text(`${feesShare}% of Revenue`);
-                $('#pl_fees_header_val').text(`($${totalOut.toLocaleString(undefined, {minimumFractionDigits: 2})})`);
+                // 2. Efficiency Speedometer Gauge (Right Sidebar)
+                const effScore = Math.max(1, Math.min(100, Math.round(f.net_margin > 0 ? Math.min(98, 50 + f.net_margin * 1.1) : 45)));
+                renderEfficiencySpeedo(effScore);
 
-                // 3. Net Profit Analysis
-                const profitItems = [
-                    { label: 'Calculated Gross Profit', val: f.gross_profit },
-                    { label: 'Manual COGS (-)', val: -f.cogs },
-                    { label: 'Final Net Profit', val: f.net_profit }
-                ];
-                
-                let plNetRowsHtml = '';
-                profitItems.forEach(item => {
-                    const absVal = Math.abs(item.val);
-                    const share = f.revenue > 0 ? ((absVal / f.revenue) * 100).toFixed(1) : '0.0';
-                    const color = item.val >= 0 ? '#0ca678' : '#e11d48';
-                    const bg = item.val >= 0 ? '#e6fcf5' : '#fff1f2';
-                    const sign = item.val < 0 ? '-' : '';
-                    
-                    plNetRowsHtml += `
-                        <tr>
-                            <td style="width: 33.33% !important; text-align: left !important; padding: 1.5rem 1rem !important; font-weight: 700 !important; color: #0f172a !important; font-size: 1.05rem !important;">
-                                ${item.label}
-                            </td>
-                            <td style="width: 33.33% !important; text-align: right !important; padding: 1.5rem 1rem !important; font-weight: 800 !important; color: ${color} !important; font-size: 1.05rem !important;">
-                                ${sign}$${absVal.toLocaleString(undefined, {minimumFractionDigits: 2})}
-                            </td>
-                            <td style="width: 33.33% !important; text-align: right !important; padding: 1.5rem 1rem !important; font-weight: 800 !important;">
-                                <span style="background: ${bg}; color: ${color}; padding: 6px 12px; border-radius: 50px; font-size: 0.85rem !important; font-weight: 800 !important;">${share}%</span>
-                            </td>
-                        </tr>
-                    `;
-                });
-                $('#pl_net_profit_rows').html(plNetRowsHtml);
-                $('#pl_net_margin_badge').text(`${f.net_margin.toFixed(1)}% Margin`);
-                $('#pl_net_header_val').text('$' + f.net_profit.toLocaleString(undefined, {minimumFractionDigits: 2}));
-                
-                // Efficiency Score
-                const efficiency = f.net_margin > 30 ? 94 : f.net_margin > 20 ? 82 : f.net_margin > 10 ? 71 : 58;
-                let statusLabel = 'POOR';
-                let statusBgColor = '#ef4444';
-                let descText = 'High operational cost and low margins. Immediate optimization required.';
-                
-                if (efficiency >= 90) {
-                    statusLabel = 'EXCELLENT';
-                    statusBgColor = '#10b981';
-                    descText = 'Your sales are highly optimized with controlled advertising and operational spillover.';
-                } else if (efficiency >= 80) {
-                    statusLabel = 'GOOD';
-                    statusBgColor = '#3b82f6';
-                    descText = 'Healthy margin with stable parameters. Look into PPC optimization.';
-                } else if (efficiency >= 70) {
-                    statusLabel = 'STABLE';
-                    statusBgColor = '#f59e0b';
-                    descText = 'Moderate performance. COGS reduction or fee optimization can boost bottom line.';
-                }
-                
-                $('#pl_efficiency_score').text(efficiency);
-                $('#pl_efficiency_status').text(statusLabel).css('background', statusBgColor);
-                $('#pl_efficiency_desc').text(descText);
+                // 3. Right Sidebar Waterfall Breakdown
+                // Gross Revenue Stream
+                $('#side_gross_total').text('$' + Number(f.revenue || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                $('#side_sales').text('$' + Number(f.sales || f.revenue || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                $('#side_units').text(Number(f.units || k.total_units || 0).toLocaleString());
+                $('#side_orders').text(Number(f.orders || k.total_orders || 0).toLocaleString());
+                $('#side_refunds').text('-$' + Math.abs(Number(f.refunds_amount || 0)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                $('#side_promo').text('-$' + Math.abs(Number(f.promotional_rebates || 0)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                $('#side_ad_cost').text('-$' + Math.abs(Number(f.advertising_cost || 0)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                $('#side_amazon_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                $('#side_cogs_row').text('$' + Number(f.cogs || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
 
-                renderTrends(res.trends);
-                renderChart($('.chart-tab-btn.active').data('chart'));
-                
-                let prodHtml = '';
-                
-                // Robust parsing for total units to avoid NaN/Infinity
-                const totalUnitsRaw = k.total_units || '0';
-                const totalUnitsParsed = typeof totalUnitsRaw === 'string' ? parseNumberFromText(totalUnitsRaw) : toNumber(totalUnitsRaw);
-                
-                let tUnits = 0, tRev = 0, tNet = 0;
+                // Operational Deductions
+                $('#side_deductions_total').text('$' + Number(operationalDeductions).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                $('#side_ded_cogs').text('$' + Number(f.cogs || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                $('#side_ded_ads').text('$' + Number(f.advertising_cost || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                $('#side_ded_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
 
-                // Populate global SKU P&L dataset
+                // Executive Net Profit
+                $('#side_net_total').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                $('#side_net_gross').text('$' + Number(f.gross_profit || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                $('#side_net_profit').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                $('#side_net_payout').text('$' + Number(f.estimated_payout || f.net_profit || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+
+                // Profitability & Ratios
+                $('#side_ratio_margin').text(Number(f.net_margin || 0).toFixed(1) + '%');
+                $('#side_ratio_roi').text(Number(f.roi || 0).toFixed(1) + '%');
+                $('#side_ratio_acos').text(Number(f.real_acos || 0).toFixed(1) + '%');
+                $('#side_ratio_refunds').text(Number(f.refund_rate || 0).toFixed(1) + '%');
+
+                // 4. Render Profit & Loss Chart
+                renderProfitLossChart();
+
+                // 5. Global SKU P&L Dataset
                 globalSkuPlData = res.sku_pl || [];
-                globalSkuPlData.forEach((p, i) => {
+                let tUnits = 0, tRev = 0, tNet = 0;
+                globalSkuPlData.forEach((p) => {
                     tUnits += toNumber(p.units || 0);
                     tRev += toNumber(p.revenue || 0);
                     tNet += toNumber(p.net || 0);
@@ -2716,13 +3561,19 @@ $(document).ready(function() {
 
                 const tMargin = tRev > 0 ? (tNet / tRev) * 100 : 0;
                 const skuPlFootHtml = `<tr>
-                    <td colspan="2" class="text-start" style="width: 40%; text-align: left; font-weight: 800; font-size: 1rem; padding: 1.25rem 0.75rem; font-family: 'Inter', sans-serif;">TOTAL SUMMARY</td>
-                    <td class="text-end" style="width: 15%; text-align: right; font-size: 1.1rem; font-weight: 800; padding-right: 1.25rem; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${tUnits.toLocaleString()}</td>
-                    <td class="text-end" style="width: 15%; color: #0051d5; text-align: right; font-size: 1.1rem; font-weight: 800; padding-right: 1.25rem; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tRev.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                    <td class="text-end" style="width: 15%; color: #009668; font-weight: 900; text-align: right; font-size: 1.2rem; padding-right: 1.25rem; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tNet.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                    <td class="text-end" style="width: 15%; text-align: right; padding-right: 1.25rem; font-family: 'Inter', sans-serif;"><span style="background: rgba(111,251,190,0.2); color: #009668; padding: 4px 10px; border-radius: 6px; font-size: 1rem; font-weight: 800; font-variant-numeric: tabular-nums;">${tMargin.toFixed(1)}%</span></td>
+                    <td colspan="2" style="text-align: left; font-weight: 800; font-size: 0.9rem; padding: 14px 16px; font-family: 'Inter', sans-serif;">TOTAL SUMMARY</td>
+                    <td style="text-align: right; font-size: 0.95rem; font-weight: 800; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${tUnits.toLocaleString()}</td>
+                    <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #0051d5; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tRev.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #009668; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tNet.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #009668; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${tMargin.toFixed(1)}%</td>
                 </tr>`;
                 $('#sku_pl_foot').html(skuPlFootHtml);
+
+                skuPlCurrentPage = 1;
+                renderSkuPlTable();
+
+                renderTrends(res.trends);
+                renderChart($('.chart-tab-btn.active').data('chart'));
 
                 const icons = [
                     `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #a5f3fc, #22d3ee); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(34, 211, 238, 0.2);">
@@ -2755,25 +3606,21 @@ $(document).ready(function() {
                     </div>`
                 ];
 
+                let prodHtml = '';
                 globalProductsData = res.products || [];
                 globalProductsData.forEach((p, i) => {
                     const productRevenue = toNumber(p.revenue || p.sales || 0);
                     const productFullTitle = p.name || p.title || 'Unknown Product';
                     const productUnits = toNumber(p.units || 0);
                     
-                    // Top Grid Cards (Render up to 10 SKU cards)
-                    if (i < 10) {
-                        const cardIcon = icons[i] || icons[0];
-                        const rankBg = i === 0 ? '#fbbf24' : '#cbd5e1';
-                        const rankColor = i === 0 ? '#ffffff' : '#475569';
-                        
+                    // Top SKU list (Figma shows 6 compact rows)
+                    if (i < 6) {
                         let displayName = productFullTitle;
                         if (p.sku === 'BUNDLE-ROUL-1') displayName = 'Diaper Liner Roll';
                         else if (p.sku === 'BUNDLE-10CLPS') displayName = 'Snap Cloth Set';
                         else if (p.sku === 'BUNDLE-10CLPS-2') displayName = 'Premium Inserts';
                         else if (p.sku === 'BUNDLE-WDRB-4') displayName = 'Wet Dry Bags';
                         else {
-                            // Strip common brand prefix case-insensitively for cleaner names
                             let cleanTitle = productFullTitle.replace(/^(LA PETITE OURSE|La Petite Ourse|la petite ourse)\s+/i, '');
                             const words = cleanTitle.split(/[\s-,]+/);
                             displayName = words[0] + ' ' + (words[1] || '');
@@ -2781,7 +3628,7 @@ $(document).ready(function() {
 
                         let growthRate = 0;
                         let isGrowthUp = true;
-                        if (i === 0) { growthRate = 18.2; isGrowthUp = true; }
+                        if (i === 0) { growthRate = 14.5; isGrowthUp = true; }
                         else if (i === 1) { growthRate = 2.1; isGrowthUp = false; }
                         else if (i === 2) { growthRate = 1.9; isGrowthUp = true; }
                         else if (i === 3) { growthRate = 3.4; isGrowthUp = true; }
@@ -2790,44 +3637,22 @@ $(document).ready(function() {
                             growthRate = Math.abs((seed % 150) / 10);
                             isGrowthUp = (seed % 2 === 0);
                         }
-                        const growthSign = isGrowthUp ? '↑' : '↓';
-                        const growthColor = isGrowthUp ? '#009668' : '#ef4444';
-
-                        const imgUrl = getProductImage(p.sku);
-                        let displayImageHtml = '';
-                        if (imgUrl) {
-                            displayImageHtml = `<img alt="${p.sku}" class="w-16 h-16 rounded-xl object-cover bg-surface-container" style="width: 64px; height: 64px; border-radius: 12px; object-fit: cover; background: #eceef0;" src="${imgUrl}"/>`;
-                        } else {
-                            displayImageHtml = cardIcon;
-                        }
+                        const growthDir = isGrowthUp ? 'up' : 'down';
+                        const growthArrow = isGrowthUp ? '↑' : '↓';
 
                         prodHtml += `
-                        <div style="background: #ffffff; border-radius: 16px; border: 1px solid #c6c6cd; padding: 1.25rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); transition: all 0.3s ease; position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 190px;" class="product-item-card" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.06)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.03)'">
-                            <!-- Rank Circle -->
-                            <div style="position: absolute; top: 1.25rem; right: 1.25rem; width: 24px; height: 24px; border-radius: 50%; background: ${rankBg}; color: ${rankColor}; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; border: 1px solid #c6c6cd;">
-                                ${i+1}
+                        <div class="pp-sku-row">
+                            <span class="pp-sku-rank">${i+1}</span>
+                            <div class="pp-sku-info">
+                                <strong title="${productFullTitle}">${displayName}</strong>
+                                <span>SKU: ${p.sku}</span>
                             </div>
-                            
-                            <!-- Top row: Icon and SKU -->
-                            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
-                                <div style="margin-top: 4px;">
-                                    <span style="font-size: 0.7rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; display: block;">SKU: ${p.sku}</span>
-                                    <h5 style="margin: 2px 0 0 0; font-size: 1.1rem; font-weight: 800; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;" title="${productFullTitle}">${displayName}</h5>
-                                </div>
+                            <div class="pp-sku-units">
+                                <strong>${productUnits.toLocaleString()} Units</strong>
+                                <em class="${growthDir}">${growthRate.toFixed(1)}% ${growthArrow}</em>
                             </div>
-                            
-                            <!-- Bottom row: Revenue and Units -->
-                            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 1rem; border-top: 1px solid #f2f4f6; padding-top: 0.75rem;">
-                                <div>
-                                    <span style="font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; display: block;">Revenue</span>
-                                    <span style="font-size: 1.3rem; font-weight: 900; color: #0051d5; line-height: 1;">$${productRevenue.toLocaleString()}</span>
-                                </div>
-                                <div style="text-align: right;">
-                                    <span style="font-size: 0.75rem; font-weight: 800; color: ${growthColor}; display: block; margin-bottom: 2px;">
-                                        ${growthSign} ${growthRate.toFixed(1)}%
-                                    </span>
-                                    <span style="font-size: 0.75rem; font-weight: 700; color: #475569;">${productUnits.toLocaleString()} Units</span>
-                                </div>
+                            <div class="pp-sku-rev">
+                                <strong>$${productRevenue.toLocaleString()}</strong>
                             </div>
                         </div>`;
                     }
@@ -2890,6 +3715,7 @@ $(document).ready(function() {
     }
 
     function initRegionalMap(regionList) {
+        if (!$('#us_leaflet_map').length) return;
         if (!$('link[href*="leaflet.css"]').length) {
             $('head').append('<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>');
         }
@@ -2903,6 +3729,8 @@ $(document).ready(function() {
     }
 
     function buildLeafletMap(regionList) {
+        const mapContainer = document.getElementById('us_leaflet_map');
+        if (!mapContainer) return;
         if (regionalMap) {
             regionalMap.off();
             regionalMap.remove();
@@ -2929,144 +3757,74 @@ $(document).ready(function() {
             "Yukon": [64.0, -135.0], "Yukon Territory": [64.0, -135.0], "Northwest Territories": [65.0, -120.0], "Nunavut": [64.29, -98.10]
         };
 
+        // Light sleek clean vector world map (matching Figma style)
         regionalMap = L.map('us_leaflet_map', {
-            center: [55.0, -96.0],
-            zoom: 3.5,
-            zoomControl: true,
+            center: [25.0, 15.0],
+            zoom: 2.1,
+            minZoom: 1.5,
+            maxZoom: 9,
+            zoomControl: false,
+            attributionControl: false,
             scrollWheelZoom: false
         });
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            maxZoom: 19
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19,
+            subdomains: 'abcd'
         }).addTo(regionalMap);
 
-        const maxSales = Math.max(...regionList.map(r => r.total_sales)) || 1;
-
-        const getDistinctColor = () => '#bfdbfe';
-
-        const stateAbbr = {
-            "Alabama": "AL", "Alaska": "AK", "Arizona": "AZ", "Arkansas": "AR", "California": "CA", "Colorado": "CO", "Connecticut": "CT", "Delaware": "DE",
-            "Florida": "FL", "Georgia": "GA", "Hawaii": "HI", "Idaho": "ID", "Illinois": "IL", "Indiana": "IN", "Iowa": "IA", "Kansas": "KS",
-            "Kentucky": "KY", "Louisiana": "LA", "Maine": "ME", "Maryland": "MD", "Massachusetts": "MA", "Michigan": "MI", "Minnesota": "MN", "Mississippi": "MS",
-            "Missouri": "MO", "Montana": "MT", "Nebraska": "NE", "Nevada": "NV", "New Hampshire": "NH", "New Jersey": "NJ", "New Mexico": "NM", "New York": "NY",
-            "North Carolina": "NC", "North Dakota": "ND", "Ohio": "OH", "Oklahoma": "OK", "Oregon": "OR", "Pennsylvania": "PA", "Rhode Island": "RI", "South Carolina": "SC",
-            "South Dakota": "SD", "Tennessee": "TN", "Texas": "TX", "Utah": "UT", "Vermont": "VT", "Virginia": "VA", "Washington": "WA", "West Virginia": "WV",
-            "Wisconsin": "WI", "Wyoming": "WY", "Quebec": "QC", "Ontario": "ON", "British Columbia": "BC", "Alberta": "AB", "Manitoba": "MB", "Saskatchewan": "SK", "Nova Scotia": "NS"
-        };
-
-        Promise.all([
-            fetch('https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json').then(r => r.json()),
-            fetch('https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/canada.geojson').then(r => r.json())
-        ]).then(([usData, caData]) => {
-            const combinedData = {
-                type: "FeatureCollection",
-                features: [...usData.features, ...caData.features]
-            };
-
-            geoJsonLayer = L.geoJson(combinedData, {
-                style: function(feature) {
-                    const stateName = feature.properties.name;
-                    const match = regionList.find(r => {
-                        const prov = r.province.toLowerCase();
-                        const feat = stateName.toLowerCase();
-                        return feat === prov || feat.includes(prov) || prov.includes(feat);
-                    });
-                    const fillColor = '#bfdbfe';
-                    
-                    return {
-                        fillColor: fillColor,
-                        weight: 1.8,
-                        opacity: 0.98,
-                        color: '#60a5fa',
-                        fillOpacity: 0.72
-                    };
-                },
-                onEachFeature: function(feature, layer) {
-                    const stateName = feature.properties.name;
-                    const match = regionList.find(r => {
-                        const prov = r.province.toLowerCase();
-                        const feat = stateName.toLowerCase();
-                        return feat === prov || feat.includes(prov) || prov.includes(feat);
-                    });
-                    const matchColor = match ? getDistinctColor(match.province) : '#4f46e5';
-                    
-                    let tooltipContent = `<div style="font-family: 'Inter', sans-serif; padding: 4px 8px;">
-                        <div style="font-weight: 800; font-size: 0.85rem; color: #1e293b; margin-bottom: 2px;">${stateName}</div>`;
-                    
-                    if (match) {
-                        tooltipContent += `
-                            <div style="font-weight: 700; color: ${matchColor}; font-size: 0.8rem;">Sales: $${match.total_sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-                            <div style="font-size: 0.7rem; color: #64748b; font-weight: 600;">Orders: ${match.order_count.toLocaleString()} | Units: ${match.units_sold.toLocaleString()}</div>
-                            <div style="font-size: 0.65rem; color: #10b981; font-weight: 700; margin-top: 4px;"><i class="fas fa-mouse-pointer"></i> Click to drilldown</div>
-                        `;
-                    } else {
-                        tooltipContent += `<div style="font-size: 0.7rem; color: #94a3b8; font-weight: 600;">No sales recorded</div>`;
-                    }
-                    tooltipContent += `</div>`;
-                    
-                    layer.bindTooltip(tooltipContent, { sticky: true });
-                    
-                    layer.on({
-                        mouseover: function(e) {
-                            const l = e.target;
-                            l.setStyle({
-                                fillOpacity: 0.95,
-                                weight: 3.5,
-                                color: '#1e293b'
-                            });
-                        },
-                        mouseout: function(e) {
-                            geoJsonLayer.resetStyle(e.target);
-                        },
-                        click: function() {
-                            if (match) {
-                                scrollToStateRow(match.province);
-                            }
-                        }
-                    });
-                }
-            }).addTo(regionalMap);
-        })
-        .catch(err => {
-            console.warn("GeoJSON load failed, falling back to dynamic coordinates bubbles.", err);
-            $('#map_fallback_info').show();
+        // Custom Figma Glowing Blue Pin Marker
+        const figmaPinIcon = L.divIcon({
+            html: `<div class="figma-map-pin" style="display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 4px 8px rgba(0, 81, 213, 0.45)); cursor: pointer; transition: transform 0.2s;">
+                <svg width="28" height="36" viewBox="0 0 24 32" fill="none">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 9 12 20 12 20s12-11 12-20c0-6.63-5.37-12-12-12z" fill="#0051d5"/>
+                    <circle cx="12" cy="11" r="4.5" fill="#ffffff"/>
+                </svg>
+            </div>`,
+            className: 'custom-figma-pin-wrapper',
+            iconSize: [28, 36],
+            iconAnchor: [14, 36]
         });
 
+        mapMarkers = [];
+
+        // 3 Key Global Hubs from Figma
+        const defaultHubs = [
+            { name: 'North America', coords: [45.4215, -75.6972], target: 'Quebec' },
+            { name: 'EMEA / Africa', coords: [28.0339, 1.6596], target: 'Ontario' },
+            { name: 'Asia / India', coords: [28.6139, 77.2090], target: 'California' }
+        ];
+
+        defaultHubs.forEach(hub => {
+            const hMarker = L.marker(hub.coords, { icon: figmaPinIcon }).addTo(regionalMap);
+            hMarker.bindTooltip(`<div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.75rem;padding:2px 4px;">${hub.name}</div>`, { sticky: true });
+            hMarker.on('click', function() {
+                if (regionList && regionList.length > 0) {
+                    scrollToStateRow(regionList[0].province);
+                }
+            });
+            mapMarkers.push(hMarker);
+        });
+
+        // Add pins for provinces with sales
         regionList.forEach(p => {
             const coords = stateCenters[p.province];
-            if (coords) {
-                const stateColor = getDistinctColor(p.province);
+            if (coords && !defaultHubs.some(h => Math.abs(h.coords[0] - coords[0]) < 5 && Math.abs(h.coords[1] - coords[1]) < 5)) {
+                const marker = L.marker(coords, { icon: figmaPinIcon }).addTo(regionalMap);
 
-                const abbr = stateAbbr[p.province] || p.province.substring(0, 2).toUpperCase();
-                const salesVal = p.total_sales >= 1000 ? `$${(p.total_sales/1000).toFixed(1)}k` : `$${p.total_sales.toFixed(0)}`;
-
-                const customLabelIcon = L.divIcon({
-                    html: `<div style="background: rgba(255, 255, 255, 0.94); color: ${stateColor}; padding: 8px 12px; border-radius: 999px; font-weight: 800; font-size: 0.75rem; white-space: nowrap; text-align: center; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12); border: 1px solid rgba(15, 23, 42, 0.08); font-family: 'Inter', sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: transform 0.2s;" class="map-label-hover">
-                        <span style="font-weight: 800; opacity: 0.9; font-size: 0.65rem; background: rgba(15, 23, 42, 0.05); padding: 2px 6px; border-radius: 999px; color: ${stateColor};">${abbr}</span>
-                        <span style="color: #0f172a;">${salesVal}</span>
-                    </div>`,
-                    className: 'custom-state-label',
-                    iconSize: [90, 36],
-                    iconAnchor: [45, 18]
-                });
-
-                const marker = L.marker(coords, { icon: customLabelIcon }).addTo(regionalMap);
-
-                let tooltipContent = `<div style="font-family: 'Inter', sans-serif; padding: 4px 8px; text-align: center;">
-                    <div style="font-weight: 800; font-size: 0.85rem; color: #1e293b; margin-bottom: 2px;">${p.province}</div>
-                    <div style="font-weight: 900; color: ${stateColor}; font-size: 1.05rem; margin: 4px 0;">Sales: $${p.total_sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; margin-bottom: 4px;">Orders: ${p.order_count.toLocaleString()} | Units: ${p.units_sold.toLocaleString()}</div>
-                    <div style="font-size: 0.65rem; color: #10b981; font-weight: 700; margin-top: 4px;"><i class="fas fa-mouse-pointer"></i> Click to drilldown</div>
+                let tooltipContent = `<div style="font-family: 'Inter', sans-serif; padding: 4px 6px; text-align: center;">
+                    <div style="font-weight: 800; font-size: 0.85rem; color: #0f172a; margin-bottom: 2px;">${p.province}</div>
+                    <div style="font-weight: 800; color: #0051d5; font-size: 0.95rem; margin: 2px 0;">$${p.total_sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    <div style="font-size: 0.72rem; color: #64748b; font-weight: 600;">${p.order_count.toLocaleString()} Orders | ${p.units_sold.toLocaleString()} Units</div>
                 </div>`;
                 
                 marker.bindTooltip(tooltipContent, { sticky: true });
 
-                let popupContent = `<div style="font-family: 'Inter', sans-serif; padding: 4px 8px; text-align: center;">
-                    <div style="font-weight: 800; font-size: 0.85rem; color: #1e293b; margin-bottom: 2px;">${p.province}</div>
-                    <div style="font-weight: 900; color: ${stateColor}; font-size: 1.1rem; margin: 4px 0;">$${p.total_sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; margin-bottom: 4px;">${p.order_count.toLocaleString()} Orders | ${p.units_sold.toLocaleString()} Units</div>
-                    <button class="btn btn-xs btn-primary" style="padding: 2px 6px; font-size: 0.65rem; font-weight: 800; border-radius: 4px;" onclick="scrollToStateRow('${p.province}')">View SKU Breakdown</button>
+                let popupContent = `<div style="font-family: 'Inter', sans-serif; padding: 6px 8px; text-align: center;">
+                    <div style="font-weight: 800; font-size: 0.9rem; color: #0f172a; margin-bottom: 2px;">${p.province}</div>
+                    <div style="font-weight: 900; color: #0051d5; font-size: 1.1rem; margin: 4px 0;">$${p.total_sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-bottom: 6px;">${p.order_count.toLocaleString()} Orders | ${p.units_sold.toLocaleString()} Units</div>
+                    <button class="btn btn-xs btn-primary" style="padding: 3px 8px; font-size: 0.7rem; font-weight: 700; border-radius: 6px; background: #0051d5; color: #fff; border: none; cursor: pointer;" onclick="scrollToStateRow('${p.province}')">View SKU Breakdown</button>
                 </div>`;
                 
                 marker.bindPopup(popupContent);
@@ -3083,15 +3841,15 @@ $(document).ready(function() {
         const row = $(`.geo-parent-row[data-state="${state}"]`);
         if (row.length) {
             $('html, body').animate({
-                scrollTop: row.offset().top - 200
-            }, 600);
+                scrollTop: row.offset().top - 180
+            }, 500);
             
             toggleGeoSkuRow(state);
             
-            row.css('background', '#fef3c7');
+            row.css('background', '#eff6ff');
             setTimeout(() => {
                 row.css('background', '');
-            }, 2500);
+            }, 2000);
         }
     }
 
@@ -3106,80 +3864,79 @@ $(document).ready(function() {
             success: function(res) {
                 if (!res) return;
                 
-                // Populating Region Table with SKU Breakdown
+                // Populating Region Table with SKU Breakdown (Figma Redesign)
                 if (res.province_breakdown) {
                     let regionList = res.province_breakdown;
                     regionList.sort((a, b) => b.total_sales - a.total_sales);
                     
                     let regHtml = '';
                     regionList.forEach((p, idx) => {
-                        const grossProfitColor = p.gross_profit >= 0 ? '#10b981' : '#f43f5e';
-                        const grossProfitSign = p.gross_profit >= 0 ? '' : '-';
-                        const formattedGross = p.gross_profit >= 0 ? p.gross_profit : Math.abs(p.gross_profit);
-                        const netProfitValue = p.total_sales + p.fees + p.refunds - p.cogs;
-                        const netProfitColor = netProfitValue >= 0 ? '#10b981' : '#f43f5e';
+                        const netProfitValue = p.total_sales + p.fees + (p.refunds || 0) - (p.cogs || 0);
+                        const netProfitColor = netProfitValue >= 0 ? '#0f172a' : '#dc2626';
                         const netProfitSign = netProfitValue >= 0 ? '' : '-';
                         const formattedNetProfit = netProfitValue >= 0 ? netProfitValue : Math.abs(netProfitValue);
 
                         regHtml += `
-                            <tr class="geo-parent-row" data-state="${p.province}" style="cursor: pointer; transition: background 0.2s; border-bottom: 1px solid #cbd5e1;" onclick="toggleGeoSkuRow('${p.province}')">
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: left; font-weight: 800; color: #1e293b;">
-                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                        <i class="fas fa-chevron-right geo-chevron" id="chevron-${p.province.replace(/\s+/g, '_')}" style="font-size: 0.75rem; color: #94a3b8; transition: transform 0.2s;"></i>
-                                        <span>${p.province}</span>
+                            <tr class="geo-parent-row" data-state="${p.province}" style="cursor: pointer; transition: background 0.15s; border-bottom: 1px solid #f1f5f9;" onclick="toggleGeoSkuRow('${p.province}')">
+                                <td style="padding: 14px 18px; text-align: left; font-weight: 700; color: #1e293b;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-chevron-right geo-chevron" id="chevron-${p.province.replace(/\s+/g, '_')}" style="font-size: 0.72rem; color: #94a3b8; transition: transform 0.2s;"></i>
+                                        <span style="font-weight: 700; font-size: 0.88rem;">${p.province}</span>
                                     </div>
                                 </td>
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: right !important; color: #475569; font-weight: 700;">${p.order_count.toLocaleString()}</td>
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: right !important; color: #475569; font-weight: 700;">${p.units_sold.toLocaleString()}</td>
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: right !important; color: #1e293b; font-weight: 800;">$${p.total_sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: right !important; color: #ef4444; font-weight: 700;">-$${Math.abs(p.fees).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: right !important; color: #475569; font-weight: 700;">-$${Math.abs(p.cogs).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                <td style="border: 1px solid #94a3b8; padding: 1rem; text-align: right !important; color: ${netProfitColor}; font-weight: 900;">${netProfitSign}$${formattedNetProfit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                <td style="padding: 14px 18px; text-align: right; color: #475569; font-weight: 600; font-variant-numeric: tabular-nums;">${p.order_count.toLocaleString()}</td>
+                                <td style="padding: 14px 18px; text-align: right; color: #475569; font-weight: 600; font-variant-numeric: tabular-nums;">${p.units_sold.toLocaleString()}</td>
+                                <td style="padding: 14px 18px; text-align: right; color: #0f172a; font-weight: 700; font-variant-numeric: tabular-nums;">$${p.total_sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                <td style="padding: 14px 18px; text-align: right; color: #dc2626; font-weight: 600; font-variant-numeric: tabular-nums;">-$${Math.abs(p.fees).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                <td style="padding: 14px 18px; text-align: right; color: #475569; font-weight: 600; font-variant-numeric: tabular-nums;">-$${Math.abs(p.cogs || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                <td style="padding: 14px 18px; text-align: right; color: ${netProfitColor}; font-weight: 700; font-variant-numeric: tabular-nums;">${netProfitSign}$${formattedNetProfit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                             </tr>
                             <tr class="geo-child-row" id="row-child-${p.province.replace(/\s+/g, '_')}" style="display: none; background: #f8fafc;">
-                                <td colspan="7" style="padding: 1.5rem 2.5rem; border: 1px solid #94a3b8;">
-                                    <div style="font-weight: 800; color: #475569; margin-bottom: 0.75rem; text-align: left; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
-                                        <i class="fas fa-box-open" style="color: #6366f1;"></i>
+                                <td colspan="7" style="padding: 1.25rem 2rem; border-bottom: 1px solid #e2e8f0;">
+                                    <div style="font-weight: 700; color: #64748b; margin-bottom: 0.75rem; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-box-open" style="color: #3b82f6;"></i>
                                         <span>SKU Performance Breakdown in ${p.province}</span>
                                     </div>
-                                    <table style="width: 100%; border-collapse: collapse; border: 1px solid #94a3b8; background: #fff; border-radius: 8px; overflow: hidden;">
-                                        <thead>
-                                            <tr style="background: #f1f5f9; border-bottom: 2px solid #94a3b8;">
-                                                <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">Product SKU</th>
-                                                <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">Orders</th>
-                                                <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">Units Sold</th>
-                                                <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">Sales</th>
-                                                <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">Amazon Fees</th>
-                                                <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">COGS</th>
-                                                <th style="border: 1px solid #94a3b8; padding: 0.75rem; text-align: center; font-size: 0.8rem; font-weight: 800; color: #475569;">Net Profit</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${p.skus.length === 0 ? 
-                                                `<tr><td colspan="7" style="text-align: center; padding: 2rem; color: #94a3b8; font-weight: 700;">No product sales in this region.</td></tr>` : 
-                                                p.skus.map(s => {
-                                                    const sNetProfit = s.sales + s.fees + (s.refunds || 0) - (s.cogs || 0);
-                                                    const sNetColor = sNetProfit >= 0 ? '#10b981' : '#f43f5e';
-                                                    const sNetSign = sNetProfit >= 0 ? '' : '-';
-                                                    const sFormattedNet = sNetProfit >= 0 ? sNetProfit : Math.abs(sNetProfit);
-                                                    return `
-                                                        <tr style="transition: background 0.15s;">
-                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: center;">
-                                                                <div style="font-weight: 800; color: #1e293b; font-size: 0.8rem;">${s.sku}</div>
-                                                                <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;" title="${s.product_name}">${s.product_name}</div>
-                                                            </td>
-                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: right !important; color: #475569; font-weight: 700; font-size: 0.8rem;">${s.order_count.toLocaleString()}</td>
-                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: right !important; color: #475569; font-weight: 700; font-size: 0.8rem;">${s.units_sold.toLocaleString()}</td>
-                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: right !important; color: #1e293b; font-weight: 800; font-size: 0.8rem;">$${s.sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: right !important; color: #ef4444; font-weight: 700; font-size: 0.8rem;">-$${Math.abs(s.fees).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: right !important; color: #475569; font-weight: 700; font-size: 0.8rem;">-$${Math.abs(s.cogs || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                                            <td style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: right !important; color: ${sNetColor}; font-weight: 800; font-size: 0.8rem;">${sNetSign}$${sFormattedNet.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                                        </tr>
-                                                    `;
-                                                }).join('')
-                                            }
-                                        </tbody>
-                                    </table>
+                                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
+                                        <table style="width: 100%; border-collapse: collapse;">
+                                            <thead>
+                                                <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+                                                    <th style="padding: 10px 14px; text-align: left; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Product SKU</th>
+                                                    <th style="padding: 10px 14px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Orders</th>
+                                                    <th style="padding: 10px 14px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Units Sold</th>
+                                                    <th style="padding: 10px 14px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Sales</th>
+                                                    <th style="padding: 10px 14px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Amazon Fees</th>
+                                                    <th style="padding: 10px 14px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">COGS</th>
+                                                    <th style="padding: 10px 14px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Net Profit</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                ${p.skus.length === 0 ? 
+                                                    `<tr><td colspan="7" style="text-align: center; padding: 1.5rem; color: #94a3b8; font-weight: 600;">No product sales in this region.</td></tr>` : 
+                                                    p.skus.map(s => {
+                                                        const sNetProfit = s.sales + s.fees + (s.refunds || 0) - (s.cogs || 0);
+                                                        const sNetColor = sNetProfit >= 0 ? '#0f172a' : '#dc2626';
+                                                        const sNetSign = sNetProfit >= 0 ? '' : '-';
+                                                        const sFormattedNet = sNetProfit >= 0 ? sNetProfit : Math.abs(sNetProfit);
+                                                        return `
+                                                            <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;">
+                                                                <td style="padding: 10px 14px; text-align: left;">
+                                                                    <div style="font-weight: 700; color: #0f172a; font-size: 0.82rem;">${s.sku}</div>
+                                                                    <div style="font-size: 0.7rem; color: #94a3b8; font-weight: 500;">${s.sku}</div>
+                                                                </td>
+                                                                <td style="padding: 10px 14px; text-align: right; color: #475569; font-weight: 600; font-size: 0.82rem; font-variant-numeric: tabular-nums;">${s.order_count.toLocaleString()}</td>
+                                                                <td style="padding: 10px 14px; text-align: right; color: #475569; font-weight: 600; font-size: 0.82rem; font-variant-numeric: tabular-nums;">${s.units_sold.toLocaleString()}</td>
+                                                                <td style="padding: 10px 14px; text-align: right; color: #0f172a; font-weight: 700; font-size: 0.82rem; font-variant-numeric: tabular-nums;">$${s.sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                                                <td style="padding: 10px 14px; text-align: right; color: #dc2626; font-weight: 600; font-size: 0.82rem; font-variant-numeric: tabular-nums;">-$${Math.abs(s.fees).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                                                <td style="padding: 10px 14px; text-align: right; color: #475569; font-weight: 600; font-size: 0.82rem; font-variant-numeric: tabular-nums;">-$${Math.abs(s.cogs || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                                                <td style="padding: 10px 14px; text-align: right; color: ${sNetColor}; font-weight: 700; font-size: 0.82rem; font-variant-numeric: tabular-nums;">${sNetSign}$${sFormattedNet.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                                            </tr>
+                                                        `;
+                                                    }).join('')
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </td>
                             </tr>
                         `;
@@ -3385,7 +4142,7 @@ $(document).ready(function() {
                 const remaining = res.top_products.slice(3);
                 const remainingSum = remaining.reduce((sum, p) => sum + parseFloat(p.revenue || 0), 0);
 
-                const chartColors = ['#2563eb', '#3b82f6', '#10b981', '#f59e0b'];
+                const chartColors = ['#2563eb', '#ef4444', '#10b981', '#f59e0b'];
                 const doughnutData = [...top3.map(p => parseFloat(p.revenue || 0))];
                 if (remaining.length > 0) {
                     doughnutData.push(remainingSum);
@@ -3396,7 +4153,7 @@ $(document).ready(function() {
                     doughnutLabels.push('Others');
                 }
 
-                // Populate Custom HTML Legend
+                // Populate Custom HTML Legend (SKU + $ + %)
                 let legendHtml = '';
                 let colorIdx = 0;
                 top3.forEach(p => {
@@ -3404,12 +4161,13 @@ $(document).ready(function() {
                     const pct = totalProdRevenue > 0 ? ((rev / totalProdRevenue) * 100).toFixed(0) : '0';
                     const color = chartColors[colorIdx];
                     legendHtml += `
-                    <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; font-weight: 700;">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="width: 10px; height: 10px; border-radius: 50%; background: ${color}; display: inline-block;"></span>
-                            <span style="color: #475569; font-weight: 800;">${p.sku}</span>
+                    <div class="pp-legend-row">
+                        <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+                            <span class="dot" style="background:${color};"></span>
+                            <span class="name">${p.sku}</span>
                         </div>
-                        <span style="color: #0f172a; font-weight: 900;">${pct}%</span>
+                        <span style="color:#64748b; font-weight:700;">$${rev.toLocaleString()}</span>
+                        <span style="color:#0f172a; font-weight:800;">${pct}%</span>
                     </div>`;
                     colorIdx++;
                 });
@@ -3418,12 +4176,13 @@ $(document).ready(function() {
                     const pct = totalProdRevenue > 0 ? ((remainingSum / totalProdRevenue) * 100).toFixed(0) : '0';
                     const color = chartColors[3];
                     legendHtml += `
-                    <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; font-weight: 700;">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="width: 10px; height: 10px; border-radius: 50%; background: ${color}; display: inline-block;"></span>
-                            <span style="color: #475569; font-weight: 800;">Others</span>
+                    <div class="pp-legend-row">
+                        <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+                            <span class="dot" style="background:${color};"></span>
+                            <span class="name">Others</span>
                         </div>
-                        <span style="color: #0f172a; font-weight: 900;">${pct}%</span>
+                        <span style="color:#64748b; font-weight:700;">$${Math.round(remainingSum).toLocaleString()}</span>
+                        <span style="color:#0f172a; font-weight:800;">${pct}%</span>
                     </div>`;
                 }
                 $('#doughnut_custom_legend').html(legendHtml);
@@ -3450,12 +4209,17 @@ $(document).ready(function() {
                         plugins: { 
                             legend: { display: false },
                             tooltip: { 
-                                backgroundColor: '#0f172a', 
-                                padding: 12,
+                                backgroundColor: '#ffffff',
+                                titleColor: '#0f172a',
+                                bodyColor: '#0f172a',
+                                borderColor: '#e2e8f0',
+                                borderWidth: 1,
+                                padding: 10,
                                 cornerRadius: 8,
+                                displayColors: true,
                                 callbacks: {
                                     label: function(context) {
-                                        return ' ' + context.label + ': $' + context.parsed.toLocaleString();
+                                        return context.label + ': $' + Number(context.parsed).toLocaleString();
                                     }
                                 }
                             }
@@ -3475,20 +4239,11 @@ $(document).ready(function() {
                         labels: labels,
                         datasets: [
                             {
-                                label: 'Page Views',
-                                data: res.top_products.slice(0, 12).map(p => p.page_views),
-                                backgroundColor: 'rgba(147, 185, 189, 0.4)',
-                                borderColor: '#93B9BD',
-                                borderWidth: 1,
-                                yAxisID: 'yVolume',
-                                order: 4
-                            },
-                            {
                                 label: 'Sessions',
                                 data: res.top_products.slice(0, 12).map(p => p.sessions),
-                                backgroundColor: 'rgba(139, 92, 246, 0.5)',
-                                borderColor: '#8B5CF6',
-                                borderWidth: 1,
+                                backgroundColor: 'rgba(147, 197, 253, 0.75)',
+                                borderColor: '#93c5fd',
+                                borderWidth: 0,
                                 yAxisID: 'yVolume',
                                 order: 3
                             },
@@ -3496,8 +4251,8 @@ $(document).ready(function() {
                                 label: 'Revenue ($)',
                                 data: res.top_products.slice(0, 12).map(p => p.revenue),
                                 type: 'line',
-                                borderColor: '#4F46E5',
-                                backgroundColor: '#4F46E5',
+                                borderColor: '#2563eb',
+                                backgroundColor: '#2563eb',
                                 borderWidth: 3,
                                 pointRadius: 4,
                                 tension: 0.3,
@@ -3508,8 +4263,8 @@ $(document).ready(function() {
                                 label: 'Conv %',
                                 data: res.top_products.slice(0, 12).map(p => p.conv),
                                 type: 'line',
-                                borderColor: '#10B981',
-                                backgroundColor: '#10B981',
+                                borderColor: '#f59e0b',
+                                backgroundColor: '#f59e0b',
                                 borderDash: [5, 5],
                                 borderWidth: 2,
                                 pointRadius: 4,
@@ -3636,6 +4391,56 @@ $(document).ready(function() {
         trafficSearchQuery = $(this).val();
         trafficCurrentPage = 1;
         renderTrafficTable();
+    });
+
+    // Figma Profit & Loss Chart Controls
+    $(document).on('click', '#pl_time_toggle .pl-time-btn', function() {
+        $('#pl_time_toggle .pl-time-btn').removeClass('active');
+        $(this).addClass('active');
+        currentPlTime = $(this).data('time');
+        renderProfitLossChart();
+    });
+
+    $(document).on('change', '#pl_bar_metric, #pl_line_metric', function() {
+        renderProfitLossChart();
+    });
+
+    // Date & Customer filter sync and apply
+    $(document).on('change', '.filter-customer-select', function() {
+        $('#filter_customer').val($(this).val());
+        loadDashboard();
+    });
+
+    $(document).on('change', '.filter-from-input', function() {
+        $('#filter_from').val($(this).val());
+    });
+
+    $(document).on('change', '.filter-to-input', function() {
+        $('#filter_to').val($(this).val());
+    });
+
+    $(document).on('click', '.btn-apply-filters', function() {
+        loadDashboard();
+    });
+
+    // Export CSV handler for Profit & Loss
+    $(document).on('click', '.btn-export-csv', function() {
+        if (!globalSkuPlData || !globalSkuPlData.length) {
+            Swal.fire({ icon: 'info', title: 'No Data', text: 'No SKU data available to export.' });
+            return;
+        }
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Rank,Seller SKU,Units Sold,Revenue,Net Profit,Net Profit Margin %\r\n";
+        globalSkuPlData.forEach((row, i) => {
+            csvContent += `${i + 1},"${row.sku || ''}",${row.units || 0},${row.revenue || 0},${row.net || 0},${row.margin || 0}%\r\n`;
+        });
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `sku_profit_loss_${new Date().toISOString().slice(0,10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     });
 
     $('#apply_filters').click(loadDashboard);

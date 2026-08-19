@@ -9,55 +9,50 @@ include '../../includes/header.php';
 include '../../includes/sidebar.php';
 ?>
 
-<div class="card" style="margin-bottom: 2rem; padding: 1.5rem; background: #ffffff; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.04); border-radius: 20px; border: 1px solid #f1f5f9;">
-    <div style="display: flex; gap: 1.5rem; align-items: flex-end; flex-wrap: wrap; width: 100%;">
-        <div style="flex: 2; min-width: 250px; display: flex; flex-direction: column; gap: 0.5rem;">
-            <label style="font-weight: 800; color: #64748b; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; margin-left: 2px;">Amazon Profile</label>
-            <select id="filter_customer" style="width: 100%; padding: 0.8rem 1rem; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc; font-weight: 700; color: #1e293b; appearance: none; cursor: pointer; transition: all 0.2s;">
-                <option value="">All Amazon Profiles</option>
-                <?php 
-                $customers = get_all_customers();
-                while ($row = $customers->fetch_assoc()): ?>
-                    <option value="<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['customer_name']); ?></option>
-                <?php endwhile; ?>
-            </select>
-        </div>
-        <div style="flex: 1; min-width: 160px; display: flex; flex-direction: column; gap: 0.5rem;">
-            <label style="font-weight: 800; color: #64748b; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; margin-left: 2px;">Brand Name</label>
-            <select id="filter_brand" style="width: 100%; padding: 0.8rem 1rem; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc; font-weight: 700; color: #1e293b; appearance: none; cursor: pointer;">
-                <option value="">All Brands</option>
-            </select>
-        </div>
-        <div style="flex: 1; min-width: 160px; display: flex; flex-direction: column; gap: 0.5rem;">
-            <label style="font-weight: 800; color: #64748b; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; margin-left: 2px;">Traffic Type</label>
-            <select id="filter_traffic_type" style="width: 100%; padding: 0.8rem 1rem; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc; font-weight: 700; color: #1e293b; appearance: none; cursor: pointer;">
-                <option value="all">All Traffic</option>
-                <option value="branded">Branded</option>
-                <option value="non_branded">Non-Branded</option>
-            </select>
-        </div>
-        <div style="flex: 1; min-width: 180px; display: flex; flex-direction: column; gap: 0.5rem;">
-            <label style="font-weight: 800; color: #64748b; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; margin-left: 2px;">From Date</label>
-            <input type="date" id="filter_from" class="form-control" value="2026-01-01" style="padding: 0.8rem; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; font-weight: 700; color: #1e293b;">
-        </div>
-        <div style="flex: 1; min-width: 180px; display: flex; flex-direction: column; gap: 0.5rem;">
-            <label style="font-weight: 800; color: #64748b; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; margin-left: 2px;">To Date</label>
-            <input type="date" id="filter_to" class="form-control" value="2026-03-31" style="padding: 0.8rem; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; font-weight: 700; color: #1e293b;">
-        </div>
-        <div style="flex: 1.2; min-width: 200px;">
-            <button id="refresh_campaigns" class="btn btn-primary w-100" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border: none; padding: 0.8rem; border-radius: 12px; font-weight: 800; color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25); height: 52px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
-                <i class="fas fa-search me-2"></i> ANALYZE PERFORMANCE
-            </button>
-        </div>
+<style>.top-header { display: none !important; } .main-wrapper { padding-top: 1.25rem !important; }</style>
+<!-- Figma-style Top Bar -->
+<div class="figma-page-topbar">
+    <div class="figma-page-topbar-left">
+        <select id="filter_customer" style="min-width:180px; padding:0.5rem 0.85rem; border:1px solid #e2e8f0; border-radius:10px; font-size:0.82rem; font-weight:600; color:#334155; background:#fff;">
+            <option value="">All Amazon Profiles</option>
+            <?php 
+            $customers = get_all_customers();
+            while ($row = $customers->fetch_assoc()): ?>
+                <option value="<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['customer_name']); ?></option>
+            <?php endwhile; ?>
+        </select>
+        <select id="filter_brand" style="min-width:140px; padding:0.5rem 0.85rem; border:1px solid #e2e8f0; border-radius:10px; font-size:0.82rem; font-weight:600; color:#334155; background:#fff;">
+            <option value="">All Brands</option>
+        </select>
+        <select id="filter_traffic_type" style="min-width:130px; padding:0.5rem 0.85rem; border:1px solid #e2e8f0; border-radius:10px; font-size:0.82rem; font-weight:600; color:#334155; background:#fff;">
+            <option value="all">All Traffic</option>
+            <option value="branded">Branded</option>
+            <option value="non_branded">Non-Branded</option>
+        </select>
+        <span class="figma-page-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Campaign & Target</strong></span>
+    </div>
+    <div class="figma-page-topbar-right">
+        <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+        <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
+        <?php endif; ?>
+        <button type="button" class="btn-figma-outline-sm" onclick="exportCSV()"><i class="fas fa-file-export"></i> Export CSV</button>
+        <button type="button" class="btn-figma-icon-sm" title="Search"><i class="fas fa-search"></i></button>
     </div>
 </div>
 
-<!-- Section Heading: Campaign Performance Overview -->
-<div style="margin-top: 1rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.75rem;">
-    <h2 style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-        <i class="fas fa-bullseye" style="color: #2563eb;"></i> Campaign Performance Overview
-    </h2>
-    <p style="font-size: 0.85rem; color: #64748b; margin: 0.25rem 0 0 0; font-weight: 500;">Top and bottom performing campaigns in this range</p>
+<!-- Page Title & Date Range -->
+<div class="figma-page-head">
+    <div>
+        <h2>Campaign & Target</h2>
+        <p>Detailed analysis of campaigns, ad groups, and targeting efficiency</p>
+    </div>
+    <div class="figma-date-bar">
+        <i class="far fa-calendar-alt" style="color: #64748b; font-size: 0.85rem; margin-left: 4px;"></i>
+        <input type="date" id="filter_from" value="2026-01-01">
+        <span class="date-sep">-</span>
+        <input type="date" id="filter_to" value="2026-03-31">
+        <button type="button" class="btn-refresh-icon" id="refresh_campaigns" title="Analyze"><i class="fas fa-sync-alt"></i></button>
+    </div>
 </div>
 
 <!-- Campaigns performance columns -->
@@ -400,7 +395,7 @@ $(document).ready(function() {
         const brand = $('#filter_brand').val();
         const trafficType = $('#filter_traffic_type').val();
 
-        $('#refresh_campaigns').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> ANALYZE PERFORMANCE');
+        $('#refresh_campaigns').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
         $('#campaign_body, #placement_body, #bidding_body').css('opacity', '0.5');
 
         $.get('<?php echo BASE_URL; ?>api/advertising_data.php', {
@@ -410,7 +405,7 @@ $(document).ready(function() {
             brand: brand,
             traffic_type: trafficType
         }, function(data) {
-            $('#refresh_campaigns').prop('disabled', false).html('<i class="fas fa-sync-alt"></i> ANALYZE PERFORMANCE');
+            $('#refresh_campaigns').prop('disabled', false).html('<i class="fas fa-sync-alt"></i>');
             $('#campaign_body, #placement_body, #bidding_body').css('opacity', '1');
             
             // Top/Bottom Campaigns Population
@@ -861,7 +856,7 @@ $(document).ready(function() {
             });
             $('#bidding_body').html(b_html || '<tr><td colspan="5" class="text-center" style="padding: 3rem; color: #94a3b8; font-weight: 600;">No data</td></tr>');
         }).fail(function() {
-            $('#refresh_campaigns').prop('disabled', false).html('<i class="fas fa-sync-alt"></i> ANALYZE PERFORMANCE');
+            $('#refresh_campaigns').prop('disabled', false).html('<i class="fas fa-sync-alt"></i>');
             $('#campaign_body').html('<tr><td colspan="8" class="text-center text-danger py-5">Error loading data.</td></tr>');
         });
     }

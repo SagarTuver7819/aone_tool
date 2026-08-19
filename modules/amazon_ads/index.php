@@ -451,34 +451,43 @@ include '../../includes/sidebar.php';
     }
 </style>
 
+<style>.top-header { display: none !important; } .main-wrapper { padding-top: 1.25rem !important; }</style>
 <div class="ad-dashboard-container">
-    <!-- Filter Card at the top -->
-    <div class="filter-card">
-        <div class="filter-grid">
-            <div class="filter-group">
-                <label class="filter-label">Amazon Profile</label>
-                <select id="filter_customer" class="filter-select">
-                    <option value="">All Amazon Profiles</option>
-                    <?php 
-                    $customers = get_all_customers();
-                    while ($row = $customers->fetch_assoc()): ?>
-                        <option value="<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['customer_name']); ?></option>
-                    <?php endwhile; ?>
-                </select>
-            </div>
-            
-            <div class="filter-group" style="flex: 1.5; min-width: 280px;">
-                <label class="filter-label">Period</label>
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                    <input type="date" id="filter_from" class="filter-input" value="<?php echo date('Y-m-01'); ?>">
-                    <span style="color: #94a3b8; font-weight: 700;">to</span>
-                    <input type="date" id="filter_to" class="filter-input" value="<?php echo date('Y-m-t'); ?>">
-                </div>
-            </div>
-            
-            <button id="refresh_ads" class="btn-refresh">
-                <i class="fas fa-sync-alt"></i> REFRESH
-            </button>
+    <!-- Figma-style Top Bar -->
+    <div class="figma-page-topbar">
+        <div class="figma-page-topbar-left">
+            <select id="filter_customer" style="min-width:180px; padding:0.5rem 0.85rem; border:1px solid #e2e8f0; border-radius:10px; font-size:0.82rem; font-weight:600; color:#334155; background:#fff;">
+                <option value="">All Amazon Profiles</option>
+                <?php 
+                $customers = get_all_customers();
+                while ($row = $customers->fetch_assoc()): ?>
+                    <option value="<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['customer_name']); ?></option>
+                <?php endwhile; ?>
+            </select>
+            <span class="figma-page-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Advertising Overview</strong></span>
+        </div>
+        <div class="figma-page-topbar-right">
+            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
+            <?php endif; ?>
+            <button type="button" class="btn-figma-outline-sm" id="export_ads_csv"><i class="fas fa-file-export"></i> Export CSV</button>
+            <button type="button" class="btn-figma-icon-sm" title="Search"><i class="fas fa-search"></i></button>
+            <button type="button" class="btn-figma-icon-sm" title="Notifications"><i class="fas fa-bell"></i></button>
+        </div>
+    </div>
+
+    <!-- Page Title & Date Range -->
+    <div class="figma-page-head">
+        <div>
+            <h2>Advertising Overview</h2>
+            <p>Sponsored Products, Brands & Display Analytics</p>
+        </div>
+        <div class="figma-date-bar">
+            <i class="far fa-calendar-alt" style="color: #64748b; font-size: 0.85rem; margin-left: 4px;"></i>
+            <input type="date" id="filter_from" value="<?php echo date('Y-m-01'); ?>">
+            <span class="date-sep">-</span>
+            <input type="date" id="filter_to" value="<?php echo date('Y-m-t'); ?>">
+            <button type="button" class="btn-refresh-icon" id="refresh_ads" title="Refresh"><i class="fas fa-sync-alt"></i></button>
         </div>
     </div>
 
@@ -824,7 +833,7 @@ $(document).ready(function() {
             from_date: fromDate,
             to_date: toDate
         }, function(data) {
-            $('#refresh_ads').prop('disabled', false).html('<i class="fas fa-sync-alt"></i> REFRESH');
+            $('#refresh_ads').prop('disabled', false).html('<i class="fas fa-sync-alt"></i>');
 
             // 1. Calculate dynamic Spend and Sales from SP + SB + SD to ensure perfect alignment
             const spSales = parseFloat(data.summary.sp.sales || 0);

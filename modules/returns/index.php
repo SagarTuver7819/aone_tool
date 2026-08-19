@@ -317,36 +317,45 @@ include '../../includes/sidebar.php';
 }
 </style>
 
+<style>.top-header { display: none !important; } .main-wrapper { padding-top: 1.25rem !important; }</style>
 <div class="returns-page">
-    <!-- Filters -->
-    <div class="filter-card">
-        <div style="display: flex; gap: 1.25rem; align-items: flex-end; flex-wrap: wrap;">
-            <div class="form-group" style="flex: 1; min-width: 260px;">
-                <label>Account Selection</label>
-                <select id="filter_customer" style="width: 100%;" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
-                    <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
-                        <option value="">All Amazon Profiles</option>
-                    <?php endif; ?>
-                    <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()): ?>
-                        <?php
-                            $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
-                            if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id']) continue;
-                        ?>
-                        <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($row['customer_name']); ?></option>
-                    <?php endwhile; ?>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Date Range</label>
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                    <input type="date" id="filter_from" value="">
-                    <span style="color: #94a3b8;">to</span>
-                    <input type="date" id="filter_to" value="">
-                </div>
-            </div>
-            <button id="apply_filters" class="btn btn-primary" style="height: 40px; padding: 0 20px;">
-                <i class="fas fa-sync-alt"></i> REFRESH
-            </button>
+    <!-- Figma-style Top Bar -->
+    <div class="figma-page-topbar">
+        <div class="figma-page-topbar-left">
+            <select id="filter_customer" style="min-width:180px; padding:0.5rem 0.85rem; border:1px solid #e2e8f0; border-radius:10px; font-size:0.82rem; font-weight:600; color:#334155; background:#fff;" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
+                <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                    <option value="">All Amazon Profiles</option>
+                <?php endif; ?>
+                <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()):
+                    $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
+                    if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id']) continue;
+                ?>
+                    <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($row['customer_name']); ?></option>
+                <?php endwhile; ?>
+            </select>
+            <span class="figma-page-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Return Page</strong></span>
+        </div>
+        <div class="figma-page-topbar-right">
+            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
+            <?php endif; ?>
+            <button type="button" class="btn-figma-outline-sm"><i class="fas fa-file-export"></i> Export CSV</button>
+            <button type="button" class="btn-figma-icon-sm"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
+    <!-- Page Title & Date Range -->
+    <div class="figma-page-head">
+        <div>
+            <h2>Return Page</h2>
+            <p>Returns intelligence, reasons & product performance</p>
+        </div>
+        <div class="figma-date-bar">
+            <i class="far fa-calendar-alt" style="color: #64748b; font-size: 0.85rem; margin-left: 4px;"></i>
+            <input type="date" id="filter_from" value="">
+            <span class="date-sep">-</span>
+            <input type="date" id="filter_to" value="">
+            <button type="button" class="btn-refresh-icon" id="apply_filters" title="Refresh"><i class="fas fa-sync-alt"></i></button>
         </div>
     </div>
 

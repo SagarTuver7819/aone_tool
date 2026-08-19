@@ -18,14 +18,24 @@ include '../../includes/header.php';
 include '../../includes/sidebar.php';
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-    <div>
-        <h2 style="font-size: 1.5rem; font-weight: 800;">Account Management</h2>
-        <p style="color: var(--text-muted); font-size: 0.875rem;">Manage individual Amazon Seller Profiles and synchronization settings.</p>
+<style>.top-header { display: none !important; } .main-wrapper { padding-top: 1.25rem !important; }</style>
+<!-- Figma-style Top Bar -->
+<div class="figma-page-topbar">
+    <div class="figma-page-topbar-left">
+        <span class="figma-page-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Client Management</strong></span>
     </div>
-    <a href="manage.php" class="btn btn-primary">
-        <i class="fas fa-plus-circle"></i> PROVISION NEW ACCOUNT
-    </a>
+    <div class="figma-page-topbar-right">
+        <a href="manage.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Client</a>
+        <button type="button" class="btn-figma-icon-sm"><i class="fas fa-search"></i></button>
+    </div>
+</div>
+
+<!-- Page Title -->
+<div class="figma-page-head">
+    <div>
+        <h2>Client Management</h2>
+        <p>Manage individual Amazon Seller Profiles and synchronization settings.</p>
+    </div>
 </div>
 
 <?php if (isset($_GET['msg'])): ?>

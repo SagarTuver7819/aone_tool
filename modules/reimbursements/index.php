@@ -82,22 +82,32 @@ include '../../includes/sidebar.php';
 /* AI Border with Premium Gradient matching project theme (brand blue) */
 .ai-insights-panel {
     position: relative;
-    background: linear-gradient(135deg, rgba(0, 81, 213, 0.04) 0%, rgba(255, 255, 255, 0.95) 100%);
-    border: 1px solid rgba(0, 81, 213, 0.15);
+    background: linear-gradient(135deg, #0d1b3e 0%, #0a2252 40%, #0f3460 100%);
+    border: none;
     border-radius: 16px;
-    padding: 1.5rem;
+    padding: 1.75rem 1.5rem;
     margin-bottom: 1.5rem;
     overflow: hidden;
+    box-shadow: 0 8px 32px rgba(13, 27, 62, 0.25);
 }
 .ai-insights-panel::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(to bottom, var(--secondary), #d0bcff);
+    top: -40%;
+    right: -5%;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(0, 81, 213, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
 }
+.ai-insights-panel h3,
+.ai-insights-panel p,
+.ai-insights-panel li,
+.ai-insights-panel span:not(.badge-priority) {
+    color: #e2e8f0 !important;
+}
+.ai-insights-panel .ai-sparkle-icon { color: #60a5fa !important; }
 .ai-sparkle-icon {
     font-size: 1.5rem;
     color: var(--secondary);
@@ -271,36 +281,45 @@ include '../../includes/sidebar.php';
 }
 </style>
 
+<style>.top-header { display: none !important; } .main-wrapper { padding-top: 1.25rem !important; }</style>
 <div class="reimb-page">
-    <!-- Filters (consistent with the rest of the app) -->
-    <div class="card" style="margin-bottom: 1.5rem;">
-        <div style="display: flex; gap: 1.25rem; align-items: flex-end; flex-wrap: wrap;">
-            <div class="form-group" style="flex: 1; min-width: 260px;">
-                <label>Account Selection</label>
-                <select id="filter_customer" style="width: 100%;" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
-                    <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
-                        <option value="">All Amazon Profiles</option>
-                    <?php endif; ?>
-                    <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()): ?>
-                        <?php
-                            $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
-                            if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id']) continue;
-                        ?>
-                        <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($row['customer_name']); ?></option>
-                    <?php endwhile; ?>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Date Range</label>
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                    <input type="date" id="filter_from" value="">
-                    <span style="color: #94a3b8;">to</span>
-                    <input type="date" id="filter_to" value="">
-                </div>
-            </div>
-            <button id="apply_filters" class="btn btn-primary" style="height: 40px; padding: 0 20px;">
-                <i class="fas fa-sync-alt"></i> REFRESH
-            </button>
+    <!-- Figma-style Top Bar -->
+    <div class="figma-page-topbar">
+        <div class="figma-page-topbar-left">
+            <select id="filter_customer" style="min-width:180px; padding:0.5rem 0.85rem; border:1px solid #e2e8f0; border-radius:10px; font-size:0.82rem; font-weight:600; color:#334155; background:#fff;" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
+                <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                    <option value="">All Amazon Profiles</option>
+                <?php endif; ?>
+                <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()):
+                    $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
+                    if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id']) continue;
+                ?>
+                    <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($row['customer_name']); ?></option>
+                <?php endwhile; ?>
+            </select>
+            <span class="figma-page-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Reimbursement</strong></span>
+        </div>
+        <div class="figma-page-topbar-right">
+            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
+            <?php endif; ?>
+            <button type="button" class="btn-figma-outline-sm"><i class="fas fa-file-export"></i> Export CSV</button>
+            <button type="button" class="btn-figma-icon-sm"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
+    <!-- Page Title & Date Range -->
+    <div class="figma-page-head">
+        <div>
+            <h2>Reimbursement</h2>
+            <p>AI-powered Amazon reimbursement & revenue recovery intelligence</p>
+        </div>
+        <div class="figma-date-bar">
+            <i class="far fa-calendar-alt" style="color: #64748b; font-size: 0.85rem; margin-left: 4px;"></i>
+            <input type="date" id="filter_from" value="">
+            <span class="date-sep">-</span>
+            <input type="date" id="filter_to" value="">
+            <button type="button" class="btn-refresh-icon" id="apply_filters" title="Refresh"><i class="fas fa-sync-alt"></i></button>
         </div>
     </div>
 
@@ -362,21 +381,21 @@ include '../../includes/sidebar.php';
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
             <div style="display:flex; align-items:center;">
                 <i class="fas fa-magic ai-sparkle-icon"></i>
-                <h3 style="font-size:1.1rem; font-weight:800; margin:0; color:#0f172a;">AI Recovery Insights</h3>
+                <h3 style="font-size:1.1rem; font-weight:800; margin:0; color:#ffffff;">AI Recovery Insights</h3>
             </div>
-            <span style="background:rgba(0, 81, 213, 0.1); color:var(--secondary); font-size:0.7rem; font-weight:800; padding:0.2rem 0.6rem; border-radius:99px; text-transform:uppercase;">High Priority</span>
+            <span style="background:rgba(96, 165, 250, 0.25); color:#93c5fd; font-size:0.7rem; font-weight:800; padding:0.2rem 0.6rem; border-radius:99px; text-transform:uppercase; border: 1px solid rgba(96, 165, 250, 0.4);">High Priority</span>
         </div>
         <div class="row align-items-center">
             <div class="col-md-8 mb-3 mb-md-0">
-                <p style="font-size:0.95rem; font-weight:700; color:#1e293b; margin-bottom:0.75rem;">
-                    "Estimated <span style="color:var(--secondary); font-weight:900;" id="ai_highlight_val">$0</span> in unclaimed FBA reimbursements identified from operational and return discrepancies."
+                <p style="font-size:0.95rem; font-weight:700; color:#e2e8f0; margin-bottom:0.75rem;">
+                    "Estimated <span style="color:#60a5fa; font-weight:900;" id="ai_highlight_val">$0</span> in unclaimed FBA reimbursements identified from operational and return discrepancies."
                 </p>
                 <ul style="list-style:none; padding-left:0; margin-bottom:0;">
-                    <li style="font-size:0.8rem; font-weight:700; color:#64748b; margin-bottom:0.4rem; display:flex; align-items:center; gap:6px;">
-                        <i class="fas fa-check-circle" style="color:#10b981;"></i> Auto-detecting reconciliation gaps across active SKUs.
+                    <li style="font-size:0.8rem; font-weight:700; color:#94a3b8; margin-bottom:0.4rem; display:flex; align-items:center; gap:6px;">
+                        <i class="fas fa-check-circle" style="color:#34d399;"></i> Auto-detecting reconciliation gaps across active SKUs.
                     </li>
-                    <li style="font-size:0.8rem; font-weight:700; color:#64748b; display:flex; align-items:center; gap:6px;">
-                        <i class="fas fa-exclamation-triangle" style="color:#f97316;"></i> Action recommended: Ensure files are regularly uploaded to capture maximum recovery.
+                    <li style="font-size:0.8rem; font-weight:700; color:#94a3b8; display:flex; align-items:center; gap:6px;">
+                        <i class="fas fa-exclamation-triangle" style="color:#fbbf24;"></i> Action recommended: Ensure files are regularly uploaded to capture maximum recovery.
                     </li>
                 </ul>
             </div>
