@@ -839,6 +839,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $rows_count++;
                 }
             }
+            return $rows_count;
+        }
+
         function parseReturnsOrReimbursements($filePath, $conn, $customerId, $reportDate, $fileType) {
             $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
             $rows = [];

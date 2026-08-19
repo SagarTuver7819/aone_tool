@@ -1439,3 +1439,156 @@ body.sidebar-collapsed .sidebar-logo {
 body.sidebar-collapsed .badge {
     display: none !important;
 }
+
+/* =========================================================
+   Figma Shared Page Header Styles (overview-topbar pattern)
+   Used across: Advertising, Brand Analytics, Returns, etc.
+   ========================================================= */
+.figma-page-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
+    padding: 0.75rem 1.1rem;
+    background: #fff;
+    border: 1px solid #e8eaed;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.figma-page-topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
+    min-width: 0;
+    flex: 1;
+}
+.figma-page-topbar-left select {
+    min-width: 180px;
+    padding: 0.5rem 0.85rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #334155;
+    background: #fff;
+}
+.figma-page-breadcrumb {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #94a3b8;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+}
+.figma-page-breadcrumb strong { color: #475569; font-weight: 700; }
+.figma-page-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+}
+.figma-page-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+}
+.figma-page-head h2 {
+    margin: 0;
+    font-family: 'Hanken Grotesk', 'Inter', sans-serif;
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+}
+.figma-page-head p {
+    margin: 0.2rem 0 0;
+    font-size: 0.82rem;
+    color: #64748b;
+    font-weight: 500;
+}
+.figma-date-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0.45rem 0.65rem;
+}
+.figma-date-bar input[type="date"] {
+    border: none;
+    background: transparent;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #334155;
+    padding: 0.25rem 0.35rem;
+    outline: none;
+    width: 118px;
+}
+.figma-date-bar .date-sep { color: #94a3b8; font-size: 0.75rem; font-weight: 600; }
+.figma-date-bar .btn-refresh-icon {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #475569;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.figma-date-bar .btn-refresh-icon:hover { background: #e2e8f0; color: #0f172a; }
+.btn-figma-primary {
+    background: #0f52ff;
+    color: #fff !important;
+    border: none;
+    border-radius: 10px;
+    padding: 0.55rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+}
+.btn-figma-primary:hover { background: #0040d8; color: #fff !important; }
+.btn-figma-outline-sm {
+    background: #fff;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.55rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.btn-figma-icon-sm {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+    color: #475569;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+}
+.btn-figma-icon-sm:hover { background: #f8fafc; color: #0f172a; }

@@ -408,33 +408,44 @@ $customers = get_all_customers();
     }
 </style>
 
+<style>.top-header { display: none !important; } .main-wrapper { padding-top: 1.25rem !important; }</style>
 <div class="brand-analytics-container">
-    <!-- HEADER & FILTERS -->
-    <div class="filter-section mb-4">
-        <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
-            <div>
-                <h4 class="fw-900 mb-1" style="color: #0f172a;"><i class="fas fa-chart-bar me-2 text-primary"></i> BRAND ANALYTICS</h4>
-                <p class="text-muted small mb-0 fw-600">Track and compare your brand performance against category market benchmarks.</p>
-            </div>
-            <div class="d-flex gap-2 align-items-center">
-                <div class="input-group input-group-sm" style="width: 280px; border-radius: 12px; overflow: hidden; border: 1.5px solid #e2e8f0;">
-                    <span class="input-group-text bg-white border-0 ps-3"><i class="fas fa-calendar-alt text-primary"></i></span>
-                    <input type="date" id="filter_from" class="form-control border-0 fw-700" style="font-size: 0.8rem;" value="2026-01-01">
-                    <input type="date" id="filter_to" class="form-control border-0 fw-700" style="font-size: 0.8rem;" value="<?php echo date('Y-m-d'); ?>">
-                </div>
-                <select id="filter_customer" class="form-select form-select-sm fw-700" style="width: 200px; border-radius: 12px; border: 1.5px solid #e2e8f0; padding: 0.5rem 1rem;">
-                    <option value="">All Accounts</option>
-                    <?php
-                    while($c = $customers->fetch_assoc()) {
-                        $sel = ($c['id'] == ($_SESSION['customer_id'] ?? 0)) ? 'selected' : '';
-                        echo "<option value='{$c['id']}' $sel>" . htmlspecialchars($c['customer_name']) . "</option>";
-                    }
-                    ?>
-                </select>
-                <button id="refresh_button" class="action-btn" style="border-radius: 12px; padding: 8px 18px; font-weight: 700; font-size: 0.85rem; border: none; background: #0f52ff; color: white;">
-                    <i class="fas fa-sync-alt me-2"></i> REFRESH
-                </button>
-            </div>
+    <!-- Figma-style Top Bar -->
+    <div class="figma-page-topbar">
+        <div class="figma-page-topbar-left">
+            <select id="filter_customer" style="min-width:180px; padding:0.5rem 0.85rem; border:1px solid #e2e8f0; border-radius:10px; font-size:0.82rem; font-weight:600; color:#334155; background:#fff;">
+                <option value="">All Amazon Profiles</option>
+                <?php
+                $customers->data_seek(0);
+                while($c = $customers->fetch_assoc()) {
+                    $sel = ($c['id'] == ($_SESSION['customer_id'] ?? 0)) ? 'selected' : '';
+                    echo "<option value='{$c['id']}' $sel>" . htmlspecialchars($c['customer_name']) . "</option>";
+                }
+                ?>
+            </select>
+            <span class="figma-page-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Brand Analytics</strong></span>
+        </div>
+        <div class="figma-page-topbar-right">
+            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
+            <?php endif; ?>
+            <button type="button" class="btn-figma-outline-sm"><i class="fas fa-file-export"></i> Export CSV</button>
+            <button type="button" class="btn-figma-icon-sm" title="Search"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
+    <!-- Page Title & Date Range -->
+    <div class="figma-page-head">
+        <div>
+            <h2>Brand Analytics</h2>
+            <p>Search Query Performance & Market Share Overview</p>
+        </div>
+        <div class="figma-date-bar">
+            <i class="far fa-calendar-alt" style="color: #64748b; font-size: 0.85rem; margin-left: 4px;"></i>
+            <input type="date" id="filter_from" value="2026-01-01">
+            <span class="date-sep">-</span>
+            <input type="date" id="filter_to" value="<?php echo date('Y-m-d'); ?>">
+            <button type="button" class="btn-refresh-icon" id="refresh_button" title="Refresh"><i class="fas fa-sync-alt"></i></button>
         </div>
     </div>
 
@@ -710,14 +721,14 @@ $(document).ready(function() {
         const from = $('#filter_from').val();
         const to = $('#filter_to').val();
 
-        $('#refresh_button').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i> LOADING...');
+        $('#refresh_button').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
 
         $.ajax({
             url: '../../api/brand_data.php',
             data: { customer_id: customerId, from_date: from, to_date: to },
             dataType: 'json',
             success: function(res) {
-                $('#refresh_button').prop('disabled', false).html('<i class="fas fa-sync-alt me-2"></i> REFRESH');
+                $('#refresh_button').prop('disabled', false).html('<i class="fas fa-sync-alt"></i>');
 
                 // Get aggregated metrics from DB
                 let metrics = res.funnel_metrics || {
@@ -847,7 +858,7 @@ $(document).ready(function() {
                 $('#cvr_market_delta').html('<i class="fas fa-arrow-down me-1"></i> -2.1%');
             },
             error: function() {
-                $('#refresh_button').prop('disabled', false).html('<i class="fas fa-sync-alt me-2"></i> REFRESH');
+                $('#refresh_button').prop('disabled', false).html('<i class="fas fa-sync-alt"></i>');
             }
         });
     }

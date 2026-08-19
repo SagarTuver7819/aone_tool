@@ -318,7 +318,7 @@ try {
         SUM(product_sales) as product_sales_only,
         SUM(shipping_credits) as shipping_credits,
         SUM(gift_wrap_credits) as gift_wrap_credits,
-        SUM(product_sales + shipping_credits + gift_wrap_credits) as gross_revenue,
+        SUM(CASE WHEN type = 'Refund' THEN total ELSE 0 END) as refund_total_amt,
         SUM(CASE WHEN type IN ('Service Fee', 'ServiceFee') THEN total ELSE 0 END) as service_fees,
         SUM(CASE WHEN type IN ('Adjustment', 'Reimbursement') THEN total ELSE 0 END) as adjustments,
         SUM(CASE WHEN type IN ('FBA Inventory Fee', 'Inventory Fee') THEN total ELSE 0 END) as inventory_fees,
@@ -339,11 +339,22 @@ try {
     $stmt_trans->execute();
     $trans_res = $stmt_trans->get_result()->fetch_assoc();
 
+    // Promo query (handles both column or promotional transactions)
+    $promo_rebates = 0;
+    $chk_promo = $conn->query("SHOW COLUMNS FROM amazon_transaction_report LIKE 'promotional_rebates'");
+    if ($chk_promo && $chk_promo->num_rows > 0) {
+        $stmt_promo = $conn->prepare("SELECT SUM(promotional_rebates) as promo FROM amazon_transaction_report WHERE $where_customer AND date_time BETWEEN ? AND ? AND type != 'Transfer'");
+        $stmt_promo->bind_param("ss", $dt_start, $dt_end);
+        $stmt_promo->execute();
+        $promo_rebates = floatval($stmt_promo->get_result()->fetch_assoc()['promo'] ?? 0);
+    }
+
     // Use the accurate revenue from Business Report (to match KPI cards)
     $revenue = floatval($totals_full['total_sales'] ?? 0);
     
     // Accurate PL revenue from Transaction Report
-    $pl_revenue = floatval($trans_res['gross_revenue'] ?? 0);
+    $pl_revenue_raw = floatval(($trans_res['product_sales_only'] ?? 0) + ($trans_res['shipping_credits'] ?? 0) + ($trans_res['gift_wrap_credits'] ?? 0));
+    $pl_revenue = $pl_revenue_raw > 0 ? $pl_revenue_raw : $revenue;
     
     // Total Amazon Fees (all categories from Transaction Report)
     $selling_fees = floatval($trans_res['selling_fees'] ?? 0);
@@ -352,6 +363,7 @@ try {
     $adj = floatval($trans_res['adjustments'] ?? 0);  
     $inv = floatval($trans_res['inventory_fees'] ?? 0); 
     $ret = floatval($trans_res['return_fees'] ?? 0);    
+    $refund_amt = floatval($trans_res['refund_total_amt'] ?? 0);
     
     $total_amazon_fees = $selling_fees + $fba_fees + $serv + $adj + $inv + $ret;
     
@@ -388,25 +400,39 @@ try {
     $auto_cogs = floatval($trans_res['auto_cogs'] ?? 0);
     $cogs = $auto_cogs > 0 ? $auto_cogs : floatval($fin_settings['cogs'] ?? 0);
     
-    // Final Net Profit: Gross Profit - Product Costs
+    // Final Net Profit: Gross Profit - Product Costs - Ad Spend (if not in fees)
     $net_profit = $gross_calc - $cogs;
     $net_margin = $pl_revenue > 0 ? ($net_profit / $pl_revenue) * 100 : 0;
+    $roi = $cogs > 0 ? ($net_profit / $cogs) * 100 : ($pl_revenue > 0 ? ($net_profit / $pl_revenue) * 100 : 0);
+    $operational_deductions = abs($total_amazon_fees) + abs($cogs) + abs($ad_spend);
 
     $financials_payload = [
         'revenue' => $pl_revenue,
+        'sales' => $pl_revenue,
+        'units' => intval($totals_full['total_units'] ?? 0),
+        'orders' => intval($totals_full['total_orders'] ?? 0),
         'product_sales' => floatval($trans_res['product_sales_only'] ?? 0),
         'shipping_credits' => floatval($trans_res['shipping_credits'] ?? 0),
         'gift_wrap_credits' => floatval($trans_res['gift_wrap_credits'] ?? 0),
+        'refunds_amount' => $refund_amt,
+        'promotional_rebates' => $promo_rebates,
+        'advertising_cost' => $ad_spend,
         'selling_fees' => floatval($trans_res['selling_fees'] ?? 0),
         'fba_fees' => floatval($trans_res['fba_fees'] ?? 0),
+        'amazon_fees' => $total_amazon_fees,
         'adjustments' => $adj,
         'service_fees' => $serv,
         'inventory_fees' => $inv,
         'return_fees' => $ret,
         'cogs' => $cogs,
+        'operational_deductions' => $operational_deductions,
+        'gross_profit' => $gross_calc,
         'net_profit' => $net_profit,
         'net_margin' => $net_margin,
-        'gross_profit' => $gross_calc,
+        'roi' => $roi,
+        'real_acos' => $tacos,
+        'refund_rate' => floatval($totals_full['avg_refund_rate'] ?? 0),
+        'estimated_payout' => floatval($trans_res['total_settlement'] ?? $net_profit),
         'total_settlement' => floatval($trans_res['total_settlement'] ?? 0)
     ];
 
