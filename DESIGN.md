@@ -131,7 +131,7 @@ The color palette is rooted in professional reliability. The primary "Executive 
 
 ## Typography
 
-The system uses **Hanken Grotesk** for headlines to provide a sharp, contemporary character that feels distinct from standard SaaS templates. **Inter** is used for body text and functional UI elements due to its exceptional legibility at small sizes and high-density data views.
+The system uses **Inter** universally across all headlines, metrics, body text, tables, and functional UI elements for high-density data views and pixel-perfect alignment with Figma.
 
 Information hierarchy is established through weight and scale. Labels use a slightly increased letter-spacing and uppercase styling to distinguish metadata from content. For dashboard metrics, tabular figures (monospaced numbers) should be used within Inter to ensure column alignment in data grids.
 
