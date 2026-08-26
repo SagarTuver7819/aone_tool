@@ -2,14 +2,24 @@
 require_once '../../config.php';
 require_once '../../includes/functions.php';
 
-function getContributedDataSummary($row, $conn) {
+function formatReportTypeBadge($type)
+{
+    $formatted = htmlspecialchars($type);
+    if (strpos($type, 'Custom(') === 0) {
+        $formatted = str_replace('Custom(', 'Custom (', $formatted);
+    }
+    return '<span class="ds-badge-type">' . $formatted . '</span>';
+}
+
+function getContributedDataSummary($row, $conn)
+{
     $customerId = $row['customer_id'];
     $reportDate = $row['report_date'];
     $monthStart = date('Y-m-01', strtotime($reportDate));
     $monthEnd = date('Y-m-t', strtotime($reportDate));
-    
+
     $type = $row['report_type'];
-    
+
     if ($type === 'Business') {
         $sql = "SELECT SUM(ordered_product_sales) as sales, SUM(units_ordered) as units, SUM(total_order_items) as orders 
                 FROM amazon_business_report 
@@ -19,10 +29,13 @@ function getContributedDataSummary($row, $conn) {
         $stmt->execute();
         $res = $stmt->get_result()->fetch_assoc();
         if ($res && $res['orders'] > 0) {
-            return "📈 <b>Sales:</b> $" . number_format($res['sales'] ?? 0, 2) . " | <b>Units:</b> " . number_format($res['units'] ?? 0) . " | <b>Orders:</b> " . number_format($res['orders'] ?? 0);
+            return '<div class="ds-summary-lines">'
+                . '<div class="ds-line"><span class="ds-lbl">Sales :</span> <span class="ds-val">$' . number_format($res['sales'] ?? 0, 2) . '</span></div>'
+                . '<div class="ds-line"><span class="ds-lbl">Units :</span> <span class="ds-val">' . number_format($res['units'] ?? 0) . '</span></div>'
+                . '<div class="ds-line"><span class="ds-lbl">Orders :</span> <span class="ds-val">' . number_format($res['orders'] ?? 0) . '</span></div>'
+                . '</div>';
         }
-    } 
-    elseif ($type === 'Transaction') {
+    } elseif ($type === 'Transaction') {
         $sql = "SELECT SUM(product_sales) as sales, SUM(fba_fees) as fba, SUM(selling_fees) as selling, SUM(total) as total 
                 FROM amazon_transaction_report 
                 WHERE customer_id = ? AND date_time BETWEEN ? AND ?";
@@ -33,10 +46,13 @@ function getContributedDataSummary($row, $conn) {
         $stmt->execute();
         $res = $stmt->get_result()->fetch_assoc();
         if ($res && ($res['sales'] != 0 || $res['fba'] != 0)) {
-            return "💰 <b>Gross Sales:</b> $" . number_format($res['sales'] ?? 0, 2) . " | <b>FBA Fees:</b> $" . number_format($res['fba'] ?? 0, 2) . " | <b>Selling Fees:</b> $" . number_format($res['selling'] ?? 0, 2);
+            return '<div class="ds-summary-lines">'
+                . '<div class="ds-line"><span class="ds-lbl">Gross Sales :</span> <span class="ds-val">$' . number_format($res['sales'] ?? 0, 2) . '</span></div>'
+                . '<div class="ds-line"><span class="ds-lbl">FBA Fees :</span> <span class="ds-val">$' . number_format($res['fba'] ?? 0, 2) . '</span></div>'
+                . '<div class="ds-line"><span class="ds-lbl">Selling Fees :</span> <span class="ds-val">$' . number_format($res['selling'] ?? 0, 2) . '</span></div>'
+                . '</div>';
         }
-    }
-    elseif ($type === 'Detail') {
+    } elseif ($type === 'Detail') {
         $sql = "SELECT SUM(sessions_total) as sessions, SUM(page_views_total) as page_views 
                 FROM amazon_detail_report 
                 WHERE customer_id = ? AND report_date = ?";
@@ -45,14 +61,18 @@ function getContributedDataSummary($row, $conn) {
         $stmt->execute();
         $res = $stmt->get_result()->fetch_assoc();
         if ($res && $res['sessions'] > 0) {
-            return "👥 <b>Sessions:</b> " . number_format($res['sessions']) . " | <b>Page Views:</b> " . number_format($res['page_views']);
+            return '<div class="ds-summary-lines">'
+                . '<div class="ds-line"><span class="ds-lbl">Sessions :</span> <span class="ds-val">' . number_format($res['sessions']) . '</span></div>'
+                . '<div class="ds-line"><span class="ds-lbl">Page Views :</span> <span class="ds-val">' . number_format($res['page_views']) . '</span></div>'
+                . '</div>';
         }
-    }
-    elseif (strpos($type, 'Ads') === 0) {
+    } elseif (strpos($type, 'Ads') === 0) {
         $tableName = 'amazon_advertising_sp';
-        if (strpos($type, 'Ads SB') === 0) $tableName = 'amazon_advertising_sb';
-        elseif (strpos($type, 'Ads SD') === 0) $tableName = 'amazon_advertising_sd';
-        
+        if (strpos($type, 'Ads SB') === 0)
+            $tableName = 'amazon_advertising_sb';
+        elseif (strpos($type, 'Ads SD') === 0)
+            $tableName = 'amazon_advertising_sd';
+
         $sql = "SELECT SUM(impressions) as impr, SUM(clicks) as clicks, SUM(spend) as spend, SUM(total_sales) as sales 
                 FROM `$tableName` 
                 WHERE customer_id = ? AND report_date BETWEEN ? AND ?";
@@ -61,10 +81,14 @@ function getContributedDataSummary($row, $conn) {
         $stmt->execute();
         $res = $stmt->get_result()->fetch_assoc();
         if ($res && $res['clicks'] > 0) {
-            return "📢 <b>Spend:</b> $" . number_format($res['spend'] ?? 0, 2) . " | <b>Ad Sales:</b> $" . number_format($res['sales'] ?? 0, 2) . " | <b>Clicks:</b> " . number_format($res['clicks']) . " | <b>Impr:</b> " . number_format($res['impr']);
+            return '<div class="ds-summary-lines">'
+                . '<div class="ds-line"><span class="ds-lbl">Spend :</span> <span class="ds-val">$' . number_format($res['spend'] ?? 0, 2) . '</span></div>'
+                . '<div class="ds-line"><span class="ds-lbl">Ad Sales :</span> <span class="ds-val">' . number_format($res['sales'] ?? 0, 2) . '</span></div>'
+                . '<div class="ds-line"><span class="ds-lbl">Clicks :</span> <span class="ds-val">' . number_format($res['clicks']) . '</span></div>'
+                . '<div class="ds-line"><span class="ds-lbl">Impr :</span> <span class="ds-val">' . number_format($res['impr']) . '</span></div>'
+                . '</div>';
         }
-    }
-    elseif ($type === 'Inventory') {
+    } elseif ($type === 'Inventory') {
         $sql = "SELECT COUNT(DISTINCT sku) as total_skus, SUM(afn_fulfillable_quantity) as afn_qty, SUM(mfn_fulfillable_quantity) as mfn_qty 
                 FROM amazon_inventory 
                 WHERE customer_id = ? AND report_date = ?";
@@ -73,10 +97,12 @@ function getContributedDataSummary($row, $conn) {
         $stmt->execute();
         $res = $stmt->get_result()->fetch_assoc();
         if ($res && $res['total_skus'] > 0) {
-            return "📦 <b>SKUs Active:</b> " . number_format($res['total_skus']) . " | <b>Fulfillable Qty:</b> " . number_format(($res['afn_qty'] ?? 0) + ($res['mfn_qty'] ?? 0));
+            return '<div class="ds-summary-lines">'
+                . '<div class="ds-line"><span class="ds-lbl">SKUs Active :</span> <span class="ds-val">' . number_format($res['total_skus']) . '</span></div>'
+                . '<div class="ds-line"><span class="ds-lbl">Fulfillable Qty :</span> <span class="ds-val">' . number_format(($res['afn_qty'] ?? 0) + ($res['mfn_qty'] ?? 0)) . '</span></div>'
+                . '</div>';
         }
-    }
-    elseif ($type === 'Reimbursement') {
+    } elseif ($type === 'Reimbursement') {
         $sql = "SELECT SUM(amount) as sales, SUM(quantity) as units 
                 FROM amazon_returns_reimbursements 
                 WHERE customer_id = ? AND type = 'Reimbursement' AND report_date BETWEEN ? AND ?";
@@ -85,11 +111,14 @@ function getContributedDataSummary($row, $conn) {
         $stmt->execute();
         $res = $stmt->get_result()->fetch_assoc();
         if ($res && $res['sales'] > 0) {
-            return "💸 <b>Reimbursed:</b> $" . number_format($res['sales'] ?? 0, 2) . " | <b>Units:</b> " . number_format($res['units'] ?? 0);
+            return '<div class="ds-summary-lines">'
+                . '<div class="ds-line"><span class="ds-lbl">Reimbursed :</span> <span class="ds-val">$' . number_format($res['sales'] ?? 0, 2) . '</span></div>'
+                . '<div class="ds-line"><span class="ds-lbl">Units :</span> <span class="ds-val">' . number_format($res['units'] ?? 0) . '</span></div>'
+                . '</div>';
         }
     }
-    
-    return "<span style='color: #94a3b8; font-style: italic;'>Processed in database</span>";
+
+    return "<span class='ds-processed'>Processed in database</span>";
 }
 
 // Check auth
@@ -110,7 +139,7 @@ include '../../includes/header.php';
 include '../../includes/sidebar.php';
 
 // Pagination and filters
-$limit = 25;
+$limit = isset($_GET['limit']) ? max(5, intval($_GET['limit'])) : 10;
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $offset = ($page - 1) * $limit;
 
@@ -334,7 +363,6 @@ $menu_mapping = [
             ]
         ]
     ],
-
 ];
 
 // Build Query
@@ -354,8 +382,7 @@ if ($report_type !== '') {
 if ($sidebar_menu !== '' && isset($menu_mapping[$sidebar_menu])) {
     $current_menu = $menu_mapping[$sidebar_menu];
     $mapped_types = $current_menu['types'];
-    
-    // Check if a specific page section is selected
+
     if ($selected_section !== '' && isset($current_menu['sections'][$selected_section])) {
         $mapped_types = $current_menu['sections'][$selected_section]['types'];
     }
@@ -395,90 +422,870 @@ $sql = "SELECT f.*, c.customer_name, u.username
 $result = $conn->query($sql);
 ?>
 
-<style>.top-header { display: none !important; } .main-wrapper { padding-top: 1.25rem !important; }</style>
-<!-- Figma-style Top Bar -->
-<div class="figma-page-topbar" style="margin-bottom:0.5rem;">
-    <div class="figma-page-topbar-left">
-        <span class="figma-page-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Data Source Tracking</strong></span>
-    </div>
-    <div class="figma-page-topbar-right">
-        <?php if ($user_role === 'admin'): ?>
-        <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
-        <?php endif; ?>
-        <button type="button" class="btn-figma-icon-sm"><i class="fas fa-search"></i></button>
-    </div>
-</div>
+<style>
+    body {
+        background-color: #F8FAFC !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        color: #0F172A;
+    }
 
-<!-- Page Title -->
-<div class="figma-page-head">
-    <div>
-        <h2>Data Source Tracking</h2>
-        <p>Detailed audit trail of uploaded reports & database ingestion counts</p>
-    </div>
-</div>
+    .top-header {
+        display: none !important;
+    }
 
-<div class="card" style="margin-bottom: 1.5rem;">
-    <form method="GET" id="filter-form" style="display: flex; gap: 1.5rem; align-items: flex-end; flex-wrap: wrap;">
-        <div class="form-group" style="flex: 1; min-width: 220px;">
-            <label>Customer Account</label>
-            <select name="customer_id" style="width: 100%;" <?php echo ($user_role === 'customer') ? 'disabled' : ''; ?>>
-                <?php if ($user_role === 'admin'): ?>
-                    <option value="">All Accounts</option>
-                <?php endif; ?>
-                <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()): ?>
-                    <?php 
-                        $selected = ($selected_customer == $row['id']) ? 'selected' : '';
-                        if ($user_role === 'customer' && $session_customer_id != $row['id']) continue;
-                    ?>
-                    <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($row['customer_name']); ?></option>
-                <?php endwhile; ?>
-            </select>
+    .main-wrapper {
+        padding-top: 0 !important;
+    }
+
+    .ds-container {
+        padding: 1.25rem 2rem 3rem 2rem;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    /* Topbar */
+    .ds-topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid #EAECEF;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .ds-topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .ds-profile-select-wrap {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .ds-profile-select {
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        height: 38px;
+        padding: 0 32px 0 12px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #0F172A;
+        outline: none;
+        cursor: pointer;
+        min-width: 170px;
+        appearance: none;
+        -webkit-appearance: none;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+
+    .ds-profile-select:focus {
+        border-color: #4362CE;
+    }
+
+    .ds-breadcrumb {
+        font-size: 0.84rem;
+        color: #64748B;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .ds-breadcrumb strong {
+        color: #0F172A;
+        font-weight: 700;
+    }
+
+    .ds-topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-ds-primary {
+        background: #4362CE;
+        color: #FFFFFF !important;
+        font-size: 0.82rem;
+        font-weight: 700;
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        box-shadow: 0 1px 2px rgba(67, 98, 206, 0.2);
+        transition: all 0.15s ease;
+    }
+
+    .btn-ds-primary:hover {
+        background: #3451B2;
+        color: #FFFFFF !important;
+    }
+
+    .btn-ds-outline {
+        background: #FFFFFF;
+        color: #0F172A;
+        border: 1px solid #E2E8F0;
+        font-size: 0.82rem;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        text-decoration: none;
+    }
+
+    .btn-ds-outline:hover {
+        background: #F8FAFC;
+        border-color: #CBD5E1;
+    }
+
+    .btn-ds-icon-box {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748B;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+    .btn-ds-icon-box:hover {
+        background: #F8FAFC;
+        color: #0F172A;
+    }
+
+    /* Page Header */
+    .ds-page-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+    }
+
+    .ds-page-title h2 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #0F172A;
+        margin: 0;
+        letter-spacing: -0.02em;
+    }
+
+    .ds-page-title p {
+        font-size: 0.82rem;
+        color: #64748B;
+        font-weight: 500;
+        margin: 3px 0 0 0;
+    }
+
+    .ds-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .ds-select-wrap {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .ds-select {
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        height: 38px;
+        padding: 0 32px 0 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #0F172A;
+        outline: none;
+        cursor: pointer;
+        min-width: 170px;
+        appearance: none;
+        -webkit-appearance: none;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        transition: border-color 0.15s ease;
+    }
+
+    .ds-select:focus {
+        border-color: #4362CE;
+    }
+
+    .ds-select-wrap i.chevron-icon {
+        position: absolute;
+        right: 12px;
+        pointer-events: none;
+        font-size: 0.7rem;
+        color: #64748B;
+    }
+
+    .btn-ds-refresh {
+        width: 38px;
+        height: 38px;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        background: #FFFFFF;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748B;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        text-decoration: none;
+    }
+
+    .btn-ds-refresh:hover {
+        background: #F8FAFC;
+        color: #0F172A;
+        border-color: #CBD5E1;
+    }
+
+    /* Main Table Card */
+    .ds-card {
+        background: #FFFFFF;
+        border: 1px solid #EAECEF;
+        border-radius: 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .ds-card-head {
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #F1F5F9;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .ds-card-title {
+        font-size: 1.08rem;
+        font-weight: 800;
+        color: #0F172A;
+        margin: 0;
+    }
+
+    .ds-head-right {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        flex-wrap: wrap;
+    }
+
+    .ds-total-summary {
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: #0F172A;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .ds-total-summary span {
+        color: #4362CE;
+        margin-left: 2px;
+    }
+
+    .ds-search-box {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .ds-search-box svg {
+        position: absolute;
+        left: 11px;
+        pointer-events: none;
+    }
+
+    .ds-search-box input {
+        height: 38px;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        padding: 0 12px 0 34px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #0F172A;
+        width: 220px;
+        outline: none;
+        font-family: inherit;
+        background: #FFFFFF;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        transition: border-color 0.15s ease;
+    }
+
+    .ds-search-box input:focus {
+        border-color: #4362CE;
+    }
+
+    /* Table */
+    .ds-table-wrap {
+        overflow-x: auto;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .ds-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.82rem;
+    }
+
+    .ds-table thead th {
+        background: #FFFFFF;
+        border-bottom: 1px solid #EAECEF;
+        padding: 14px 18px;
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: #475569;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+    }
+
+    .ds-table tbody td {
+        padding: 16px 18px;
+        border-bottom: 1px solid #F1F5F9;
+        vertical-align: middle;
+        color: #0F172A;
+    }
+
+    .ds-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .ds-table tbody tr:hover td {
+        background: #F8FAFC;
+    }
+
+    .ds-cust-name {
+        font-weight: 700;
+        color: #0F172A;
+        font-size: 0.82rem;
+        line-height: 1.3;
+    }
+
+    .ds-badge-type {
+        display: inline-block;
+        padding: 4px 10px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #4362CE;
+        background: #EFF4FE;
+        border-radius: 6px;
+        line-height: 1.35;
+        word-break: break-word;
+        max-width: 180px;
+        text-align: center;
+        border: 1px solid rgba(67, 98, 206, 0.08);
+    }
+
+    .ds-filename {
+        font-weight: 700;
+        color: #0F172A;
+        margin-bottom: 3px;
+        font-size: 0.82rem;
+        line-height: 1.3;
+    }
+
+    .ds-zipname {
+        font-size: 0.74rem;
+        color: #64748B;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: 500;
+    }
+
+    .ds-month {
+        font-weight: 700;
+        color: #0F172A;
+        margin-bottom: 3px;
+        font-size: 0.82rem;
+    }
+
+    .ds-time {
+        font-size: 0.74rem;
+        color: #64748B;
+        font-weight: 500;
+    }
+
+    .ds-records {
+        font-weight: 800;
+        font-size: 0.9rem;
+        color: #0F172A;
+        text-align: center;
+    }
+
+    .ds-summary-lines {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .ds-line {
+        font-size: 0.78rem;
+        color: #64748B;
+        line-height: 1.3;
+    }
+
+    .ds-lbl {
+        font-weight: 500;
+        color: #64748B;
+    }
+
+    .ds-val {
+        font-weight: 800;
+        color: #0F172A;
+    }
+
+    .ds-processed {
+        color: #94A3B8;
+        font-size: 0.78rem;
+        font-style: italic;
+    }
+
+    .ds-agent {
+        color: #0F172A;
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
+
+    /* Footer Pagination */
+    .ds-table-foot {
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #FFFFFF;
+        border-top: 1px solid #F1F5F9;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .ds-foot-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.8rem;
+        color: #64748B;
+        font-weight: 500;
+    }
+
+    .ds-entries-select {
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #0F172A;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .ds-pagination {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .ds-page-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #64748B;
+        text-decoration: none;
+        border: 1px solid transparent;
+        transition: all 0.15s ease;
+    }
+
+    .ds-page-btn:hover {
+        background: #F1F5F9;
+        color: #0F172A;
+    }
+
+    .ds-page-btn.active {
+        background: #4362CE;
+        color: #FFFFFF;
+        font-weight: 700;
+    }
+
+    .ds-page-btn.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+        .ds-topbar {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1rem;
+        }
+
+        .ds-topbar-left,
+        .ds-topbar-right {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .ds-page-head {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .ds-controls {
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .ds-container {
+            padding: 0.75rem 0.75rem 100px 0.75rem !important;
+            width: 100% !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+        }
+
+        .ds-controls {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .ds-select {
+            width: 100%;
+        }
+
+        .ds-card-head {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .ds-head-right {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .ds-search-box {
+            width: 100%;
+        }
+
+        .ds-search-box input {
+            width: 100%;
+        }
+
+        .ds-table-foot {
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+    }
+</style>
+
+<div class="ds-container">
+
+    <!-- Global Topbar (Figma Matching) -->
+    <div class="ds-topbar">
+        <div class="ds-topbar-left">
+            <div class="ds-profile-select-wrap">
+                <select class="ds-profile-select" onchange="applyCustomerFilter(this.value)">
+                    <option value="">All Amazon Profiles</option>
+                    <?php $customers->data_seek(0);
+                    while ($c = $customers->fetch_assoc()): ?>
+                        <option value="<?php echo $c['id']; ?>" <?php echo ($selected_customer == $c['id']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($c['customer_name']); ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <i class="fas fa-chevron-down"
+                    style="position: absolute; right: 12px; pointer-events: none; font-size: 0.7rem; color: #64748B;"></i>
+            </div>
+            <div class="ds-breadcrumb">
+                <span>Dashboard</span>
+                <i class="fas fa-circle" style="font-size: 0.25rem; color: #CBD5E1;"></i>
+                <span>Profit &amp; Loss Analysis</span>
+            </div>
         </div>
 
-        <div class="form-group" style="flex: 1; min-width: 200px;">
-            <label>Filter by Sidebar Menu Target</label>
-            <select name="sidebar_menu" id="sidebar_menu_select" style="width: 100%;" onchange="updateSectionsDropdown()">
-                <option value="">-- Select Sidebar Menu --</option>
-                <?php foreach ($menu_mapping as $key => $mapping): ?>
-                    <option value="<?php echo $key; ?>" <?php echo ($sidebar_menu === $key) ? 'selected' : ''; ?>>
-                        <?php echo htmlspecialchars($mapping['label']); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-
-        <div class="form-group" style="flex: 1; min-width: 200px;">
-            <label>Page Section Target</label>
-            <select name="page_section" id="page_section_select" style="width: 100%;">
-                <option value="">-- Select Page Section --</option>
-            </select>
-        </div>
-
-        <div class="form-group" style="flex: 1.5; min-width: 200px;">
-            <label>Search Files (Name / ZIP)</label>
-            <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search by CSV or ZIP filename..." style="width: 100%;">
-        </div>
-
-        <div style="display: flex; gap: 8px;">
-            <button type="submit" class="btn btn-primary" style="height: 40px; padding: 0 15px;">
-                <i class="fas fa-search"></i> FILTER
+        <div class="ds-topbar-right">
+            <?php if ($user_role === 'admin'): ?>
+                <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-ds-primary">
+                    <i class="fas fa-plus"></i> New Upload
+                </a>
+            <?php endif; ?>
+            <button type="button" class="btn-ds-outline" onclick="exportCSV()">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 1.5V10.5M8 10.5L5 7.5M8 10.5L11 7.5" stroke="#0F172A" stroke-width="1.4"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M2 12V13.5C2 14.0523 2.44772 14.5 3 14.5H13C13.5523 14.5 14 14.0523 14 13.5V12"
+                        stroke="#0F172A" stroke-width="1.4" stroke-linecap="round" />
+                </svg>
+                Export CSV
             </button>
-            <a href="tracking.php" class="btn btn-outline" style="height: 40px; padding: 0 15px; display: inline-flex; align-items: center; justify-content: center; text-decoration: none;">
-                <i class="fas fa-undo"></i> RESET
-            </a>
+            <button type="button" class="btn-ds-icon-box" title="Search">
+                <i class="fas fa-search" style="font-size: 0.85rem;"></i>
+            </button>
+            <button type="button" class="btn-ds-icon-box" title="Notifications">
+                <i class="fas fa-bell" style="font-size: 0.85rem;"></i>
+            </button>
         </div>
-    </form>
+    </div>
+
+    <!-- Page Header (Figma Matching) -->
+    <div class="ds-page-head">
+        <div class="ds-page-title">
+            <h2>Data Source Tracking</h2>
+            <p>Manage individual Amazon Seller Profiles and synchronization settings.</p>
+        </div>
+
+        <form method="GET" id="filter-form" class="ds-controls">
+            <?php if ($selected_customer > 0): ?>
+                <input type="hidden" name="customer_id" value="<?php echo $selected_customer; ?>">
+            <?php endif; ?>
+            <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
+            <input type="hidden" name="limit" value="<?php echo $limit; ?>">
+
+            <!-- Sidebar Menu Select -->
+            <div class="ds-select-wrap">
+                <select name="sidebar_menu" id="sidebar_menu_select" class="ds-select"
+                    onchange="updateSectionsDropdown(); document.getElementById('filter-form').submit();">
+                    <option value="">Select Sidebar Menu</option>
+                    <?php foreach ($menu_mapping as $key => $mapping): ?>
+                        <option value="<?php echo $key; ?>" <?php echo ($sidebar_menu === $key) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($mapping['label']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <i class="fas fa-chevron-down chevron-icon"></i>
+            </div>
+
+            <!-- Page Section Target Select -->
+            <div class="ds-select-wrap">
+                <select name="page_section" id="page_section_select" class="ds-select"
+                    onchange="document.getElementById('filter-form').submit();">
+                    <option value="">Select Page Section</option>
+                </select>
+                <i class="fas fa-chevron-down chevron-icon"></i>
+            </div>
+
+            <!-- Refresh Button -->
+            <a href="tracking.php" class="btn-ds-refresh" title="Reset Filters">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.65 6.88A6 6 0 1 0 14 8h-1.5a4.5 4.5 0 1 1-.5-2.02L10 8h5V3l-1.35 1.88z"
+                        fill="#64748B" />
+                </svg>
+            </a>
+        </form>
+    </div>
+
+    <!-- Main Card: Ingested Files Log -->
+    <div class="ds-card">
+
+        <!-- Card Header -->
+        <div class="ds-card-head">
+            <h3 class="ds-card-title">Ingested Files Log</h3>
+            <div class="ds-head-right">
+                <div class="ds-total-summary">TOTAL SUMMARY : <span><?php echo $total_rows; ?></span></div>
+                <div class="ds-search-box">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="7" cy="7" r="5" stroke="#94A3B8" stroke-width="1.4" />
+                        <path d="M11 11L14.5 14.5" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round" />
+                    </svg>
+                    <input type="text" id="live_search_input" value="<?php echo htmlspecialchars($search); ?>"
+                        placeholder="Search Files (Name / ZIP)"
+                        onkeydown="if(event.key==='Enter'){ applySearch(this.value); }">
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Container -->
+        <div class="ds-table-wrap">
+            <table class="ds-table">
+                <thead>
+                    <tr>
+                        <th style="width: 14%;">Customer</th>
+                        <th style="width: 13%;">Report Type</th>
+                        <th style="width: 25%;">File Name / ZIP Source</th>
+                        <th style="width: 13%;">Month & Timestamp</th>
+                        <th style="width: 9%; text-align: center;">Records Ingested</th>
+                        <th style="width: 19%;">Ingested Data Summary</th>
+                        <th style="width: 7%;">Agent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($result && $result->num_rows > 0): ?>
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                            <tr>
+                                <!-- Customer -->
+                                <td>
+                                    <div class="ds-cust-name"><?php echo htmlspecialchars($row['customer_name']); ?></div>
+                                </td>
+
+                                <!-- Report Type -->
+                                <td>
+                                    <?php echo formatReportTypeBadge($row['report_type']); ?>
+                                </td>
+
+                                <!-- File Name / ZIP Source -->
+                                <td>
+                                    <div class="ds-filename"><?php echo htmlspecialchars($row['filename']); ?></div>
+                                    <?php if (!empty($row['zip_filename'])): ?>
+                                        <div class="ds-zipname">
+                                            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M9 1.5H3.5C2.67157 1.5 2 2.17157 2 3V13C2 13.8284 2.67157 14.5 3.5 14.5H12.5C13.3284 14.5 14 13.8284 14 13V6.5L9 1.5Z"
+                                                    stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path d="M9 1.5V6.5H14" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path d="M5.5 8.5H7.5M5.5 10.5H7.5" stroke="#4362CE" stroke-width="1.3"
+                                                    stroke-linecap="round" />
+                                            </svg>
+                                            <?php echo htmlspecialchars($row['zip_filename']); ?>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="ds-zipname" style="color: #94A3B8; font-style: italic;">Direct File Upload</div>
+                                    <?php endif; ?>
+                                </td>
+
+                                <!-- Month & Timestamp -->
+                                <td>
+                                    <div class="ds-month"><?php echo date('M Y', strtotime($row['report_date'])); ?></div>
+                                    <div class="ds-time"><?php echo date('d M • h:i A', strtotime($row['uploaded_at'])); ?>
+                                    </div>
+                                </td>
+
+                                <!-- Records Ingested -->
+                                <td>
+                                    <div class="ds-records"><?php echo number_format($row['rows_processed']); ?></div>
+                                </td>
+
+                                <!-- Ingested Data Summary -->
+                                <td>
+                                    <?php echo getContributedDataSummary($row, $conn); ?>
+                                </td>
+
+                                <!-- Agent -->
+                                <td>
+                                    <div class="ds-agent"><?php echo htmlspecialchars($row['username'] ?? 'Admin'); ?></div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="7" style="padding: 4rem 1.5rem; text-align: center; color: #94A3B8;">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1"
+                                    stroke-width="1.5" style="margin-bottom: 8px;">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                <div style="font-weight: 600; font-size: 0.9rem;">No ingested file logs found</div>
+                                <div style="font-size: 0.78rem; margin-top: 4px;">Try changing the search keywords or filter
+                                    selection</div>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer Pagination -->
+        <div class="ds-table-foot">
+            <div class="ds-foot-left">
+                <span>Show</span>
+                <select class="ds-entries-select" onchange="changeLimit(this.value)">
+                    <option value="10" <?php echo $limit == 10 ? 'selected' : ''; ?>>10</option>
+                    <option value="25" <?php echo $limit == 25 ? 'selected' : ''; ?>>25</option>
+                    <option value="50" <?php echo $limit == 50 ? 'selected' : ''; ?>>50</option>
+                    <option value="100" <?php echo $limit == 100 ? 'selected' : ''; ?>>100</option>
+                </select>
+                <span>Entries</span>
+                <span style="margin-left: 12px;">
+                    Showing <?php echo $total_rows > 0 ? ($offset + 1) : 0; ?> to
+                    <?php echo min($offset + $limit, $total_rows); ?> of <?php echo $total_rows; ?> entries
+                </span>
+            </div>
+
+            <?php if ($total_pages > 1): ?>
+                <div class="ds-pagination">
+                    <!-- Prev -->
+                    <a href="?page=<?php echo max(1, $page - 1); ?>&limit=<?php echo $limit; ?>&customer_id=<?php echo $selected_customer; ?>&sidebar_menu=<?php echo urlencode($sidebar_menu); ?>&page_section=<?php echo urlencode($selected_section); ?>&search=<?php echo urlencode($search); ?>"
+                        class="ds-page-btn <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                        <i class="fas fa-chevron-left" style="font-size: 0.7rem;"></i>
+                    </a>
+
+                    <!-- Page Numbers -->
+                    <?php
+                    $start_p = max(1, $page - 2);
+                    $end_p = min($total_pages, $start_p + 4);
+                    if ($end_p - $start_p < 4) {
+                        $start_p = max(1, $end_p - 4);
+                    }
+                    for ($p = $start_p; $p <= $end_p; $p++):
+                        ?>
+                        <a href="?page=<?php echo $p; ?>&limit=<?php echo $limit; ?>&customer_id=<?php echo $selected_customer; ?>&sidebar_menu=<?php echo urlencode($sidebar_menu); ?>&page_section=<?php echo urlencode($selected_section); ?>&search=<?php echo urlencode($search); ?>"
+                            class="ds-page-btn <?php echo $p == $page ? 'active' : ''; ?>">
+                            <?php echo $p; ?>
+                        </a>
+                    <?php endfor; ?>
+
+                    <!-- Next -->
+                    <a href="?page=<?php echo min($total_pages, $page + 1); ?>&limit=<?php echo $limit; ?>&customer_id=<?php echo $selected_customer; ?>&sidebar_menu=<?php echo urlencode($sidebar_menu); ?>&page_section=<?php echo urlencode($selected_section); ?>&search=<?php echo urlencode($search); ?>"
+                        class="ds-page-btn <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
+                        <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                    </a>
+                </div>
+            <?php endif; ?>
+        </div>
+
+    </div>
+
 </div>
 
 <script>
-    const sectionsData = <?php echo json_encode(array_map(function($m) { return $m['sections'] ?? []; }, $menu_mapping)); ?>;
+    const sectionsData = <?php echo json_encode(array_map(function ($m) {
+        return $m['sections'] ?? [];
+    }, $menu_mapping)); ?>;
     const initialSection = "<?php echo $selected_section; ?>";
 
     function updateSectionsDropdown() {
         const menuVal = document.getElementById('sidebar_menu_select').value;
         const sectionSelect = document.getElementById('page_section_select');
-        sectionSelect.innerHTML = '<option value="">-- Select Page Section --</option>';
-        
+        sectionSelect.innerHTML = '<option value="">Select Page Section</option>';
+
         if (menuVal && sectionsData[menuVal]) {
             const sections = sectionsData[menuVal];
             for (const key in sections) {
@@ -493,123 +1300,54 @@ $result = $conn->query($sql);
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    function applySearch(val) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('search', val);
+        url.searchParams.set('page', 1);
+        window.location.href = url.toString();
+    }
+
+    function changeLimit(limitVal) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('limit', limitVal);
+        url.searchParams.set('page', 1);
+        window.location.href = url.toString();
+    }
+
+    function applyCustomerFilter(custId) {
+        const url = new URL(window.location.href);
+        if (custId) {
+            url.searchParams.set('customer_id', custId);
+        } else {
+            url.searchParams.delete('customer_id');
+        }
+        url.searchParams.set('page', 1);
+        window.location.href = url.toString();
+    }
+
+    function exportCSV() {
+        let csv = [];
+        const rows = document.querySelectorAll(".ds-table tr");
+        for (let i = 0; i < rows.length; i++) {
+            let row = [], cols = rows[i].querySelectorAll("td, th");
+            for (let j = 0; j < cols.length; j++) {
+                row.push('"' + cols[j].innerText.replace(/"/g, '""').replace(/\n/g, ' ') + '"');
+            }
+            csv.push(row.join(","));
+        }
+        const blob = new Blob([csv.join("\n")], { type: "text/csv" });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.setAttribute("href", url);
+        a.setAttribute("download", "data_source_tracking.csv");
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
         updateSectionsDropdown();
     });
 </script>
-
-<?php if ($sidebar_menu !== '' && isset($menu_mapping[$sidebar_menu])): ?>
-    <?php 
-        $current_menu = $menu_mapping[$sidebar_menu]; 
-        $title = 'Data usage for "' . $current_menu['label'] . '" Sidebar Page';
-        $desc = $current_menu['description'];
-        if ($selected_section !== '' && isset($current_menu['sections'][$selected_section])) {
-            $current_section = $current_menu['sections'][$selected_section];
-            $title = 'Data usage for "' . $current_menu['label'] . '" → "' . $current_section['label'] . '" Section';
-            $desc = $current_section['description'];
-        }
-    ?>
-    <div class="card" style="margin-bottom: 1.5rem; background: #f0fdf4; border: 1px solid #bbf7d0; display: flex; gap: 1rem; align-items: center; padding: 1.25rem;">
-        <div style="background: #dcfce7; color: #16a34a; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;">
-            <i class="fas fa-info-circle"></i>
-        </div>
-        <div>
-            <h4 style="margin: 0; font-size: 1rem; font-weight: 700; color: #14532d;">
-                <?php echo htmlspecialchars($title); ?>
-            </h4>
-            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: #166534; line-height: 1.4;">
-                <?php echo htmlspecialchars($desc); ?>
-            </p>
-            <a href="<?php echo BASE_URL . $current_menu['target_file']; ?>" style="display: inline-block; margin-top: 8px; font-size: 0.8rem; font-weight: 700; color: #166534; text-decoration: underline;">
-                Go to <?php echo htmlspecialchars($current_menu['label']); ?> Page <i class="fas fa-arrow-right" style="font-size: 0.75rem;"></i>
-            </a>
-        </div>
-    </div>
-<?php endif; ?>
-
-<div class="card" style="padding: 0; overflow: hidden; border-radius: 12px; border: 1px solid #CBD5E1;">
-    <div style="padding: 1.5rem; border-bottom: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="font-weight: 700; font-size: 1.1rem; margin: 0;">Ingested Files Log</h3>
-        <span style="font-size: 0.85rem; background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 50px; font-weight: 600;">
-            Total Records: <?php echo $total_rows; ?>
-        </span>
-    </div>
-
-    <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem;">
-            <thead>
-                <tr style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; font-weight: 600; color: #475569;">
-                    <th style="padding: 1rem 1.5rem;">Customer</th>
-                    <th style="padding: 1rem 1.5rem;">Report Type</th>
-                    <th style="padding: 1rem 1.5rem;">ZIP File Source</th>
-                    <th style="padding: 1rem 1.5rem;">Extracted/Uploaded File</th>
-                    <th style="padding: 1rem 1.5rem;">Report Month</th>
-                    <th style="padding: 1rem 1.5rem; text-align: right;">Records Ingested</th>
-                    <th style="padding: 1rem 1.5rem;">Ingested Data Summary</th>
-                    <th style="padding: 1rem 1.5rem;">Uploaded By</th>
-                    <th style="padding: 1rem 1.5rem; text-align: right;">Upload Timestamp</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if ($result && $result->num_rows > 0): ?>
-                    <?php while ($row = $result->fetch_assoc()): ?>
-                        <tr style="border-bottom: 1px solid #F1F5F9;">
-                            <td style="padding: 1rem 1.5rem; font-weight: 600; color: #1e293b;"><?php echo htmlspecialchars($row['customer_name']); ?></td>
-                            <td style="padding: 1rem 1.5rem;">
-                                <span style="font-size: 0.75rem; font-weight: 700; color: #0369a1; background: #e0f2fe; padding: 4px 8px; border-radius: 4px;">
-                                    <?php echo htmlspecialchars($row['report_type']); ?>
-                                </span>
-                            </td>
-                            <td style="padding: 1rem 1.5rem; color: #64748b;">
-                                <?php if ($row['zip_filename']): ?>
-                                    <i class="fas fa-file-archive" style="color: #f59e0b; margin-right: 4px;"></i> 
-                                    <?php echo htmlspecialchars($row['zip_filename']); ?>
-                                <?php else: ?>
-                                    <span style="font-size: 0.8rem; color: #94a3b8; font-style: italic;">Direct Upload</span>
-                                <?php endif; ?>
-                            </td>
-                            <td style="padding: 1rem 1.5rem; font-family: monospace; font-size: 0.8rem;"><?php echo htmlspecialchars($row['filename']); ?></td>
-                            <td style="padding: 1rem 1.5rem; font-weight: 600;"><?php echo date('F Y', strtotime($row['report_date'])); ?></td>
-                            <td style="padding: 1rem 1.5rem; text-align: right; font-weight: 700; color: #0f766e;"><?php echo number_format($row['rows_processed']); ?></td>
-                            <td style="padding: 1rem 1.5rem; font-size: 0.8rem; color: #334155;"><?php echo getContributedDataSummary($row, $conn); ?></td>
-                            <td style="padding: 1rem 1.5rem;"><?php echo htmlspecialchars($row['username'] ?? 'System'); ?></td>
-                            <td style="padding: 1rem 1.5rem; text-align: right; color: #64748b; font-size: 0.8rem;"><?php echo date('d M Y h:i A', strtotime($row['uploaded_at'])); ?></td>
-                        </tr>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="9" style="padding: 3rem; text-align: center; color: #94a3b8; font-size: 0.95rem;">
-                            <i class="fas fa-history" style="font-size: 2rem; margin-bottom: 0.75rem; display: block; opacity: 0.5;"></i>
-                            No file ingestion logs found.
-                        </td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-
-    <?php if ($total_pages > 1): ?>
-        <div style="padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; background: #F8FAFC; border-top: 1px solid #E2E8F0;">
-            <div style="font-size: 0.85rem; color: #64748b;">
-                Showing page <strong><?php echo $page; ?></strong> of <strong><?php echo $total_pages; ?></strong>
-            </div>
-            <div style="display: flex; gap: 4px;">
-                <?php if ($page > 1): ?>
-                    <a href="?page=<?php echo $page - 1; ?>&customer_id=<?php echo $selected_customer; ?>&sidebar_menu=<?php echo urlencode($sidebar_menu); ?>&page_section=<?php echo urlencode($selected_section); ?>&search=<?php echo urlencode($search); ?>" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.8rem; height: auto;">Prev</a>
-                <?php endif; ?>
-                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                    <?php if ($i == $page): ?>
-                        <span class="btn btn-primary" style="padding: 4px 10px; font-size: 0.8rem; height: auto;"><?php echo $i; ?></span>
-                    <?php else: ?>
-                        <a href="?page=<?php echo $i; ?>&customer_id=<?php echo $selected_customer; ?>&sidebar_menu=<?php echo urlencode($sidebar_menu); ?>&page_section=<?php echo urlencode($selected_section); ?>&search=<?php echo urlencode($search); ?>" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.8rem; height: auto;"><?php echo $i; ?></a>
-                    <?php endif; ?>
-                <?php endfor; ?>
-                <?php if ($page < $total_pages): ?>
-                    <a href="?page=<?php echo $page + 1; ?>&customer_id=<?php echo $selected_customer; ?>&sidebar_menu=<?php echo urlencode($sidebar_menu); ?>&page_section=<?php echo urlencode($selected_section); ?>&search=<?php echo urlencode($search); ?>" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.8rem; height: auto;">Next</a>
-                <?php endif; ?>
-            </div>
-        </div>
-    <?php endif; ?>
-</div>
 
 <?php include '../../includes/footer.php'; ?>

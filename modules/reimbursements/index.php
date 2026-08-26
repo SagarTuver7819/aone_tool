@@ -310,14 +310,14 @@ include '../../includes/sidebar.php';
 
     /* Top Highlight Blue Card */
     .reimb-kpi-card.hero-blue {
-        background-color: #2F65F6 !important;
+        background-color: #4362CE !important;
         background-image: url('<?php echo BASE_URL; ?>assets/images/bg-3.png') !important;
         background-repeat: no-repeat !important;
         background-position: right center !important;
         background-size: auto 100% !important;
         border: none;
         color: #FFFFFF !important;
-        box-shadow: 0 8px 24px rgba(42, 82, 220, 0.25);
+        box-shadow: 0 8px 24px rgba(67, 98, 206, 0.25);
     }
 
     .reimb-kpi-card.hero-blue .grid-decor {

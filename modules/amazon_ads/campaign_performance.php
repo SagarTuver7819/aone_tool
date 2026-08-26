@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once '../../config.php';
 require_once '../../includes/functions.php';
 
@@ -854,6 +854,20 @@ include '../../includes/sidebar.php';
             </table>
         </div>
     </div>
+
+    <!-- Section 6: Bidding Strategy Efficiency -->
+    <div class="ct-bento-section">
+        <div style="margin-bottom: 1.25rem;">
+            <h3 style="font-size: 1.05rem; font-weight: 800; color: #0F172A; margin: 0;">Bidding Strategy Efficiency
+            </h3>
+            <p style="margin: 2px 0 0 0; font-size: 0.75rem; color: #64748B; font-weight: 500;">Performance metrics
+                analyzed by bid strategy type</p>
+        </div>
+        <div id="bidding_strategy_body" style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="text-align: center; padding: 2rem; color: #94A3B8; font-size: 0.82rem;">Loading bidding strategy
+                data...</div>
+        </div>
+    </div>
 </div>
 
 
@@ -1368,31 +1382,94 @@ include '../../includes/sidebar.php';
                 });
                 $('#placement_body').html(p_html || '<tr><td colspan="5" class="text-center">No data</td></tr>');
 
-                // Bidding
+                // Bidding Strategy Efficiency (Figma Pixel-Perfect Cards)
                 let b_html = '';
-                data.bidding.forEach((b, idx) => {
-                    const spend = parseFloat(b.spend || 0);
-                    const sales = parseFloat(b.sales || 0);
-                    const roas = spend > 0 ? (sales / spend).toFixed(2) : '0.00';
+                const bidList = (data.bidding || []).filter(b => b.bidding_strategy && b.bidding_strategy !== 'Other / Auto' && b.bidding_strategy !== 'N/A');
 
-                    const roasVal = parseFloat(roas);
-                    const roasBg = roasVal >= 4.0 ? '#e6fcf5' : (roasVal > 0 ? '#fff1f2' : '#f2f4f6');
-                    const roasColor = roasVal >= 4.0 ? '#009668' : (roasVal > 0 ? '#ef4444' : '#45464d');
-                    const roasBadgeHtml = `<span style="background: ${roasBg}; color: ${roasColor}; padding: 6px 12px; border-radius: 6px; font-weight: 800; font-size: 0.9rem; display: inline-block;">${roasVal.toFixed(2)}x</span>`;
+                const standardOrder = ['Dynamic Bids - Down Only', 'Fixed Bids', 'Dynamic Bids - Up and Down'];
+                let processedStrategies = [];
 
-                    b_html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3); background:#ffffff;">
-                    <td style="padding: 14px 24px; font-weight: 800; color: #0051d5; text-align: center;">#${idx + 1}</td>
-                    <td style="padding: 14px 24px; text-align: left;">
-                        <div style="font-weight: 800; color: #191c1e; font-size: 0.95rem; line-height: 1.35;">${b.bidding_strategy}</div>
-                    </td>
-                    <td style="padding: 14px 24px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${formatCurrency(spend)}</td>
-                    <td style="padding: 14px 24px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${formatCurrency(sales)}</td>
-                    <td style="padding: 14px 24px; text-align: center; vertical-align: middle;">
-                        ${roasBadgeHtml}
-                    </td>
-                </tr>`;
+                standardOrder.forEach(stratName => {
+                    const cleanTarget = stratName.toLowerCase().replace(/[^a-z]/g, '');
+                    const found = bidList.find(b => {
+                        const cleanSource = (b.bidding_strategy || '').toLowerCase().replace(/[^a-z]/g, '');
+                        return cleanSource.includes(cleanTarget) || cleanTarget.includes(cleanSource);
+                    });
+                    if (found) {
+                        processedStrategies.push({
+                            name: stratName,
+                            spend: parseFloat(found.spend || 0),
+                            sales: parseFloat(found.sales || 0)
+                        });
+                    } else {
+                        processedStrategies.push({
+                            name: stratName,
+                            spend: 0.00,
+                            sales: 0.00
+                        });
+                    }
                 });
-                $('#bidding_body').html(b_html || '<tr><td colspan="5" class="text-center" style="padding: 3rem; color: #94a3b8; font-weight: 600;">No data</td></tr>');
+
+                // Include any other dynamic strategies
+                bidList.forEach(b => {
+                    const cleanSource = (b.bidding_strategy || '').toLowerCase().replace(/[^a-z]/g, '');
+                    const isAlready = processedStrategies.some(p => {
+                        const cleanP = p.name.toLowerCase().replace(/[^a-z]/g, '');
+                        return cleanP.includes(cleanSource) || cleanSource.includes(cleanP);
+                    });
+                    if (!isAlready) {
+                        processedStrategies.push({
+                            name: b.bidding_strategy,
+                            spend: parseFloat(b.spend || 0),
+                            sales: parseFloat(b.sales || 0)
+                        });
+                    }
+                });
+
+                // Sort strategies by spend desc so highest spend comes first
+                processedStrategies.sort((a, b) => b.spend - a.spend);
+
+                processedStrategies.forEach((b, idx) => {
+                    const spend = b.spend;
+                    const sales = b.sales;
+                    const roas = spend > 0 ? (sales / spend) : 0;
+
+                    let rankBadgeStyle = 'background: #E2E8F0; color: #475569;';
+                    if (idx === 0) rankBadgeStyle = 'background: #2563EB; color: #FFFFFF;';
+                    else if (idx === 1) rankBadgeStyle = 'background: #60A5FA; color: #FFFFFF;';
+                    else if (idx === 2) rankBadgeStyle = 'background: #CBD5E1; color: #475569;';
+
+                    const isPositive = roas > 0;
+                    const roasColor = isPositive ? '#10B981' : '#EE473D';
+
+                    b_html += `
+                        <div class="ct-perf-card" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 0; transition: all 0.15s ease;">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <span style="width: 28px; height: 28px; border-radius: 50%; ${rankBadgeStyle} display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0;">${idx + 1}</span>
+                                <div>
+                                    <div style="font-size: 0.72rem; color: #64748B; font-weight: 500;">Strategy</div>
+                                    <div style="font-size: 0.92rem; font-weight: 700; color: #0F172A; margin-top: 1px;">${b.name}</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 36px;">
+                                <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px 16px; min-width: 80px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                                    <span style="display: block; font-size: 0.7rem; color: #64748B; font-weight: 600;">Roas</span>
+                                    <span style="display: block; font-size: 0.82rem; font-weight: 700; color: ${roasColor}; font-variant-numeric: tabular-nums;">${roas.toFixed(2)}x ↑</span>
+                                </div>
+                                <div style="min-width: 95px; text-align: right;">
+                                    <span style="display: block; font-size: 0.7rem; color: #64748B; font-weight: 600;">Spend</span>
+                                    <span style="display: block; font-size: 0.95rem; font-weight: 800; color: #0F172A; font-variant-numeric: tabular-nums;">${formatCurrency(spend)}</span>
+                                </div>
+                                <div style="min-width: 95px; text-align: right;">
+                                    <span style="display: block; font-size: 0.7rem; color: #64748B; font-weight: 600;">Sales</span>
+                                    <span style="display: block; font-size: 0.95rem; font-weight: 800; color: #0F172A; font-variant-numeric: tabular-nums;">${formatCurrency(sales)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                $('#bidding_strategy_body').html(b_html || '<div style="text-align: center; padding: 2rem; color: #94A3B8; font-size: 0.82rem;">No bidding strategy data found.</div>');
+                $('#bidding_body').html(b_html);
             }).fail(function () {
                 $('#refresh_campaigns').prop('disabled', false).html('<i class="fas fa-sync-alt"></i>');
                 $('#campaign_body').html('<tr><td colspan="8" class="text-center text-danger py-5">Error loading data.</td></tr>');
