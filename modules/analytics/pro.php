@@ -27,17 +27,24 @@ $customer_id = $_SESSION['customer_id'] ?? 0;
         </div>
         <div class="form-group">
             <label style="font-weight: 700; color: #475569; margin-bottom: 0.5rem; display: block;">Analysis Period</label>
-            <div style="display: flex; gap: 0.5rem; align-items: center;">
-                <input type="date" id="filter_from" class="form-control" value="<?php echo date('Y-m-01'); ?>" style="padding: 0.6rem; border-radius: 8px;">
-                <span style="color: #94a3b8;">to</span>
-                <input type="date" id="filter_to" class="form-control" value="<?php echo date('Y-m-d'); ?>" style="padding: 0.6rem; border-radius: 8px;">
+            <div class="figma-date-picker-wrap">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.6666 1.3335V4.00016M5.33325 1.3335V4.00016" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M8.66667 2.6665H7.33333C4.81917 2.6665 3.5621 2.6665 2.78105 3.44755C2 4.2286 2 5.48568 2 7.99984V9.33317C2 11.8473 2 13.1044 2.78105 13.8854C3.5621 14.6665 4.81917 14.6665 7.33333 14.6665H8.66667C11.1808 14.6665 12.4379 14.6665 13.2189 13.8854C14 13.1044 14 11.8473 14 9.33317V7.99984C14 5.48568 14 4.2286 13.2189 3.44755C12.4379 2.6665 11.1808 2.6665 8.66667 2.6665Z" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M2 6.6665H14" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_pro" placeholder="Select date range" readonly>
+                <input type="hidden" id="filter_from" value="<?php echo date('Y-m-01'); ?>">
+                <input type="hidden" id="filter_to" value="<?php echo date('Y-m-d'); ?>">
             </div>
         </div>
-        <div style="display: flex; gap: 0.5rem;">
-            <button id="refresh_data" class="btn btn-primary" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600;">
-                <i class="fas fa-sync-alt"></i> ANALYZE
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <button id="refresh_data" class="btn-figma-refresh" title="Analyze">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.1115 0.666504L10.5101 1.41169C10.7796 1.91548 10.9143 2.16738 10.8253 2.27526C10.7361 2.38314 10.4427 2.29601 9.85573 2.12176C9.26893 1.94754 8.64593 1.85381 8.00033 1.85381C4.50252 1.85381 1.66699 4.60548 1.66699 7.99987C1.66699 9.11927 1.97541 10.1689 2.51428 11.0729M5.88921 15.3332L5.49057 14.588C5.22105 14.0842 5.08629 13.8323 5.17539 13.7244C5.26451 13.6165 5.55799 13.7037 6.14492 13.8779C6.73173 14.0521 7.35473 14.1459 8.00033 14.1459C11.4981 14.1459 14.3337 11.3942 14.3337 7.99987C14.3337 6.8804 14.0253 5.83082 13.4864 4.92682" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
             </button>
-            <a href="manage_config.php" class="btn btn-outline-primary" style="padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; border: 2px solid #3b82f6; color: #3b82f6;">
+            <a href="manage_config.php" class="btn btn-outline-primary" style="padding: 0.5rem 1.25rem; border-radius: 10px; font-weight: 600; border: 1.5px solid #4362CE; color: #4362CE; font-size: 0.82rem; height: 38px; display: inline-flex; align-items: center; gap: 6px;">
                 <i class="fas fa-cog"></i> SETUP RULES
             </a>
         </div>
@@ -212,7 +219,27 @@ $(document).ready(function() {
         });
     }
 
+    if (typeof flatpickr !== 'undefined') {
+        flatpickr("#date_range_picker_pro", {
+            mode: "range",
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "M d, Y",
+            defaultDate: [$('#filter_from').val() || "<?php echo date('Y-m-01'); ?>", $('#filter_to').val() || "<?php echo date('Y-m-d'); ?>"],
+            onChange: function(selectedDates, dateStr, instance) {
+                if (selectedDates.length === 2) {
+                    const from = instance.formatDate(selectedDates[0], "Y-m-d");
+                    const to = instance.formatDate(selectedDates[1], "Y-m-d");
+                    $('#filter_from').val(from);
+                    $('#filter_to').val(to);
+                    loadProData();
+                }
+            }
+        });
+    }
+
     $('#refresh_data').click(loadProData);
+    $('#filter_customer').change(loadProData);
     loadProData();
 });
 </script>

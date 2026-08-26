@@ -13,7 +13,8 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-function pct_change($current, $previous) {
+function pct_change($current, $previous)
+{
     $current = floatval($current);
     $previous = floatval($previous);
     if ($previous == 0) {
@@ -26,34 +27,45 @@ function pct_change($current, $previous) {
     ];
 }
 
-function is_sellable_status($status) {
-    $s = strtolower(trim((string)$status));
+function is_sellable_status($status)
+{
+    $s = strtolower(trim((string) $status));
     return $s !== '' && (strpos($s, 'sellable') !== false || strpos($s, 'inventory') !== false);
 }
 
-function is_damaged_status($status, $reason = '') {
-    $s = strtolower(trim((string)$status));
-    $r = strtolower(trim((string)$reason));
-    if ($s !== '' && strpos($s, 'damaged') !== false) return true;
+function is_damaged_status($status, $reason = '')
+{
+    $s = strtolower(trim((string) $status));
+    $r = strtolower(trim((string) $reason));
+    if ($s !== '' && strpos($s, 'damaged') !== false)
+        return true;
     return strpos($r, 'damaged') !== false;
 }
 
-function is_defect_reason($reason) {
-    $r = strtolower(trim((string)$reason));
+function is_defect_reason($reason)
+{
+    $r = strtolower(trim((string) $reason));
     return $r !== '' && (strpos($r, 'defect') !== false || strpos($r, 'defective') !== false);
 }
 
-function infer_reason_from_text($text) {
-    $d = strtolower(trim((string)$text));
-    if ($d === '') return 'CUSTOMER_REFUND';
-    if (preg_match('/defect|defective|broken|malfunction|quality issue/', $d)) return 'DEFECTIVE';
-    if (preg_match('/damaged.{0,20}transit|shipping damage|carrier damage|damaged in/', $d)) return 'DAMAGED_TRANSIT';
-    if (preg_match('/wrong size|wrong item|unwanted|no longer|changed mind|not as described|ordered by mistake/', $d)) return 'UNWANTED_ITEM';
-    if (preg_match('/damaged/', $d)) return 'DAMAGED_TRANSIT';
+function infer_reason_from_text($text)
+{
+    $d = strtolower(trim((string) $text));
+    if ($d === '')
+        return 'CUSTOMER_REFUND';
+    if (preg_match('/defect|defective|broken|malfunction|quality issue/', $d))
+        return 'DEFECTIVE';
+    if (preg_match('/damaged.{0,20}transit|shipping damage|carrier damage|damaged in/', $d))
+        return 'DAMAGED_TRANSIT';
+    if (preg_match('/wrong size|wrong item|unwanted|no longer|changed mind|not as described|ordered by mistake/', $d))
+        return 'UNWANTED_ITEM';
+    if (preg_match('/damaged/', $d))
+        return 'DAMAGED_TRANSIT';
     return 'CUSTOMER_REFUND';
 }
 
-function fetch_damaged_keys(mysqli $conn, $where_customer, $from_date, $to_date) {
+function fetch_damaged_keys(mysqli $conn, $where_customer, $from_date, $to_date)
+{
     $sql = "SELECT order_id, sku
             FROM amazon_transaction_report
             WHERE $where_customer
@@ -67,8 +79,8 @@ function fetch_damaged_keys(mysqli $conn, $where_customer, $from_date, $to_date)
 
     $keys = [];
     foreach ($rows as $row) {
-        $order = trim((string)($row['order_id'] ?? ''));
-        $sku = trim((string)($row['sku'] ?? ''));
+        $order = trim((string) ($row['order_id'] ?? ''));
+        $sku = trim((string) ($row['sku'] ?? ''));
         if ($order !== '' && $sku !== '') {
             $keys[$order . '|' . $sku] = true;
         }
@@ -76,7 +88,8 @@ function fetch_damaged_keys(mysqli $conn, $where_customer, $from_date, $to_date)
     return $keys;
 }
 
-function fetch_returns_reimbursement_rows(mysqli $conn, $where_customer, $from_date, $to_date) {
+function fetch_returns_reimbursement_rows(mysqli $conn, $where_customer, $from_date, $to_date)
+{
     $sql = "SELECT quantity, reason, status, sku, asin, report_date, '' AS product_name, '' AS order_id
             FROM amazon_returns_reimbursements
             WHERE $where_customer AND type = 'Return'
@@ -87,7 +100,8 @@ function fetch_returns_reimbursement_rows(mysqli $conn, $where_customer, $from_d
     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
-function fetch_transaction_refund_rows(mysqli $conn, $where_customer, $from_date, $to_date) {
+function fetch_transaction_refund_rows(mysqli $conn, $where_customer, $from_date, $to_date)
+{
     $damaged_keys = fetch_damaged_keys($conn, $where_customer, $from_date, $to_date);
 
     $sql = "SELECT quantity, sku, description, date_time, order_id
@@ -101,9 +115,9 @@ function fetch_transaction_refund_rows(mysqli $conn, $where_customer, $from_date
 
     $rows = [];
     foreach ($raw as $row) {
-        $sku = trim((string)($row['sku'] ?? ''));
-        $order = trim((string)($row['order_id'] ?? ''));
-        $description = trim((string)($row['description'] ?? ''));
+        $sku = trim((string) ($row['sku'] ?? ''));
+        $order = trim((string) ($row['order_id'] ?? ''));
+        $description = trim((string) ($row['description'] ?? ''));
         $key = $order . '|' . $sku;
         $is_damaged = isset($damaged_keys[$key]);
 
@@ -121,7 +135,8 @@ function fetch_transaction_refund_rows(mysqli $conn, $where_customer, $from_date
     return $rows;
 }
 
-function fetch_return_rows(mysqli $conn, $where_customer, $from_date, $to_date) {
+function fetch_return_rows(mysqli $conn, $where_customer, $from_date, $to_date)
+{
     $reimb_rows = fetch_returns_reimbursement_rows($conn, $where_customer, $from_date, $to_date);
     if (!empty($reimb_rows)) {
         return ['source' => 'returns_report', 'rows' => $reimb_rows];
@@ -129,7 +144,8 @@ function fetch_return_rows(mysqli $conn, $where_customer, $from_date, $to_date) 
     return ['source' => 'transaction_refunds', 'rows' => fetch_transaction_refund_rows($conn, $where_customer, $from_date, $to_date)];
 }
 
-function aggregate_stats(array $rows) {
+function aggregate_stats(array $rows)
+{
     $total_units = 0;
     $sellable_units = 0;
     $damaged_units = 0;
@@ -154,11 +170,12 @@ function aggregate_stats(array $rows) {
             $defect_units += $qty;
         }
 
-        $reason = trim((string)($row['reason'] ?? 'Unknown'));
-        if ($reason === '') $reason = 'Unknown';
+        $reason = trim((string) ($row['reason'] ?? 'Unknown'));
+        if ($reason === '')
+            $reason = 'Unknown';
         $reason_counts[$reason] = ($reason_counts[$reason] ?? 0) + $qty;
 
-        $sku = trim((string)($row['sku'] ?? ''));
+        $sku = trim((string) ($row['sku'] ?? ''));
         if ($sku !== '') {
             $sku_counts[$sku] = ($sku_counts[$sku] ?? 0) + $qty;
             if (!empty($row['product_name'])) {
@@ -224,36 +241,39 @@ function aggregate_stats(array $rows) {
     ];
 }
 
-function build_product_rows(mysqli $conn, $where_customer, array $rows) {
+function build_product_rows(mysqli $conn, $where_customer, array $rows)
+{
     $products = [];
     foreach ($rows as $row) {
-        $sku = trim((string)($row['sku'] ?? ''));
-        if ($sku === '') continue;
+        $sku = trim((string) ($row['sku'] ?? ''));
+        if ($sku === '')
+            continue;
         $qty = max(1, intval($row['quantity'] ?? 1));
 
         if (!isset($products[$sku])) {
             $products[$sku] = [
                 'sku' => $sku,
-                'asin' => trim((string)($row['asin'] ?? '')),
-                'product_name' => trim((string)($row['product_name'] ?? '')),
+                'asin' => trim((string) ($row['asin'] ?? '')),
+                'product_name' => trim((string) ($row['product_name'] ?? '')),
                 'return_count' => 0,
                 'sellable' => 0,
                 'reasons' => [],
             ];
         }
         if (empty($products[$sku]['product_name']) && !empty($row['product_name'])) {
-            $products[$sku]['product_name'] = trim((string)$row['product_name']);
+            $products[$sku]['product_name'] = trim((string) $row['product_name']);
         }
         if (empty($products[$sku]['asin']) && !empty($row['asin'])) {
-            $products[$sku]['asin'] = trim((string)$row['asin']);
+            $products[$sku]['asin'] = trim((string) $row['asin']);
         }
 
         $products[$sku]['return_count'] += $qty;
         if (is_sellable_status($row['status'] ?? '')) {
             $products[$sku]['sellable'] += $qty;
         }
-        $reason = trim((string)($row['reason'] ?? 'Unknown'));
-        if ($reason === '') $reason = 'Unknown';
+        $reason = trim((string) ($row['reason'] ?? 'Unknown'));
+        if ($reason === '')
+            $reason = 'Unknown';
         $products[$sku]['reasons'][$reason] = ($products[$sku]['reasons'][$reason] ?? 0) + $qty;
     }
 
@@ -336,7 +356,7 @@ try {
 
     $where_customer = ($customer_id > 0) ? "customer_id = $customer_id" : '1=1';
 
-    $days = max(1, (int)((strtotime($to_date) - strtotime($from_date)) / 86400) + 1);
+    $days = max(1, (int) ((strtotime($to_date) - strtotime($from_date)) / 86400) + 1);
     $prev_to = date('Y-m-d', strtotime($from_date . ' -1 day'));
     $prev_from = date('Y-m-d', strtotime($prev_to . ' -' . ($days - 1) . ' days'));
 
@@ -358,7 +378,8 @@ try {
             'color' => $palette[$i % count($palette)],
         ];
         $i++;
-        if ($i >= 6) break;
+        if ($i >= 6)
+            break;
     }
 
     ksort($current['daily']);

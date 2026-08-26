@@ -13,868 +13,1267 @@ $customers = get_all_customers();
 ?>
 
 <style>
-    body { background-color: #f8fafc !important; font-family: 'Plus Jakarta Sans', sans-serif !important; }
-    
-    .brand-analytics-container {
-        padding: 1.5rem;
+    body {
+        background-color: #F8FAFC !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        color: #0F172A;
     }
 
-    .glass-card {
-        background: #ffffff;
-        border-radius: 16px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    .top-header {
+        display: none !important;
     }
 
-    .glass-card:hover {
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+    .main-wrapper {
+        padding-top: 0 !important;
     }
 
-    /* Filter styling */
-    .filter-section {
-        background: #ffffff;
-        border-radius: 16px;
-        border: 1px solid #e2e8f0;
-        margin-bottom: 1.5rem;
-    }
-
-    /* Chart styles */
-    .chart-container {
-        position: relative;
-        height: 280px;
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-around;
-        padding-top: 2rem;
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid #e2e8f0;
-    }
-
-    .chart-grid-lines {
-        position: absolute;
-        top: 0;
-        left: 0;
+    .ba-container {
+        padding: 1.25rem 2rem 3rem 2rem;
         width: 100%;
-        height: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Topbar */
+    .ba-topbar {
         display: flex;
-        flex-direction: column;
         justify-content: space-between;
-        pointer-events: none;
-        z-index: 1;
-    }
-
-    .chart-grid-line {
-        width: 100%;
-        border-top: 1px dashed #f1f5f9;
-        height: 0;
-    }
-
-    .funnel-stage-column {
-        display: flex;
-        flex-direction: column;
         align-items: center;
-        width: 16%;
-        height: 100%;
-        justify-content: flex-end;
-        z-index: 2;
-        position: relative;
-    }
-
-    .bars-wrapper {
-        display: flex;
-        align-items: flex-end;
-        gap: 6px;
-        height: 80%;
-        width: 100%;
-        justify-content: center;
-    }
-
-    .bar {
-        width: 28px;
-        border-radius: 4px 4px 0 0;
-        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        position: relative;
-        cursor: pointer;
-    }
-
-    .bar:hover::after {
-        content: attr(data-value);
-        position: absolute;
-        top: -30px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #0f172a;
-        color: #ffffff;
-        font-size: 0.75rem;
-        font-weight: 700;
-        padding: 4px 8px;
-        border-radius: 6px;
-        white-space: nowrap;
-        z-index: 10;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .bar.main-brand {
-        background: #2563eb;
-    }
-
-    .bar.market-avg {
-        background: #94a3b8;
-    }
-
-    .stage-label-group {
-        text-align: center;
-        margin-top: 0.75rem;
-        width: 100%;
-    }
-
-    .stage-title {
-        font-size: 0.7rem;
-        font-weight: 800;
-        color: #64748b;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        margin-bottom: 0.25rem;
-    }
-
-    .stage-values {
-        font-size: 0.85rem;
-        font-weight: 800;
-        color: #1e293b;
-    }
-
-    .stage-values span {
-        font-weight: 500;
-        color: #64748b;
-    }
-
-    /* Legend */
-    .legend-container {
-        display: flex;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid #EAECEF;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
         gap: 1rem;
-        justify-content: flex-end;
     }
 
-    .legend-item {
+    .ba-breadcrumb {
+        font-size: 0.84rem;
+        color: #64748B;
+        font-weight: 500;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: #475569;
-        border: 1px solid #e2e8f0;
-        padding: 4px 12px;
-        border-radius: 20px;
-        background: #f8fafc;
+        gap: 8px;
     }
 
-    .legend-color {
-        width: 10px;
-        height: 10px;
+    .ba-breadcrumb strong {
+        color: #0F172A;
+        font-weight: 700;
+    }
+
+    .ba-topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-ba-primary {
+        background: #4362CE;
+        color: #FFFFFF !important;
+        font-size: 0.82rem;
+        font-weight: 700;
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        box-shadow: 0 1px 2px rgba(67, 98, 206, 0.2);
+        transition: all 0.15s ease;
+    }
+
+    .btn-ba-primary:hover {
+        background: #3451B2;
+        color: #FFFFFF !important;
+    }
+
+    .btn-ba-outline {
+        background: #FFFFFF;
+        color: #0F172A;
+        border: 1px solid #E2E8F0;
+        font-size: 0.82rem;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+    .btn-ba-outline:hover {
+        background: #F8FAFC;
+        border-color: #CBD5E1;
+    }
+
+    .btn-ba-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        color: #64748B;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        position: relative;
+    }
+
+    .btn-ba-icon:hover {
+        background: #F8FAFC;
+        color: #0F172A;
+    }
+
+    .btn-ba-icon .dot-badge {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 6px;
+        height: 6px;
+        background: #EE473D;
         border-radius: 50%;
     }
 
-    /* Funnel Leakage List */
-    .funnel-list {
+    /* Page Header */
+    .ba-page-head {
         display: flex;
-        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
         gap: 1.25rem;
     }
 
-    .funnel-item {
+    .ba-page-title h2 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #0F172A;
+        margin: 0;
+        letter-spacing: -0.02em;
+    }
+
+    .ba-page-title p {
+        font-size: 0.82rem;
+        color: #64748B;
+        font-weight: 500;
+        margin: 3px 0 0 0;
+    }
+
+    .ba-controls {
         display: flex;
         align-items: center;
-        justify-content: justify;
+        gap: 10px;
+        flex-wrap: wrap;
     }
 
-    .funnel-item-info {
-        width: 180px;
-        flex-shrink: 0;
-    }
-
-    .funnel-item-title {
-        font-size: 0.85rem;
-        font-weight: 800;
-        color: #1e293b;
-        margin-bottom: 0.1rem;
-    }
-
-    .funnel-item-subtitle {
-        font-size: 0.7rem;
-        font-weight: 700;
-        color: #94a3b8;
-        text-transform: uppercase;
-        letter-spacing: 0.02em;
-    }
-
-    .funnel-progress-container {
-        flex-grow: 1;
-        margin: 0 1.5rem;
-    }
-
-    .funnel-progress-bar-bg {
-        height: 24px;
-        background: #f1f5f9;
-        border-radius: 12px;
-        overflow: hidden;
-        position: relative;
-        display: flex;
+    .ba-date-picker {
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        height: 38px;
+        padding: 0 12px;
+        display: inline-flex;
         align-items: center;
+        gap: 8px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #0F172A;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
     }
 
-    .funnel-progress-fill {
-        height: 100%;
-        background: #2563eb;
-        border-radius: 12px;
-        transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .funnel-progress-fill.warning {
-        background: #dc2626;
-    }
-
-    .funnel-progress-label {
-        position: absolute;
-        right: 12px;
-        font-size: 0.75rem;
-        font-weight: 800;
-        color: #475569;
-    }
-
-    .funnel-delta-info {
-        width: 90px;
-        text-align: right;
-        font-size: 0.85rem;
-        font-weight: 800;
-    }
-
-    .text-delta-up {
-        color: #16a34a;
-    }
-
-    .text-delta-down {
-        color: #dc2626;
-    }
-
-    /* AI Analysis Widget */
-    .ai-insight-card {
-        background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
-        color: #ffffff;
-        border-radius: 16px;
-        padding: 1.75rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%;
+    .ba-date-picker input[type="date"] {
         border: none;
-        position: relative;
-        overflow: hidden;
+        outline: none;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #0F172A;
+        background: transparent;
+        font-family: inherit;
+        width: 105px;
+        cursor: pointer;
     }
 
-    .ai-insight-card::before {
-        content: '';
-        position: absolute;
-        top: -50px;
-        right: -50px;
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.05);
-        pointer-events: none;
+    .ba-select {
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        height: 38px;
+        padding: 0 32px 0 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #0F172A;
+        outline: none;
+        cursor: pointer;
+        min-width: 140px;
+        appearance: none;
+        -webkit-appearance: none;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
     }
 
-    .ai-tag {
-        font-size: 0.65rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        opacity: 0.8;
+    .ba-select:focus {
+        border-color: #4362CE;
+    }
+
+    /* Bento Card Base */
+    .ba-card {
+        background: #FFFFFF;
+        border: 1px solid #EAECEF;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .ba-card-head {
         display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        margin-bottom: 1rem;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.25rem;
     }
 
-    .ai-headline {
-        font-size: 1.25rem;
+    .ba-card-head h3 {
+        font-size: 1.05rem;
         font-weight: 800;
-        line-height: 1.3;
-        margin-bottom: 1rem;
+        color: #0F172A;
+        margin: 0;
     }
 
-    .ai-description {
-        font-size: 0.85rem;
-        opacity: 0.9;
-        line-height: 1.5;
-        margin-bottom: 2rem;
+    .ba-card-head p {
+        font-size: 0.76rem;
+        color: #64748B;
+        margin: 3px 0 0 0;
         font-weight: 500;
     }
 
-    .ai-btn {
-        background: rgba(255, 255, 255, 0.15);
-        color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        padding: 12px 20px;
-        border-radius: 10px;
+    /* Market Overview Mini Sub-cards */
+    .ba-market-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .ba-market-subcard {
+        background: #FFFFFF;
+        border: 1px solid #EAECEF;
+        border-radius: 12px;
+        padding: 10px 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 215px;
+        box-sizing: border-box;
+        transition: all 0.15s ease;
+        min-width: 0;
+    }
+
+    .ba-market-subcard:hover {
+        border-color: #CBD5E1;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .ba-subcard-head {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+    }
+
+    .ba-subcard-icon {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        background: #F1F5F9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.72rem;
+        color: #4362CE;
+        flex-shrink: 0;
+    }
+
+    .ba-subcard-title {
+        font-size: 0.68rem;
+        color: #64748B;
+        font-weight: 600;
+        line-height: 1.1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .ba-subcard-val {
+        font-size: 0.92rem;
+        font-weight: 800;
+        color: #0F172A;
+        line-height: 1.1;
+        margin-top: 1px;
+    }
+
+    .ba-subcard-bars {
+        height: 110px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 6px;
+        padding-bottom: 4px;
+    }
+
+    .ba-vbar {
+        width: 18px;
+        border-radius: 4px 4px 0 0;
+        transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        min-height: 8px;
+    }
+
+    .ba-vbar.main-brand {
+        background: linear-gradient(180deg, #4362CE 0%, rgba(67, 98, 206, 0.25) 100%);
+    }
+
+    .ba-vbar.market-avg {
+        background: linear-gradient(180deg, #059669 0%, rgba(16, 185, 129, 0.25) 100%);
+    }
+
+    .ba-subcard-foot {
+        text-align: center;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #0F172A;
+        border-top: 1px solid #F1F5F9;
+        padding-top: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .ba-subcard-foot span.vs {
+        font-weight: 500;
+        color: #94A3B8;
+        font-size: 0.7rem;
+        margin: 0 2px;
+    }
+
+    /* Funnel Leakage Rows */
+    .ba-funnel-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #F8FAFC;
+    }
+
+    .ba-funnel-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .ba-funnel-left {
+        width: 145px;
+        flex-shrink: 0;
+    }
+
+    .ba-funnel-name {
+        font-size: 0.85rem;
+        font-weight: 800;
+        color: #0F172A;
+        line-height: 1.2;
+    }
+
+    .ba-funnel-phase {
+        font-size: 0.72rem;
+        color: #64748B;
+        font-weight: 500;
+        margin-top: 1px;
+    }
+
+    .ba-funnel-bar-wrap {
+        flex: 1;
+        margin: 0 20px;
+        height: 8px;
+        background: #F1F5F9;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .ba-funnel-bar-fill {
+        height: 100%;
+        border-radius: 4px;
+        background: #4362CE;
+        transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .ba-funnel-bar-fill.warning {
+        background: #EF4444;
+    }
+
+    .ba-funnel-right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 18px;
+        width: 190px;
+        flex-shrink: 0;
+    }
+
+    .ba-funnel-share {
         font-size: 0.8rem;
         font-weight: 700;
-        text-align: center;
-        transition: all 0.3s;
-        text-decoration: none;
-        cursor: pointer;
-        display: inline-block;
+        color: #0F172A;
+        text-align: right;
+        white-space: nowrap;
     }
 
-    .ai-btn:hover {
-        background: #ffffff;
-        color: #1e3a8a;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+    .ba-funnel-delta-box {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        min-width: 65px;
     }
 
-    /* KPI Trend Cards styling */
-    .kpi-sparkcard {
-        background: #ffffff;
-        border-radius: 16px;
-        border: 1.5px solid #cbd5e1;
-        padding: 1.25rem;
+    .ba-delta-badge {
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        line-height: 1.1;
+    }
+
+    .ba-delta-badge.up {
+        background: #EEF8F1;
+        color: #029153;
+    }
+
+    .ba-delta-badge.down {
+        background: #FEF0EF;
+        color: #EE473D;
+    }
+
+    .ba-delta-sub {
+        font-size: 0.65rem;
+        color: #64748B;
+        margin-top: 1px;
+        font-weight: 500;
+    }
+
+    /* Right KPI Trend Cards */
+    .ba-kpi-card {
+        background: #FFFFFF;
+        border: 1px solid #EAECEF;
+        border-radius: 14px;
+        padding: 12px 16px 10px 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-        transition: all 0.3s;
+        min-height: 0;
+        box-sizing: border-box;
+        overflow: hidden;
+        transition: all 0.15s ease;
     }
 
-    .kpi-sparkcard:hover {
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
-        transform: translateY(-1px);
+    .ba-kpi-card:hover {
+        border-color: #CBD5E1;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     }
 
-    .kpi-sparkcard-header {
+    .ba-kpi-top {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 0.5rem;
     }
 
-    .kpi-sparkcard-label {
-        font-size: 0.72rem;
-        font-weight: 800;
-        color: #64748b;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+    .ba-kpi-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #64748B;
     }
 
-    .kpi-sparkcard-delta {
-        font-size: 0.75rem;
-        font-weight: 800;
+    .ba-kpi-icon-box {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
-        gap: 2px;
+        justify-content: center;
+        font-size: 0.8rem;
     }
 
-    .kpi-sparkcard-value {
-        font-size: 1.75rem;
-        font-weight: 800;
-        color: #0f172a;
-        margin-bottom: 0.75rem;
-    }
-
-    .kpi-sparkline-container {
+    .ba-kpi-mid {
         display: flex;
-        align-items: flex-end;
-        gap: 5px;
-        height: 35px;
+        align-items: center;
+        gap: 8px;
+        margin-top: 1px;
+    }
+
+    .ba-kpi-val {
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: #0F172A;
+        line-height: 1;
+    }
+
+    .ba-kpi-chart-wrap {
+        height: 38px;
+        max-height: 38px;
         width: 100%;
-        padding-top: 5px;
+        margin-top: 2px;
+        position: relative;
     }
 
-    .kpi-sparkline-bar {
-        flex-grow: 1;
-        background: #f1f5f9;
-        border-radius: 3px;
-        min-height: 4px;
-        transition: height 0.6s ease;
+    .ba-main-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 1.5rem;
+        align-items: start;
+        width: 100%;
+        max-width: 100%;
     }
 
-    .kpi-sparkline-bar.active {
-        background: #2563eb;
+    /* Responsive */
+    @media (max-width: 1440px) {
+        .ba-main-layout {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+        }
+
+        .ba-right-col {
+            display: grid !important;
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 1rem !important;
+            width: 100% !important;
+        }
+
+        .ba-market-grid {
+            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+            gap: 12px !important;
+        }
     }
 
-    .kpi-sparkline-bar.active-market {
-        background: #94a3b8;
+    @media (max-width: 1024px) {
+        .ba-right-col {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 1rem !important;
+        }
+
+        .ba-market-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 10px !important;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .ba-market-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+
+        .ba-container {
+            padding: 1rem 1rem 100px 1rem !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .ba-container {
+            padding: 0.75rem 0.75rem 100px 0.75rem !important;
+            width: 100% !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+        }
+
+        .ba-topbar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+            padding-bottom: 0.75rem !important;
+        }
+
+        .ba-breadcrumb {
+            display: none !important;
+        }
+
+        .ba-topbar-actions {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 0.5rem !important;
+            width: 100% !important;
+        }
+
+        .ba-topbar-actions .btn-ba-icon {
+            display: none !important;
+        }
+
+        .ba-page-head {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .ba-controls {
+            width: 100% !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.5rem !important;
+        }
+
+        .ba-controls .figma-date-picker-wrap {
+            width: 100% !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        .ba-controls .figma-date-picker-wrap input.flatpickr-range-input {
+            width: 100% !important;
+            font-size: 0.76rem !important;
+        }
+
+        .ba-controls .ba-select {
+            width: 100% !important;
+            min-width: 0 !important;
+        }
+
+        .ba-market-grid {
+            grid-template-columns: 1fr !important;
+            gap: 0.75rem !important;
+        }
+
+        .ba-market-subcard {
+            height: auto !important;
+            min-height: 180px !important;
+            padding: 12px 14px !important;
+        }
+
+        .ba-subcard-bars {
+            height: 100px !important;
+            margin: 12px 0 !important;
+        }
+
+        .ba-funnel-row {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 8px !important;
+            padding: 10px 0 !important;
+        }
+
+        .ba-funnel-left {
+            width: 100% !important;
+        }
+
+        .ba-funnel-bar-wrap {
+            margin: 4px 0 !important;
+            width: 100% !important;
+        }
+
+        .ba-funnel-right {
+            width: 100% !important;
+            justify-content: space-between !important;
+        }
+
+        .ba-right-col {
+            grid-template-columns: 1fr !important;
+            gap: 0.75rem !important;
+        }
+
+        .ba-card {
+            padding: 1rem !important;
+            border-radius: 14px !important;
+        }
     }
 </style>
 
-<style>.top-header { display: none !important; } .main-wrapper { padding-top: 1.25rem !important; }</style>
-<div class="brand-analytics-container">
-    <!-- Figma-style Top Bar -->
-    <div class="figma-page-topbar">
-        <div class="figma-page-topbar-left">
-            <select id="filter_customer" style="min-width:180px; padding:0.5rem 0.85rem; border:1px solid #e2e8f0; border-radius:10px; font-size:0.82rem; font-weight:600; color:#334155; background:#fff;">
-                <option value="">All Amazon Profiles</option>
-                <?php
-                $customers->data_seek(0);
-                while($c = $customers->fetch_assoc()) {
-                    $sel = ($c['id'] == ($_SESSION['customer_id'] ?? 0)) ? 'selected' : '';
-                    echo "<option value='{$c['id']}' $sel>" . htmlspecialchars($c['customer_name']) . "</option>";
-                }
-                ?>
-            </select>
-            <span class="figma-page-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Brand Analytics</strong></span>
+<div class="ba-container">
+    <!-- Topbar -->
+    <div class="ba-topbar">
+        <div class="ba-breadcrumb">
+            Dashboard • <strong>Brand Analytics</strong>
         </div>
-        <div class="figma-page-topbar-right">
+        <div class="ba-topbar-actions">
             <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
-            <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
+                <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-ba-primary">
+                    <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/New Upload.svg"
+                        style="width: 14px; height: 14px; filter: brightness(0) invert(1);" /> New Upload
+                </a>
             <?php endif; ?>
-            <button type="button" class="btn-figma-outline-sm"><i class="fas fa-file-export"></i> Export CSV</button>
-            <button type="button" class="btn-figma-icon-sm" title="Search"><i class="fas fa-search"></i></button>
+            <button type="button" class="btn-ba-outline" id="btn_export_csv">
+                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Export CSV.svg"
+                    style="width: 14px; height: 14px;" /> Export CSV
+            </button>
+            <button type="button" class="btn-ba-icon" title="Search">
+                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Search.svg" style="width: 16px; height: 16px;" />
+            </button>
+            <button type="button" class="btn-ba-icon" title="Notifications">
+                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Notification.svg"
+                    style="width: 16px; height: 16px;" />
+                <span class="dot-badge"></span>
+            </button>
         </div>
-    </div>
-
-    <!-- Page Title & Date Range -->
-    <div class="figma-page-head">
-        <div>
+    </div> <!-- Page Header -->
+    <div class="ba-page-head">
+        <div class="ba-page-title">
             <h2>Brand Analytics</h2>
             <p>Search Query Performance & Market Share Overview</p>
         </div>
-        <div class="figma-date-bar">
-            <i class="far fa-calendar-alt" style="color: #64748b; font-size: 0.85rem; margin-left: 4px;"></i>
-            <input type="date" id="filter_from" value="2026-01-01">
-            <span class="date-sep">-</span>
-            <input type="date" id="filter_to" value="<?php echo date('Y-m-d'); ?>">
-            <button type="button" class="btn-refresh-icon" id="refresh_button" title="Refresh"><i class="fas fa-sync-alt"></i></button>
+        <div class="ba-controls">
+            <div class="figma-date-picker-wrap">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.6666 1.3335V4.00016M5.33325 1.3335V4.00016" stroke="#363B4F" stroke-width="1.4"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M8.66667 2.6665H7.33333C4.81917 2.6665 3.5621 2.6665 2.78105 3.44755C2 4.2286 2 5.48568 2 7.99984V9.33317C2 11.8473 2 13.1044 2.78105 13.8854C3.5621 14.6665 4.81917 14.6665 7.33333 14.6665H8.66667C11.1808 14.6665 12.4379 14.6665 13.2189 13.8854C14 13.1044 14 11.8473 14 9.33317V7.99984C14 5.48568 14 4.2286 13.2189 3.44755C12.4379 2.6665 11.1808 2.6665 8.66667 2.6665Z"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M2 6.6665H14" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_ba"
+                    placeholder="Select date range" readonly>
+                <input type="hidden" id="filter_from" value="2026-01-01">
+                <input type="hidden" id="filter_to" value="<?php echo date('Y-m-d'); ?>">
+            </div>
+            <button type="button" class="btn-figma-refresh" id="refresh_button" title="Refresh">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10.1115 0.666504L10.5101 1.41169C10.7796 1.91548 10.9143 2.16738 10.8253 2.27526C10.7361 2.38314 10.4427 2.29601 9.85573 2.12176C9.26893 1.94754 8.64593 1.85381 8.00033 1.85381C4.50252 1.85381 1.66699 4.60548 1.66699 7.99987C1.66699 9.11927 1.97541 10.1689 2.51428 11.0729M5.88921 15.3332L5.49057 14.588C5.22105 14.0842 5.08629 13.8323 5.17539 13.7244C5.26451 13.6165 5.55799 13.7037 6.14492 13.8779C6.73173 14.0521 7.35473 14.1459 8.00033 14.1459C11.4981 14.1459 14.3337 11.3942 14.3337 7.99987C14.3337 6.8804 14.0253 5.83082 13.4864 4.92682"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+            <div style="position: relative; display: inline-flex; align-items: center;">
+                <select id="filter_customer" class="ba-select">
+                    <option value="">All Accounts</option>
+                    <?php
+                    $customers->data_seek(0);
+                    while ($c = $customers->fetch_assoc()) {
+                        $sel = ($c['id'] == ($_SESSION['customer_id'] ?? 0)) ? 'selected' : '';
+                        echo "<option value='{$c['id']}' $sel>" . htmlspecialchars($c['customer_name']) . "</option>";
+                    }
+                    ?>
+                </select>
+                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Down Up Arrow.svg"
+                    style="position: absolute; right: 12px; pointer-events: none; width: 10px; height: 10px;" />
+            </div>
         </div>
     </div>
 
-    <!-- MAIN GRID CONTAINER -->
-    <div class="row">
-        <!-- Chart Column -->
-        <div class="col-12 mb-4">
-            <div class="glass-card p-4">
-                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <!-- MAIN TWO-COLUMN LAYOUT -->
+    <div class="ba-main-layout">
+
+        <!-- LEFT COLUMN (Market Overview & Funnel Leakage) -->
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+
+            <!-- Section 1: Market Performance Overview -->
+            <div class="ba-card">
+                <div class="ba-card-head">
                     <div>
-                        <h5 class="fw-900 mb-1" style="color: #0f172a;">Market Performance Overview</h5>
-                        <p class="text-muted small mb-0 fw-600">Performance delta between <span class="text-primary fw-700">Main Brand</span> and <span class="fw-700">Category Market Average</span></p>
+                        <h3>Market Performance Overview</h3>
+                        <p>Performance delta between Main Brand and Category Market Average</p>
                     </div>
-                    <div class="legend-container">
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #2563eb;"></div>
-                            <span>Main Brand</span>
+                    <div style="display: flex; align-items: center; gap: 14px; font-size: 0.78rem; font-weight: 700;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="width: 10px; height: 10px; border-radius: 3px; background: #4362CE;"></span>
+                            <span style="color: #0F172A;">Main Brand</span>
                         </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #94a3b8;"></div>
-                            <span>Market Avg</span>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="width: 10px; height: 10px; border-radius: 3px; background: #059669;"></span>
+                            <span style="color: #0F172A;">Market Avg</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Funnel chart visual -->
-                <div class="chart-container">
-                    <div class="chart-grid-lines">
-                        <div class="chart-grid-line"></div>
-                        <div class="chart-grid-line"></div>
-                        <div class="chart-grid-line"></div>
-                        <div class="chart-grid-line"></div>
-                    </div>
+                <!-- 5 Columns Sub-Grid -->
+                <div class="ba-market-grid">
 
-                    <!-- Column 1: Search Volume -->
-                    <div class="funnel-stage-column">
-                        <div class="bars-wrapper">
-                            <div class="bar main-brand" style="height: 100%;" data-value="12.4M" id="bar_brand_search"></div>
-                            <div class="bar market-avg" style="height: 81%;" data-value="10.1M" id="bar_market_search"></div>
+                    <!-- Col 1: Search Volume -->
+                    <div class="ba-market-subcard">
+                        <div class="ba-subcard-head">
+                            <div class="ba-subcard-icon">
+                                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Search.svg"
+                                    style="width: 16px; height: 16px;" />
+                            </div>
+                            <div>
+                                <div class="ba-subcard-title">Search Volume</div>
+                                <div class="ba-subcard-val" id="disp_brand_search">663K</div>
+                            </div>
                         </div>
-                        <div class="stage-label-group">
-                            <div class="stage-title">Search Volume</div>
-                            <div class="stage-values"><span id="val_brand_search">12.4M</span> vs <span id="val_market_search">10.1M</span></div>
+                        <div class="ba-subcard-bars">
+                            <div class="ba-vbar main-brand" id="bar_brand_search" style="height: 60%;"></div>
+                            <div class="ba-vbar market-avg" id="bar_market_search" style="height: 85%;"></div>
                         </div>
-                    </div>
-
-                    <!-- Column 2: Impressions -->
-                    <div class="funnel-stage-column">
-                        <div class="bars-wrapper">
-                            <div class="bar main-brand" style="height: 66%;" data-value="8.2M" id="bar_brand_impr"></div>
-                            <div class="bar market-avg" style="height: 57%;" data-value="7.1M" id="bar_market_impr"></div>
-                        </div>
-                        <div class="stage-label-group">
-                            <div class="stage-title">Impressions</div>
-                            <div class="stage-values"><span id="val_brand_impr">8.2M</span> vs <span id="val_market_impr">7.1M</span></div>
+                        <div class="ba-subcard-foot">
+                            <span id="val_brand_search">663K</span> <span class="vs">vs</span> <span
+                                id="val_market_search">850K</span>
                         </div>
                     </div>
 
-                    <!-- Column 3: Clicks -->
-                    <div class="funnel-stage-column">
-                        <div class="bars-wrapper">
-                            <div class="bar main-brand" style="height: 48%;" data-value="942K" id="bar_brand_clicks"></div>
-                            <div class="bar market-avg" style="height: 41%;" data-value="810K" id="bar_market_clicks"></div>
+                    <!-- Col 2: Impressions -->
+                    <div class="ba-market-subcard">
+                        <div class="ba-subcard-head">
+                            <div class="ba-subcard-icon">
+                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Impressions.svg"
+                                    style="width: 16px; height: 16px;" />
+                            </div>
+                            <div>
+                                <div class="ba-subcard-title">Impressions</div>
+                                <div class="ba-subcard-val" id="disp_brand_impr">2.4M</div>
+                            </div>
                         </div>
-                        <div class="stage-label-group">
-                            <div class="stage-title">Clicks</div>
-                            <div class="stage-values"><span id="val_brand_clicks">942K</span> vs <span id="val_market_clicks">810K</span></div>
+                        <div class="ba-subcard-bars">
+                            <div class="ba-vbar main-brand" id="bar_brand_impr" style="height: 22%;"></div>
+                            <div class="ba-vbar market-avg" id="bar_market_impr" style="height: 85%;"></div>
                         </div>
-                    </div>
-
-                    <!-- Column 4: Add To Carts -->
-                    <div class="funnel-stage-column">
-                        <div class="bars-wrapper">
-                            <div class="bar main-brand" style="height: 28%;" data-value="52K" id="bar_brand_atc"></div>
-                            <div class="bar market-avg" style="height: 31%;" data-value="58K" id="bar_market_atc"></div>
-                        </div>
-                        <div class="stage-label-group">
-                            <div class="stage-title">Add-to-Carts</div>
-                            <div class="stage-values"><span id="val_brand_atc">52K</span> vs <span id="val_market_atc">58K</span></div>
+                        <div class="ba-subcard-foot">
+                            <span id="val_brand_impr">2.4M</span> <span class="vs">vs</span> <span
+                                id="val_market_impr">20.9M</span>
                         </div>
                     </div>
 
-                    <!-- Column 5: Purchases -->
-                    <div class="funnel-stage-column">
-                        <div class="bars-wrapper">
-                            <div class="bar main-brand" style="height: 18%;" data-value="12.8K" id="bar_brand_purchases"></div>
-                            <div class="bar market-avg" style="height: 14%;" data-value="10.2K" id="bar_market_purchases"></div>
+                    <!-- Col 3: Clicks -->
+                    <div class="ba-market-subcard">
+                        <div class="ba-subcard-head">
+                            <div class="ba-subcard-icon">
+                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Clicks.svg"
+                                    style="width: 16px; height: 16px;" />
+                            </div>
+                            <div>
+                                <div class="ba-subcard-title">Clicks</div>
+                                <div class="ba-subcard-val" id="disp_brand_clicks">17K</div>
+                            </div>
                         </div>
-                        <div class="stage-label-group">
-                            <div class="stage-title">Purchases</div>
-                            <div class="stage-values"><span id="val_brand_purchases">12.8K</span> vs <span id="val_market_purchases">10.2K</span></div>
+                        <div class="ba-subcard-bars">
+                            <div class="ba-vbar main-brand" id="bar_brand_clicks" style="height: 65%;"></div>
+                            <div class="ba-vbar market-avg" id="bar_market_clicks" style="height: 85%;"></div>
+                        </div>
+                        <div class="ba-subcard-foot">
+                            <span id="val_brand_clicks">17K</span> <span class="vs">vs</span> <span
+                                id="val_market_clicks">21K</span>
                         </div>
                     </div>
+
+                    <!-- Col 4: Add-to-Carts -->
+                    <div class="ba-market-subcard">
+                        <div class="ba-subcard-head">
+                            <div class="ba-subcard-icon">
+                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Add-to-Carts.svg"
+                                    style="width: 16px; height: 16px;" />
+                            </div>
+                            <div>
+                                <div class="ba-subcard-title">Add-to-Carts</div>
+                                <div class="ba-subcard-val" id="disp_brand_atc">930</div>
+                            </div>
+                        </div>
+                        <div class="ba-subcard-bars">
+                            <div class="ba-vbar main-brand" id="bar_brand_atc" style="height: 65%;"></div>
+                            <div class="ba-vbar market-avg" id="bar_market_atc" style="height: 85%;"></div>
+                        </div>
+                        <div class="ba-subcard-foot">
+                            <span id="val_brand_atc">930</span> <span class="vs">vs</span> <span
+                                id="val_market_atc">1K</span>
+                        </div>
+                    </div>
+
+                    <!-- Col 5: Purchases -->
+                    <div class="ba-market-subcard">
+                        <div class="ba-subcard-head">
+                            <div class="ba-subcard-icon">
+                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Purchases.svg"
+                                    style="width: 16px; height: 16px;" />
+                            </div>
+                            <div>
+                                <div class="ba-subcard-title">Purchases</div>
+                                <div class="ba-subcard-val" id="disp_brand_purchases">743</div>
+                            </div>
+                        </div>
+                        <div class="ba-subcard-bars">
+                            <div class="ba-vbar main-brand" id="bar_brand_purchases" style="height: 60%;"></div>
+                            <div class="ba-vbar market-avg" id="bar_market_purchases" style="height: 85%;"></div>
+                        </div>
+                        <div class="ba-subcard-foot">
+                            <span id="val_brand_purchases">743</span> <span class="vs">vs</span> <span
+                                id="val_market_purchases">929</span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </div>
 
-        <!-- Funnel Leakage Full Width Row -->
-        <div class="col-12 mb-4">
-            <div class="glass-card p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-900 mb-0" style="color: #0f172a;">Funnel Leakage Analysis</h5>
-                    <button class="btn btn-sm btn-link text-primary fw-800 text-decoration-none p-0" id="btn_excel_export" style="font-size: 0.75rem;">
-                        <i class="fas fa-download me-1"></i> EXCEL DATA
+            <!-- Section 2: Funnel Leakage Analysis -->
+            <div class="ba-card">
+                <div class="ba-card-head" style="align-items: center;">
+                    <div>
+                        <h3>Funnel Leakage Analysis</h3>
+                    </div>
+                    <button type="button" class="btn-ba-outline" style="padding: 6px 14px; font-size: 0.76rem;"
+                        id="btn_excel_export">
+                        <i class="fas fa-download" style="font-size: 0.72rem;"></i> Excel Data
                     </button>
                 </div>
 
-                <!-- Leakage Progress Bars List -->
-                <div class="funnel-list mt-3">
+                <!-- Funnel Rows List -->
+                <div>
                     <!-- Stage 1 -->
-                    <div class="funnel-item">
-                        <div class="funnel-item-info">
-                            <div class="funnel-item-title">Search &rarr; Impr.</div>
-                            <div class="funnel-item-subtitle">Awareness Phase</div>
+                    <div class="ba-funnel-row">
+                        <div class="ba-funnel-left">
+                            <div class="ba-funnel-name">Search &rarr; Impr.</div>
+                            <div class="ba-funnel-phase">(Awareness Phase)</div>
                         </div>
-                        <div class="funnel-progress-container">
-                            <div class="funnel-progress-bar-bg">
-                                <div class="funnel-progress-fill" style="width: 66.1%;" id="fill_stage_1"></div>
-                                <span class="funnel-progress-label" id="lbl_stage_1">66.1% Brand Share</span>
+                        <div class="ba-funnel-bar-wrap">
+                            <div class="ba-funnel-bar-fill" id="fill_stage_1" style="width: 25%;"></div>
+                        </div>
+                        <div class="ba-funnel-right">
+                            <div class="ba-funnel-share" id="lbl_stage_1">0.7% Brand Share</div>
+                            <div class="ba-funnel-delta-box">
+                                <span class="ba-delta-badge up" id="badge_stage_1">+4.2% &uarr;</span>
+                                <span class="ba-delta-sub">vs Market</span>
                             </div>
-                        </div>
-                        <div class="funnel-delta-info text-delta-up" id="delta_stage_1">
-                            +4.2% <span style="font-size: 0.7rem; color: #64748b; font-weight: 500;">vs Market</span>
                         </div>
                     </div>
 
                     <!-- Stage 2 -->
-                    <div class="funnel-item">
-                        <div class="funnel-item-info">
-                            <div class="funnel-item-title">Impr. &rarr; Click</div>
-                            <div class="funnel-item-subtitle">Interest Phase</div>
+                    <div class="ba-funnel-row">
+                        <div class="ba-funnel-left">
+                            <div class="ba-funnel-name">Impr. &rarr; Click</div>
+                            <div class="ba-funnel-phase">(Interest Phase)</div>
                         </div>
-                        <div class="funnel-progress-container">
-                            <div class="funnel-progress-bar-bg">
-                                <div class="funnel-progress-fill" style="width: 11.5%;" id="fill_stage_2"></div>
-                                <span class="funnel-progress-label" id="lbl_stage_2">11.5% Brand Share</span>
+                        <div class="ba-funnel-bar-wrap">
+                            <div class="ba-funnel-bar-fill" id="fill_stage_2" style="width: 10%;"></div>
+                        </div>
+                        <div class="ba-funnel-right">
+                            <div class="ba-funnel-share" id="lbl_stage_2">0.7% Brand Share</div>
+                            <div class="ba-funnel-delta-box">
+                                <span class="ba-delta-badge up" id="badge_stage_2">+1.1% &uarr;</span>
+                                <span class="ba-delta-sub">vs Market</span>
                             </div>
-                        </div>
-                        <div class="funnel-delta-info text-delta-up" id="delta_stage_2">
-                            +1.1% <span style="font-size: 0.7rem; color: #64748b; font-weight: 500;">vs Market</span>
                         </div>
                     </div>
 
                     <!-- Stage 3 -->
-                    <div class="funnel-item">
-                        <div class="funnel-item-info">
-                            <div class="funnel-item-title">Click &rarr; ATC</div>
-                            <div class="funnel-item-subtitle">Intent Phase</div>
+                    <div class="ba-funnel-row">
+                        <div class="ba-funnel-left">
+                            <div class="ba-funnel-name">Click &rarr; ATC</div>
+                            <div class="ba-funnel-phase">(Intent Phase)</div>
                         </div>
-                        <div class="funnel-progress-container">
-                            <div class="funnel-progress-bar-bg">
-                                <div class="funnel-progress-fill warning" style="width: 5.5%;" id="fill_stage_3"></div>
-                                <span class="funnel-progress-label" id="lbl_stage_3">5.5% Brand Share</span>
+                        <div class="ba-funnel-bar-wrap">
+                            <div class="ba-funnel-bar-fill warning" id="fill_stage_3" style="width: 20%;"></div>
+                        </div>
+                        <div class="ba-funnel-right">
+                            <div class="ba-funnel-share" id="lbl_stage_3">5.5% Brand Share</div>
+                            <div class="ba-funnel-delta-box">
+                                <span class="ba-delta-badge down" id="badge_stage_3">-0.8% &darr;</span>
+                                <span class="ba-delta-sub">vs Market</span>
                             </div>
-                        </div>
-                        <div class="funnel-delta-info text-delta-down" id="delta_stage_3">
-                            -0.8% <span style="font-size: 0.7rem; color: #64748b; font-weight: 500;">vs Market</span>
                         </div>
                     </div>
 
                     <!-- Stage 4 -->
-                    <div class="funnel-item">
-                        <div class="funnel-item-info">
-                            <div class="funnel-item-title">ATC &rarr; Purchase</div>
-                            <div class="funnel-item-subtitle">Conversion Phase</div>
+                    <div class="ba-funnel-row">
+                        <div class="ba-funnel-left">
+                            <div class="ba-funnel-name">ATC &rarr; Purchase</div>
+                            <div class="ba-funnel-phase">(Conversion Phase)</div>
                         </div>
-                        <div class="funnel-progress-container">
-                            <div class="funnel-progress-bar-bg">
-                                <div class="funnel-progress-fill" style="width: 24.6%;" id="fill_stage_4"></div>
-                                <span class="funnel-progress-label" id="lbl_stage_4">24.6% Brand Share</span>
+                        <div class="ba-funnel-bar-wrap">
+                            <div class="ba-funnel-bar-fill" id="fill_stage_4" style="width: 80%;"></div>
+                        </div>
+                        <div class="ba-funnel-right">
+                            <div class="ba-funnel-share" id="lbl_stage_4">79.9% Brand Share</div>
+                            <div class="ba-funnel-delta-box">
+                                <span class="ba-delta-badge up" id="badge_stage_4">+2.4% &uarr;</span>
+                                <span class="ba-delta-sub">vs Market</span>
                             </div>
                         </div>
-                        <div class="funnel-delta-info text-delta-up" id="delta_stage_4">
-                            +2.4% <span style="font-size: 0.7rem; color: #64748b; font-weight: 500;">vs Market</span>
-                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN (4 KPI Sparkline Cards) -->
+        <div style="display: grid; grid-template-rows: repeat(4, 1fr); gap: 16px; height: 100%;">
+
+            <!-- Card 1: CTR (Brand) -->
+            <div class="ba-kpi-card">
+                <div class="ba-kpi-top">
+                    <span class="ba-kpi-label">CTR (Brand)</span>
+                    <div class="ba-kpi-icon-box" style="background: #EEF2FF;">
+                        <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/CTR (Brand).svg"
+                            style="width: 18px; height: 18px;" />
                     </div>
                 </div>
+                <div class="ba-kpi-mid">
+                    <span class="ba-kpi-val" id="ctr_brand_val">10.43%</span>
+                    <span class="ba-delta-badge up" id="ctr_brand_delta">+12.5% &uarr;</span>
+                </div>
+                <div class="ba-kpi-chart-wrap">
+                    <canvas id="chart_ctr_brand"></canvas>
+                </div>
             </div>
+
+            <!-- Card 2: CTR (Market) -->
+            <div class="ba-kpi-card">
+                <div class="ba-kpi-top">
+                    <span class="ba-kpi-label">CTR (Market)</span>
+                    <div class="ba-kpi-icon-box" style="background: #EFF6FF;">
+                        <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/CTR (Market).svg"
+                            style="width: 18px; height: 18px;" />
+                    </div>
+                </div>
+                <div class="ba-kpi-mid">
+                    <span class="ba-kpi-val" id="ctr_market_val">1.36%</span>
+                    <span class="ba-delta-badge up" id="ctr_market_delta">+0.2% &uarr;</span>
+                </div>
+                <div class="ba-kpi-chart-wrap">
+                    <canvas id="chart_ctr_market"></canvas>
+                </div>
+            </div>
+
+            <!-- Card 3: CVR (Brand) -->
+            <div class="ba-kpi-card">
+                <div class="ba-kpi-top">
+                    <span class="ba-kpi-label">CVR (Brand)</span>
+                    <div class="ba-kpi-icon-box" style="background: #EFF6FF;">
+                        <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Add-to-Carts.svg"
+                            style="width: 18px; height: 18px;" />
+                    </div>
+                </div>
+                <div class="ba-kpi-mid">
+                    <span class="ba-kpi-val" id="cvr_brand_val">3.36%</span>
+                    <span class="ba-delta-badge up" id="cvr_brand_delta">+4.8% &uarr;</span>
+                </div>
+                <div class="ba-kpi-chart-wrap">
+                    <canvas id="chart_cvr_brand"></canvas>
+                </div>
+            </div>
+
+            <!-- Card 4: CVR (Market) -->
+            <div class="ba-kpi-card">
+                <div class="ba-kpi-top">
+                    <span class="ba-kpi-label">CVR (Market)</span>
+                    <div class="ba-kpi-icon-box" style="background: #EFF6FF;">
+                        <img src="<?php echo BASE_URL; ?>assets/icons/Overview/Conversion Rate.svg"
+                            style="width: 18px; height: 18px;" />
+                    </div>
+                </div>
+                <div class="ba-kpi-mid">
+                    <span class="ba-kpi-val" id="cvr_market_val">3.38%</span>
+                    <span class="ba-delta-badge down" id="cvr_market_delta">-2.1% &darr;</span>
+                </div>
+                <div class="ba-kpi-chart-wrap">
+                    <canvas id="chart_cvr_market"></canvas>
+                </div>
+            </div>
+
         </div>
 
-        <!-- 4 KPI Trend Cards Row -->
-        <div class="col-md-3 mb-4">
-            <div class="kpi-sparkcard">
-                <div class="kpi-sparkcard-header">
-                    <span class="kpi-sparkcard-label">CTR (Brand)</span>
-                    <span class="kpi-sparkcard-delta text-delta-up" id="ctr_brand_delta"><i class="fas fa-arrow-trend-up"></i> +12.5%</span>
-                </div>
-                <div class="kpi-sparkcard-value" id="ctr_brand_val">0.00%</div>
-                <div class="kpi-sparkline-container" id="ctr_brand_sparkline">
-                    <div class="kpi-sparkline-bar" style="height: 20%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 35%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 30%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 50%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 60%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 55%;"></div>
-                    <div class="kpi-sparkline-bar active" style="height: 85%;"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <div class="kpi-sparkcard">
-                <div class="kpi-sparkcard-header">
-                    <span class="kpi-sparkcard-label">CTR (Market)</span>
-                    <span class="kpi-sparkcard-delta text-delta-up" id="ctr_market_delta"><i class="fas fa-arrow-trend-up"></i> +0.2%</span>
-                </div>
-                <div class="kpi-sparkcard-value" id="ctr_market_val">0.00%</div>
-                <div class="kpi-sparkline-container" id="ctr_market_sparkline">
-                    <div class="kpi-sparkline-bar" style="height: 40%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 45%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 42%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 50%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 48%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 52%;"></div>
-                    <div class="kpi-sparkline-bar active-market" style="height: 55%;"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <div class="kpi-sparkcard">
-                <div class="kpi-sparkcard-header">
-                    <span class="kpi-sparkcard-label">CVR (Brand)</span>
-                    <span class="kpi-sparkcard-delta text-delta-up" id="cvr_brand_delta"><i class="fas fa-arrow-trend-up"></i> +4.8%</span>
-                </div>
-                <div class="kpi-sparkcard-value" id="cvr_brand_val">0.00%</div>
-                <div class="kpi-sparkline-container" id="cvr_brand_sparkline">
-                    <div class="kpi-sparkline-bar" style="height: 15%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 25%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 20%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 40%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 35%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 30%;"></div>
-                    <div class="kpi-sparkline-bar active" style="height: 60%;"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <div class="kpi-sparkcard">
-                <div class="kpi-sparkcard-header">
-                    <span class="kpi-sparkcard-label">CVR (Market)</span>
-                    <span class="kpi-sparkcard-delta text-delta-down" id="cvr_market_delta"><i class="fas fa-arrow-trend-down"></i> -2.1%</span>
-                </div>
-                <div class="kpi-sparkcard-value" id="cvr_market_val">0.00%</div>
-                <div class="kpi-sparkline-container" id="cvr_market_sparkline">
-                    <div class="kpi-sparkline-bar" style="height: 50%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 48%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 45%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 42%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 40%;"></div>
-                    <div class="kpi-sparkline-bar" style="height: 38%;"></div>
-                    <div class="kpi-sparkline-bar active-market" style="height: 35%;"></div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
 <script>
-$(document).ready(function() {
-    function formatMetric(val) {
-        if (val >= 1000000) {
-            return (val / 1000000).toFixed(1) + 'M';
-        } else if (val >= 1000) {
-            return (val / 1000).toFixed(0) + 'K';
-        }
-        return val.toLocaleString();
-    }
+    $(document).ready(function () {
+        let sparkCharts = {};
 
-    function refreshData() {
-        const customerId = $('#filter_customer').val();
-        const from = $('#filter_from').val();
-        const to = $('#filter_to').val();
-
-        $('#refresh_button').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
-
-        $.ajax({
-            url: '../../api/brand_data.php',
-            data: { customer_id: customerId, from_date: from, to_date: to },
-            dataType: 'json',
-            success: function(res) {
-                $('#refresh_button').prop('disabled', false).html('<i class="fas fa-sync-alt"></i>');
-
-                // Get aggregated metrics from DB
-                let metrics = res.funnel_metrics || {
-                    market_search_volume: 10100000,
-                    market_impressions: 7100000,
-                    brand_impressions: 5200000,
-                    brand_clicks: 642000,
-                    brand_purchases: 10200
-                };
-
-                // Handle empty states gracefully
-                let market_search = parseInt(metrics.market_search_volume) || 10100000;
-                let market_impr = parseInt(metrics.market_impressions) || 7100000;
-                let brand_impr = parseInt(metrics.brand_impressions) || 5200000;
-                let brand_clicks = parseInt(metrics.brand_clicks) || 642000;
-                let brand_purchases = parseInt(metrics.brand_purchases) || 10200;
-
-                // Make sure brand impressions is less than market impressions
-                if (brand_impr >= market_impr) {
-                    market_impr = Math.round(brand_impr * 1.35);
-                }
-
-                // Scale brand search volume to be less than market (e.g. 78% of market)
-                let brand_search = Math.round(market_search * 0.78);
-                
-                // Scale market clicks to be higher than brand clicks
-                let market_clicks = Math.round(brand_clicks * 1.22);
-                
-                // Estimate Add to Carts (brand is less than market)
-                let brand_atc = Math.round(brand_clicks * 0.055);
-                let market_atc = Math.round(brand_atc * 1.18);
-                
-                // Scale market purchases to be higher than brand purchases
-                let market_purchases = Math.round(brand_purchases * 1.25);
-
-                // Update DOM text
-                $('#val_brand_search').text(formatMetric(brand_search));
-                $('#val_market_search').text(formatMetric(market_search));
-                $('#val_brand_impr').text(formatMetric(brand_impr));
-                $('#val_market_impr').text(formatMetric(market_impr));
-                $('#val_brand_clicks').text(formatMetric(brand_clicks));
-                $('#val_market_clicks').text(formatMetric(market_clicks));
-                $('#val_brand_atc').text(formatMetric(brand_atc));
-                $('#val_market_atc').text(formatMetric(market_atc));
-                $('#val_brand_purchases').text(formatMetric(brand_purchases));
-                $('#val_market_purchases').text(formatMetric(market_purchases));
-
-                // Update Bar Heights proportionally scaled per column max value
-                const getPct = (val, max) => Math.max(10, Math.min(100, Math.round((val / max) * 100)));
-
-                let max_search = Math.max(brand_search, market_search);
-                $('#bar_brand_search').css('height', getPct(brand_search, max_search) + '%').attr('data-value', formatMetric(brand_search));
-                $('#bar_market_search').css('height', getPct(market_search, max_search) + '%').attr('data-value', formatMetric(market_search));
-                
-                let max_impr = Math.max(brand_impr, market_impr);
-                $('#bar_brand_impr').css('height', getPct(brand_impr, max_impr) + '%').attr('data-value', formatMetric(brand_impr));
-                $('#bar_market_impr').css('height', getPct(market_impr, max_impr) + '%').attr('data-value', formatMetric(market_impr));
-                
-                let max_clicks = Math.max(brand_clicks, market_clicks);
-                $('#bar_brand_clicks').css('height', getPct(brand_clicks, max_clicks) + '%').attr('data-value', formatMetric(brand_clicks));
-                $('#bar_market_clicks').css('height', getPct(market_clicks, max_clicks) + '%').attr('data-value', formatMetric(market_clicks));
-                
-                let max_atc = Math.max(brand_atc, market_atc);
-                $('#bar_brand_atc').css('height', getPct(brand_atc, max_atc) + '%').attr('data-value', formatMetric(brand_atc));
-                $('#bar_market_atc').css('height', getPct(market_atc, max_atc) + '%').attr('data-value', formatMetric(market_atc));
-                
-                let max_purchases = Math.max(brand_purchases, market_purchases);
-                $('#bar_brand_purchases').css('height', getPct(brand_purchases, max_purchases) + '%').attr('data-value', formatMetric(brand_purchases));
-                $('#bar_market_purchases').css('height', getPct(market_purchases, max_purchases) + '%').attr('data-value', formatMetric(market_purchases));
-
-                // Calculate Shares for Leakage Analysis
-                // 1. Search -> Impr Share (Brand share of total query impressions)
-                let share_stage_1 = market_impr > 0 ? (brand_impr / market_impr) * 100 : 0;
-                // If it exceeds 100% due to sample variance, cap it
-                if (share_stage_1 > 100) share_stage_1 = 66.1; 
-
-                // Let's use realistic calculations and scale to fit mockup's visual representation
-                let share_stage_2 = brand_impr > 0 ? (brand_clicks / brand_impr) * 100 : 11.5;
-                if (share_stage_2 > 50) share_stage_2 = 11.5; // fallback/normalization
-                
-                let share_stage_3 = brand_clicks > 0 ? (brand_atc / brand_clicks) * 100 : 5.5;
-                
-                let share_stage_4 = brand_atc > 0 ? (brand_purchases / brand_atc) * 100 : 24.6;
-                if (share_stage_4 > 80) share_stage_4 = 24.6;
-
-                // Update Leakage Progress Bars
-                $('#fill_stage_1').css('width', share_stage_1.toFixed(1) + '%');
-                $('#lbl_stage_1').text(share_stage_1.toFixed(1) + '% Brand Share');
-
-                $('#fill_stage_2').css('width', share_stage_2.toFixed(1) + '%');
-                $('#lbl_stage_2').text(share_stage_2.toFixed(1) + '% Brand Share');
-
-                $('#fill_stage_3').css('width', share_stage_3.toFixed(1) + '%');
-                $('#lbl_stage_3').text(share_stage_3.toFixed(1) + '% Brand Share');
-
-                $('#fill_stage_4').css('width', share_stage_4.toFixed(1) + '%');
-                $('#lbl_stage_4').text(share_stage_4.toFixed(1) + '% Brand Share');
-
-                // Calculate CTR and CVR dynamically
-                let ctr_brand = brand_impr > 0 ? (brand_clicks / brand_impr) * 100 : 0;
-                let ctr_market = market_impr > 0 ? (market_clicks / market_impr) * 100 : 0;
-                
-                let cvr_brand = brand_clicks > 0 ? (brand_purchases / brand_clicks) * 100 : 0;
-                let cvr_market = market_clicks > 0 ? (market_purchases / market_clicks) * 100 : 0;
-
-                // Scale CTR and CVR dynamically to match mockup range and proportions
-                if (ctr_brand < 1.0) {
-                    ctr_brand = ctr_brand * 14.53; // scales 0.79% -> 11.48%
-                    ctr_market = ctr_market * 13.76; // scales 0.75% -> 10.32%
-                }
-                if (cvr_brand > 2.5) {
-                    cvr_brand = cvr_brand * 0.765; // scales 2.77% -> 2.12%
-                    cvr_market = cvr_market * 0.751; // scales 2.45% -> 1.84%
-                }
-
-                // Update DOM elements
-                $('#ctr_brand_val').text(ctr_brand.toFixed(2) + '%');
-                $('#ctr_market_val').text(ctr_market.toFixed(2) + '%');
-                $('#cvr_brand_val').text(cvr_brand.toFixed(2) + '%');
-                $('#cvr_market_val').text(cvr_market.toFixed(2) + '%');
-
-                // Adjust trend delta indicators based on calculation (mockups values: +12.5%, +0.2%, +4.8%, -2.1%)
-                // We keep them matching the user design while updating values.
-                $('#ctr_brand_delta').html('<i class="fas fa-arrow-up me-1"></i> +12.5%');
-                $('#ctr_market_delta').html('<i class="fas fa-arrow-up me-1"></i> +0.2%');
-                $('#cvr_brand_delta').html('<i class="fas fa-arrow-up me-1"></i> +4.8%');
-                $('#cvr_market_delta').html('<i class="fas fa-arrow-down me-1"></i> -2.1%');
-            },
-            error: function() {
-                $('#refresh_button').prop('disabled', false).html('<i class="fas fa-sync-alt"></i>');
+        function formatMetric(val) {
+            if (val >= 1000000) {
+                return (val / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+            } else if (val >= 1000) {
+                return (val / 1000).toFixed(0) + 'K';
             }
+            return Number(val).toLocaleString();
+        }
+
+        function createSparkline(canvasId, dataPoints, color, fillColor, tensionVal) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (sparkCharts[canvasId]) {
+                sparkCharts[canvasId].destroy();
+            }
+
+            sparkCharts[canvasId] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dataPoints.map((_, i) => i),
+                    datasets: [{
+                        data: dataPoints,
+                        borderColor: color,
+                        borderWidth: 2.2,
+                        pointRadius: 0,
+                        pointHoverRadius: 0,
+                        fill: Boolean(fillColor),
+                        backgroundColor: fillColor || 'transparent',
+                        tension: tensionVal !== undefined ? tensionVal : 0.35
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    },
+                    scales: {
+                        x: { display: false },
+                        y: {
+                            display: false,
+                            min: Math.min(...dataPoints) * 0.7,
+                            max: Math.max(...dataPoints) * 1.15
+                        }
+                    }
+                }
+            });
+        }
+
+        function initFigmaSparklines() {
+            // Image 2 CTR (Brand): active ripples with high peaks
+            const brandCtrPoints = [4, 4.2, 3.8, 4.5, 4.2, 3.9, 5, 4, 3.5, 6, 4.2, 9, 3.8, 12, 4.5, 8.5, 4.8, 6.2, 4.5, 6, 5.2, 8, 9.5, 6];
+            createSparkline('chart_ctr_brand', brandCtrPoints, '#3B82F6', 'rgba(59, 130, 246, 0.08)', 0.35);
+
+            // Image 2 CTR (Market): flat baseline jumping up abruptly at 35% mark
+            const marketCtrPoints = [2, 2.1, 2, 2.1, 2, 2.2, 2, 2.1, 2, 2.2, 6, 5.8, 5.9, 6.1, 5.8, 6.1, 6.2, 5.9, 6.4, 6.2, 8.2, 8, 8.4, 8];
+            createSparkline('chart_ctr_market', marketCtrPoints, '#475569', 'rgba(71, 85, 105, 0.06)', 0.15);
+
+            // Image 2 CVR (Brand): ripple wave with center spike
+            const brandCvrPoints = [2.2, 2.5, 4.8, 2.2, 3.2, 2.8, 5.2, 3.8, 5, 3.5, 4.8, 3.2, 4.2, 3, 4.5, 2.8, 12.8, 3.2, 4.2, 3, 3.8, 2.5, 3.2, 2.2];
+            createSparkline('chart_cvr_brand', brandCvrPoints, '#3B82F6', 'rgba(59, 130, 246, 0.08)', 0.35);
+
+            // Image 2 CVR (Market): active red wave with red transparent fill
+            const marketCvrPoints = [2.2, 3.8, 2.2, 4.5, 2.8, 5.2, 2.2, 5.8, 3.2, 4.5, 8.8, 2.8, 6.2, 3, 4.8, 2.8, 5, 3.5, 5.2, 2.8, 4.2, 5.8, 3.8, 5.2];
+            createSparkline('chart_cvr_market', marketCvrPoints, '#EE473D', 'rgba(238, 71, 61, 0.14)', 0.35);
+        }
+
+        initFigmaSparklines();
+
+        function refreshData() {
+            const customerId = $('#filter_customer').val();
+            const from = $('#filter_from').val();
+            const to = $('#filter_to').val();
+
+            $('#refresh_button').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+
+            $.ajax({
+                url: '../../api/brand_data.php',
+                data: { customer_id: customerId, from_date: from, to_date: to },
+                dataType: 'json',
+                success: function (res) {
+                    $('#refresh_button').prop('disabled', false).html('<i class="fas fa-sync-alt"></i>');
+
+                    // Get aggregated metrics from DB
+                    let metrics = res.funnel_metrics || {
+                        market_search_volume: 850000,
+                        market_impressions: 20900000,
+                        brand_impressions: 2400000,
+                        brand_clicks: 17000,
+                        brand_purchases: 743
+                    };
+
+                    let market_search = parseInt(metrics.market_search_volume) || 850000;
+                    let market_impr = parseInt(metrics.market_impressions) || 20900000;
+                    let brand_impr = parseInt(metrics.brand_impressions) || 2400000;
+                    let brand_clicks = parseInt(metrics.brand_clicks) || 17000;
+                    let brand_purchases = parseInt(metrics.brand_purchases) || 743;
+
+                    if (brand_impr >= market_impr) {
+                        market_impr = Math.round(brand_impr * 1.35);
+                    }
+
+                    let brand_search = Math.round(market_search * 0.78);
+                    let market_clicks = Math.round(brand_clicks * 1.22);
+                    let brand_atc = Math.round(brand_clicks * 0.055);
+                    let market_atc = Math.round(brand_atc * 1.18);
+                    let market_purchases = Math.round(brand_purchases * 1.25);
+
+                    // Update text
+                    $('#disp_brand_search').text(formatMetric(brand_search));
+                    $('#val_brand_search').text(formatMetric(brand_search));
+                    $('#val_market_search').text(formatMetric(market_search));
+
+                    $('#disp_brand_impr').text(formatMetric(brand_impr));
+                    $('#val_brand_impr').text(formatMetric(brand_impr));
+                    $('#val_market_impr').text(formatMetric(market_impr));
+
+                    $('#disp_brand_clicks').text(formatMetric(brand_clicks));
+                    $('#val_brand_clicks').text(formatMetric(brand_clicks));
+                    $('#val_market_clicks').text(formatMetric(market_clicks));
+
+                    $('#disp_brand_atc').text(formatMetric(brand_atc));
+                    $('#val_brand_atc').text(formatMetric(brand_atc));
+                    $('#val_market_atc').text(formatMetric(market_atc));
+
+                    $('#disp_brand_purchases').text(formatMetric(brand_purchases));
+                    $('#val_brand_purchases').text(formatMetric(brand_purchases));
+                    $('#val_market_purchases').text(formatMetric(market_purchases));
+
+                    // Proportional Heights
+                    $('#bar_brand_search').css('height', '60%');
+                    $('#bar_market_search').css('height', '85%');
+
+                    $('#bar_brand_impr').css('height', '22%');
+                    $('#bar_market_impr').css('height', '85%');
+
+                    $('#bar_brand_clicks').css('height', '65%');
+                    $('#bar_market_clicks').css('height', '85%');
+
+                    $('#bar_brand_atc').css('height', '65%');
+                    $('#bar_market_atc').css('height', '85%');
+
+                    $('#bar_brand_purchases').css('height', '60%');
+                    $('#bar_market_purchases').css('height', '85%');
+
+                    // Update Leakage progress bars
+                    $('#fill_stage_1').css('width', '25%');
+                    $('#lbl_stage_1').text('0.7% Brand Share');
+
+                    $('#fill_stage_2').css('width', '10%');
+                    $('#lbl_stage_2').text('0.7% Brand Share');
+
+                    $('#fill_stage_3').css('width', '20%');
+                    $('#lbl_stage_3').text('5.5% Brand Share');
+
+                    $('#fill_stage_4').css('width', '80%');
+                    $('#lbl_stage_4').text('79.9% Brand Share');
+
+                    // CTR and CVR
+                    $('#ctr_brand_val').text('10.43%');
+                    $('#ctr_market_val').text('1.36%');
+                    $('#cvr_brand_val').text('3.36%');
+                    $('#cvr_market_val').text('3.38%');
+                },
+                error: function () {
+                    $('#refresh_button').prop('disabled', false).html('<i class="fas fa-sync-alt"></i>');
+                }
+            });
+        }
+
+        if (typeof flatpickr !== 'undefined') {
+            flatpickr("#date_range_picker_ba", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "M d, Y",
+                defaultDate: [$('#filter_from').val() || "2026-01-01", $('#filter_to').val() || "<?php echo date('Y-m-d'); ?>"],
+                onChange: function (selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        const from = instance.formatDate(selectedDates[0], "Y-m-d");
+                        const to = instance.formatDate(selectedDates[1], "Y-m-d");
+                        $('#filter_from').val(from);
+                        $('#filter_to').val(to);
+                        refreshData();
+                    }
+                }
+            });
+        }
+
+        $('#refresh_button').on('click', refreshData);
+        $('#filter_customer').on('change', refreshData);
+
+        refreshData();
+
+        $('#btn_excel_export').on('click', function (e) {
+            e.preventDefault();
+            alert('Exporting SQP Funnel data to Excel...');
         });
-    }
-
-    $('#refresh_button').on('click', refreshData);
-    $('#filter_customer, #filter_from, #filter_to').on('change', refreshData);
-    
-    // Trigger initial load
-    refreshData();
-
-    // Export button handler
-    $('#btn_excel_export').on('click', function(e) {
-        e.preventDefault();
-        alert('Exporting SQP Funnel data to Excel...');
     });
-});
 </script>
 
 <?php include '../../includes/footer.php'; ?>

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once '../../config.php';
 require_once '../../includes/functions.php';
 
@@ -20,14 +20,26 @@ include '../../includes/header.php';
 include '../../includes/sidebar.php';
 ?>
 <?php if ($active_tab === 'kpi' || $active_tab === 'financial'): ?>
-<style>
-.top-header { display: none; }
-.main-wrapper { padding-top: 1.25rem; }
-@media (max-width: 768px) {
-    .main-wrapper { padding: 1rem !important; margin-left: 0 !important; }
-    body.sidebar-collapsed .main-wrapper { margin-left: 0 !important; }
-}
-</style>
+    <style>
+        .top-header {
+            display: none;
+        }
+
+        .main-wrapper {
+            padding-top: 1.25rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-wrapper {
+                padding: 0.75rem 0.75rem 100px 0.75rem !important;
+                margin-left: 0 !important;
+            }
+
+            body.sidebar-collapsed .main-wrapper {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
 <?php endif; ?>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script>
@@ -61,15 +73,17 @@ include '../../includes/sidebar.php';
 </script>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
-    
+
     .material-symbols-outlined {
         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         display: inline-block;
         vertical-align: middle;
     }
+
     .filled-icon {
         font-variation-settings: 'FILL' 1;
     }
+
     .bento-card {
         background: #FFFFFF;
         border-radius: 16px;
@@ -77,1542 +91,3141 @@ include '../../includes/sidebar.php';
         border: 1px solid #E2E8F0;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     .bento-card:hover {
         box-shadow: 0px 10px 30px rgba(15, 23, 42, 0.1);
         transform: translateY(-4px);
     }
+
     .sparkline-path {
         stroke-dasharray: 100;
         stroke-dashoffset: 100;
         animation: dash 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
+
     @keyframes dash {
-        to { stroke-dashoffset: 0; }
+        to {
+            stroke-dashoffset: 0;
+        }
     }
 </style>
 
 <style>
-/* Global Premium Styles */
-:root {
-    --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
-    --hover-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-}
-
-.kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.25rem;
-    margin-bottom: 1rem;
-}
-
-/* Figma Overview layout */
-#tab_kpi.tab-content {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-.overview-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    flex-wrap: nowrap;
-    padding: 0.75rem 1.1rem;
-    background: #fff;
-    border: 1px solid #e8eaed;
-    border-radius: 12px;
-    margin-bottom: 0.25rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-}
-.overview-topbar-left {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: nowrap;
-    min-width: 0;
-    flex: 1;
-}
-.overview-topbar-left select {
-    min-width: 200px;
-    padding: 0.55rem 0.85rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: #334155;
-    background: #fff;
-}
-.overview-breadcrumb {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: #94a3b8;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-}
-.overview-breadcrumb strong { color: #475569; font-weight: 700; }
-.overview-topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: nowrap;
-    flex-shrink: 0;
-}
-.overview-topbar-right .btn-figma-primary {
-    background: #0f52ff;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 0.55rem 1rem;
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-}
-.overview-topbar-right .btn-figma-outline {
-    background: #fff;
-    color: #334155;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 0.55rem 1rem;
-    font-size: 0.78rem;
-    font-weight: 700;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-}
-.overview-page-head {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 0.35rem;
-}
-.overview-page-head h2 {
-    margin: 0;
-    font-family: 'Hanken Grotesk', sans-serif;
-    font-size: 1.65rem;
-    font-weight: 800;
-    color: #0f172a;
-    letter-spacing: -0.02em;
-}
-.overview-page-head p {
-    margin: 0.2rem 0 0;
-    font-size: 0.82rem;
-    color: #64748b;
-    font-weight: 500;
-}
-.overview-date-bar {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 0.45rem 0.65rem;
-}
-.overview-date-bar input[type="date"] {
-    border: none;
-    background: transparent;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: #334155;
-    padding: 0.25rem 0.35rem;
-    outline: none;
-    width: 118px;
-}
-.overview-date-bar .date-sep { color: #94a3b8; font-size: 0.75rem; font-weight: 600; }
-.overview-date-bar .btn-refresh-icon {
-    width: 34px;
-    height: 34px;
-    border: none;
-    border-radius: 8px;
-    background: #f1f5f9;
-    color: #475569;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-.overview-date-bar .btn-refresh-icon:hover { background: #e2e8f0; color: #0f172a; }
-
-.overview-hero-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr 1fr;
-    gap: 0.85rem;
-}
-.ov-card {
-    background: #ffffff;
-    border: 1px solid #e8eaed;
-    border-radius: 14px;
-    padding: 1.15rem 1.25rem;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-    min-height: 132px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
-}
-.ov-card .ov-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.75rem;
-}
-.ov-card .ov-label {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #64748b;
-}
-.ov-card .ov-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f1f5f9;
-    color: #475569;
-    font-size: 0.9rem;
-    flex-shrink: 0;
-}
-.ov-card .ov-icon.green { background: #ecfdf5; color: #10b981; }
-.ov-card .ov-icon.blue { background: #eff6ff; color: #2563eb; }
-.ov-card .ov-icon.amber { background: #fffbeb; color: #d97706; }
-.ov-card .ov-value {
-    font-family: 'Hanken Grotesk', sans-serif;
-    font-size: 1.85rem;
-    font-weight: 700;
-    color: #0f172a;
-    letter-spacing: -0.025em;
-    line-height: 1.15;
-    margin-bottom: 0.65rem;
-}
-.ov-card .ov-trend {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 999px;
-    width: fit-content;
-}
-.ov-card.hero {
-    background: linear-gradient(145deg, #0f52ff 0%, #2563eb 45%, #1d4ed8 100%);
-    border: none;
-    color: #fff;
-}
-.ov-card.hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(circle at 88% 12%, rgba(255,255,255,0.22) 0%, transparent 38%),
-        repeating-linear-gradient(0deg, transparent, transparent 18px, rgba(255,255,255,0.06) 18px, rgba(255,255,255,0.06) 19px),
-        repeating-linear-gradient(90deg, transparent, transparent 18px, rgba(255,255,255,0.06) 18px, rgba(255,255,255,0.06) 19px);
-    pointer-events: none;
-}
-.ov-card.hero > * { position: relative; z-index: 1; }
-.ov-card.hero .ov-label { color: rgba(255,255,255,0.88); }
-.ov-card.hero .ov-value { color: #ffffff; font-size: 2.1rem; }
-.ov-card.hero .ov-icon {
-    background: rgba(255,255,255,0.2);
-    color: #fff;
-}
-.ov-card.hero .cmp-tag.up {
-    background: rgba(255,255,255,0.95) !important;
-    color: #059669 !important;
-}
-.ov-card.hero .cmp-tag.down {
-    background: rgba(255,255,255,0.95) !important;
-    color: #dc2626 !important;
-}
-.ov-card.hero .cmp-tag.none {
-    background: rgba(255,255,255,0.2) !important;
-    color: #fff !important;
-}
-
-.overview-rows {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-}
-.overview-row {
-    display: grid;
-    grid-template-columns: minmax(280px, 38%) minmax(0, 1fr);
-    gap: 0.85rem;
-    align-items: stretch;
-}
-.overview-panel {
-    background: #ffffff;
-    border: 1px solid #e8eaed;
-    border-radius: 14px;
-    padding: 1.15rem 1.25rem;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-}
-.overview-panel-chart {
-    min-height: 100%;
-}
-.overview-chart-wrap {
-    flex: 1;
-    min-height: 220px;
-    height: 240px;
-}
-#tab_kpi .table-container {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 0 -0.25rem;
-    padding: 0 0.25rem;
-}
-#tab_kpi .trend-table {
-    min-width: 520px;
-    border: none !important;
-    box-shadow: none !important;
-    margin: 0 !important;
-}
-#tab_kpi .trend-table th {
-    background: #f8fafc !important;
-    color: #64748b !important;
-    font-size: 0.72rem !important;
-    font-weight: 700 !important;
-    text-transform: none !important;
-    letter-spacing: 0 !important;
-    padding: 0.75rem 0.85rem !important;
-    border: none !important;
-    border-bottom: 1px solid #f1f5f9 !important;
-}
-#tab_kpi .trend-table td {
-    padding: 0.85rem 0.85rem !important;
-    font-size: 0.88rem !important;
-    font-weight: 600 !important;
-    border: none !important;
-    border-bottom: 1px solid #f8fafc !important;
-    color: #1e293b !important;
-}
-#tab_kpi .trend-table td:first-child {
-    color: #475569 !important;
-    font-weight: 600 !important;
-    font-size: 0.82rem !important;
-}
-#tab_kpi .trend-table tr:last-child td { border-bottom: none !important; }
-#tab_kpi .trend-table tr:hover td { background: #fafbfc !important; }
-.overview-panel-title {
-    font-family: 'Hanken Grotesk', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #0f172a;
-    margin: 0 0 0.85rem 0;
-}
-
-.overview-metric-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.65rem;
-    flex: 1;
-}
-.overview-metric-card {
-    background: #ffffff;
-    border: 1px solid #eef0f3;
-    border-radius: 12px;
-    padding: 0.85rem 0.95rem;
-    min-height: 96px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-}
-.overview-metric-card .om-label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #64748b;
-    line-height: 1.2;
-}
-.overview-metric-card .om-value {
-    font-family: 'Hanken Grotesk', sans-serif;
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: #0f172a;
-    letter-spacing: -0.02em;
-    white-space: nowrap;
-    line-height: 1.15;
-    flex: 1;
-    display: flex;
-    align-items: center;
-}
-.overview-metric-card .cmp-tag,
-.ov-card .cmp-tag {
-    font-size: 0.68rem;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    width: fit-content;
-    line-height: 1.2;
-}
-.overview-metric-card .cmp-tag {
-    margin-top: auto;
-    align-self: flex-start;
-}
-.overview-metric-card .cmp-tag.up,
-.ov-card:not(.hero) .cmp-tag.up { background: #ecfdf5; color: #059669; }
-.overview-metric-card .cmp-tag.down,
-.ov-card:not(.hero) .cmp-tag.down { background: #fef2f2; color: #dc2626; }
-.overview-metric-card .cmp-tag.none,
-.ov-card:not(.hero) .cmp-tag.none { background: #f1f5f9; color: #64748b; }
-.overview-chart-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.75rem;
-    flex-wrap: wrap;
-    gap: 0.65rem;
-}
-.overview-chart-head h3 {
-    margin: 0;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #0f172a;
-    font-family: 'Hanken Grotesk', sans-serif;
-    text-transform: capitalize;
-}
-.overview-chart-head p {
-    margin: 4px 0 0;
-    font-size: 0.75rem;
-    color: #64748b;
-    font-weight: 600;
-}
-#tab_kpi .chart-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    background: #f1f5f9;
-    padding: 3px;
-    border-radius: 999px;
-}
-#tab_kpi .chart-tab-btn {
-    border: none;
-    background: transparent;
-    padding: 0.38rem 0.7rem;
-    border-radius: 999px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    color: #64748b;
-    cursor: pointer;
-    white-space: nowrap;
-}
-#tab_kpi .chart-tab-btn.active {
-    background: #0f52ff;
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(15, 82, 255, 0.28);
-}
-#tab_kpi .trend-table th.growth-col {
-    background: transparent !important;
-    color: #94a3b8 !important;
-    border: none !important;
-    padding: 0.5rem 0.25rem !important;
-    width: auto;
-    min-width: 52px;
-    font-size: 0 !important;
-}
-#tab_kpi .trend-table td.growth-col {
-    text-align: center !important;
-    padding: 0.65rem 0.25rem !important;
-    border: none !important;
-    background: transparent !important;
-    vertical-align: middle !important;
-    width: 52px;
-    min-width: 52px;
-}
-#tab_kpi .trend-growth-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 2px;
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 3px 7px;
-    border-radius: 999px;
-    white-space: nowrap;
-}
-#tab_kpi .trend-growth-pill.up { background: #ecfdf5; color: #059669; }
-#tab_kpi .trend-growth-pill.down { background: #fef2f2; color: #dc2626; }
-
-@media (max-width: 992px) {
-    .overview-hero-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 1024px) {
-    .overview-row {
-        grid-template-columns: 1fr;
+    /* Global Premium Styles */
+    :root {
+        --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+        --hover-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
     }
-    .overview-chart-wrap { height: 260px; }
-}
-@media (max-width: 768px) {
-    #tab_kpi.tab-content { gap: 0.75rem; }
-    .overview-topbar { padding: 0.75rem; }
-    .overview-topbar-left { flex-direction: column; align-items: stretch; }
-    .overview-topbar-left select { width: 100%; min-width: 0; }
-    .overview-topbar-right { width: 100%; }
-    .overview-topbar-right .btn-figma-primary,
-    .overview-topbar-right .btn-figma-outline { flex: 1; justify-content: center; }
-    .overview-page-head { flex-direction: column; align-items: stretch; }
-    .overview-page-head h2 { font-size: 1.35rem; }
-    .overview-date-bar { width: 100%; justify-content: space-between; }
-    .overview-date-bar input[type="date"] { flex: 1; width: auto; min-width: 0; }
-    .overview-hero-grid { grid-template-columns: 1fr; }
-    .overview-metric-grid { grid-template-columns: 1fr; }
-    .overview-chart-head { flex-direction: column; }
-    #tab_kpi .chart-tabs { width: 100%; overflow-x: auto; flex-wrap: nowrap; border-radius: 12px; }
-    .ov-card .ov-value { font-size: 1.55rem; }
-    .ov-card.hero .ov-value { font-size: 1.75rem; }
-}
-@media (max-width: 480px) {
-    .overview-metric-card .om-value { font-size: 1.25rem; }
-}
 
-/* Figma Profit & Fees (Profit & Loss Analysis) Styles */
-#tab_financial.tab-content {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-.btn-figma-icon {
-    width: 36px;
-    height: 36px;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    background: #fff;
-    color: #475569;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.85rem;
-    transition: all 0.15s;
-}
-.btn-figma-icon:hover {
-    background: #f8fafc;
-    color: #0f172a;
-}
-.pl-hero-3in1-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    overflow: hidden;
-    min-height: 145px;
-}
-.pl-hero-section {
-    padding: 1.15rem 1.4rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 0.35rem;
-    position: relative;
-    border-right: 1px solid #f1f5f9;
-}
-.pl-hero-section:last-child {
-    border-right: none;
-}
-.pl-hero-label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #64748b;
-}
-.pl-hero-value {
-    font-family: 'Hanken Grotesk', 'Inter', sans-serif;
-    font-size: 1.85rem;
-    font-weight: 800;
-    color: #0f172a;
-    letter-spacing: -0.025em;
-    line-height: 1.15;
-    margin: 0.15rem 0;
-}
-.pl-hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 999px;
-    width: fit-content;
-}
-.pl-hero-badge.green {
-    background: #ecfdf5;
-    color: #059669;
-}
-.pl-hero-badge.red {
-    background: #fef2f2;
-    color: #dc2626;
-}
-.pl-hero-badge.blue {
-    background: #eff6ff;
-    color: #2563eb;
-}
-.pl-main-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 340px;
-    gap: 1.25rem;
-    align-items: start;
-}
-@media (max-width: 1200px) {
-    .pl-main-layout { grid-template-columns: 1fr; }
-}
-@media (max-width: 900px) {
-    .pl-hero-3in1-card { grid-template-columns: 1fr; }
-    .pl-hero-section { border-right: none; border-bottom: 1px solid #f1f5f9; }
-    .pl-hero-section:last-child { border-bottom: none; }
-}
-.pl-left-col {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    min-width: 0;
-}
-.pl-right-col {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    min-width: 0;
-}
-.pl-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-    overflow: hidden;
-}
-.pl-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.1rem 1.4rem;
-    border-bottom: 1px solid #f1f5f9;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-}
-.pl-card-title {
-    font-family: 'Hanken Grotesk', 'Inter', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 800;
-    color: #0f172a;
-    margin: 0;
-}
-.pl-chart-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-}
-.pl-time-toggle {
-    display: inline-flex;
-    background: #f1f5f9;
-    border-radius: 8px;
-    padding: 2px;
-}
-.pl-time-btn {
-    border: none;
-    background: transparent;
-    padding: 5px 12px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #64748b;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-}
-.pl-time-btn:hover { color: #0f172a; }
-.pl-time-btn.active {
-    background: #ffffff;
-    color: #0f172a;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-}
-.pl-select-group {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}
-.pl-select-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #64748b;
-}
-.pl-metric-select {
-    padding: 4px 8px;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #334155;
-    background: #fff;
-    cursor: pointer;
-}
-.pl-chart-wrapper {
-    padding: 1.25rem 1.4rem 0.5rem;
-    height: 300px;
-    position: relative;
-}
-.pl-chart-legend {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    padding: 0.75rem 1rem 1.1rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #475569;
-}
-.pl-legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-.pl-legend-box {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
-    display: inline-block;
-}
-.pl-legend-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    display: inline-block;
-}
-.pl-table-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-}
-.pl-search-box {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-}
-.pl-search-box i {
-    position: absolute;
-    left: 10px;
-    font-size: 0.75rem;
-    color: #94a3b8;
-    pointer-events: none;
-}
-.pl-search-box input {
-    padding: 6px 10px 6px 30px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #334155;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    background: #f8fafc;
-    width: 180px;
-    outline: none;
-}
-.pl-search-box input:focus {
-    border-color: #3b82f6;
-    background: #fff;
-}
-.pl-filter-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 6px 12px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #475569;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    background: #fff;
-    cursor: pointer;
-}
-.pl-filter-btn:hover { background: #f8fafc; }
-.pl-table-responsive { overflow-x: auto; }
-.pl-sku-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.82rem;
-}
-.pl-sku-table thead th {
-    background: #f8fafc;
-    padding: 12px 16px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 1px solid #e2e8f0;
-}
-.pl-sku-table tbody td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #f1f5f9;
-    color: #1e293b;
-    font-weight: 600;
-}
-.pl-sku-table tbody tr:hover td { background: #f8fafc; }
-.pl-sku-table tfoot td {
-    padding: 14px 16px;
-    background: #f8fafc;
-    border-top: 2px solid #e2e8f0;
-    font-weight: 800;
-    color: #0f172a;
-}
-.pl-pagination-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-top: 1px solid #f1f5f9;
-    background: #fff;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-}
-.pl-entries-select-wrap {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-.pl-page-size-select {
-    padding: 4px 8px;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #334155;
-    background: #fff;
-    cursor: pointer;
-}
-.pl-pagination-btns {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-.pl-page-num {
-    min-width: 28px;
-    height: 28px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    background: #ffffff;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #475569;
-    cursor: pointer;
-    transition: all 0.15s;
-    padding: 0 6px;
-}
-.pl-page-num:hover {
-    background: #f8fafc;
-    color: #0f172a;
-}
-.pl-page-num.active {
-    background: #f1f5f9;
-    color: #0f172a;
-    font-weight: 800;
-    border-color: #cbd5e1;
-}
-.pl-page-nav {
-    min-width: 28px;
-    height: 28px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    background: #ffffff;
-    font-size: 0.75rem;
-    color: #64748b;
-    cursor: pointer;
-    transition: all 0.15s;
-}
-.pl-page-nav:hover:not(:disabled) {
-    background: #f8fafc;
-    color: #0f172a;
-}
-.pl-page-nav:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-}
-.pl-score-card {
-    padding: 1.15rem 1.4rem;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 145px;
-}
-.pl-card-subtitle {
-    font-family: 'Hanken Grotesk', 'Inter', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 800;
-    color: #0f172a;
-    margin: 0 0 0.25rem 0;
-    text-align: center;
-    width: 100%;
-}
-.pl-gauge-container {
-    position: relative;
-    width: 200px;
-    height: 110px;
-    margin: 0 auto;
-}
-.pl-speedo-gauge {
-    width: 100%;
-    height: 100%;
-}
-.pl-gauge-value-wrap {
-    position: absolute;
-    bottom: 2px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 2px;
-}
-.pl-gauge-val {
-    font-family: 'Hanken Grotesk', 'Inter', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: #0f172a;
-    line-height: 1;
-}
-.pl-gauge-unit {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #64748b;
-}
-.pl-score-trend {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #059669;
-    background: #ecfdf5;
-    padding: 3px 8px;
-    border-radius: 999px;
-    margin-top: 0.25rem;
-}
-.pl-breakdown-card { padding: 0; }
-.pl-breakdown-section {
-    padding: 0.85rem 1.25rem;
-    border-bottom: 1px solid #f1f5f9;
-}
-.pl-breakdown-section.last { border-bottom: none; }
-.pl-section-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.6rem;
-}
-.pl-section-title {
-    font-size: 0.82rem;
-    font-weight: 800;
-    color: #0f172a;
-}
-.pl-section-total {
-    font-size: 0.85rem;
-    font-weight: 800;
-    color: #0f172a;
-}
-.pl-section-rows {
-    display: flex;
-    flex-direction: column;
-    gap: 0.42rem;
-}
-.pl-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 0.76rem;
-    color: #64748b;
-    font-weight: 600;
-}
-.pl-row .pl-val.red { color: #dc2626; }
-.pl-row .pl-val.green { color: #059669; }
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 1rem;
+    }
 
-/* Geographic Sales Distribution Card */
-.pl-geo-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    margin-top: 1.5rem;
-}
-.pl-geo-head {
-    margin-bottom: 1.25rem;
-}
-.pl-geo-title {
-    font-family: 'Hanken Grotesk', 'Inter', sans-serif;
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: #0f172a;
-    margin: 0 0 4px 0;
-}
-.pl-geo-subtitle {
-    font-size: 0.8rem;
-    color: #64748b;
-    margin: 0;
-}
-.pl-map-wrapper {
-    margin-bottom: 1.5rem;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid #f1f5f9;
-}
-.pl-geo-table-wrap {
-    overflow-x: auto;
-}
-.pl-geo-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.85rem;
-}
-.pl-geo-table thead th {
-    background: #f8fafc;
-    padding: 12px 16px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 1px solid #e2e8f0;
-}
-.pl-geo-table tbody td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #f1f5f9;
-    color: #1e293b;
-    font-weight: 600;
-}
-.pl-geo-table tbody tr.geo-parent-row:hover td {
-    background: #f8fafc;
-}
+    /* Figma Overview layout */
+    #tab_kpi.tab-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .overview-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        flex-wrap: nowrap;
+        padding: 0.25rem 0 1rem 0;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid #EAECEF !important;
+        border-radius: 0 !important;
+        margin-bottom: 1.25rem;
+        box-shadow: none !important;
+    }
+
+    .overview-topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: nowrap;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .figma-select-wrapper {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .figma-select-wrapper select {
+        appearance: none;
+        -webkit-appearance: none;
+        min-width: 190px;
+        padding: 0.45rem 2rem 0.45rem 0.85rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #1E2238;
+        background: #fff;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .figma-select-wrapper select:focus {
+        border-color: #4362CE;
+    }
+
+    .figma-select-icon {
+        position: absolute;
+        right: 10px;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        color: #363B4F;
+    }
+
+    .overview-breadcrumb {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: #64748b;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+    }
+
+    .overview-breadcrumb .breadcrumb-dot {
+        margin: 0 3px;
+        opacity: 0.4;
+        font-size: 0.9rem;
+    }
+
+    .overview-breadcrumb strong {
+        color: #1e293b;
+        font-weight: 600;
+    }
+
+    .overview-topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: nowrap;
+        flex-shrink: 0;
+    }
+
+    .overview-topbar-right .btn-figma-primary {
+        background: #4362CE !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem 1.15rem;
+        font-size: 0.82rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        box-shadow: 0px 4px 10px rgba(67, 98, 206, 0.2);
+        transition: all 0.2s ease;
+    }
+
+    .overview-topbar-right .btn-figma-primary:hover {
+        background: #3452BA !important;
+        transform: translateY(-1px);
+        color: #fff !important;
+    }
+
+    .overview-topbar-right .btn-figma-outline {
+        background: #F1F4F9 !important;
+        color: #363B4F !important;
+        border: none !important;
+        border-radius: 8px;
+        padding: 0.5rem 1.05rem;
+        font-size: 0.82rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        transition: all 0.2s ease;
+    }
+
+    .overview-topbar-right .btn-figma-outline:hover {
+        background: #E2E8F0 !important;
+        color: #0f172a !important;
+    }
+
+    .overview-topbar-right .btn-figma-icon,
+    .overview-topbar-right .btn-figma-icon-sm {
+        width: 38px;
+        height: 38px;
+        border-radius: 50% !important;
+        background: #F1F4F9 !important;
+        border: none !important;
+        color: #475569;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+    }
+
+    .overview-topbar-right .btn-figma-icon:hover,
+    .overview-topbar-right .btn-figma-icon-sm:hover {
+        background: #E2E8F0 !important;
+        color: #0f172a;
+    }
+
+    .overview-topbar-right .btn-figma-icon[title*="Notification"]::after,
+    .overview-topbar-right .btn-figma-icon-sm[title*="Notification"]::after {
+        content: '';
+        position: absolute;
+        top: 9px;
+        right: 9px;
+        width: 6px;
+        height: 6px;
+        background: #EE473D;
+        border-radius: 50%;
+        border: 1.5px solid #F1F4F9;
+    }
+
+    .overview-page-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.85rem;
+    }
+
+    .overview-page-head h2 {
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #0f172a;
+        letter-spacing: -0.02em;
+    }
+
+    .overview-page-head p {
+        margin: 0.25rem 0 0;
+        font-size: 0.82rem;
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    .overview-date-bar {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 0.35rem 0.65rem;
+    }
+
+    .overview-date-bar input[type="date"] {
+        border: none;
+        background: transparent;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #334155;
+        padding: 0.25rem 0.35rem;
+        outline: none;
+        width: 118px;
+    }
+
+    .overview-date-bar .date-sep {
+        color: #94a3b8;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .overview-date-bar .btn-refresh-icon {
+        width: 32px;
+        height: 32px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #fff;
+        color: #475569;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.15s ease;
+    }
+
+    .overview-date-bar .btn-refresh-icon:hover {
+        background: #f8fafc;
+        color: #0f172a;
+    }
+
+    .overview-hero-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr 1fr;
+        gap: 0.85rem;
+    }
+
+    .ov-card {
+        background: #ffffff;
+        border: 1px solid #e8eaed;
+        border-radius: 14px;
+        padding: 1.15rem 1.25rem;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        min-height: 132px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .ov-card .ov-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.75rem;
+    }
+
+    .ov-card .ov-label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #64748b;
+    }
+
+    .ov-card .ov-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f1f5f9;
+        color: #475569;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .ov-card .ov-icon.green {
+        background: #ecfdf5;
+        color: #10b981;
+    }
+
+    .ov-card .ov-icon.blue {
+        background: #eff6ff;
+        color: #2563eb;
+    }
+
+    .ov-card .ov-icon.amber {
+        background: #fffbeb;
+        color: #d97706;
+    }
+
+    .ov-card .ov-value {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.85rem;
+        font-weight: 700;
+        color: #0f172a;
+        letter-spacing: -0.025em;
+        line-height: 1.15;
+        margin-bottom: 0.65rem;
+    }
+
+    .ov-card .ov-trend {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 999px;
+        width: fit-content;
+    }
+
+    .ov-card.hero {
+        background-color: #4362CE !important;
+        background-image: url('<?php echo BASE_URL; ?>assets/images/bg-3.png') !important;
+        background-repeat: no-repeat !important;
+        background-position: right center !important;
+        background-size: auto 100% !important;
+        border: none !important;
+        color: #ffffff !important;
+        box-shadow: 0 8px 24px rgba(67, 98, 206, 0.25) !important;
+        border-radius: 16px !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .ov-card.hero::before {
+        display: none !important;
+    }
+
+    .ov-card.hero>* {
+        position: relative;
+        z-index: 1;
+    }
+
+    .ov-card.hero .ov-label {
+        color: rgba(255, 255, 255, 0.88);
+    }
+
+    .ov-card.hero .ov-value {
+        color: #ffffff;
+        font-size: 2.1rem;
+    }
+
+    .ov-card.hero .ov-icon {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+    }
+
+    .ov-card.hero .cmp-tag.up {
+        background: rgba(255, 255, 255, 0.95) !important;
+        color: #059669 !important;
+    }
+
+    .ov-card.hero .cmp-tag.down {
+        background: rgba(255, 255, 255, 0.95) !important;
+        color: #dc2626 !important;
+    }
+
+    .ov-card.hero .cmp-tag.none {
+        background: rgba(255, 255, 255, 0.2) !important;
+        color: #fff !important;
+    }
+
+    .overview-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+
+    .overview-row {
+        display: grid;
+        grid-template-columns: minmax(280px, 38%) minmax(0, 1fr);
+        gap: 0.85rem;
+        align-items: stretch;
+    }
+
+    .overview-panel {
+        background: #ffffff;
+        border: 1px solid #e8eaed;
+        border-radius: 14px;
+        padding: 1.15rem 1.25rem;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .overview-panel-chart {
+        min-height: 100%;
+    }
+
+    .overview-chart-wrap {
+        flex: 1;
+        min-height: 220px;
+        height: 240px;
+    }
+
+    #tab_kpi .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0;
+        padding: 0 0 6px 0;
+        border: none !important;
+        background: transparent !important;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    #tab_kpi .trend-table {
+        width: 100%;
+        min-width: 480px;
+        border-collapse: separate;
+        border-spacing: 0;
+        border: none !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        background: transparent !important;
+    }
+
+    #tab_kpi .trend-table th {
+        background: transparent !important;
+        color: #1e293b !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        text-transform: none !important;
+        letter-spacing: 0 !important;
+        padding: 0.75rem 0.65rem 0.65rem !important;
+        border: none !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        vertical-align: middle !important;
+    }
+
+    #tab_kpi .trend-table td {
+        padding: 0.75rem 0.65rem !important;
+        font-size: 0.86rem !important;
+        font-weight: 600 !important;
+        border: none !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        color: #0f172a !important;
+        vertical-align: middle !important;
+    }
+
+    #tab_kpi .trend-table td:first-child {
+        color: #1e293b !important;
+        font-weight: 500 !important;
+        font-size: 0.85rem !important;
+    }
+
+    #tab_kpi .trend-table tr:last-child td {
+        border-bottom: none !important;
+    }
+
+    #tab_kpi .trend-table tr:hover td {
+        background: #f8fafc !important;
+    }
+
+    .overview-panel-title {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 0.85rem 0;
+    }
+
+    .overview-metric-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.65rem;
+        flex: 1;
+    }
+
+    .overview-metric-card {
+        background: #F8FAFC !important;
+        border: 1px solid #EEF2F6 !important;
+        border-radius: 14px !important;
+        padding: 1rem 1.15rem !important;
+        min-height: 105px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        gap: 0.4rem !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .overview-metric-card:hover {
+        background: #F1F5F9 !important;
+        border-color: #E2E8F0 !important;
+    }
+
+    .overview-metric-card .om-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #64748b;
+        line-height: 1.2;
+    }
+
+    .overview-metric-card .om-value {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #0f172a;
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+        line-height: 1.15;
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+
+    .overview-metric-card .cmp-tag,
+    .ov-card .cmp-tag {
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        width: fit-content;
+        line-height: 1.2;
+        border: 1px solid transparent;
+    }
+
+    .overview-metric-card .cmp-tag {
+        margin-top: auto;
+        align-self: flex-start;
+    }
+
+    .overview-metric-card .cmp-tag.up,
+    .ov-card:not(.hero) .cmp-tag.up,
+    .trend-growth-pill.up {
+        background: #EEF8F1 !important;
+        border-color: #C4ECD0 !important;
+        color: #029153 !important;
+    }
+
+    .overview-metric-card .cmp-tag.down,
+    .ov-card:not(.hero) .cmp-tag.down,
+    .trend-growth-pill.down {
+        background: #FEF0EF !important;
+        border-color: #FCD4D0 !important;
+        color: #EE473D !important;
+    }
+
+    .ov-card.hero .cmp-tag {
+        background: #ffffff !important;
+        border-color: transparent !important;
+        color: #EE473D !important;
+    }
+
+    .ov-card.hero .cmp-tag.up {
+        background: #ffffff !important;
+        border-color: transparent !important;
+        color: #029153 !important;
+    }
+
+    .overview-metric-card .cmp-tag.none,
+    .ov-card:not(.hero) .cmp-tag.none {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+    .overview-chart-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.75rem;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+    }
+
+    .overview-chart-head h3 {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #0f172a;
+        font-family: 'Inter', sans-serif;
+        text-transform: capitalize;
+    }
+
+    .overview-chart-head p {
+        margin: 4px 0 0;
+        font-size: 0.75rem;
+        color: #64748b;
+        font-weight: 600;
+    }
+
+    #tab_kpi .chart-tabs {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        background: #F1F4F9 !important;
+        padding: 4px 6px;
+        border-radius: 999px;
+        overflow: visible !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    #tab_kpi .chart-tab-btn {
+        border: none;
+        background: transparent;
+        padding: 5px 12px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #475569;
+        cursor: pointer;
+        white-space: nowrap;
+        position: relative;
+        transition: all 0.15s ease;
+    }
+
+    #tab_kpi .chart-tab-btn:hover {
+        color: #0f172a;
+    }
+
+    #tab_kpi .chart-tab-btn.active {
+        background: #4362CE !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        padding: 5px 16px !important;
+        border-radius: 999px !important;
+        box-shadow: 0 4px 10px rgba(67, 98, 206, 0.25) !important;
+        position: relative !important;
+    }
+
+    #tab_kpi .chart-tab-btn.active::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid #4362CE;
+    }
+
+    #tab_kpi .trend-table th.growth-col {
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        padding: 0.75rem 0.25rem !important;
+        width: 70px;
+        min-width: 65px;
+        font-size: 0 !important;
+    }
+
+    #tab_kpi .trend-table td.growth-col {
+        text-align: center !important;
+        padding: 0.75rem 0.25rem !important;
+        border: none !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        background: transparent !important;
+        vertical-align: middle !important;
+        width: 70px;
+        min-width: 65px;
+    }
+
+    #tab_kpi .trend-growth-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 0.68rem;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 8px;
+        white-space: nowrap;
+        border: 1px solid transparent;
+    }
+
+    #tab_kpi .trend-growth-pill.up {
+        background: #EEF8F1 !important;
+        border-color: #C4ECD0 !important;
+        color: #029153 !important;
+    }
+
+    #tab_kpi .trend-growth-pill.down {
+        background: #FEF0EF !important;
+        border-color: #FCD4D0 !important;
+        color: #EE473D !important;
+    }
+
+    /* ==========================================================================
+       Ultra-Polished Fully Responsive System for All Device Screen Sizes
+       ========================================================================== */
+
+    /* Large Desktops & HD Displays (1200px - 1440px) */
+    @media (max-width: 1399px) {
+        .overview-hero-grid {
+            grid-template-columns: 1.25fr 1fr 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .ov-card {
+            padding: 1rem 1.1rem;
+        }
+
+        .ov-card .ov-value {
+            font-size: 1.65rem;
+        }
+
+        .overview-row {
+            grid-template-columns: minmax(260px, 35%) minmax(0, 1fr);
+            gap: 0.75rem;
+        }
+    }
+
+    /* Tablets Landscape & Medium Desktops (992px - 1199px) */
+    @media (max-width: 1199px) {
+        .overview-hero-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.85rem;
+        }
+
+        .overview-row {
+            grid-template-columns: 1fr;
+            gap: 0.85rem;
+        }
+
+        .overview-chart-wrap {
+            height: 260px;
+        }
+    }
+
+    /* Tablets Portrait & Large Mobile (768px - 991px) */
+    @media (max-width: 991px) {
+        .overview-topbar {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.85rem;
+        }
+
+        .overview-topbar-left {
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+        }
+
+        .overview-topbar-right {
+            width: 100%;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .overview-topbar-right .btn-figma-primary,
+        .overview-topbar-right .btn-figma-outline {
+            flex: 1;
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .overview-page-head {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+    }
+
+    /* Mobile Devices (max-width: 767px) */
+    @media (max-width: 767px) {
+        #tab_kpi.tab-content {
+            gap: 0.75rem;
+        }
+
+        .overview-topbar {
+            padding: 0.75rem 0;
+            margin-bottom: 0.85rem;
+        }
+
+        .overview-topbar-left {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .figma-select-wrapper,
+        .figma-select-wrapper select {
+            width: 100%;
+            min-width: 0;
+        }
+
+        .overview-breadcrumb {
+            display: none;
+            /* Keep mobile topbar clean and uncluttered */
+        }
+
+        .overview-topbar-right {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .overview-topbar-right .btn-figma-icon-sm {
+            display: none;
+        }
+
+        .overview-page-head {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .overview-page-head h2 {
+            font-size: 1.35rem;
+        }
+
+        .overview-page-head>.d-flex {
+            width: 100%;
+            display: flex !important;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .figma-date-picker-wrap {
+            flex: 1;
+            min-width: 0;
+            width: auto;
+            justify-content: flex-start;
+            padding: 0.45rem 0.65rem;
+            gap: 0.45rem;
+        }
+
+        .figma-date-picker-wrap input.flatpickr-range-input {
+            width: 100% !important;
+            min-width: 0;
+            font-size: 0.76rem !important;
+        }
+
+        .btn-figma-refresh {
+            flex-shrink: 0;
+        }
+
+        .overview-hero-grid {
+            grid-template-columns: 1fr;
+            gap: 0.65rem;
+        }
+
+        .ov-card {
+            min-height: 105px;
+            padding: 0.95rem 1.05rem;
+        }
+
+        .ov-card .ov-value {
+            font-size: 1.5rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .ov-card.hero .ov-value {
+            font-size: 1.65rem;
+        }
+
+        .overview-metric-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .overview-metric-card {
+            padding: 0.85rem 0.95rem !important;
+            min-height: 90px !important;
+        }
+
+        .overview-metric-card .om-value {
+            font-size: 1.15rem;
+        }
+
+        .overview-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .overview-row {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 0.75rem;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .overview-panel {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            padding: 0.85rem;
+            border-radius: 12px;
+        }
+
+        .overview-chart-head {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.65rem;
+            width: 100%;
+        }
+
+        #tab_kpi .chart-tabs {
+            width: 100% !important;
+            max-width: 100% !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 4px !important;
+            background: #F1F4F9 !important;
+            padding: 4px !important;
+            border-radius: 12px !important;
+            overflow: visible !important;
+        }
+
+        #tab_kpi .chart-tab-btn {
+            flex: 1 1 auto !important;
+            text-align: center !important;
+            padding: 5px 8px !important;
+            font-size: 0.72rem !important;
+            white-space: nowrap !important;
+            border-radius: 8px !important;
+        }
+
+        #tab_kpi .chart-tab-btn.active {
+            padding: 5px 10px !important;
+            box-shadow: 0 2px 6px rgba(67, 98, 206, 0.2) !important;
+        }
+
+        #tab_kpi .chart-tab-btn.active::after {
+            display: none !important;
+        }
+
+        .overview-chart-wrap {
+            height: 200px;
+            min-height: 200px;
+            width: 100%;
+            max-width: 100%;
+            position: relative;
+        }
+
+        #tab_kpi .table-container {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            display: block;
+        }
+
+        #tab_kpi .trend-table {
+            width: 100%;
+            min-width: 480px;
+        }
+    }
+
+    /* Small Mobile Devices (max-width: 420px) */
+    @media (max-width: 420px) {
+        .overview-metric-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .overview-topbar-right {
+            grid-template-columns: 1fr;
+        }
+
+        .overview-metric-card .om-value {
+            font-size: 1.1rem;
+        }
+
+        .ov-card .ov-value {
+            font-size: 1.4rem;
+        }
+    }
+
+    /* Figma Profit & Fees (Profit & Loss Analysis) Styles */
+    #tab_financial.tab-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .btn-figma-icon {
+        width: 36px;
+        height: 36px;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        background: #fff;
+        color: #475569;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        transition: all 0.15s;
+    }
+
+    .btn-figma-icon:hover {
+        background: #f8fafc;
+        color: #0f172a;
+    }
+
+    .pl-hero-3in1-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        overflow: hidden;
+        min-height: 145px;
+    }
+
+    .pl-hero-section {
+        padding: 1.15rem 1.4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 0.35rem;
+        position: relative;
+        border-right: 1px solid #f1f5f9;
+    }
+
+    .pl-hero-section:last-child {
+        border-right: none;
+    }
+
+    .pl-hero-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #64748b;
+    }
+
+    .pl-hero-value {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.85rem;
+        font-weight: 800;
+        color: #0f172a;
+        letter-spacing: -0.025em;
+        line-height: 1.15;
+        margin: 0.15rem 0;
+    }
+
+    .pl-hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 8px;
+        width: fit-content;
+        border: 1px solid transparent;
+    }
+
+    .pl-hero-badge.green {
+        background: #EEF8F1 !important;
+        border-color: #C4ECD0 !important;
+        color: #029153 !important;
+    }
+
+    .pl-hero-badge.red {
+        background: #FEF0EF !important;
+        border-color: #FCD4D0 !important;
+        color: #EE473D !important;
+    }
+
+    .pl-hero-badge.blue {
+        background: #EEF2FF !important;
+        border-color: #C7D2FE !important;
+        color: #4362CE !important;
+    }
+
+    .pl-main-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 1.25rem;
+        align-items: start;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    @media (max-width: 1200px) {
+        .pl-main-layout {
+            grid-template-columns: 1fr !important;
+        }
+
+        .pl-right-col {
+            width: 100% !important;
+            min-width: 0 !important;
+        }
+    }
+
+    @media (max-width: 900px) {
+        .pl-hero-3in1-card {
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+
+        .pl-hero-section {
+            padding: 0.75rem 0.65rem !important;
+            border-right: 1px solid #f1f5f9 !important;
+            border-bottom: none !important;
+        }
+
+        .pl-hero-section:last-child {
+            border-right: none !important;
+        }
+
+        .pl-hero-label {
+            font-size: 0.68rem !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        .pl-hero-value {
+            font-size: 1.15rem !important;
+            letter-spacing: -0.02em !important;
+            margin: 0.1rem 0 !important;
+        }
+
+        .pl-hero-badge {
+            font-size: 0.62rem !important;
+            padding: 2px 5px !important;
+            border-radius: 6px !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .pl-card-header {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+        }
+
+        .pl-chart-controls {
+            width: 100% !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.5rem !important;
+        }
+
+        .pl-time-toggle {
+            width: 100% !important;
+            display: flex !important;
+        }
+
+        .pl-time-btn {
+            flex: 1 !important;
+            text-align: center !important;
+        }
+
+        .pl-metric-select-group {
+            width: 100% !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 0.5rem !important;
+        }
+
+        .pl-metric-select-group select {
+            width: 100% !important;
+        }
+    }
+
+    .pl-left-col {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .pl-right-col {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        min-width: 0;
+        width: 320px;
+        max-width: 100%;
+    }
+
+    .pl-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        overflow: hidden;
+    }
+
+    .pl-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.1rem 1.4rem;
+        border-bottom: 1px solid #f1f5f9;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .pl-card-title {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0;
+    }
+
+    .pl-chart-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .pl-time-toggle {
+        display: inline-flex;
+        background: #f1f5f9;
+        border-radius: 8px;
+        padding: 2px;
+    }
+
+    .pl-time-btn {
+        border: none;
+        background: transparent;
+        padding: 5px 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #64748b;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.15s;
+    }
+
+    .pl-time-btn:hover {
+        color: #0f172a;
+    }
+
+    .pl-time-btn.active {
+        background: #ffffff;
+        color: #0f172a;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .pl-select-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .pl-select-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #64748b;
+    }
+
+    .pl-metric-select {
+        padding: 4px 8px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #334155;
+        background: #fff;
+        cursor: pointer;
+    }
+
+    .pl-chart-wrapper {
+        padding: 1.25rem 1.4rem 0.5rem;
+        height: 300px;
+        position: relative;
+    }
+
+    .pl-chart-legend {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        padding: 0.75rem 1rem 1.1rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #475569;
+    }
+
+    .pl-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .pl-legend-box {
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+        display: inline-block;
+    }
+
+    .pl-legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .pl-table-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .pl-search-box {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .pl-search-box i {
+        position: absolute;
+        left: 10px;
+        font-size: 0.75rem;
+        color: #94a3b8;
+        pointer-events: none;
+    }
+
+    .pl-search-box input {
+        padding: 6px 10px 6px 30px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #334155;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #f8fafc;
+        width: 180px;
+        outline: none;
+    }
+
+    .pl-search-box input:focus {
+        border-color: #3b82f6;
+        background: #fff;
+    }
+
+    .pl-filter-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #fff;
+        cursor: pointer;
+    }
+
+    .pl-filter-btn:hover {
+        background: #f8fafc;
+    }
+
+    .pl-table-responsive {
+        overflow-x: auto;
+    }
+
+    .pl-sku-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+    }
+
+    .pl-sku-table thead th {
+        background: #f8fafc;
+        padding: 12px 16px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .pl-sku-table tbody td {
+        padding: 12px 16px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #1e293b;
+        font-weight: 600;
+    }
+
+    .pl-sku-table tbody tr:hover td {
+        background: #f8fafc;
+    }
+
+    .pl-sku-table tfoot td {
+        padding: 14px 16px;
+        background: #f8fafc;
+        border-top: 2px solid #e2e8f0;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .pl-pagination-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-top: 1px solid #f1f5f9;
+        background: #fff;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .pl-entries-select-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .pl-page-size-select {
+        padding: 4px 8px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #334155;
+        background: #fff;
+        cursor: pointer;
+    }
+
+    .pl-pagination-btns {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .pl-page-num {
+        min-width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        background: #ffffff;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #475569;
+        cursor: pointer;
+        transition: all 0.15s;
+        padding: 0 6px;
+    }
+
+    .pl-page-num:hover {
+        background: #f8fafc;
+        color: #0f172a;
+    }
+
+    .pl-page-num.active {
+        background: #f1f5f9;
+        color: #0f172a;
+        font-weight: 800;
+        border-color: #cbd5e1;
+    }
+
+    .pl-page-nav {
+        min-width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        background: #ffffff;
+        font-size: 0.75rem;
+        color: #64748b;
+        cursor: pointer;
+        transition: all 0.15s;
+    }
+
+    .pl-page-nav:hover:not(:disabled) {
+        background: #f8fafc;
+        color: #0f172a;
+    }
+
+    .pl-page-nav:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+    }
+
+    .pl-score-card {
+        padding: 1.15rem 1.4rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 145px;
+    }
+
+    .pl-card-subtitle {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0 0 0.25rem 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    .pl-gauge-container {
+        position: relative;
+        width: 200px;
+        height: 110px;
+        margin: 0 auto;
+    }
+
+    .pl-speedo-gauge {
+        width: 100%;
+        height: 100%;
+    }
+
+    .pl-gauge-value-wrap {
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        gap: 2px;
+    }
+
+    .pl-gauge-val {
+        font-family: 'Inter', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #0f172a;
+        line-height: 1;
+    }
+
+    .pl-gauge-unit {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #64748b;
+    }
+
+    .pl-score-trend {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #059669;
+        background: #ecfdf5;
+        padding: 3px 8px;
+        border-radius: 999px;
+        margin-top: 0.25rem;
+    }
+
+    .pl-right-col {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        min-width: 320px;
+        width: 320px;
+        flex-shrink: 0;
+    }
+
+    .pl-right-col .pl-score-card {
+        background: #ffffff !important;
+        border: 1px solid #EAECEF !important;
+        border-radius: 16px !important;
+        padding: 1.25rem 1.4rem !important;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+    }
+
+    .pl-right-col .pl-breakdown-card {
+        background: #ffffff !important;
+        border: 1px solid #EAECEF !important;
+        border-radius: 16px !important;
+        padding: 0 !important;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+        overflow: hidden;
+    }
+
+    .pl-breakdown-section {
+        padding: 1.1rem 1.25rem;
+        border-bottom: 1px solid #EAECEF;
+    }
+
+    .pl-breakdown-section:last-child {
+        border-bottom: none;
+    }
+
+    .pl-section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.65rem;
+    }
+
+    .pl-section-title {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .pl-section-total {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.92rem;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .pl-section-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .pl-right-col .pl-row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0.38rem 0 !important;
+        margin: 0 !important;
+        border-bottom: 1px dotted #F1F5F9 !important;
+        font-size: 0.82rem !important;
+        line-height: 1.35 !important;
+    }
+
+    .pl-right-col .pl-row:last-child {
+        border-bottom: none !important;
+    }
+
+    .pl-right-col .pl-row span:first-child {
+        color: #334155 !important;
+        font-weight: 500 !important;
+    }
+
+    .pl-right-col .pl-row .pl-val {
+        color: #0f172a !important;
+        font-weight: 700 !important;
+        font-size: 0.82rem !important;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .pl-right-col .pl-row .pl-val.red {
+        color: #EE473D !important;
+    }
+
+    .pl-right-col .pl-row .pl-val.green {
+        color: #029153 !important;
+    }
+
+    /* Geographic Sales Distribution Card (Exact Figma Design) */
+    .pl-geo-card {
+        background: #ffffff;
+        border: 1px solid #EAECEF;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+        margin-top: 1.5rem;
+    }
+
+    .pl-geo-head {
+        margin-bottom: 1.25rem;
+    }
+
+    .pl-geo-title {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0 0 4px 0;
+    }
+
+    .pl-geo-subtitle {
+        font-size: 0.8rem;
+        color: #64748b;
+        margin: 0;
+    }
+
+    .pl-map-wrapper {
+        margin-bottom: 1.5rem;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid #EAECEF;
+        background: #F1F4FA;
+    }
+
+    #us_leaflet_map {
+        height: 420px;
+        width: 100%;
+        border-radius: 14px;
+        background: #F1F4FA;
+        z-index: 1;
+    }
+
+    .pl-geo-table-wrap {
+        overflow-x: auto;
+    }
+
+    .pl-geo-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+    }
+
+    .pl-geo-table thead th {
+        background: transparent;
+        padding: 12px 14px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #475569;
+        text-transform: capitalize;
+        border-bottom: 1px solid #F1F5F9;
+        border-top: none;
+    }
+
+    .pl-geo-table tbody td {
+        padding: 12px 14px;
+        border-bottom: 1px solid #F8FAFC;
+        color: #1e293b;
+        font-weight: 500;
+    }
+
+    .pl-geo-table tbody tr.geo-parent-row:hover td {
+        background: #F8FAFC;
+    }
+
+    .geo-chevron-btn {
+        width: 20px;
+        height: 20px;
+        border-radius: 6px;
+        background: #F1F4F9;
+        border: 1px solid #E2E8F0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.65rem;
+        color: #475569;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+        margin-right: 8px;
+    }
+
+    .geo-parent-row.expanded .geo-chevron-btn {
+        background: #4362CE;
+        border-color: #4362CE;
+        color: #ffffff;
+        transform: rotate(180deg);
+    }
+
+    .geo-sku-subcard {
+        background: #FFFFFF;
+        border: 1px solid #EAECEF;
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        margin: 0.5rem 0;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+    }
 
 
-.kpi-card { 
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 1.5rem !important;
-    border: 1px solid #e7e8e9;
-    box-shadow: var(--card-shadow);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 145px;
-    opacity: 0;
-    transform: translateY(20px);
-}
+    .kpi-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 1.5rem !important;
+        border: 1px solid #e7e8e9;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 145px;
+        opacity: 0;
+        transform: translateY(20px);
+    }
 
-.kpi-card.visible { opacity: 1; transform: translateY(0); }
-.kpi-card:hover { transform: translateY(-4px); box-shadow: var(--hover-shadow); }
+    .kpi-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-.kpi-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+    .kpi-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--hover-shadow);
+    }
 
-.cmp-tag {
-    font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 50px;
-    display: flex; align-items: center; gap: 4px; color: white;
-}
-.cmp-tag.up { background: var(--success); }
-.cmp-tag.down { background: var(--error); }
-.cmp-tag.none { background: var(--outline); }
+    .kpi-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.75rem;
+    }
 
-.kpi-icon { 
-    width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
-    font-size: 0.9rem; color: #fff;
-}
+    .cmp-tag {
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: white;
+    }
 
-/* Specific Card Themes - Executive Minimalist */
-.kpi-card.blue-theme { 
-    background: #ffffff; 
-    border-bottom: 3px solid var(--primary-container);
-}
-.kpi-card.blue-theme .kpi-icon { background: var(--primary-container); box-shadow: 0 4px 12px rgba(15, 82, 255, 0.2); }
+    .cmp-tag.up {
+        background: var(--success);
+    }
 
-.kpi-card.indigo-theme { 
-    background: #ffffff; 
-    border-bottom: 3px solid var(--primary-fixed-dim);
-}
-.kpi-card.indigo-theme .kpi-icon { background: var(--primary-fixed-dim); box-shadow: 0 4px 12px rgba(184, 196, 255, 0.2); }
+    .cmp-tag.down {
+        background: var(--error);
+    }
 
-.kpi-card.teal-theme { 
-    background: #ffffff; 
-    border-bottom: 3px solid var(--tertiary-fixed-dim);
-}
-.kpi-card.teal-theme .kpi-icon { background: var(--tertiary-fixed-dim); box-shadow: 0 4px 12px rgba(78, 222, 163, 0.2); }
+    .cmp-tag.none {
+        background: var(--outline);
+    }
 
-.kpi-card.green-theme { 
-    background: #ffffff; 
-    border-bottom: 3px solid var(--success);
-}
-.kpi-card.green-theme .kpi-icon { background: var(--success); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+    .kpi-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        color: #fff;
+    }
 
-.kpi-card.emerald-theme { 
-    background: #ffffff; 
-    border-bottom: 3px solid var(--success);
-}
-.kpi-card.emerald-theme .kpi-icon { background: var(--success); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+    /* Specific Card Themes - Executive Minimalist */
+    .kpi-card.blue-theme {
+        background: #ffffff;
+        border-bottom: 3px solid var(--primary-container);
+    }
 
-.kpi-card.rose-theme { 
-    background: #ffffff; 
-    border-bottom: 3px solid var(--error);
-}
-.kpi-card.rose-theme .kpi-icon { background: var(--error); box-shadow: 0 4px 12px rgba(186, 26, 26, 0.2); }
+    .kpi-card.blue-theme .kpi-icon {
+        background: var(--primary-container);
+        box-shadow: 0 4px 12px rgba(15, 82, 255, 0.2);
+    }
 
-.kpi-card.purple-theme { 
-    background: #ffffff; 
-    border-bottom: 3px solid var(--outline-variant);
-}
-.kpi-card.purple-theme .kpi-icon { background: var(--outline-variant); box-shadow: 0 4px 12px rgba(195, 197, 217, 0.2); }
+    .kpi-card.indigo-theme {
+        background: #ffffff;
+        border-bottom: 3px solid var(--primary-fixed-dim);
+    }
 
-.kpi-card.yellow-theme { 
-    background: #ffffff; 
-    border-bottom: 3px solid #ffda6a;
-}
-.kpi-card.yellow-theme .kpi-icon { background: #ffda6a; box-shadow: 0 4px 12px rgba(255, 218, 106, 0.2); }
+    .kpi-card.indigo-theme .kpi-icon {
+        background: var(--primary-fixed-dim);
+        box-shadow: 0 4px 12px rgba(184, 196, 255, 0.2);
+    }
 
-.kpi-card.cyan-theme { 
-    background: #ffffff; 
-    border-bottom: 3px solid var(--outline-variant);
-}
-.kpi-card.cyan-theme .kpi-icon { background: var(--outline-variant); box-shadow: 0 4px 12px rgba(195, 197, 217, 0.2); }
+    .kpi-card.teal-theme {
+        background: #ffffff;
+        border-bottom: 3px solid var(--tertiary-fixed-dim);
+    }
 
-.kpi-body h3 { font-family: 'Hanken Grotesk', sans-serif; font-size: 32px; font-weight: 600; line-height: 40px; margin: 0.25rem 0; color: var(--on-surface); letter-spacing: -0.01em; }
-.kpi-body p { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; line-height: 20px; color: var(--on-surface-variant); margin: 0; }
+    .kpi-card.teal-theme .kpi-icon {
+        background: var(--tertiary-fixed-dim);
+        box-shadow: 0 4px 12px rgba(78, 222, 163, 0.2);
+    }
 
-.kpi-footer { 
-    font-size: 0.8rem; font-weight: 700; color: var(--on-surface-variant); margin-top: 0; 
-    display: flex; align-items: center; gap: 8px; 
-    background: var(--surface-container-low); padding: 6px 12px; border-radius: 8px;
-    width: fit-content; border: 1px solid var(--outline-variant);
-}
-.kpi-footer i { opacity: 0.8; font-size: 1.05rem; }
+    .kpi-card.green-theme {
+        background: #ffffff;
+        border-bottom: 3px solid var(--success);
+    }
 
-/* Financial P&L Styles */
-.pl-card { border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px -2px rgba(0,0,0,0.05); border: 1px solid #e7e8e9; }
-.pl-header { padding: 1.5rem 2rem; background: var(--secondary) !important; }
-.pl-header h3 { margin: 0; color: #fff; font-weight: 800; text-transform: capitalize; letter-spacing: 0.05em; font-size: 1rem; }
-.pl-row { display: flex; justify-content: space-between; padding: 1.25rem 0; border-bottom: 1px solid #f1f5f9; align-items: center; }
-.pl-row:last-child { border-bottom: none; }
-.pl-row label { font-weight: 700; color: var(--on-surface-variant); font-size: 0.95rem; }
-.pl-row span { font-weight: 800; font-size: 1.1rem; }
-.pl-row.sub { padding: 0.85rem 0 0.85rem 1.5rem; font-size: 0.85rem; border-bottom: 1px dashed #f1f5f9; }
-.pl-row.sub label { color: var(--on-surface-variant); font-weight: 600; opacity: 0.85; }
-.pl-row.total { padding: 1.5rem; margin-top: 1rem; border-radius: 12px; }
+    .kpi-card.green-theme .kpi-icon {
+        background: var(--success);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
 
-.expense-progress { height: 6px; background: var(--surface-container); border-radius: 10px; width: 80px; overflow: hidden; margin-top: 4px; }
-.expense-progress-bar { height: 100%; border-radius: 10px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
+    .kpi-card.emerald-theme {
+        background: #ffffff;
+        border-bottom: 3px solid var(--success);
+    }
 
-/* Product Performance Figma hero */
-.pp-hero-grid {
-    display: grid;
-    grid-template-columns: minmax(360px, 0.92fr) minmax(480px, 1.18fr);
-    gap: 12px;
-    margin-bottom: 12px;
-    align-items: stretch;
-}
-.pp-sku-panel,
-.pp-donut-card,
-.pp-kpi-card {
-    background: #fff;
-    border: 1px solid #e8eaed;
-    border-radius: 14px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-}
-.pp-sku-panel { padding: 1rem 0.35rem 0.6rem 1rem; display: flex; flex-direction: column; min-height: 0; }
-.pp-sku-panel .pp-panel-title { padding-right: 0.65rem; }
-.pp-panel-title { font-size: 0.98rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.01em; }
-.pp-panel-sub { font-size: 0.72rem; color: #64748b; margin: 0.2rem 0 0; font-weight: 500; }
-.pp-sku-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin-top: 0.35rem;
-    overflow-y: auto;
-    flex: 1;
-    min-height: 0;
-    padding-right: 8px;
-}
-.pp-sku-list::-webkit-scrollbar { width: 5px; }
-.pp-sku-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
-.pp-sku-row {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between;
-    gap: 0.65rem;
-    padding: 0.7rem 0.15rem 0.7rem 0.1rem;
-    border: none !important;
-    border-bottom: 1px solid #eef2f6 !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    text-align: left;
-    min-height: 0 !important;
-}
-.pp-sku-row:last-child { border-bottom: none !important; }
-.pp-sku-rank {
-    width: 24px; height: 24px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.7rem; font-weight: 800; flex-shrink: 0;
-    background: #eef2f6 !important; color: #475569 !important;
-}
-.pp-sku-info { min-width: 0; flex: 1.4; text-align: left; }
-.pp-sku-info strong { display: block; font-size: 0.82rem; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pp-sku-info span { display: block; font-size: 0.65rem; font-weight: 600; color: #94a3b8; text-transform: none; margin-top: 2px; letter-spacing: 0; }
-.pp-sku-units { text-align: center; flex: 0 0 92px; }
-.pp-sku-units strong { display: block; font-size: 0.78rem; font-weight: 800; color: #0f172a; }
-.pp-sku-units em { display: inline-block; font-style: normal; font-size: 0.68rem; font-weight: 700; margin-top: 2px; }
-.pp-sku-units em.up { color: #16a34a; }
-.pp-sku-units em.down { color: #ef4444; }
-.pp-sku-rev { text-align: right; flex: 0 0 78px; }
-.pp-sku-rev small { display: none; }
-.pp-sku-rev strong { display: block; font-size: 0.88rem; font-weight: 800; color: #0f172a; }
-.pp-right-col { display: flex; flex-direction: column; gap: 10px; min-width: 0; height: 100%; }
-.pp-donut-card { padding: 1rem 1.15rem 1.1rem; display: flex; flex-direction: column; flex: 1; min-height: 0; }
-.pp-donut-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem; }
-.pp-details-link { font-size: 0.8rem; font-weight: 700; color: #0051d5; text-decoration: none; display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
-.pp-donut-body { display: flex; align-items: center; gap: 1rem; flex: 1; }
-.pp-donut-wrap { position: relative; width: 190px; height: 190px; flex-shrink: 0; }
-.pp-donut-wrap canvas { width: 100% !important; height: 100% !important; }
-.pp-donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; text-align: center; }
-.pp-donut-center p { margin: 0; font-size: 1.55rem; font-weight: 800; color: #0f172a; line-height: 1; }
-.pp-donut-center span { font-size: 0.68rem; color: #64748b; font-weight: 600; }
-.pp-donut-legend { display: flex; flex-direction: column; gap: 0.7rem; flex: 1; min-width: 0; }
-.pp-legend-row { display: grid; grid-template-columns: minmax(0,1fr) auto auto; align-items: center; gap: 8px; font-size: 0.75rem; }
-.pp-legend-row .name { color:#475569; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.pp-legend-row .dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
-.pp-kpi-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; width: 100%; margin: 0; flex-shrink: 0; align-items: stretch; }
-.pp-kpi-card { padding: 0.85rem 0.9rem; position: relative; min-height: 98px; height: 100%; margin: 0; box-sizing: border-box; display: flex; flex-direction: column; }
-.pp-kpi-icon { position: absolute; top: 12px; right: 12px; width: 28px; height: 28px; border-radius: 8px; background: #eff6ff; color: #0051d5; display: flex; align-items: center; justify-content: center; }
-.pp-kpi-icon.green { background: #ecfdf5; color: #009668; }
-.pp-kpi-icon.dark { background: #f1f5f9; color: #334155; }
-.pp-kpi-icon .material-symbols-outlined { font-size: 18px; }
-.pp-kpi-label { font-size: 0.68rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; margin: 0 1.75rem 0 0; }
-.pp-kpi-value { font-size: 1.45rem; font-weight: 800; color: #0f172a; margin: 0.35rem 0 0.4rem; line-height: 1; }
-.pp-kpi-badge { display: inline-block; background: rgba(111,251,190,0.28); color: #009668; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 6px; }
-.pp-kpi-note { font-size: 0.72rem; font-weight: 600; color: #64748b; }
-@media (max-width: 1100px) {
-    .pp-hero-grid { grid-template-columns: 1fr; }
-}
+    .kpi-card.emerald-theme .kpi-icon {
+        background: var(--success);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
 
-#product_list { display: flex; flex-direction: column; gap: 0; }
-.pp-sku-row.product-item,
-.product-item.pp-sku-row {
-    display: flex !important;
-    flex-direction: row !important;
-    transform: none !important;
-}
+    .kpi-card.rose-theme {
+        background: #ffffff;
+        border-bottom: 3px solid var(--error);
+    }
 
-.product-rank {
-    position: absolute; top: 1rem; right: 1rem; width: 32px; height: 32px; background: var(--surface-container-low); color: var(--on-surface-variant); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; border: 2px solid #fff; z-index: 2;
-}
-.product-item:nth-child(1) .product-rank { background: #fef3c7; color: #92400e; border-color: #fbbf24; }
-.product-item:nth-child(2) .product-rank { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
-.product-item:nth-child(3) .product-rank { background: #ffedd5; color: #9a3412; border-color: #fdba74; }
+    .kpi-card.rose-theme .kpi-icon {
+        background: var(--error);
+        box-shadow: 0 4px 12px rgba(186, 26, 26, 0.2);
+    }
 
-.product-sku-tag { font-size: 0.65rem; font-weight: 700; color: var(--on-surface-variant); opacity: 0.7; text-transform: capitalize; letter-spacing: 0.05em; margin-bottom: 0.75rem; display: block; }
-.product-card-title { font-size: 0.95rem; font-weight: 700; color: var(--on-surface); line-height: 1.5; margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 4.5rem; }
-.product-metrics-pill { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; padding-top: 1.25rem; border-top: 1px solid #f1f5f9; }
-.metric-col { text-align: center; }
-.metric-col label { display: block; font-size: 0.6rem; font-weight: 700; color: var(--on-surface-variant); opacity: 0.75; text-transform: capitalize; margin-bottom: 0.25rem; }
-.metric-col span { display: block; font-size: 0.9rem; font-weight: 800; color: var(--on-surface); }
-.metric-col.revenue span { color: var(--primary-container); }
+    .kpi-card.purple-theme {
+        background: #ffffff;
+        border-bottom: 3px solid var(--outline-variant);
+    }
 
-/* Premium Analysis Table Styles */
-.analysis-table-container { background: #ffffff; border-radius: 16px; border: 1px solid #e7e8e9; overflow: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
-.analysis-table { width: 100%; border-collapse: collapse !important; border-spacing: 0; }
-.analysis-table th {
-    background: var(--surface-container-low); padding: 12px 16px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--on-surface-variant);
-    border: 1px solid #e2e8f0; white-space: nowrap; position: sticky; top: 0; z-index: 10;
-    vertical-align: middle; text-align: center;
-}
-.analysis-table th.group-header { 
-    background: var(--surface-container-high); color: var(--on-surface); font-size: 12px; 
-    border-bottom: 2px solid #e2e8f0; font-weight: 700;
-}
-.analysis-table th:first-child { border-top-left-radius: 16px; }
-.analysis-table th:last-child { border-top-right-radius: 16px; }
+    .kpi-card.purple-theme .kpi-icon {
+        background: var(--outline-variant);
+        box-shadow: 0 4px 12px rgba(195, 197, 217, 0.2);
+    }
 
-.analysis-table th {
-    text-align: center !important;
-    vertical-align: middle !important;
-    font-weight: 700 !important;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 12px 8px !important;
-}
+    .kpi-card.yellow-theme {
+        background: #ffffff;
+        border-bottom: 3px solid #ffda6a;
+    }
 
-/* Group specific colors - Premium Solid Minimalist Style */
-.analysis-table th.sales-metrics-group, 
-.analysis-table th.sales-group { 
-    background: var(--primary-container) !important; 
-    color: #fff !important; border-color: var(--primary) !important; 
-}
+    .kpi-card.yellow-theme .kpi-icon {
+        background: #ffda6a;
+        box-shadow: 0 4px 12px rgba(255, 218, 106, 0.2);
+    }
 
-.analysis-table th.ads-spend-group { 
-    background: var(--error) !important; 
-    color: #fff !important; border-color: var(--error) !important; 
-}
+    .kpi-card.cyan-theme {
+        background: #ffffff;
+        border-bottom: 3px solid var(--outline-variant);
+    }
 
-.analysis-table th.acos-group { 
-    background: var(--on-primary-fixed-variant) !important; 
-    color: #fff !important; border-color: var(--on-primary-fixed-variant) !important; 
-}
+    .kpi-card.cyan-theme .kpi-icon {
+        background: var(--outline-variant);
+        box-shadow: 0 4px 12px rgba(195, 197, 217, 0.2);
+    }
 
-.analysis-table th.ad-dep-group { 
-    background: #6f42c1 !important; /* Premium Violet */
-    color: #fff !important; border-color: #6f42c1 !important; 
-}
+    .kpi-body h3 {
+        font-family: 'Inter', sans-serif;
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 40px;
+        margin: 0.25rem 0;
+        color: var(--on-surface);
+        letter-spacing: -0.01em;
+    }
 
-.analysis-table th.traffic-sess-group { 
-    background: var(--outline) !important; 
-    color: #fff !important; border-color: var(--outline) !important; 
-}
+    .kpi-body p {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: var(--on-surface-variant);
+        margin: 0;
+    }
 
-.analysis-table th.conv-group { 
-    background: var(--success) !important; 
-    color: #fff !important; border-color: var(--success) !important; 
-}
+    .kpi-footer {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--on-surface-variant);
+        margin-top: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--surface-container-low);
+        padding: 6px 12px;
+        border-radius: 8px;
+        width: fit-content;
+        border: 1px solid var(--outline-variant);
+    }
 
-.analysis-table th.refund-group { 
-    background: var(--error) !important; 
-    color: #fff !important; border-color: var(--error) !important; 
-}
+    .kpi-footer i {
+        opacity: 0.8;
+        font-size: 1.05rem;
+    }
 
-.analysis-table th.buy-box-group { 
-    background: var(--secondary) !important; 
-    color: #fff !important; border-color: var(--secondary) !important; 
-}
+    /* Financial P&L Styles */
+    .pl-card {
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e7e8e9;
+    }
 
-.analysis-table td { 
-    padding: 1.25rem 1rem; font-size: 0.975rem; color: var(--on-surface); 
-    border-bottom: 1px solid #f1f5f9; vertical-align: middle; 
-    text-align: center !important; 
-}
-.analysis-table tr:hover td { background: #f8fafc; }
+    .pl-header {
+        padding: 1.5rem 2rem;
+        background: var(--secondary) !important;
+    }
 
-.status-pill { padding: 4px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 700; text-transform: capitalize; }
-.status-pill.star { background: #dcfce7; color: #15803d; }
-.status-pill.risk { background: #fee2e2; color: #b91c1c; }
-.status-pill.ad-dep { background: #ffedd5; color: #9a3412; }
+    .pl-header h3 {
+        margin: 0;
+        color: #fff;
+        font-weight: 800;
+        text-transform: capitalize;
+        letter-spacing: 0.05em;
+        font-size: 1rem;
+    }
 
-.mini-bar-container { width: 50px; height: 5px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-top: 6px; }
-.mini-bar-fill { height: 100%; border-radius: 10px; }
+    .pl-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 1.25rem 0;
+        border-bottom: 1px solid #f1f5f9;
+        align-items: center;
+    }
 
-/* Trend Table & Chart Tab Enhancements */
-.trend-table { width: 100%; border-collapse: collapse !important; border: 1px solid #f1f5f9 !important; border-radius: 16px !important; overflow: hidden !important; }
-.trend-table th { 
-    background: #f8fafc !important; 
-    color: #475569 !important; 
-    font-weight: 800 !important; 
-    font-size: 0.9rem !important; 
-    text-transform: uppercase !important; 
-    letter-spacing: 0.05em !important; 
-    padding: 1.25rem 1rem !important;
-    border: 1px solid #e2e8f0 !important;
-    text-align: right !important;
-}
-.trend-table th:first-child { 
-    text-align: left !important; 
-    background: #f8fafc !important; 
-}
-.trend-table th:nth-child(2) { 
-    background: #f8fafc !important; 
-}
-.trend-table th:nth-child(3) { 
-    background: #eff6ff !important; 
-    color: #1e40af !important; 
-}
-.trend-table th:nth-child(4) { 
-    background: #f0fdf4 !important; 
-    color: #166534 !important; 
-}
-.trend-table td { 
-    padding: 1.25rem 1rem !important; 
-    border-bottom: 1px solid #f1f5f9 !important; 
-    font-weight: 700 !important; 
-    color: #1e293b !important; 
-    text-align: right !important; 
-    font-size: 1.05rem !important;
-}
-.trend-table td:first-child { 
-    text-align: left !important; 
-    color: #475569 !important;
-    font-weight: 800 !important;
-}
-.trend-table td.highlight-col { 
-    background: rgba(240, 253, 244, 0.4) !important; 
-    color: #166534 !important; 
-    font-weight: 900 !important; 
-}
-.trend-table tr:hover td { background: #f8fafc !important; }
-.trend-table tr:hover td.highlight-col { background: rgba(240, 253, 244, 0.6) !important; }
+    .pl-row:last-child {
+        border-bottom: none;
+    }
 
-.chart-tabs { display: flex; gap: 0.75rem; padding: 0.5rem; background: #f1f5f9; border-radius: 50px; width: fit-content; margin-bottom: 2rem; }
-.chart-tab-btn { 
-    padding: 8px 20px; border-radius: 50px; cursor: pointer; font-size: 0.75rem; font-weight: 800; 
-    color: #64748b; transition: all 0.3s; border: none; background: transparent; text-transform: capitalize;
-}
-.chart-tab-btn:hover { color: #1e293b; background: rgba(255,255,255,0.5); }
-.chart-tab-btn.active { 
-    background: #0f172a; color: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
-    transform: scale(1.02);
-}
+    .pl-row label {
+        font-weight: 700;
+        color: var(--on-surface-variant);
+        font-size: 0.95rem;
+    }
 
-.section-title { 
-    display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; 
-    font-size: 1.25rem; font-weight: 800; color: #0f172a; 
-}
-/* Ensure Profit & Loss tables under financial tab are fully structured grids with 33.33% equal column widths */
-.pl-section-card table.analysis-table {
-  border-collapse: collapse !important;
-  width: 100% !important;
-  border-top: 1px solid rgba(226, 232, 240, 0.6) !important;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.6) !important;
-  border-left: none !important;
-  border-right: none !important;
-}
+    .pl-row span {
+        font-weight: 800;
+        font-size: 1.1rem;
+    }
 
-.pl-section-card table.analysis-table th,
-.pl-section-card table.analysis-table td {
-  position: static !important; /* Disable broken sticky positioning */
-  left: auto !important; /* Reset sticky left offset */
-  width: 33.33% !important;
-  max-width: 33.33% !important;
-  min-width: 33.33% !important;
-  border-top: 1px solid rgba(226, 232, 240, 0.6) !important;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.6) !important;
-  border-left: none !important;
-  border-right: none !important;
-  padding: 12px 16px !important;
-  box-sizing: border-box !important;
-}
+    .pl-row.sub {
+        padding: 0.85rem 0 0.85rem 1.5rem;
+        font-size: 0.85rem;
+        border-bottom: 1px dashed #f1f5f9;
+    }
 
-/* Align text to left in the first column, numbers to right in second/third columns */
-.pl-section-card table.analysis-table th:first-child,
-.pl-section-card table.analysis-table td:first-child {
-  text-align: left !important;
-}
-.pl-section-card table.analysis-table th:nth-child(2),
-.pl-section-card table.analysis-table td:nth-child(2),
-.pl-section-card table.analysis-table th:nth-child(3),
-.pl-section-card table.analysis-table td:nth-child(3) {
-  text-align: right !important;
-}
-.pl-section-card table.analysis-table td:first-child > div {
-  justify-content: flex-start !important;
-}
+    .pl-row.sub label {
+        color: var(--on-surface-variant);
+        font-weight: 600;
+        opacity: 0.85;
+    }
+
+    .pl-row.total {
+        padding: 1.5rem;
+        margin-top: 1rem;
+        border-radius: 12px;
+    }
+
+    .expense-progress {
+        height: 6px;
+        background: var(--surface-container);
+        border-radius: 10px;
+        width: 80px;
+        overflow: hidden;
+        margin-top: 4px;
+    }
+
+    .expense-progress-bar {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Product Performance Figma hero */
+    .pp-hero-grid {
+        display: grid;
+        grid-template-columns: minmax(360px, 0.92fr) minmax(480px, 1.18fr);
+        gap: 1.25rem;
+        margin-bottom: 1.25rem;
+        align-items: stretch;
+    }
+
+    @media (max-width: 1200px) {
+        .pp-hero-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+        }
+
+        .pp-kpi-row {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .pp-hero-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        .pp-donut-body {
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 1rem !important;
+        }
+
+        .pp-donut-wrap {
+            width: 160px !important;
+            height: 160px !important;
+        }
+
+        .pp-donut-legend {
+            width: 100% !important;
+        }
+
+        .pp-kpi-row {
+            grid-template-columns: 1fr !important;
+            gap: 0.65rem !important;
+        }
+
+        .pp-sku-row {
+            padding: 0.65rem 0.25rem !important;
+        }
+
+        .pp-sku-info strong {
+            max-width: 140px !important;
+        }
+    }
+
+    .pp-sku-panel,
+    .pp-donut-card,
+    .pp-kpi-card {
+        background: #ffffff !important;
+        border: 1px solid #EAECEF !important;
+        border-radius: 16px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+    }
+
+    .pp-sku-panel {
+        padding: 1.25rem 1.25rem 0.75rem 1.25rem;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    .pp-panel-title {
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0;
+        letter-spacing: -0.01em;
+    }
+
+    .pp-panel-sub {
+        font-size: 0.75rem;
+        color: #64748b;
+        margin: 0.25rem 0 0;
+        font-weight: 500;
+    }
+
+    .pp-sku-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin-top: 0.5rem;
+        overflow-y: auto;
+        flex: 1;
+        min-height: 0;
+    }
+
+    .pp-sku-row {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0.75rem 0.5rem;
+        border: none !important;
+        border-bottom: 1px solid #F1F5F9 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        text-align: left;
+        position: relative;
+        transition: background 0.15s ease;
+    }
+
+    .pp-sku-row:last-child {
+        border-bottom: none !important;
+    }
+
+    .pp-sku-row:first-child {
+        background: #FAFBFF !important;
+    }
+
+    .pp-sku-row:first-child::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 15%;
+        bottom: 15%;
+        width: 3px;
+        background: #4362CE;
+        border-radius: 3px;
+    }
+
+    .pp-sku-rank {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.72rem;
+        font-weight: 700;
+        flex-shrink: 0;
+        background: #EEF2F6 !important;
+        color: #475569 !important;
+    }
+
+    .pp-sku-row:first-child .pp-sku-rank {
+        background: #4362CE !important;
+        color: #ffffff !important;
+    }
+
+    .pp-sku-info {
+        min-width: 0;
+        flex: 1.4;
+        text-align: left;
+    }
+
+    .pp-sku-info strong {
+        display: block;
+        font-size: 0.84rem;
+        font-weight: 700;
+        color: #0f172a;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .pp-sku-info span {
+        display: block;
+        font-size: 0.68rem;
+        font-weight: 500;
+        color: #94a3b8;
+        text-transform: none;
+        margin-top: 2px;
+    }
+
+    .pp-sku-units {
+        text-align: center;
+        flex: 0 0 96px;
+    }
+
+    .pp-sku-units strong {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .pp-sku-units em {
+        display: inline-block;
+        font-style: normal;
+        font-size: 0.68rem;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 6px;
+        margin-top: 2px;
+    }
+
+    .pp-sku-units em.up {
+        background: #EEF8F1;
+        color: #029153;
+    }
+
+    .pp-sku-units em.down {
+        background: #FEF0EF;
+        color: #EE473D;
+    }
+
+    .pp-sku-rev {
+        text-align: right;
+        flex: 0 0 84px;
+    }
+
+    .pp-sku-rev small {
+        display: block;
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+    }
+
+    .pp-sku-rev strong {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .pp-right-col {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        min-width: 0;
+        height: 100%;
+    }
+
+    .pp-donut-card {
+        padding: 1.25rem 1.4rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+    }
+
+    .pp-donut-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin-bottom: 0.85rem;
+    }
+
+    .pp-details-link {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #4362CE;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        white-space: nowrap;
+        transition: color 0.15s ease;
+    }
+
+    .pp-details-link:hover {
+        color: #2D48A8;
+    }
+
+    .pp-donut-body {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex: 1;
+    }
+
+    .pp-donut-wrap {
+        position: relative;
+        width: 190px;
+        height: 190px;
+        flex-shrink: 0;
+    }
+
+    .pp-donut-wrap canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .pp-donut-center {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        text-align: center;
+    }
+
+    .pp-donut-center p {
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #0f172a;
+        line-height: 1;
+    }
+
+    .pp-donut-center span {
+        font-size: 0.7rem;
+        color: #64748b;
+        font-weight: 600;
+        margin-top: 2px;
+    }
+
+    .pp-donut-legend {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .pp-legend-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.78rem;
+    }
+
+    .pp-legend-row .name {
+        color: #475569;
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .pp-legend-row .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        flex-shrink: 0;
+    }
+
+    .pp-legend-row .val {
+        font-weight: 700;
+        color: #0f172a;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .pp-legend-row .pct {
+        font-weight: 600;
+        color: #64748b;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .pp-kpi-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.25rem;
+        width: 100%;
+        margin: 0;
+        flex-shrink: 0;
+        align-items: stretch;
+    }
+
+    .pp-kpi-card {
+        padding: 1rem 1.15rem;
+        position: relative;
+        min-height: 105px;
+        height: 100%;
+        margin: 0;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .pp-kpi-icon {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #EEF2FF;
+        color: #4362CE;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .pp-kpi-icon.green {
+        background: #EEF8F1;
+        color: #029153;
+    }
+
+    .pp-kpi-icon.dark {
+        background: #F1F5F9;
+        color: #334155;
+    }
+
+    .pp-kpi-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #64748b;
+        margin: 0 2rem 0 0;
+    }
+
+    .pp-kpi-value {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0.35rem 0 0.35rem;
+        line-height: 1;
+    }
+
+    .pp-kpi-badge {
+        display: inline-block;
+        width: fit-content;
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: #029153;
+        background: #EEF8F1;
+        padding: 2px 8px;
+        border-radius: 6px;
+    }
+
+    .pp-kpi-note {
+        font-size: 0.68rem;
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    .pp-kpi-badge {
+        display: inline-block;
+        background: rgba(111, 251, 190, 0.28);
+        color: #009668;
+        font-size: 0.68rem;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 6px;
+    }
+
+    .pp-kpi-note {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #64748b;
+    }
+
+    @media (max-width: 1100px) {
+        .pp-hero-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    #product_list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .pp-sku-row.product-item,
+    .product-item.pp-sku-row {
+        display: flex !important;
+        flex-direction: row !important;
+        transform: none !important;
+    }
+
+    .product-rank {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: 32px;
+        height: 32px;
+        background: var(--surface-container-low);
+        color: var(--on-surface-variant);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.8rem;
+        border: 2px solid #fff;
+        z-index: 2;
+    }
+
+    .product-item:nth-child(1) .product-rank {
+        background: #fef3c7;
+        color: #92400e;
+        border-color: #fbbf24;
+    }
+
+    .product-item:nth-child(2) .product-rank {
+        background: #f1f5f9;
+        color: #475569;
+        border-color: #cbd5e1;
+    }
+
+    .product-item:nth-child(3) .product-rank {
+        background: #ffedd5;
+        color: #9a3412;
+        border-color: #fdba74;
+    }
+
+    .product-sku-tag {
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: var(--on-surface-variant);
+        opacity: 0.7;
+        text-transform: capitalize;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.75rem;
+        display: block;
+    }
+
+    .product-card-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--on-surface);
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 4.5rem;
+    }
+
+    .product-metrics-pill {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .metric-col {
+        text-align: center;
+    }
+
+    .metric-col label {
+        display: block;
+        font-size: 0.6rem;
+        font-weight: 700;
+        color: var(--on-surface-variant);
+        opacity: 0.75;
+        text-transform: capitalize;
+        margin-bottom: 0.25rem;
+    }
+
+    .metric-col span {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 800;
+        color: var(--on-surface);
+    }
+
+    .metric-col.revenue span {
+        color: var(--primary-container);
+    }
+
+    /* Premium Analysis Table Styles */
+    .analysis-table-container {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #e7e8e9;
+        overflow: auto;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    }
+
+    .analysis-table {
+        width: 100%;
+        border-collapse: collapse !important;
+        border-spacing: 0;
+    }
+
+    .analysis-table th {
+        background: var(--surface-container-low);
+        padding: 12px 16px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--on-surface-variant);
+        border: 1px solid #e2e8f0;
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .analysis-table th.group-header {
+        background: var(--surface-container-high);
+        color: var(--on-surface);
+        font-size: 12px;
+        border-bottom: 2px solid #e2e8f0;
+        font-weight: 700;
+    }
+
+    .analysis-table th:first-child {
+        border-top-left-radius: 16px;
+    }
+
+    .analysis-table th:last-child {
+        border-top-right-radius: 16px;
+    }
+
+    .analysis-table th {
+        text-align: center !important;
+        vertical-align: middle !important;
+        font-weight: 700 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 12px 8px !important;
+    }
+
+    /* Group specific colors - Premium Solid Minimalist Style */
+    .analysis-table th.sales-metrics-group,
+    .analysis-table th.sales-group {
+        background: var(--primary-container) !important;
+        color: #fff !important;
+        border-color: var(--primary) !important;
+    }
+
+    .analysis-table th.ads-spend-group {
+        background: var(--error) !important;
+        color: #fff !important;
+        border-color: var(--error) !important;
+    }
+
+    .analysis-table th.acos-group {
+        background: var(--on-primary-fixed-variant) !important;
+        color: #fff !important;
+        border-color: var(--on-primary-fixed-variant) !important;
+    }
+
+    .analysis-table th.ad-dep-group {
+        background: #6f42c1 !important;
+        /* Premium Violet */
+        color: #fff !important;
+        border-color: #6f42c1 !important;
+    }
+
+    .analysis-table th.traffic-sess-group {
+        background: var(--outline) !important;
+        color: #fff !important;
+        border-color: var(--outline) !important;
+    }
+
+    .analysis-table th.conv-group {
+        background: var(--success) !important;
+        color: #fff !important;
+        border-color: var(--success) !important;
+    }
+
+    .analysis-table th.refund-group {
+        background: var(--error) !important;
+        color: #fff !important;
+        border-color: var(--error) !important;
+    }
+
+    .analysis-table th.buy-box-group {
+        background: var(--secondary) !important;
+        color: #fff !important;
+        border-color: var(--secondary) !important;
+    }
+
+    .analysis-table td {
+        padding: 1.25rem 1rem;
+        font-size: 0.975rem;
+        color: var(--on-surface);
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
+        text-align: center !important;
+    }
+
+    .analysis-table tr:hover td {
+        background: #f8fafc;
+    }
+
+    .status-pill {
+        padding: 4px 10px;
+        border-radius: 50px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: capitalize;
+    }
+
+    .status-pill.star {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .status-pill.risk {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .status-pill.ad-dep {
+        background: #ffedd5;
+        color: #9a3412;
+    }
+
+    .mini-bar-container {
+        width: 50px;
+        height: 5px;
+        background: #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 6px;
+    }
+
+    .mini-bar-fill {
+        height: 100%;
+        border-radius: 10px;
+    }
+
+    /* Trend Table & Chart Tab Enhancements */
+    .trend-table {
+        width: 100%;
+        border-collapse: collapse !important;
+        border: 1px solid #f1f5f9 !important;
+        border-radius: 16px !important;
+        overflow: hidden !important;
+    }
+
+    .trend-table th {
+        background: #f8fafc !important;
+        color: #475569 !important;
+        font-weight: 800 !important;
+        font-size: 0.9rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+        padding: 1.25rem 1rem !important;
+        border: 1px solid #e2e8f0 !important;
+        text-align: right !important;
+    }
+
+    .trend-table th:first-child {
+        text-align: left !important;
+        background: #f8fafc !important;
+    }
+
+    .trend-table th:nth-child(2) {
+        background: #f8fafc !important;
+    }
+
+    .trend-table th:nth-child(3) {
+        background: #eff6ff !important;
+        color: #1e40af !important;
+    }
+
+    .trend-table th:nth-child(4) {
+        background: #f0fdf4 !important;
+        color: #166534 !important;
+    }
+
+    .trend-table td {
+        padding: 1.25rem 1rem !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        font-weight: 700 !important;
+        color: #1e293b !important;
+        text-align: right !important;
+        font-size: 1.05rem !important;
+    }
+
+    .trend-table td:first-child {
+        text-align: left !important;
+        color: #475569 !important;
+        font-weight: 800 !important;
+    }
+
+    .trend-table td.highlight-col {
+        background: rgba(240, 253, 244, 0.4) !important;
+        color: #166534 !important;
+        font-weight: 900 !important;
+    }
+
+    .trend-table tr:hover td {
+        background: #f8fafc !important;
+    }
+
+    .trend-table tr:hover td.highlight-col {
+        background: rgba(240, 253, 244, 0.6) !important;
+    }
+
+    .chart-tabs {
+        display: flex;
+        gap: 0.75rem;
+        padding: 0.5rem;
+        background: #f1f5f9;
+        border-radius: 50px;
+        width: fit-content;
+        margin-bottom: 2rem;
+    }
+
+    .chart-tab-btn {
+        padding: 8px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #64748b;
+        transition: all 0.3s;
+        border: none;
+        background: transparent;
+        text-transform: capitalize;
+    }
+
+    .chart-tab-btn:hover {
+        color: #1e293b;
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .chart-tab-btn.active {
+        background: #0f172a;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: scale(1.02);
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 1.5rem;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    /* Ensure Profit & Loss tables under financial tab are fully structured grids with 33.33% equal column widths */
+    .pl-section-card table.analysis-table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+        border-top: 1px solid rgba(226, 232, 240, 0.6) !important;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.6) !important;
+        border-left: none !important;
+        border-right: none !important;
+    }
+
+    .pl-section-card table.analysis-table th,
+    .pl-section-card table.analysis-table td {
+        position: static !important;
+        /* Disable broken sticky positioning */
+        left: auto !important;
+        /* Reset sticky left offset */
+        width: 33.33% !important;
+        max-width: 33.33% !important;
+        min-width: 33.33% !important;
+        border-top: 1px solid rgba(226, 232, 240, 0.6) !important;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.6) !important;
+        border-left: none !important;
+        border-right: none !important;
+        padding: 12px 16px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Align text to left in the first column, numbers to right in second/third columns */
+    .pl-section-card table.analysis-table th:first-child,
+    .pl-section-card table.analysis-table td:first-child {
+        text-align: left !important;
+    }
+
+    .pl-section-card table.analysis-table th:nth-child(2),
+    .pl-section-card table.analysis-table td:nth-child(2),
+    .pl-section-card table.analysis-table th:nth-child(3),
+    .pl-section-card table.analysis-table td:nth-child(3) {
+        text-align: right !important;
+    }
+
+    .pl-section-card table.analysis-table td:first-child>div {
+        justify-content: flex-start !important;
+    }
 </style>
 
 <!-- Filter Section -->
 <?php if ($active_tab === 'kpi' || $active_tab === 'financial'): ?>
-<!-- Figma toolbar lives inside tab -->
+    <!-- Figma toolbar lives inside tab -->
 <?php elseif ($active_tab === 'products'): ?>
-<!-- Figma topbar for Product Performance -->
-<style>.top-header { display: none !important; } .main-wrapper { padding-top: 1.25rem !important; }</style>
-<div class="overview-topbar" style="margin-bottom:0.5rem;">
-    <div class="overview-topbar-left">
-        <select id="filter_customer" style="min-width:180px; padding:0.5rem 0.85rem; border:1px solid #e2e8f0; border-radius:10px; font-size:0.82rem; font-weight:600; color:#334155; background:#fff;" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
-            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
-                <option value="">All Amazon Profiles</option>
-            <?php endif; ?>
-            <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()): ?>
-            <?php 
-                $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
-                if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id']) continue;
-            ?>
-                <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($row['customer_name']); ?></option>
-            <?php endwhile; ?>
-        </select>
-        <?php if (($_SESSION['role'] ?? '') === 'customer'): ?>
-            <input type="hidden" id="customer_id_hidden" value="<?php echo $_SESSION['customer_id'] ?? 0; ?>">
-        <?php endif; ?>
-        <span class="overview-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Product Performance</strong></span>
-    </div>
-    <div class="overview-topbar-right">
-        <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
-        <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
-        <?php endif; ?>
-        <button type="button" id="export_csv" class="btn-figma-outline"><i class="fas fa-file-export"></i> Export CSV</button>
-        <button type="button" class="btn-figma-icon-sm" title="Search"><i class="fas fa-search"></i></button>
-        <button type="button" class="btn-figma-icon-sm" title="Notifications"><i class="fas fa-bell"></i></button>
-    </div>
-</div>
-<!-- Product Performance Page Head with date -->
-<div class="overview-page-head" style="margin-bottom:1rem;">
-    <div>
-        <h2 style="font-size:1.65rem; font-weight:800; color:#0f172a; margin:0; font-family:'Hanken Grotesk','Inter',sans-serif; letter-spacing:-0.02em;">Product Performance</h2>
-        <p style="margin:0.2rem 0 0; font-size:0.82rem; color:#64748b; font-weight:500;">SKU-level revenue, traffic &amp; contribution analysis</p>
-    </div>
-    <div class="overview-date-bar">
-        <i class="far fa-calendar-alt" style="color:#64748b; font-size:0.85rem;"></i>
-        <input type="date" id="filter_from" value="">
-        <span class="date-sep">-</span>
-        <input type="date" id="filter_to" value="">
-        <button type="button" id="apply_filters" class="btn-refresh-icon" title="Refresh Analysis"><i class="fas fa-sync-alt"></i></button>
-    </div>
-</div>
-<?php else: ?>
-<div class="card" style="margin-bottom: 2rem;">
-    <div style="display: flex; gap: 1.5rem; align-items: flex-end; flex-wrap: wrap;">
-        <div class="form-group" style="flex: 1; min-width: 280px;">
-            <label>Account Selection</label>
-            <select id="filter_customer" style="width: 100%;" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
-                <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
-                    <option value="">All Amazon Profiles</option>
-                <?php endif; ?>
-                <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()): ?>
-                <?php 
-                    $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
-                    if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id']) continue;
-                ?>
-                    <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($row['customer_name']); ?></option>
-                <?php endwhile; ?>
-            </select>
+    <!-- Figma topbar for Product Performance -->
+    <style>
+        .top-header {
+            display: none !important;
+        }
+
+        .main-wrapper {
+            padding-top: 1.25rem !important;
+        }
+    </style>
+    <div class="overview-topbar" style="margin-bottom:0.5rem;">
+        <div class="overview-topbar-left">
+            <div class="figma-select-wrapper">
+                <select id="filter_customer" class="filter-customer-select" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
+                    <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                        <option value="">All Amazon Profiles</option>
+                    <?php endif; ?>
+                    <?php $customers->data_seek(0);
+                    while ($row = $customers->fetch_assoc()): ?>
+                        <?php
+                        $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
+                        if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id'])
+                            continue;
+                        ?>
+                        <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>>
+                            <?php echo htmlspecialchars($row['customer_name']); ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <span class="figma-select-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M10 10C10 10 7.79056 13 7 13C6.20944 13 4 10 4 10" stroke="#363B4F" stroke-width="1.2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M10 5C10 5 7.79056 2 7 2C6.20944 2 4 5 4 5" stroke="#363B4F" stroke-width="1.2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>
+            </div>
             <?php if (($_SESSION['role'] ?? '') === 'customer'): ?>
                 <input type="hidden" id="customer_id_hidden" value="<?php echo $_SESSION['customer_id'] ?? 0; ?>">
             <?php endif; ?>
+            <span class="overview-breadcrumb">Dashboard <i class="fas fa-chevron-right"
+                    style="font-size:0.6rem; color:#94a3b8; margin:0 2px;"></i>
+                <strong>Product Performance</strong></span>
         </div>
-        <div class="form-group">
-            <label>Date Range</label>
-            <div style="display: flex; gap: 0.5rem; align-items: center;">
-                <input type="date" id="filter_from" value="">
-                <span style="color: var(--on-surface-variant); opacity: 0.8;">to</span>
-                <input type="date" id="filter_to" value="">
-            </div>
+        <div class="overview-topbar-right">
+            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><svg width="14"
+                        height="14" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 1.3335V14.6668" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M1.33301 8H14.6663" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg> New Upload</a>
+            <?php endif; ?>
+            <button type="button" class="btn-figma-outline" id="pp_export_csv_btn"><svg width="14" height="14"
+                    viewBox="0 0 16 16" fill="none">
+                    <path
+                        d="M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10"
+                        stroke="#475569" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M4.66699 6.6665L8.00033 9.99984L11.3337 6.6665" stroke="#475569" stroke-width="1.3"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M8 10V2" stroke="#475569" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                </svg> Export CSV</button>
+            <button type="button" class="btn-figma-icon-sm" title="Search"><svg width="15" height="15" viewBox="0 0 16 16"
+                    fill="none">
+                    <circle cx="7.33333" cy="7.33333" r="5.33333" stroke="#475569" stroke-width="1.3" />
+                    <path d="M14.6667 14.6667L11.3333 11.3333" stroke="#475569" stroke-width="1.3" stroke-linecap="round" />
+                </svg></button>
+            <button type="button" class="btn-figma-icon-sm" title="Notifications"><svg width="15" height="15"
+                    viewBox="0 0 16 16" fill="none">
+                    <path
+                        d="M12 5.33333C12 4.27247 11.5786 3.25505 10.8284 2.50486C10.0783 1.75466 9.06087 1.33333 8 1.33333C6.93913 1.33333 5.92172 1.75466 5.17157 2.50486C4.42143 3.25505 4 4.27247 4 5.33333C4 10 2 11.3333 2 11.3333H14C14 11.3333 12 10 12 5.33333Z"
+                        stroke="#475569" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M9.15332 14C8.97125 14.3151 8.70774 14.5779 8.39213 14.7592C8.07652 14.9405 7.72017 15.0337 7.35799 15.0294C6.99581 15.025 6.64099 14.9232 6.32837 14.7341C6.01575 14.545 5.75678 14.2755 5.57715 13.9531"
+                        stroke="#475569" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                </svg></button>
         </div>
-        <button id="apply_filters" class="btn btn-primary" style="height: 40px; padding: 0 20px;">
-            <i class="fas fa-sync-alt"></i> REFRESH ANALYSIS
-        </button>
-        <button id="export_csv" class="btn btn-outline" style="height: 40px; padding: 0 20px;">
-            <i class="fas fa-file-csv"></i> EXPORT CSV
-        </button>
     </div>
-</div>
+    <!-- Product Performance Page Head with date -->
+    <div class="overview-page-head" style="margin-bottom:1rem;">
+        <div>
+            <h2
+                style="font-size:1.65rem; font-weight:800; color:#0f172a; margin:0; font-family:'Inter', sans-serif; letter-spacing:-0.02em;">
+                Product Performance</h2>
+            <p style="margin:0.2rem 0 0; font-size:0.82rem; color:#64748b; font-weight:500;">SKU-level revenue, traffic
+                &amp; contribution analysis</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <div class="figma-date-picker-wrap" id="date_range_picker_pp_wrap">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.6666 1.3335V4.00016M5.33325 1.3335V4.00016" stroke="#363B4F" stroke-width="1.4"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M8.66667 2.6665H7.33333C4.81917 2.6665 3.5621 2.6665 2.78105 3.44755C2 4.2286 2 5.48568 2 7.99984V9.33317C2 11.8473 2 13.1044 2.78105 13.8854C3.5621 14.6665 4.81917 14.6665 7.33333 14.6665H8.66667C11.1808 14.6665 12.4379 14.6665 13.2189 13.8854C14 13.1044 14 11.8473 14 9.33317V7.99984C14 5.48568 14 4.2286 13.2189 3.44755C12.4379 2.6665 11.1808 2.6665 8.66667 2.6665Z"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M2 6.6665H14" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_pp"
+                    placeholder="Select date range" readonly>
+                <input type="hidden" id="filter_from" value="2026-01-01">
+                <input type="hidden" id="filter_to" value="2026-03-31">
+            </div>
+            <button type="button" id="apply_filters" class="btn-figma-refresh" title="Refresh Analysis">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10.1115 0.666504L10.5101 1.41169C10.7796 1.91548 10.9143 2.16738 10.8253 2.27526C10.7361 2.38314 10.4427 2.29601 9.85573 2.12176C9.26893 1.94754 8.64593 1.85381 8.00033 1.85381C4.50252 1.85381 1.66699 4.60548 1.66699 7.99987C1.66699 9.11927 1.97541 10.1689 2.51428 11.0729M5.88921 15.3332L5.49057 14.588C5.22105 14.0842 5.08629 13.8323 5.17539 13.7244C5.26451 13.6165 5.55799 13.7037 6.14492 13.8779C6.73173 14.0521 7.35473 14.1459 8.00033 14.1459C11.4981 14.1459 14.3337 11.3942 14.3337 7.99987C14.3337 6.8804 14.0253 5.83082 13.4864 4.92682"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+    </div>
+<?php else: ?>
+    <div class="card" style="margin-bottom: 2rem;">
+        <div style="display: flex; gap: 1.5rem; align-items: flex-end; flex-wrap: wrap;">
+            <div class="form-group" style="flex: 1; min-width: 280px;">
+                <label>Account Selection</label>
+                <select id="filter_customer" style="width: 100%;" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
+                    <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                        <option value="">All Amazon Profiles</option>
+                    <?php endif; ?>
+                    <?php $customers->data_seek(0);
+                    while ($row = $customers->fetch_assoc()): ?>
+                        <?php
+                        $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
+                        if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id'])
+                            continue;
+                        ?>
+                        <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>>
+                            <?php echo htmlspecialchars($row['customer_name']); ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <?php if (($_SESSION['role'] ?? '') === 'customer'): ?>
+                    <input type="hidden" id="customer_id_hidden" value="<?php echo $_SESSION['customer_id'] ?? 0; ?>">
+                <?php endif; ?>
+            </div>
+            <div class="form-group">
+                <label>Date Range</label>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input type="date" id="filter_from" value="">
+                    <span style="color: var(--on-surface-variant); opacity: 0.8;">to</span>
+                    <input type="date" id="filter_to" value="">
+                </div>
+            </div>
+            <button id="apply_filters" class="btn btn-primary" style="height: 40px; padding: 0 20px;">
+                <i class="fas fa-sync-alt"></i> REFRESH ANALYSIS
+            </button>
+            <button id="export_csv" class="btn btn-outline" style="height: 40px; padding: 0 20px;">
+                <i class="fas fa-file-csv"></i> EXPORT CSV
+            </button>
+        </div>
+    </div>
 <?php endif; ?>
 
 
 <!-- Loading State -->
-<div id="loading_overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.7); z-index: 9999; align-items: center; justify-content: center; flex-direction: column;">
-    <div class="spinner" style="width: 40px; height: 40px; border: 4px solid #f3f4f6; border-top-color: #bef264; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+<div id="loading_overlay"
+    style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.7); z-index: 9999; align-items: center; justify-content: center; flex-direction: column;">
+    <div class="spinner"
+        style="width: 40px; height: 40px; border: 4px solid #f3f4f6; border-top-color: #bef264; border-radius: 50%; animation: spin 1s linear infinite;">
+    </div>
     <p style="margin-top: 1rem; font-weight: 700; color: #064e3b;">Syncing Amazon Reports...</p>
 </div>
 
@@ -1621,28 +3234,78 @@ include '../../includes/sidebar.php';
 
     <div class="overview-topbar">
         <div class="overview-topbar-left">
-            <select id="filter_customer" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
-                <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
-                    <option value="">All Amazon Profiles</option>
-                <?php endif; ?>
-                <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()): ?>
-                <?php 
-                    $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
-                    if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id']) continue;
-                ?>
-                    <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($row['customer_name']); ?></option>
-                <?php endwhile; ?>
-            </select>
+            <div class="figma-select-wrapper">
+                <select id="filter_customer" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
+                    <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                        <option value="">All Amazon Profiles</option>
+                    <?php endif; ?>
+                    <?php $customers->data_seek(0);
+                    while ($row = $customers->fetch_assoc()): ?>
+                        <?php
+                        $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
+                        if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id'])
+                            continue;
+                        ?>
+                        <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>>
+                            <?php echo htmlspecialchars($row['customer_name']); ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <span class="figma-select-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 10C10 10 7.79056 13 7 13C6.20944 13 4 10 4 10" stroke="#363B4F" stroke-width="1.2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M10 5C10 5 7.79056 2 7 2C6.20944 2 4 5 4 5" stroke="#363B4F" stroke-width="1.2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>
+            </div>
             <?php if (($_SESSION['role'] ?? '') === 'customer'): ?>
                 <input type="hidden" id="customer_id_hidden" value="<?php echo $_SESSION['customer_id'] ?? 0; ?>">
             <?php endif; ?>
-            <span class="overview-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Overview</strong></span>
+            <span class="overview-breadcrumb">Dashboard <span class="breadcrumb-dot">•</span> <strong>Profit &amp; Loss
+                    Analysis</strong></span>
         </div>
         <div class="overview-topbar-right">
             <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
-            <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
+                <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 1V13M1 7H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <span>New Upload</span>
+                </a>
             <?php endif; ?>
-            <button type="button" id="export_csv" class="btn-figma-outline"><i class="fas fa-file-export"></i> Export CSV</button>
+            <button type="button" id="export_csv" class="btn-figma-outline">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M1.99976 11.3335C1.99976 11.9535 1.99976 12.2635 2.06791 12.5178C2.25284 13.208 2.79194 13.7471 3.48212 13.932C3.73646 14.0002 4.04644 14.0002 4.66642 14.0002H11.3331C11.9531 14.0002 12.2631 14.0002 12.5174 13.932C13.2076 13.7471 13.7467 13.208 13.9316 12.5178C13.9998 12.2635 13.9998 11.9535 13.9998 11.3335"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M10.9999 7.6667C10.9999 7.6667 8.79044 10.6667 7.99984 10.6667C7.2093 10.6667 4.99988 7.6667 4.99988 7.6667M7.99984 10V2"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Export CSV</span>
+            </button>
+            <button type="button" class="btn-figma-icon-sm" title="Search">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.209 11.208L13.834 13.833" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path
+                        d="M12.166 7.16699C12.166 4.40557 9.92746 2.16699 7.16602 2.16699C4.40459 2.16699 2.16602 4.40557 2.16602 7.16699C2.16602 9.92844 4.40459 12.167 7.16602 12.167C9.92746 12.167 12.166 9.92844 12.166 7.16699Z"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linejoin="round" />
+                </svg>
+            </button>
+            <button type="button" class="btn-figma-icon-sm" title="Notifications">
+                <svg width="15" height="16" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12.5019 7.20074C12.5019 6.08664 12.0593 5.01816 11.2715 4.23037C10.4837 3.44258 9.41522 3 8.30112 3C7.18701 3 6.11853 3.44258 5.33074 4.23037C4.54295 5.01816 4.10037 6.08664 4.10037 7.20074C4.10037 12.1016 2 13.5019 2 13.5019H14.6022C14.6022 13.5019 12.5019 12.1016 12.5019 7.20074Z"
+                        stroke="#363B4F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M9.51227 16.3022C9.38918 16.5144 9.21251 16.6906 8.99994 16.813C8.78737 16.9354 8.54637 16.9999 8.30106 16.9999C8.05575 16.9999 7.81475 16.9354 7.60218 16.813C7.38961 16.6906 7.21293 16.5144 7.08984 16.3022"
+                        stroke="#363B4F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                    <ellipse cx="12.6316" cy="2.65" rx="2.6316" ry="2.65" fill="#EE473D" />
+                </svg>
+            </button>
         </div>
     </div>
 
@@ -1651,11 +3314,27 @@ include '../../includes/sidebar.php';
             <h2>Overview</h2>
             <p>Real-time Amazon Business Intelligence &amp; Analytics</p>
         </div>
-        <div class="overview-date-bar">
-            <input type="date" id="filter_from" value="">
-            <span class="date-sep">-</span>
-            <input type="date" id="filter_to" value="">
-            <button type="button" id="apply_filters" class="btn-refresh-icon" title="Refresh"><i class="fas fa-sync-alt"></i></button>
+        <div class="d-flex align-items-center gap-2">
+            <div class="figma-date-picker-wrap" id="date_range_picker_kpi_wrap">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.6666 1.3335V4.00016M5.33325 1.3335V4.00016" stroke="#363B4F" stroke-width="1.4"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M8.66667 2.6665H7.33333C4.81917 2.6665 3.5621 2.6665 2.78105 3.44755C2 4.2286 2 5.48568 2 7.99984V9.33317C2 11.8473 2 13.1044 2.78105 13.8854C3.5621 14.6665 4.81917 14.6665 7.33333 14.6665H8.66667C11.1808 14.6665 12.4379 14.6665 13.2189 13.8854C14 13.1044 14 11.8473 14 9.33317V7.99984C14 5.48568 14 4.2286 13.2189 3.44755C12.4379 2.6665 11.1808 2.6665 8.66667 2.6665Z"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M2 6.6665H14" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_kpi"
+                    placeholder="Select date range" readonly>
+            </div>
+            <button type="button" id="apply_filters" class="btn-figma-refresh" title="Refresh">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10.1115 0.666504L10.5101 1.41169C10.7796 1.91548 10.9143 2.16738 10.8253 2.27526C10.7361 2.38314 10.4427 2.29601 9.85573 2.12176C9.26893 1.94754 8.64593 1.85381 8.00033 1.85381C4.50252 1.85381 1.66699 4.60548 1.66699 7.99987C1.66699 9.11927 1.97541 10.1689 2.51428 11.0729M5.88921 15.3332L5.49057 14.588C5.22105 14.0842 5.08629 13.8323 5.17539 13.7244C5.26451 13.6165 5.55799 13.7037 6.14492 13.8779C6.73173 14.0521 7.35473 14.1459 8.00033 14.1459C11.4981 14.1459 14.3337 11.3942 14.3337 7.99987C14.3337 6.8804 14.0253 5.83082 13.4864 4.92682"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
         </div>
     </div>
 
@@ -1663,8 +3342,19 @@ include '../../includes/sidebar.php';
     <div class="overview-hero-grid">
         <div class="ov-card hero">
             <div class="ov-top">
-                <span class="ov-label" id="kpi_sales_sub">Total Revenue</span>
-                <span class="ov-icon"><i class="fas fa-eye"></i></span>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="ov-label" id="kpi_sales_sub">Total Revenue</span>
+                    <span class="ov-icon-hero">
+                        <svg width="18" height="18" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M20.294 9.045C20.598 9.4713 20.75 9.6845 20.75 10C20.75 10.3155 20.598 10.5287 20.294 10.955C18.9279 12.8706 15.4392 17 10.75 17C6.06078 17 2.5721 12.8706 1.20604 10.955C0.90201 10.5287 0.75 10.3155 0.75 10C0.75 9.6845 0.90201 9.4713 1.20604 9.045C2.5721 7.12944 6.06078 3 10.75 3C15.4392 3 18.9279 7.12944 20.294 9.045Z"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M13.75 10C13.75 8.3431 12.4069 7 10.75 7C9.0931 7 7.75 8.3431 7.75 10C7.75 11.6569 9.0931 13 10.75 13C12.4069 13 13.75 11.6569 13.75 10Z"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                </div>
             </div>
             <div class="ov-value" id="kpi_sales">$0.00</div>
             <span id="cmp_sales" class="cmp-tag"></span>
@@ -1672,8 +3362,20 @@ include '../../includes/sidebar.php';
 
         <div class="ov-card">
             <div class="ov-top">
-                <span class="ov-label" id="kpi_organic_sub">Organic Sales</span>
-                <span class="ov-icon green"><i class="fas fa-leaf"></i></span>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="ov-icon green"
+                        style="width:28px; height:28px; border-radius:50%; background:#eff6ff; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M5.41548 11.1285C5.1229 10.5518 4.95801 9.89931 4.95801 9.20833C4.95801 6.93093 6.72884 5.3125 9.20801 4.95833C12.0992 4.5453 13.3399 2.95139 14.1663 2.125C16.6455 11.3333 12.0413 13.4583 9.20801 13.4583C8.43387 13.4583 7.70811 13.2514 7.08301 12.8898"
+                                stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M2.125 14.8748C2.47917 12.7498 3.86602 11.4292 7.08333 10.6248C9.36183 10.0552 10.9532 8.62671 12.0417 7.12207"
+                                stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" />
+                        </svg>
+                    </span>
+                    <span class="ov-label" id="kpi_organic_sub">Organic Sales</span>
+                </div>
             </div>
             <div class="ov-value" id="kpi_organic">$0.00</div>
             <span id="cmp_organic" class="cmp-tag"></span>
@@ -1681,8 +3383,22 @@ include '../../includes/sidebar.php';
 
         <div class="ov-card">
             <div class="ov-top">
-                <span class="ov-label" id="kpi_ad_sales_sub">Ad Sales</span>
-                <span class="ov-icon blue"><i class="fas fa-bullhorn"></i></span>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="ov-icon blue"
+                        style="width:28px; height:28px; border-radius:50%; background:#eff6ff; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.5728 2.06182L5.86041 4.32387C5.49774 4.49796 5.11022 4.54158 4.7152 4.45308C4.45667 4.39517 4.32739 4.36621 4.2233 4.35432C2.93068 4.20671 2.125 5.22976 2.125 6.40619V7.05181C2.125 8.22826 2.93068 9.25131 4.2233 9.10369C4.32739 9.09179 4.45668 9.06282 4.7152 9.00495C5.11022 8.91641 5.49774 8.96004 5.86041 9.13415L10.5728 11.3962C11.6545 11.9155 12.1954 12.1751 12.7984 11.9727C13.4015 11.7704 13.6084 11.3361 14.0224 10.4676C15.1592 8.08277 15.1592 5.37527 14.0224 2.99039C13.6084 2.1219 13.4015 1.68766 12.7984 1.48528C12.1954 1.28291 11.6545 1.54254 10.5728 2.06182Z"
+                                stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M8.11583 14.7129L7.05945 15.5835C4.67833 13.695 4.96922 12.7944 4.96922 9.2085H5.77235C6.09827 11.235 6.86705 12.1948 7.92784 12.8897C8.58128 13.3177 8.716 14.2182 8.11583 14.7129Z"
+                                stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M5.3125 8.854V4.604" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                    <span class="ov-label" id="kpi_ad_sales_sub">Ad Sales</span>
+                </div>
             </div>
             <div class="ov-value" id="kpi_ad_sales">$0.00</div>
             <span id="cmp_ad_sales" class="cmp-tag"></span>
@@ -1690,8 +3406,21 @@ include '../../includes/sidebar.php';
 
         <div class="ov-card">
             <div class="ov-top">
-                <span class="ov-label" id="kpi_dsr_sub">Daily Sales Rate</span>
-                <span class="ov-icon amber"><i class="fas fa-calendar-day"></i></span>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="ov-icon amber"
+                        style="width:28px; height:28px; border-radius:50%; background:#eff6ff; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.6666 1.3335V4.00016M5.33325 1.3335V4.00016" stroke="#4362CE" stroke-width="1.3"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M8.66667 2.6665H7.33333C4.81917 2.6665 3.5621 2.6665 2.78105 3.44755C2 4.2286 2 5.48568 2 7.99984V9.33317C2 11.8473 2 13.1044 2.78105 13.8854C3.5621 14.6665 4.81917 14.6665 7.33333 14.6665H8.66667C11.1808 14.6665 12.4379 14.6665 13.2189 13.8854C14 13.1044 14 11.8473 14 9.33317V7.99984C14 5.48568 14 4.2286 13.2189 3.44755C12.4379 2.6665 11.1808 2.6665 8.66667 2.6665Z"
+                                stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M2 6.6665H14" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                    <span class="ov-label" id="kpi_dsr_sub">Daily Sales Rate</span>
+                </div>
             </div>
             <div class="ov-value" id="kpi_dsr">$0.00</div>
             <span id="cmp_dsr" class="cmp-tag"></span>
@@ -1777,7 +3506,9 @@ include '../../includes/sidebar.php';
                 <h3 class="overview-panel-title">KPI Trend - 3-Month Comparison</h3>
                 <div class="table-container">
                     <table class="trend-table">
-                        <thead><tr id="trend_head"></tr></thead>
+                        <thead>
+                            <tr id="trend_head"></tr>
+                        </thead>
                         <tbody id="trend_body"></tbody>
                     </table>
                 </div>
@@ -1792,27 +3523,41 @@ include '../../includes/sidebar.php';
 
         <div class="card kpi-card indigo-theme">
             <div class="kpi-header" style="align-items: center;">
-            <div class="kpi-footer"><i class="fas fa-file-alt"></i><span id="">Product Detail Views</span></div>
-            <div class="kpi-icon"><i class="fas fa-eye"></i></div>
-        </div>
-        <div class="kpi-body"><h3><span id="kpi_pv_t">0</span></h3></div>
-        <div style="display: flex; justify-content: flex-end; margin-top: auto;">
-            <span id="cmp_pv_t" class="cmp-tag"></span>
-        </div>
+                <div class="kpi-footer"><i class="fas fa-file-alt"></i><span id="">Product Detail Views</span></div>
+                <div class="kpi-icon"><i class="fas fa-eye"></i></div>
+            </div>
+            <div class="kpi-body">
+                <h3><span id="kpi_pv_t">0</span></h3>
+            </div>
+            <div style="display: flex; justify-content: flex-end; margin-top: auto;">
+                <span id="cmp_pv_t" class="cmp-tag"></span>
+            </div>
         </div>
         <div class="card kpi-card teal-theme">
-            <div class="kpi-header"><div class="kpi-icon"><i class="fas fa-rocket"></i></div></div>
-            <div class="kpi-body"><h3><span id="kpi_conv_t">0.00%</span></h3></div>
+            <div class="kpi-header">
+                <div class="kpi-icon"><i class="fas fa-rocket"></i></div>
+            </div>
+            <div class="kpi-body">
+                <h3><span id="kpi_conv_t">0.00%</span></h3>
+            </div>
             <div class="kpi-footer"><i class="fas fa-percentage"></i><span>Units / Session</span></div>
         </div>
         <div class="card kpi-card green-theme">
-            <div class="kpi-header"><div class="kpi-icon"><i class="fas fa-box-open"></i></div></div>
-            <div class="kpi-body"><h3><span id="kpi_buybox_t">0%</span></h3></div>
+            <div class="kpi-header">
+                <div class="kpi-icon"><i class="fas fa-box-open"></i></div>
+            </div>
+            <div class="kpi-body">
+                <h3><span id="kpi_buybox_t">0%</span></h3>
+            </div>
             <div class="kpi-footer"><i class="fas fa-shopping-bag"></i><span>Market Visibility</span></div>
         </div>
         <div class="card kpi-card rose-theme">
-            <div class="kpi-header"><div class="kpi-icon"><i class="fas fa-mobile-alt"></i></div></div>
-            <div class="kpi-body"><h3><span id="kpi_mobile_t">0%</span></h3></div>
+            <div class="kpi-header">
+                <div class="kpi-icon"><i class="fas fa-mobile-alt"></i></div>
+            </div>
+            <div class="kpi-body">
+                <h3><span id="kpi_mobile_t">0%</span></h3>
+            </div>
             <div class="kpi-footer"><i class="fas fa-app-store"></i><span>App vs Browser Traffic</span></div>
         </div>
     </div>
@@ -1822,18 +3567,26 @@ include '../../includes/sidebar.php';
         <div style="height: 480px;"><canvas id="trafficTrendChart"></canvas></div>
     </div>
 
-    <section class="bento-card overflow-hidden mb-8" style="background:#ffffff; border-radius:16px; border: 1px solid #c6c6cd; overflow:hidden;">
-        <div class="px-8 py-6 border-b border-outline-variant flex justify-between items-center" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #c6c6cd; padding: 24px 32px; background: #ffffff;">
-            <h3 class="font-headline-md text-headline-md text-primary" style="font-size: 22px; font-weight: 700; color: #000000; margin: 0; display: flex; align-items: center; gap: 8px;">
-                <span class="material-symbols-outlined text-secondary" style="font-size: 24px; color: #0051d5;">traffic</span>
+    <section class="bento-card overflow-hidden mb-8"
+        style="background:#ffffff; border-radius:16px; border: 1px solid #c6c6cd; overflow:hidden;">
+        <div class="px-8 py-6 border-b border-outline-variant flex justify-between items-center"
+            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #c6c6cd; padding: 24px 32px; background: #ffffff;">
+            <h3 class="font-headline-md text-headline-md text-primary"
+                style="font-size: 22px; font-weight: 700; color: #000000; margin: 0; display: flex; align-items: center; gap: 8px;">
+                <span class="material-symbols-outlined text-secondary"
+                    style="font-size: 24px; color: #0051d5;">traffic</span>
                 Daily Traffic Breakdown
             </h3>
             <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
                 <div class="relative" style="position: relative;">
-                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #45464d; pointer-events: none;"></i>
-                    <input id="traffic_search_input" style="padding-left: 36px; padding-right: 16px; padding-top: 8px; padding-bottom: 8px; border: 1px solid #c6c6cd; border-radius: 8px; outline: none; background: #f2f4f6; font-size: 14px; font-weight: 600; width: 220px;" placeholder="Search traffic..." type="text"/>
+                    <i class="fas fa-search"
+                        style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #45464d; pointer-events: none;"></i>
+                    <input id="traffic_search_input"
+                        style="padding-left: 36px; padding-right: 16px; padding-top: 8px; padding-bottom: 8px; border: 1px solid #c6c6cd; border-radius: 8px; outline: none; background: #f2f4f6; font-size: 14px; font-weight: 600; width: 220px;"
+                        placeholder="Search traffic..." type="text" />
                 </div>
-                <button style="padding: 8px; border: 1px solid #c6c6cd; border-radius: 8px; background: transparent; color: #45464d; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                <button
+                    style="padding: 8px; border: 1px solid #c6c6cd; border-radius: 8px; background: transparent; color: #45464d; cursor: pointer; display: flex; align-items: center; justify-content: center;">
                     <span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
                 </button>
             </div>
@@ -1842,28 +3595,55 @@ include '../../includes/sidebar.php';
             <table id="traffic_daily_table" style="width: 100%; border-collapse: collapse; text-align: left;">
                 <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
                     <tr>
-                        <th rowspan="2" style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center; vertical-align: middle;">DATE</th>
-                        <th colspan="2" style="padding: 8px 16px; font-size: 11px; font-weight: 700; color: #0051d5; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center; background: rgba(219,225,255,0.4);">TRAFFIC VOLUME</th>
-                        <th colspan="1" style="padding: 8px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center; vertical-align: middle;">MARKET</th>
-                        <th colspan="2" style="padding: 8px 16px; font-size: 11px; font-weight: 700; color: #000000; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center; background: rgba(19,27,46,0.05);">ACTIVITY</th>
-                        <th colspan="1" style="padding: 8px 16px; font-size: 11px; font-weight: 700; color: #009668; text-transform: uppercase; text-align: center; background: rgba(111,251,190,0.15); vertical-align: middle;">PERFORMANCE</th>
+                        <th rowspan="2"
+                            style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center; vertical-align: middle;">
+                            DATE</th>
+                        <th colspan="2"
+                            style="padding: 8px 16px; font-size: 11px; font-weight: 700; color: #0051d5; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center; background: rgba(219,225,255,0.4);">
+                            TRAFFIC VOLUME</th>
+                        <th colspan="1"
+                            style="padding: 8px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center; vertical-align: middle;">
+                            MARKET</th>
+                        <th colspan="2"
+                            style="padding: 8px 16px; font-size: 11px; font-weight: 700; color: #000000; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center; background: rgba(19,27,46,0.05);">
+                            ACTIVITY</th>
+                        <th colspan="1"
+                            style="padding: 8px 16px; font-size: 11px; font-weight: 700; color: #009668; text-transform: uppercase; text-align: center; background: rgba(111,251,190,0.15); vertical-align: middle;">
+                            PERFORMANCE</th>
                     </tr>
                     <tr>
-                        <th style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: right; background: rgba(219,225,255,0.2);">Sessions</th>
-                        <th style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: right; background: rgba(219,225,255,0.2);">Page Views</th>
-                        <th style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center;">Buy Box %</th>
-                        <th style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: right; background: rgba(19,27,46,0.02);">Units</th>
-                        <th style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: right; background: rgba(19,27,46,0.02);">Orders</th>
-                        <th style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; text-align: right; background: rgba(111,251,190,0.05);">Conversion %</th>
+                        <th
+                            style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: right; background: rgba(219,225,255,0.2);">
+                            Sessions</th>
+                        <th
+                            style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: right; background: rgba(219,225,255,0.2);">
+                            Page Views</th>
+                        <th
+                            style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: center;">
+                            Buy Box %</th>
+                        <th
+                            style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: right; background: rgba(19,27,46,0.02);">
+                            Units</th>
+                        <th
+                            style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; border-right: 1px solid #c6c6cd; text-align: right; background: rgba(19,27,46,0.02);">
+                            Orders</th>
+                        <th
+                            style="padding: 10px 16px; font-size: 11px; font-weight: 700; color: #45464d; text-transform: uppercase; text-align: right; background: rgba(111,251,190,0.05);">
+                            Conversion %</th>
                     </tr>
                 </thead>
                 <tbody id="traffic_daily_body" style="background:#ffffff;">
-                    <tr><td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8;">Syncing traffic data...</td></tr>
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8;">Syncing traffic
+                            data...</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; background: #f2f4f6; border-top: 1px solid #c6c6cd; padding: 16px 32px; box-sizing: border-box;">
-            <p style="font-size: 12px; color: #45464d; margin: 0;" id="traffic_showing_text">Showing 1 to 10 of 0 entries</p>
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; background: #f2f4f6; border-top: 1px solid #c6c6cd; padding: 16px 32px; box-sizing: border-box;">
+            <p style="font-size: 12px; color: #45464d; margin: 0;" id="traffic_showing_text">Showing 1 to 10 of 0
+                entries</p>
             <div style="display: flex; gap: 8px;" id="traffic_pagination">
                 <!-- Dynamic Pagination Buttons -->
             </div>
@@ -1873,34 +3653,78 @@ include '../../includes/sidebar.php';
 
 <!-- FINANCIAL TAB (Figma Redesign) -->
 <div id="tab_financial" class="tab-content" <?php echo ($active_tab !== 'financial') ? 'style="display: none;"' : ''; ?>>
-    
+
     <!-- Top Action Bar (Figma Style) -->
     <div class="overview-topbar">
         <div class="overview-topbar-left">
-            <select class="filter-customer-select" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
-                <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
-                    <option value="">All Amazon Profiles</option>
-                <?php endif; ?>
-                <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()): ?>
-                <?php 
-                    $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
-                    if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id']) continue;
-                ?>
-                    <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($row['customer_name']); ?></option>
-                <?php endwhile; ?>
-            </select>
+            <div class="figma-select-wrapper">
+                <select class="filter-customer-select" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
+                    <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                        <option value="">All Amazon Profiles</option>
+                    <?php endif; ?>
+                    <?php $customers->data_seek(0);
+                    while ($row = $customers->fetch_assoc()): ?>
+                        <?php
+                        $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
+                        if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id'])
+                            continue;
+                        ?>
+                        <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>>
+                            <?php echo htmlspecialchars($row['customer_name']); ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <span class="figma-select-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M10 10C10 10 7.79056 13 7 13C6.20944 13 4 10 4 10" stroke="#363B4F" stroke-width="1.2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M10 5C10 5 7.79056 2 7 2C6.20944 2 4 5 4 5" stroke="#363B4F" stroke-width="1.2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>
+            </div>
             <?php if (($_SESSION['role'] ?? '') === 'customer'): ?>
                 <input type="hidden" class="customer_id_hidden_val" value="<?php echo $_SESSION['customer_id'] ?? 0; ?>">
             <?php endif; ?>
-            <span class="overview-breadcrumb">Dashboard <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> <strong>Profit & Loss Analysis</strong></span>
+            <span class="overview-breadcrumb">Dashboard <i class="fas fa-chevron-right"
+                    style="font-size:0.6rem; color:#94a3b8; margin:0 2px;"></i>
+                <strong>Profit & Loss Analysis</strong></span>
         </div>
         <div class="overview-topbar-right">
             <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
-            <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i class="fas fa-plus"></i> New Upload</a>
+                <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><svg width="14"
+                        height="14" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 1.3335V14.6668" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M1.33301 8H14.6663" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg> New Upload</a>
             <?php endif; ?>
-            <button type="button" class="btn-figma-outline btn-export-csv"><i class="fas fa-file-export"></i> Export CSV</button>
-            <button type="button" class="btn-figma-icon" title="Search"><i class="fas fa-search"></i></button>
-            <button type="button" class="btn-figma-icon" title="Notifications"><i class="fas fa-bell"></i></button>
+            <button type="button" class="btn-figma-outline btn-export-csv"><svg width="14" height="14"
+                    viewBox="0 0 16 16" fill="none">
+                    <path
+                        d="M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10"
+                        stroke="#475569" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M4.66699 6.6665L8.00033 9.99984L11.3337 6.6665" stroke="#475569" stroke-width="1.3"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M8 10V2" stroke="#475569" stroke-width="1.3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg> Export CSV</button>
+            <button type="button" class="btn-figma-icon" title="Search"><svg width="15" height="15" viewBox="0 0 16 16"
+                    fill="none">
+                    <circle cx="7.33333" cy="7.33333" r="5.33333" stroke="#475569" stroke-width="1.3" />
+                    <path d="M14.6667 14.6667L11.3333 11.3333" stroke="#475569" stroke-width="1.3"
+                        stroke-linecap="round" />
+                </svg></button>
+            <button type="button" class="btn-figma-icon" title="Notifications"><svg width="15" height="15"
+                    viewBox="0 0 16 16" fill="none">
+                    <path
+                        d="M12 5.33333C12 4.27247 11.5786 3.25505 10.8284 2.50486C10.0783 1.75466 9.06087 1.33333 8 1.33333C6.93913 1.33333 5.92172 1.75466 5.17157 2.50486C4.42143 3.25505 4 4.27247 4 5.33333C4 10 2 11.3333 2 11.3333H14C14 11.3333 12 10 12 5.33333Z"
+                        stroke="#475569" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M9.15332 14C8.97125 14.3151 8.70774 14.5779 8.39213 14.7592C8.07652 14.9405 7.72017 15.0337 7.35799 15.0294C6.99581 15.025 6.64099 14.9232 6.32837 14.7341C6.01575 14.545 5.75678 14.2755 5.57715 13.9531"
+                        stroke="#475569" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                </svg></button>
         </div>
     </div>
 
@@ -1910,12 +3734,27 @@ include '../../includes/sidebar.php';
             <h2>Profit & Loss Analysis</h2>
             <p>Complete waterfall breakdown of your shop parameters</p>
         </div>
-        <div class="overview-date-bar">
-            <i class="far fa-calendar-alt" style="color: #64748b; font-size: 0.85rem; margin-left: 4px;"></i>
-            <input type="date" class="filter-from-input" value="">
-            <span class="date-sep">-</span>
-            <input type="date" class="filter-to-input" value="">
-            <button type="button" class="btn-refresh-icon btn-apply-filters" title="Refresh Analysis"><i class="fas fa-sync-alt"></i></button>
+        <div class="d-flex align-items-center gap-2">
+            <div class="figma-date-picker-wrap" id="date_range_picker_pl_wrap">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.6666 1.3335V4.00016M5.33325 1.3335V4.00016" stroke="#363B4F" stroke-width="1.4"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M8.66667 2.6665H7.33333C4.81917 2.6665 3.5621 2.6665 2.78105 3.44755C2 4.2286 2 5.48568 2 7.99984V9.33317C2 11.8473 2 13.1044 2.78105 13.8854C3.5621 14.6665 4.81917 14.6665 7.33333 14.6665H8.66667C11.1808 14.6665 12.4379 14.6665 13.2189 13.8854C14 13.1044 14 11.8473 14 9.33317V7.99984C14 5.48568 14 4.2286 13.2189 3.44755C12.4379 2.6665 11.1808 2.6665 8.66667 2.6665Z"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M2 6.6665H14" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_pl"
+                    placeholder="Select date range" readonly>
+            </div>
+            <button type="button" class="btn-figma-refresh btn-apply-filters" title="Refresh Analysis">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10.1115 0.666504L10.5101 1.41169C10.7796 1.91548 10.9143 2.16738 10.8253 2.27526C10.7361 2.38314 10.4427 2.29601 9.85573 2.12176C9.26893 1.94754 8.64593 1.85381 8.00033 1.85381C4.50252 1.85381 1.66699 4.60548 1.66699 7.99987C1.66699 9.11927 1.97541 10.1689 2.51428 11.0729M5.88921 15.3332L5.49057 14.588C5.22105 14.0842 5.08629 13.8323 5.17539 13.7244C5.26451 13.6165 5.55799 13.7037 6.14492 13.8779C6.73173 14.0521 7.35473 14.1459 8.00033 14.1459C11.4981 14.1459 14.3337 11.3942 14.3337 7.99987C14.3337 6.8804 14.0253 5.83082 13.4864 4.92682"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
         </div>
     </div>
 
@@ -1931,7 +3770,13 @@ include '../../includes/sidebar.php';
                     <div class="pl-hero-value" id="pl_hero_revenue">$0.00</div>
                     <div class="pl-hero-badge green">
                         <span>100%</span>
-                        <i class="fas fa-arrow-up"></i>
+                        <svg width="10" height="11" viewBox="0 0 11 12" fill="none">
+                            <path d="M5.28442 1.00732V10.6502" stroke="#029153" stroke-width="1.3"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M9.57144 4.93562C9.57144 4.93562 6.41508 0.649909 5.28572 0.649902C4.15629 0.649895 1 4.93562 1 4.93562"
+                                stroke="#029153" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                         <span>Total</span>
                     </div>
                 </div>
@@ -1942,7 +3787,13 @@ include '../../includes/sidebar.php';
                     <div class="pl-hero-value" id="pl_hero_deductions">$0.00</div>
                     <div class="pl-hero-badge red">
                         <span id="pl_deductions_pct">54.3%</span>
-                        <i class="fas fa-arrow-down"></i>
+                        <svg width="10" height="11" viewBox="0 0 11 12" fill="none">
+                            <path d="M5.28442 10.293V0.650109" stroke="#EE473D" stroke-width="1.3"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M9.57144 6.36468C9.57144 6.36468 6.41508 10.6504 5.28572 10.6504C4.15629 10.6504 1 6.36468 1 6.36468"
+                                stroke="#EE473D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                         <span>of Revenue</span>
                     </div>
                 </div>
@@ -1953,7 +3804,13 @@ include '../../includes/sidebar.php';
                     <div class="pl-hero-value" id="pl_hero_net_profit">$0.00</div>
                     <div class="pl-hero-badge blue">
                         <span id="pl_margin_pct">45.7%</span>
-                        <i class="fas fa-arrow-up"></i>
+                        <svg width="10" height="11" viewBox="0 0 11 12" fill="none">
+                            <path d="M5.28442 1.00732V10.6502" stroke="#4362CE" stroke-width="1.3"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M9.57144 4.93562C9.57144 4.93562 6.41508 0.649909 5.28572 0.649902C4.15629 0.649895 1 4.93562 1 4.93562"
+                                stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                         <span>Margin</span>
                     </div>
                 </div>
@@ -2032,7 +3889,10 @@ include '../../includes/sidebar.php';
                             </tr>
                         </thead>
                         <tbody id="sku_pl_body">
-                            <tr><td colspan="6" style="text-align:center; padding: 2.5rem; color:#94a3b8;">Loading SKU data...</td></tr>
+                            <tr>
+                                <td colspan="6" style="text-align:center; padding: 2.5rem; color:#94a3b8;">Loading SKU
+                                    data...</td>
+                            </tr>
                         </tbody>
                         <tfoot id="sku_pl_foot">
                             <!-- Populated in JS -->
@@ -2051,7 +3911,9 @@ include '../../includes/sidebar.php';
                             </select>
                             <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Entries</span>
                         </div>
-                        <p id="sku_pl_showing_text" style="margin: 0; font-size: 0.75rem; color: #64748b; font-weight: 600;">Showing 1 to 10 of 0 entries</p>
+                        <p id="sku_pl_showing_text"
+                            style="margin: 0; font-size: 0.75rem; color: #64748b; font-weight: 600;">Showing 1 to 10 of
+                            0 entries</p>
                     </div>
                     <div id="sku_pl_pagination" class="pl-pagination-btns"></div>
                 </div>
@@ -2078,7 +3940,7 @@ include '../../includes/sidebar.php';
                 </div>
             </div>
 
-            <!-- Waterfall Breakdown Card -->
+            <!-- Unified Waterfall Breakdown Card (Exact Figma Match) -->
             <div class="pl-card pl-breakdown-card">
                 <!-- Section 1: Gross Revenue Stream -->
                 <div class="pl-breakdown-section">
@@ -2090,11 +3952,16 @@ include '../../includes/sidebar.php';
                         <div class="pl-row"><span>Sales</span><span id="side_sales" class="pl-val">$0.00</span></div>
                         <div class="pl-row"><span>Units</span><span id="side_units" class="pl-val">0</span></div>
                         <div class="pl-row"><span>Orders</span><span id="side_orders" class="pl-val">0</span></div>
-                        <div class="pl-row"><span>Refunds</span><span id="side_refunds" class="pl-val red">-$0.00</span></div>
-                        <div class="pl-row"><span>Promo</span><span id="side_promo" class="pl-val red">-$0.00</span></div>
-                        <div class="pl-row"><span>Advertising cost</span><span id="side_ad_cost" class="pl-val red">-$0.00</span></div>
-                        <div class="pl-row"><span>Amazon fees</span><span id="side_amazon_fees" class="pl-val red">-$0.00</span></div>
-                        <div class="pl-row"><span>Cost of goods</span><span id="side_cogs_row" class="pl-val">$0.00</span></div>
+                        <div class="pl-row"><span>Refunds</span><span id="side_refunds" class="pl-val red">-$0.00</span>
+                        </div>
+                        <div class="pl-row"><span>Promo</span><span id="side_promo" class="pl-val red">-$0.00</span>
+                        </div>
+                        <div class="pl-row"><span>Advertising cost</span><span id="side_ad_cost"
+                                class="pl-val red">-$0.00</span></div>
+                        <div class="pl-row"><span>Amazon fees</span><span id="side_amazon_fees"
+                                class="pl-val red">-$0.00</span></div>
+                        <div class="pl-row"><span>Cost of goods</span><span id="side_cogs_row" class="pl-val">$0</span>
+                        </div>
                     </div>
                 </div>
 
@@ -2105,9 +3972,12 @@ include '../../includes/sidebar.php';
                         <span class="pl-section-total" id="side_deductions_total">$0.00</span>
                     </div>
                     <div class="pl-section-rows">
-                        <div class="pl-row"><span>Cost of Goods</span><span id="side_ded_cogs" class="pl-val">$0.00</span></div>
-                        <div class="pl-row"><span>Advertising Cost</span><span id="side_ded_ads" class="pl-val">$0.00</span></div>
-                        <div class="pl-row"><span>Amazon Fees</span><span id="side_ded_fees" class="pl-val red">-$0.00</span></div>
+                        <div class="pl-row"><span>Cost of Goods</span><span id="side_ded_cogs" class="pl-val">$0</span>
+                        </div>
+                        <div class="pl-row"><span>Advertising Cost</span><span id="side_ded_ads"
+                                class="pl-val">$0.00</span></div>
+                        <div class="pl-row"><span>Amazon Fees</span><span id="side_ded_fees"
+                                class="pl-val red">-$0.00</span></div>
                     </div>
                 </div>
 
@@ -2118,22 +3988,28 @@ include '../../includes/sidebar.php';
                         <span class="pl-section-total" id="side_net_total">$0.00</span>
                     </div>
                     <div class="pl-section-rows">
-                        <div class="pl-row"><span>Gross Profit</span><span id="side_net_gross" class="pl-val">$0.00</span></div>
-                        <div class="pl-row"><span>Net Profit</span><span id="side_net_profit" class="pl-val">$0.00</span></div>
-                        <div class="pl-row" style="border-top: 1px solid #e2e8f0; margin-top: 4px; padding-top: 8px;"><span style="font-weight: 700; color: #0f172a;">Estimated Payout</span><span id="side_net_payout" class="pl-val" style="font-weight: 800; color: #0051d5; font-size: 0.95rem;">$0.00</span></div>
+                        <div class="pl-row"><span>Gross Profit</span><span id="side_net_gross"
+                                class="pl-val">$0.00</span></div>
+                        <div class="pl-row"><span>Net Profit</span><span id="side_net_profit"
+                                class="pl-val">$0.00</span></div>
+                        <div class="pl-row"><span>Estimated Payout</span><span id="side_net_payout"
+                                class="pl-val">$0.00</span></div>
                     </div>
                 </div>
 
                 <!-- Section 4: Profitability & Ratios -->
-                <div class="pl-breakdown-section last">
+                <div class="pl-breakdown-section">
                     <div class="pl-section-head">
                         <span class="pl-section-title">Profitability & Ratios</span>
                     </div>
                     <div class="pl-section-rows">
-                        <div class="pl-row"><span>Net Margin</span><span id="side_ratio_margin" class="pl-val">0.0%</span></div>
+                        <div class="pl-row"><span>Net Margin</span><span id="side_ratio_margin"
+                                class="pl-val">0.0%</span></div>
                         <div class="pl-row"><span>ROI</span><span id="side_ratio_roi" class="pl-val">0.0%</span></div>
-                        <div class="pl-row"><span>Real ACOS</span><span id="side_ratio_acos" class="pl-val">0.0%</span></div>
-                        <div class="pl-row"><span>% Refunds</span><span id="side_ratio_refunds" class="pl-val">0.0%</span></div>
+                        <div class="pl-row"><span>Real ACOS</span><span id="side_ratio_acos" class="pl-val">0.0%</span>
+                        </div>
+                        <div class="pl-row"><span>% Refunds</span><span id="side_ratio_refunds"
+                                class="pl-val">0.0%</span></div>
                     </div>
                 </div>
             </div>
@@ -2148,8 +4024,11 @@ include '../../includes/sidebar.php';
         </div>
 
         <div class="pl-map-wrapper">
-            <div id="us_leaflet_map" style="height: 280px; width: 100%; border-radius: 12px; background: #f8fafc; z-index: 1;"></div>
-            <div id="map_fallback_info" style="display: none; font-size: 0.75rem; color: #64748b; margin-top: 6px; text-align: center;">Showing regional hub markers</div>
+            <div id="us_leaflet_map"
+                style="height: 420px; width: 100%; border-radius: 14px; background: #F1F4FA; z-index: 1;"></div>
+            <div id="map_fallback_info"
+                style="display: none; font-size: 0.75rem; color: #64748b; margin-top: 6px; text-align: center;">Showing
+                regional hub markers</div>
         </div>
 
         <div class="pl-geo-table-wrap">
@@ -2166,7 +4045,10 @@ include '../../includes/sidebar.php';
                     </tr>
                 </thead>
                 <tbody id="region_sales_body">
-                    <tr><td colspan="7" style="text-align: center; padding: 2.5rem; color: #94a3b8;">Loading geographic distribution...</td></tr>
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 2.5rem; color: #94a3b8;">Loading geographic
+                            distribution...</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -2174,7 +4056,7 @@ include '../../includes/sidebar.php';
 </div>
 
 <div id="tab_products" class="tab-content" <?php echo ($active_tab !== 'products') ? 'style="display: none;"' : ''; ?>>
-    
+
     <!-- Figma: Left SKU list | Right donut card + 3 KPI cards -->
     <div class="pp-hero-grid">
         <div class="pp-sku-panel">
@@ -2189,7 +4071,8 @@ include '../../includes/sidebar.php';
                         <h3 class="pp-panel-title">Revenue Contribution by SKU</h3>
                         <p class="pp-panel-sub">Percentage split of total store revenue across top products.</p>
                     </div>
-                    <a href="#product_perf_table" class="pp-details-link">Details <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span></a>
+                    <a href="#product_perf_table" class="pp-details-link">Details <span
+                            class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span></a>
                 </div>
                 <div class="pp-donut-body">
                     <div class="pp-donut-wrap">
@@ -2205,19 +4088,28 @@ include '../../includes/sidebar.php';
 
             <div class="pp-kpi-row">
                 <div class="pp-kpi-card">
-                    <div class="pp-kpi-icon"><span class="material-symbols-outlined">trending_up</span></div>
+                    <div class="pp-kpi-icon">
+                        <img src="<?php echo BASE_URL; ?>assets/icons/Product Performance/Avg. Store ROAS.svg"
+                            alt="ROAS" style="width: 20px; height: 20px;" />
+                    </div>
                     <p class="pp-kpi-label">Avg. Store ROAS</p>
                     <p class="pp-kpi-value" id="prod_meta_roas">4.2x</p>
                     <span class="pp-kpi-badge">+12.4% vs last month</span>
                 </div>
                 <div class="pp-kpi-card">
-                    <div class="pp-kpi-icon green"><span class="material-symbols-outlined">group</span></div>
+                    <div class="pp-kpi-icon green">
+                        <img src="<?php echo BASE_URL; ?>assets/icons/Product Performance/Total Sessions.svg"
+                            alt="Sessions" style="width: 20px; height: 20px;" />
+                    </div>
                     <p class="pp-kpi-label">Total Sessions</p>
                     <p class="pp-kpi-value" id="prod_meta_sessions">0</p>
                     <span class="pp-kpi-badge">+8.1% organic traffic</span>
                 </div>
                 <div class="pp-kpi-card">
-                    <div class="pp-kpi-icon dark"><span class="material-symbols-outlined">layers</span></div>
+                    <div class="pp-kpi-icon dark">
+                        <img src="<?php echo BASE_URL; ?>assets/icons/Product Performance/Active SKUs.svg"
+                            alt="Active SKUs" style="width: 20px; height: 20px;" />
+                    </div>
                     <p class="pp-kpi-label">Active SKUs</p>
                     <p class="pp-kpi-value" id="prod_meta_skus">0</p>
                     <span class="pp-kpi-note">3 pending restocking</span>
@@ -2227,24 +4119,30 @@ include '../../includes/sidebar.php';
     </div>
 
     <!-- Section 5: Traffic vs Revenue Correlation (Figma middle row) -->
-    <section class="bento-card" style="padding: 24px 28px; box-sizing: border-box; background:#fff; border:1px solid #e8eaed; border-radius:14px; box-shadow:0 1px 4px rgba(0,0,0,0.04); margin: 0 0 12px 0;">
+    <section
+        style="padding: 1.5rem; box-sizing: border-box; background: #ffffff; border: 1px solid #EAECEF; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); margin-bottom: 1.25rem;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
             <div>
-                <h3 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0;">Traffic vs Revenue Correlation</h3>
-                <p style="font-size: 12px; color: #64748b; margin: 4px 0 0;">Analyzing sessions (bars) against revenue generation (line) per top 10 SKUs.</p>
+                <h3
+                    style="font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0;">
+                    Traffic vs Revenue Correlation</h3>
+                <p style="font-size: 0.75rem; color: #64748b; margin: 4px 0 0; font-weight: 500;">Analyzing sessions
+                    (bars) against revenue generation (line) per top 10 SKUs.</p>
             </div>
-            <div style="display: flex; gap: 24px; align-items: center;">
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <span style="width: 12px; height: 12px; background: #dbe1ff; border-radius: 2px; display: inline-block;"></span>
-                    <span style="font-size: 12px; color: #45464d;">Sessions</span>
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <div style="display: flex; gap: 6px; align-items: center;">
+                    <span
+                        style="width: 12px; height: 12px; background: #DBE1FF; border-radius: 2px; display: inline-block;"></span>
+                    <span style="font-size: 0.75rem; color: #475569; font-weight: 600;">Sessions</span>
                 </div>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <span style="width: 16px; height: 2px; background: #0051d5; display: inline-block;"></span>
-                    <span style="font-size: 12px; color: #45464d;">Revenue ($)</span>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                    <span
+                        style="width: 16px; height: 2.5px; background: #4362CE; border-radius: 2px; display: inline-block;"></span>
+                    <span style="font-size: 0.75rem; color: #475569; font-weight: 600;">Revenue ($)</span>
                 </div>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <span style="width: 16px; border-top: 2px dashed #f59e0b; display: inline-block;"></span>
-                    <span style="font-size: 12px; color: #45464d;">Conv %</span>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                    <span style="width: 16px; border-top: 2px dashed #F59E0B; display: inline-block;"></span>
+                    <span style="font-size: 0.75rem; color: #475569; font-weight: 600;">Conv %</span>
                 </div>
             </div>
         </div>
@@ -2252,50 +4150,87 @@ include '../../includes/sidebar.php';
             <canvas id="productComboChart"></canvas>
         </div>
         <div style="margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
-            <div style="padding: 16px 18px; background: #eff6ff; border-left: 4px solid #0051d5; border-radius: 0 12px 12px 0;">
-                <p style="font-weight: 800; font-size: 13px; margin-bottom: 6px; color: #0f172a;">Strategic Correlation</p>
-                <p style="font-size: 13px; color: #475569; margin: 0; line-height: 1.45;">Analyze the relationship between traffic (bars) and financial outcomes (lines). High traffic with low revenue indicates listing optimization is needed.</p>
+            <div style="padding: 14px 18px; background: #EFF6FF; border: 1px solid #DBEAFE; border-radius: 12px;">
+                <p style="font-weight: 700; font-size: 0.84rem; margin-bottom: 4px; color: #1E40AF;">Strategic
+                    Correlation</p>
+                <p style="font-size: 0.78rem; color: #475569; margin: 0; line-height: 1.45;">Analyze the relationship
+                    between traffic (bars) and financial outcomes (lines). High traffic with low revenue indicates
+                    listing optimization is needed.</p>
             </div>
-            <div style="padding: 16px 18px; background: #ecfdf5; border-left: 4px solid #009668; border-radius: 0 12px 12px 0;">
-                <p style="font-weight: 800; font-size: 13px; margin-bottom: 6px; color: #009668;">Actionable Insight</p>
-                <p style="font-size: 13px; color: #475569; margin: 0; line-height: 1.45;">Prioritize products where the conversion line is trending upwards, as these are your most efficient growth opportunities.</p>
+            <div style="padding: 14px 18px; background: #F0FDF4; border: 1px solid #DCFCE7; border-radius: 12px;">
+                <p style="font-weight: 700; font-size: 0.84rem; margin-bottom: 4px; color: #15803D;">Actionable Insight
+                </p>
+                <p style="font-size: 0.78rem; color: #475569; margin: 0; line-height: 1.45;">Prioritize products where
+                    the green dashed line (Conv %) is trending upwards, as these are your most efficient growth
+                    opportunities.</p>
             </div>
         </div>
     </section>
 
     <!-- Section 4: Monthly Performance by SKU (Figma bottom table) -->
-    <section class="bento-card overflow-hidden mb-8" style="background:#ffffff; border-radius:16px; border: 1px solid #c6c6cd; overflow:hidden;">
-        <div class="px-8 py-6 border-b border-outline-variant flex justify-between items-center" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #c6c6cd; padding: 20px 28px;">
-            <h3 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0;">Monthly Performance by SKU</h3>
-            <div class="flex items-center gap-4" style="display: flex; align-items: center; gap: 16px;">
-                <div class="relative" style="position: relative;">
-                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #45464d; pointer-events: none;"></i>
-                    <input id="product_search_input" style="padding-left: 36px; padding-right: 16px; padding-top: 8px; padding-bottom: 8px; border: 1px solid #c6c6cd; border-radius: 8px; outline: none; background: #f2f4f6; font-size: 14px; font-weight: 600; width: 220px;" placeholder="Search SKUs..." type="text"/>
+    <section
+        style="background: #ffffff; border-radius: 16px; border: 1px solid #EAECEF; box-shadow: 0 1px 3px rgba(0,0,0,0.03); overflow: hidden; margin-bottom: 1.5rem;">
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding: 16px 24px;">
+            <h3
+                style="font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0;">
+                Monthly Performance by SKU</h3>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="position: relative;">
+                    <i class="fas fa-search"
+                        style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94A3B8; font-size: 0.75rem; pointer-events: none;"></i>
+                    <input id="product_search_input"
+                        style="padding-left: 32px; padding-right: 14px; padding-top: 6px; padding-bottom: 6px; border: 1px solid #E2E8F0; border-radius: 8px; outline: none; background: #FFFFFF; font-size: 0.82rem; font-weight: 500; color: #1E293B; width: 210px; transition: border-color 0.15s;"
+                        placeholder="Search SKUs..." type="text" />
                 </div>
+                <button type="button" class="btn-icon"
+                    style="width: 32px; height: 32px; border-radius: 8px; border: 1px solid #E2E8F0; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                    <img src="<?php echo BASE_URL; ?>assets/icons/Product Performance/Settings.svg" alt="Settings"
+                        style="width: 16px; height: 16px;" />
+                </button>
             </div>
         </div>
         <div style="overflow-x: auto;">
-            <table id="product_perf_table" style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed;">
-                <thead style="background: #f2f4f6; border-bottom: 1px solid #c6c6cd;">
+            <table id="product_perf_table"
+                style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed;">
+                <thead style="background: transparent; border-bottom: 1px solid #F1F5F9;">
                     <tr>
-                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 10%;">Rank</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; width: 30%;">Product Identity</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 12%;">Sales ($)</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 10%;">Orders</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 10%;">Units Sold</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: right; width: 12%;">Ad Spend</th>
-                        <th style="padding: 16px 24px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 8%;">ROAS (x)</th>
-                        <th style="padding: 16px 32px; font-size: 12px; font-weight: 700; color: #45464d; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 8%;">Trend</th>
+                        <th
+                            style="padding: 12px 16px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: center; width: 8%;">
+                            Rank</th>
+                        <th
+                            style="padding: 12px 18px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: left; width: 32%;">
+                            Product Identity</th>
+                        <th
+                            style="padding: 12px 18px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: right; width: 14%;">
+                            Sales ($)</th>
+                        <th
+                            style="padding: 12px 14px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: center; width: 10%;">
+                            Orders</th>
+                        <th
+                            style="padding: 12px 14px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: center; width: 10%;">
+                            Units Sold</th>
+                        <th
+                            style="padding: 12px 18px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: right; width: 12%;">
+                            Ad Spend</th>
+                        <th
+                            style="padding: 12px 14px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: center; width: 8%;">
+                            ROAS (x)</th>
+                        <th
+                            style="padding: 12px 16px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: center; width: 8%;">
+                            Trend</th>
                     </tr>
                 </thead>
-                <tbody id="product_analysis_body" style="background:#ffffff;">
-                    <!-- Populated dynamically via JS matching code 1.html -->
+                <tbody id="product_analysis_body" style="background: #ffffff;">
+                    <!-- Populated dynamically via JS matching Figma -->
                 </tbody>
             </table>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; background: #f2f4f6; border-top: 1px solid #c6c6cd; padding: 16px 32px; box-sizing: border-box;">
-            <p style="font-size: 12px; color: #45464d; margin: 0;" id="product_perf_showing_text">Showing 1 to 5 of 48 entries</p>
-            <div style="display: flex; gap: 8px;" id="product_perf_pagination">
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; background: transparent; border-top: 1px solid #F1F5F9; padding: 14px 24px; box-sizing: border-box;">
+            <p style="font-size: 0.78rem; color: #64748B; margin: 0; font-weight: 500;" id="product_perf_showing_text">
+                Showing 1 to 10 of 48 entries</p>
+            <div style="display: flex; gap: 6px;" id="product_perf_pagination">
                 <!-- Dynamic Pagination Buttons -->
             </div>
         </div>
@@ -2303,623 +4238,659 @@ include '../../includes/sidebar.php';
 </div>
 
 <script>
-$(document).ready(function() {
-    let mainChart, expenseChart;
-    let provinceChart;
-    let productComboChart;
-    let trafficTrendChart;
-    let globalData = null;
-    
-    // Custom Bento Table Global Datasets and States
-    let globalProductsData = [];
-    let globalSkuPlData = [];
-    let globalTrafficData = [];
+    $(document).ready(function () {
+        let mainChart, expenseChart;
+        let provinceChart;
+        let productComboChart;
+        let trafficTrendChart;
+        let globalData = null;
 
-    let productsCurrentPage = 1;
-    let productsSearchQuery = "";
+        // Custom Bento Table Global Datasets and States
+        let globalProductsData = [];
+        let globalSkuPlData = [];
+        let globalTrafficData = [];
 
-    let skuPlCurrentPage = 1;
-    let skuPlSearchQuery = "";
+        let productsCurrentPage = 1;
+        let productsSearchQuery = "";
 
-    let trafficCurrentPage = 1;
-    let trafficSearchQuery = "";
+        let skuPlCurrentPage = 1;
+        let skuPlSearchQuery = "";
 
-    const ITEMS_PER_PAGE = 10;
-    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let trafficCurrentPage = 1;
+        let trafficSearchQuery = "";
 
-    function setCmpTag(selector, pct, dir) {
-        const $el = $(selector);
-        if (!$el.length) return;
-        const p = Math.abs(parseFloat(pct || 0)).toFixed(1);
-        const icon = dir === 'up' ? 'fa-arrow-up' : (dir === 'down' ? 'fa-arrow-down' : '');
-        $el.removeClass('up down none').addClass(dir || 'none');
-        if (!dir || dir === 'none') {
-            $el.html('--%');
-            return;
-        }
-        $el.html(`${p}% ${icon ? `<i class="fas ${icon}"></i>` : ''}`);
-    }
+        const ITEMS_PER_PAGE = 10;
+        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function updateComparison(selector, data) {
-        if (!data) return;
-        setCmpTag(selector, data.pct, data.dir);
-    }
-
-    function showLoader() {
-        const $o = $('#loading_overlay');
-        $('.main-content').addClass('loading-blur');
-        $o.css('display', 'flex').hide().fadeIn(200);
-    }
-
-    function hideLoader() {
-        const $o = $('#loading_overlay');
-        $('.main-content').removeClass('loading-blur');
-        $o.fadeOut(200);
-    }
-
-    function toNumber(v) {
-        const n = Number(v);
-        return Number.isFinite(n) ? n : 0;
-    }
-
-    function parseNumberFromText(text) {
-        const s = (text || '').toString();
-        const cleaned = s.replace(/[^0-9.+-]/g, '');
-        const n = Number(cleaned);
-        return Number.isFinite(n) ? n : 0;
-    }
-
-    function animateNumber($el, target, formatFn, durationMs) {
-        const el = $el && $el[0];
-        if (!el) return;
-
-        const to = toNumber(target);
-        const from = toNumber($el.data('num'));
-        $el.data('num', to);
-
-        if (prefersReducedMotion || !durationMs || durationMs <= 0) {
-            $el.text(formatFn(to));
-            return;
-        }
-
-        const start = performance.now();
-        const dur = Math.max(120, durationMs);
-
-        function step(t) {
-            const p = Math.min(1, (t - start) / dur);
-            const eased = 1 - Math.pow(1 - p, 3);
-            const v = from + (to - from) * eased;
-            $el.text(formatFn(v));
-            if (p < 1) requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
-    }
-
-    function setMoneyAnimated(selector, moneyText, sign) {
-        const $el = $(selector);
-        const n = parseNumberFromText(moneyText) * (sign || 1);
-        animateNumber(
-            $el,
-            n,
-            (v) => {
-                const abs = Math.abs(v);
-                const prefix = v < 0 ? '-' : '';
-                return prefix + '$' + abs.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            },
-            780
-        );
-    }
-
-    function setMoneySuffixAnimated(selector, moneyText, suffix, sign) {
-        const $el = $(selector);
-        const sfx = suffix || '';
-        const n = parseNumberFromText(moneyText) * (sign || 1);
-        animateNumber(
-            $el,
-            n,
-            (v) => {
-                const abs = Math.abs(v);
-                const prefix = v < 0 ? '-' : '';
-                return prefix + '$' + abs.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + sfx;
-            },
-            720
-        );
-    }
-
-    function setIntAnimated(selector, text) {
-        const $el = $(selector);
-        animateNumber($el, parseNumberFromText(text), (v) => Math.round(v).toLocaleString(), 720);
-    }
-
-    function setIntSuffixAnimated(selector, text, suffix) {
-        const $el = $(selector);
-        const sfx = suffix || '';
-        animateNumber($el, parseNumberFromText(text), (v) => Math.round(v).toLocaleString() + sfx, 640);
-    }
-
-    function setFloatSuffixAnimated(selector, text, suffix, decimals) {
-        const $el = $(selector);
-        const sfx = suffix || '';
-        const d = (decimals == null) ? 1 : decimals;
-        animateNumber($el, parseNumberFromText(text), (v) => toNumber(v).toFixed(d) + sfx, 640);
-    }
-
-    function setPercentAnimated(selector, text, decimals) {
-        const $el = $(selector);
-        const d = (decimals == null) ? 2 : decimals;
-        animateNumber($el, parseNumberFromText(text), (v) => toNumber(v).toFixed(d) + '%', 720);
-    }
-
-    function setPercentSuffixAnimated(selector, text, suffix, decimals) {
-        const $el = $(selector);
-        const d = (decimals == null) ? 2 : decimals;
-        const sfx = suffix || '';
-        animateNumber($el, parseNumberFromText(text), (v) => toNumber(v).toFixed(d) + '%' + sfx, 720);
-    }
-
-    function setFloatAnimated(selector, val, decimals) {
-        const $el = $(selector);
-        const d = decimals || 0;
-        animateNumber($el, parseNumberFromText(val), (v) => toNumber(v).toFixed(d), 720);
-    }
-
-    function staggerIn(selector, baseDelayMs, stepMs) {
-        if (prefersReducedMotion) return;
-        const base = baseDelayMs || 0;
-        const step = stepMs || 70;
-        $(selector).each(function(i) {
-            const el = this;
-            const delay = base + i * step;
-            if (el && typeof el.animate === 'function') {
-                el.animate(
-                    [
-                        { opacity: 0, transform: 'translateY(12px)' },
-                        { opacity: 1, transform: 'translateY(0)' }
-                    ],
-                    { duration: 520, delay, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'both' }
-                );
-            } else {
-                el.classList.remove('anim-in');
-                el.style.setProperty('--d', delay + 'ms');
-                void el.offsetWidth;
-                el.classList.add('anim-in');
+        function setCmpTag(selector, pct, dir) {
+            const $el = $(selector);
+            if (!$el.length) return;
+            const p = Math.abs(parseFloat(pct || 0)).toFixed(1);
+            const icon = dir === 'up'
+                ? `<svg width="10" height="11" viewBox="0 0 11 12" fill="none" style="vertical-align:middle; margin-left:3px;"><path d="M5.28442 1.00732V10.6502" stroke="#029153" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.57144 4.93562C9.57144 4.93562 6.41508 0.649909 5.28572 0.649902C4.15629 0.649895 1 4.93562 1 4.93562" stroke="#029153" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+                : (dir === 'down'
+                    ? `<svg width="10" height="11" viewBox="0 0 11 12" fill="none" style="vertical-align:middle; margin-left:3px;"><path d="M5.28442 10.293V0.650109" stroke="#EE473D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.57144 6.36468C9.57144 6.36468 6.41508 10.6504 5.28572 10.6504C4.15629 10.6504 1 6.36468 1 6.36468" stroke="#EE473D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+                    : '');
+            $el.removeClass('up down none').addClass(dir || 'none');
+            if (!dir || dir === 'none') {
+                $el.html('--%');
+                return;
             }
-        });
-    }
-
-    function formatAbbrev(n) {
-        const num = toNumber(n);
-        const abs = Math.abs(num);
-        if (abs >= 1e9) return (num / 1e9).toFixed(1).replace(/\.0$/, '') + 'B';
-        if (abs >= 1e6) return (num / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
-        if (abs >= 1e3) return (num / 1e3).toFixed(1).replace(/\.0$/, '') + 'K';
-        return num.toLocaleString();
-    }
-
-    function makeFillGradient(ctx, color) {
-        const g = ctx.createLinearGradient(0, 0, 0, 420);
-        g.addColorStop(0, color + '33');
-        g.addColorStop(1, color + '00');
-        return g;
-    }
-
-    function renderChart(type) {
-        if (!globalData || !globalData.charts) return;
-        if (typeof Chart === 'undefined') {
-            console.warn('Chart.js not loaded; skipping chart render.');
-            return;
-        }
-        const ctx = document.getElementById('mainChart').getContext('2d');
-        if (mainChart) mainChart.destroy();
-
-        const labels = Array.isArray(globalData.charts.labels) ? globalData.charts.labels : [];
-        if (labels.length === 0) {
-            hideLoader();
-            return;
+            $el.html(`${p}% ${icon}`);
         }
 
-        const isMoneyChart = ['sales', 'shipped', 'b2b_sales'].includes(type);
-        let config = {
-            type: 'line',
-            data: { labels, datasets: [] },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: prefersReducedMotion ? false : {
-                    duration: 1000,
-                    easing: 'easeInOutQuart'
+        function updateComparison(selector, data) {
+            if (!data) return;
+            setCmpTag(selector, data.pct, data.dir);
+        }
+
+        function showLoader() {
+            const $o = $('#loading_overlay');
+            $('.main-content').addClass('loading-blur');
+            $o.css('display', 'flex').hide().fadeIn(200);
+        }
+
+        function hideLoader() {
+            const $o = $('#loading_overlay');
+            $('.main-content').removeClass('loading-blur');
+            $o.fadeOut(200);
+        }
+
+        function toNumber(v) {
+            const n = Number(v);
+            return Number.isFinite(n) ? n : 0;
+        }
+
+        function parseNumberFromText(text) {
+            const s = (text || '').toString();
+            const cleaned = s.replace(/[^0-9.+-]/g, '');
+            const n = Number(cleaned);
+            return Number.isFinite(n) ? n : 0;
+        }
+
+        function animateNumber($el, target, formatFn, durationMs) {
+            const el = $el && $el[0];
+            if (!el) return;
+
+            const to = toNumber(target);
+            const from = toNumber($el.data('num'));
+            $el.data('num', to);
+
+            if (prefersReducedMotion || !durationMs || durationMs <= 0) {
+                $el.text(formatFn(to));
+                return;
+            }
+
+            const start = performance.now();
+            const dur = Math.max(120, durationMs);
+
+            function step(t) {
+                const p = Math.min(1, (t - start) / dur);
+                const eased = 1 - Math.pow(1 - p, 3);
+                const v = from + (to - from) * eased;
+                $el.text(formatFn(v));
+                if (p < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
+        function setMoneyAnimated(selector, moneyText, sign) {
+            const $el = $(selector);
+            const n = parseNumberFromText(moneyText) * (sign || 1);
+            animateNumber(
+                $el,
+                n,
+                (v) => {
+                    const abs = Math.abs(v);
+                    const prefix = v < 0 ? '-' : '';
+                    return prefix + '$' + abs.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 },
-                interaction: { mode: 'index', intersect: false },
-                plugins: {
-                    legend: { 
-                        display: true, 
-                        position: 'top', 
-                        align: 'end',
-                        labels: { 
-                            boxWidth: 10, 
-                            boxHeight: 10, 
-                            usePointStyle: true, 
-                            font: { size: 14, weight: '800' },
-                            color: '#1e293b',
-                            padding: 20
-                        } 
+                780
+            );
+        }
+
+        function setMoneySuffixAnimated(selector, moneyText, suffix, sign) {
+            const $el = $(selector);
+            const sfx = suffix || '';
+            const n = parseNumberFromText(moneyText) * (sign || 1);
+            animateNumber(
+                $el,
+                n,
+                (v) => {
+                    const abs = Math.abs(v);
+                    const prefix = v < 0 ? '-' : '';
+                    return prefix + '$' + abs.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + sfx;
+                },
+                720
+            );
+        }
+
+        function setIntAnimated(selector, text) {
+            const $el = $(selector);
+            animateNumber($el, parseNumberFromText(text), (v) => Math.round(v).toLocaleString(), 720);
+        }
+
+        function setIntSuffixAnimated(selector, text, suffix) {
+            const $el = $(selector);
+            const sfx = suffix || '';
+            animateNumber($el, parseNumberFromText(text), (v) => Math.round(v).toLocaleString() + sfx, 640);
+        }
+
+        function setFloatSuffixAnimated(selector, text, suffix, decimals) {
+            const $el = $(selector);
+            const sfx = suffix || '';
+            const d = (decimals == null) ? 1 : decimals;
+            animateNumber($el, parseNumberFromText(text), (v) => toNumber(v).toFixed(d) + sfx, 640);
+        }
+
+        function setPercentAnimated(selector, text, decimals) {
+            const $el = $(selector);
+            const d = (decimals == null) ? 2 : decimals;
+            animateNumber($el, parseNumberFromText(text), (v) => toNumber(v).toFixed(d) + '%', 720);
+        }
+
+        function setPercentSuffixAnimated(selector, text, suffix, decimals) {
+            const $el = $(selector);
+            const d = (decimals == null) ? 2 : decimals;
+            const sfx = suffix || '';
+            animateNumber($el, parseNumberFromText(text), (v) => toNumber(v).toFixed(d) + '%' + sfx, 720);
+        }
+
+        function setFloatAnimated(selector, val, decimals) {
+            const $el = $(selector);
+            const d = decimals || 0;
+            animateNumber($el, parseNumberFromText(val), (v) => toNumber(v).toFixed(d), 720);
+        }
+
+        function staggerIn(selector, baseDelayMs, stepMs) {
+            if (prefersReducedMotion) return;
+            const base = baseDelayMs || 0;
+            const step = stepMs || 70;
+            $(selector).each(function (i) {
+                const el = this;
+                const delay = base + i * step;
+                if (el && typeof el.animate === 'function') {
+                    el.animate(
+                        [
+                            { opacity: 0, transform: 'translateY(12px)' },
+                            { opacity: 1, transform: 'translateY(0)' }
+                        ],
+                        { duration: 520, delay, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'both' }
+                    );
+                } else {
+                    el.classList.remove('anim-in');
+                    el.style.setProperty('--d', delay + 'ms');
+                    void el.offsetWidth;
+                    el.classList.add('anim-in');
+                }
+            });
+        }
+
+        function formatAbbrev(n) {
+            const num = toNumber(n);
+            const abs = Math.abs(num);
+            if (abs >= 1e9) return (num / 1e9).toFixed(1).replace(/\.0$/, '') + 'B';
+            if (abs >= 1e6) return (num / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+            if (abs >= 1e3) return (num / 1e3).toFixed(1).replace(/\.0$/, '') + 'K';
+            return num.toLocaleString();
+        }
+
+        function makeFillGradient(ctx, color) {
+            const g = ctx.createLinearGradient(0, 0, 0, 420);
+            g.addColorStop(0, color + '33');
+            g.addColorStop(1, color + '00');
+            return g;
+        }
+
+        function renderChart(type) {
+            if (!globalData || !globalData.charts) return;
+            if (typeof Chart === 'undefined') {
+                console.warn('Chart.js not loaded; skipping chart render.');
+                return;
+            }
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            if (mainChart) mainChart.destroy();
+
+            const labels = Array.isArray(globalData.charts.labels) ? globalData.charts.labels : [];
+            if (labels.length === 0) {
+                hideLoader();
+                return;
+            }
+
+            const isMoneyChart = ['sales', 'shipped', 'b2b_sales'].includes(type);
+            let config = {
+                type: 'line',
+                data: { labels, datasets: [] },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: prefersReducedMotion ? false : {
+                        duration: 1000,
+                        easing: 'easeInOutQuart'
                     },
-                    tooltip: { 
-                        padding: 16, 
-                        backgroundColor: 'rgba(15, 23, 42, 0.95)', 
-                        backdropFilter: 'blur(4px)',
-                        titleFont: { size: 14, weight: '700' },
-                        bodyFont: { size: 13 },
-                        cornerRadius: 12,
-                        boxPadding: 6,
-                        usePointStyle: true,
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) label += ': ';
-                                if (context.parsed.y !== null) {
-                                    const isMoneyLabel = ['Revenue', 'Shipped Sales', 'B2B Sales'].includes(context.dataset.label);
-                                    if (isMoneyLabel) {
-                                        label += '$' + context.parsed.y.toLocaleString(undefined, {minimumFractionDigits: 2});
-                                    } else {
-                                        label += context.parsed.y.toLocaleString();
-                                        if (context.dataset.label.includes('%')) label += '%';
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            align: 'center',
+                            labels: {
+                                boxWidth: 12,
+                                boxHeight: 12,
+                                usePointStyle: false,
+                                font: { size: 12, weight: '600' },
+                                color: '#363B4F',
+                                padding: 16
+                            }
+                        },
+                        tooltip: {
+                            padding: 12,
+                            backgroundColor: '#ffffff',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            titleColor: '#64748b',
+                            bodyColor: '#0f172a',
+                            titleFont: { size: 11, weight: '600' },
+                            bodyFont: { size: 13, weight: '700' },
+                            cornerRadius: 10,
+                            boxPadding: 4,
+                            displayColors: false,
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.dataset.label || 'Revenue';
+                                    let valStr = '';
+                                    if (context.parsed.y !== null) {
+                                        const isMoneyLabel = ['Revenue', 'Shipped Sales', 'B2B Sales'].includes(context.dataset.label);
+                                        if (isMoneyLabel) {
+                                            valStr = '$' + context.parsed.y.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                        } else {
+                                            valStr = context.parsed.y.toLocaleString();
+                                            if (context.dataset.label && context.dataset.label.includes('%')) valStr += '%';
+                                        }
                                     }
+                                    return `${label} : ${valStr}`;
                                 }
-                                return label;
                             }
                         }
-                    }
-                },
-                scales: {
-                    y: {
-                        grid: { color: 'rgba(148, 163, 184, 0.08)', drawBorder: false },
-                        ticks: { 
-                            color: '#94a3b8', 
-                            font: { weight: '600' }, 
-                            callback: (v) => (isMoneyChart ? '$' : '') + formatAbbrev(v), 
-                            padding: 10 
-                        }
                     },
-                    y1: {
-                        display: false,
-                        position: 'right',
-                        grid: { display: false },
-                        ticks: { color: '#94a3b8', font: { weight: '600' }, callback: (v) => formatAbbrev(v) }
-                    },
-                    x: {
-                        grid: { display: false },
-                        ticks: { color: '#94a3b8', font: { weight: '600' }, maxRotation: 0, autoSkip: true, maxTicksLimit: 10, padding: 10 }
-                    }
-                }
-            }
-        };
-
-        const map = {
-            'sales': { label: 'Revenue', data: globalData.charts.sales, color: '#10B981' },
-            'orders': { label: 'Orders', data: globalData.charts.orders, color: '#6366f1' },
-            'units': { label: 'Units', data: globalData.charts.units, color: '#10b981' },
-            'page_views': { label: 'Page Views', data: globalData.charts.page_views, color: '#8b5cf6' },
-            'sessions': { label: 'Sessions', data: globalData.charts.sessions, color: '#f59e0b' },
-            'buy_box': { label: 'Buy Box %', data: globalData.charts.buy_box, color: '#f59e0b' },
-            'conversion': { label: 'Conv Rate %', data: globalData.charts.conversion, color: '#f43f5e' },
-            'refund_rate': { label: 'Refund Rate %', data: globalData.charts.refund_rate, color: '#84cc16' },
-            'b2b_sales': { label: 'B2B Sales', data: globalData.charts.b2b_sales, color: '#10b981' },
-            'shipped': { label: 'Shipped Sales', data: globalData.charts.shipped_sales, color: '#1e293b' },
-            'feedback': { label: 'Feedback', data: globalData.charts.feedback, color: '#fbbf24' },
-            'atoz': { label: 'A-to-Z', data: globalData.charts.atoz, color: '#ef4444' }
-        };
-
-        if (type === 'refund_rate') {
-            const refunded = (globalData.charts.refunds || []).map(toNumber);
-            const rate = (globalData.charts.refund_rate || []).map(toNumber);
-            config.type = 'bar';
-            config.data.datasets = [
-                { label: 'Refunded Units', data: refunded, backgroundColor: '#ef4444cc', borderRadius: 8, maxBarThickness: 40 },
-                { label: 'Refund Rate %', data: rate, type: 'line', yAxisID: 'y1', borderColor: '#10B981', borderWidth: 3, fill: false, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#fff', pointBorderWidth: 2 }
-            ];
-            config.options.scales.y1.display = true;
-            config.options.scales.y1.ticks.callback = (v) => toNumber(v).toFixed(0) + '%';
-        } else if (type === 'units_orders') {
-            config.type = 'bar';
-            config.data.datasets = [
-                { label: 'Units', data: (globalData.charts.units || []).map(toNumber), backgroundColor: '#10B98133', borderColor: '#10B981', borderWidth: 2, borderRadius: 8, maxBarThickness: 40 },
-                { label: 'Orders', data: (globalData.charts.orders || []).map(toNumber), type: 'line', yAxisID: 'y1', borderColor: '#6366f1', borderWidth: 3, fill: true, backgroundColor: makeFillGradient(ctx, '#6366f1'), tension: 0.4, pointRadius: 4, pointBackgroundColor: '#fff', pointBorderWidth: 2 }
-            ];
-            config.options.scales.y1.display = true;
-            config.options.scales.y1.title = { display: true, text: 'Orders' };
-            config.options.scales.y.title = { display: true, text: 'Units' };
-        } else if (type === 'page_views') {
-            config.type = 'bar';
-            config.data.datasets = [
-                { label: 'Browser PV', data: (globalData.charts.page_views_browser || []).map(toNumber), backgroundColor: '#f59e0b', borderRadius: 6, maxBarThickness: 30 },
-                { label: 'Mobile App PV', data: (globalData.charts.page_views_mobile || []).map(toNumber), backgroundColor: '#8b5cf6', borderRadius: 6, maxBarThickness: 30 }
-            ];
-            config.options.scales.x.stacked = true;
-            config.options.scales.y.stacked = true;
-            config.options.scales.y.title = { display: true, text: 'Page Views' };
-        } else if (type === 'sessions') {
-            config.type = 'bar';
-            config.data.datasets = [
-                { label: 'Browser Sessions', data: (globalData.charts.sessions_browser || []).map(toNumber), backgroundColor: '#f59e0b', borderRadius: 6, maxBarThickness: 30 },
-                { label: 'Mobile App Sessions', data: (globalData.charts.sessions_mobile || []).map(toNumber), backgroundColor: '#6366f1', borderRadius: 6, maxBarThickness: 30 }
-            ];
-            config.options.scales.x.stacked = true;
-            config.options.scales.y.stacked = true;
-            config.options.scales.y.title = { display: true, text: 'Sessions' };
-        } else if (type === 'conversion') {
-            config.type = 'bar';
-            config.data.datasets = [
-                { label: 'Conversion Rate %', data: (globalData.charts.conversion || []).map(toNumber), backgroundColor: '#f43f5e', borderRadius: 8, maxBarThickness: 50, borderColor: '#be123c', borderWidth: 1 }
-            ];
-            config.options.scales.y.ticks.callback = (v) => v + '%';
-            config.options.scales.y.title = { display: true, text: 'Conversion Percentage (%)' };
-        } else {
-            const d = map[type] || map['sales'];
-            const data = (d.data || []).map(toNumber);
-            config.type = 'line';
-            config.data.datasets = [{ 
-                label: d.label, 
-                data: data, 
-                borderColor: d.color, 
-                backgroundColor: makeFillGradient(ctx, d.color), 
-                fill: true, 
-                tension: 0.4, 
-                borderWidth: 3, 
-                pointRadius: 0, 
-                pointHoverRadius: 6 
-            }];
-        }
-        mainChart = new Chart(ctx, config);
-    }
-
-    function renderTrafficTrendChart() {
-        if (!globalData || !globalData.charts) return;
-        const ctx = document.getElementById('trafficTrendChart').getContext('2d');
-        if (trafficTrendChart) trafficTrendChart.destroy();
-
-        const labels = globalData.charts.labels || [];
-        trafficTrendChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Page Views',
-                        data: (globalData.charts.page_views || []).map(toNumber),
-                        borderColor: '#6366f1',
-                        backgroundColor: makeFillGradient(ctx, '#6366f1'),
-                        fill: true,
-                        tension: 0.4,
-                        borderWidth: 3,
-                        pointRadius: 0,
-                        pointHoverRadius: 6
-                    },
-                    {
-                        label: 'Sessions',
-                        data: (globalData.charts.sessions || []).map(toNumber),
-                        borderColor: '#10b981',
-                        backgroundColor: makeFillGradient(ctx, '#10b981'),
-                        fill: true,
-                        tension: 0.4,
-                        borderWidth: 3,
-                        pointRadius: 0,
-                        pointHoverRadius: 6
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: {
-                    legend: { position: 'top', labels: { usePointStyle: true, font: { weight: '600' } } }
-                },
-                scales: {
-                    y: { grid: { color: 'rgba(148, 163, 184, 0.08)' }, ticks: { font: { weight: '600' }, callback: v => formatAbbrev(v) } },
-                    x: { grid: { display: false }, ticks: { font: { weight: '600' }, maxTicksLimit: 12 } }
-                }
-            }
-        });
-    }
-
-    function renderTrends(trends) {
-        if (!trends || typeof trends !== 'object') return;
-        const months = Object.keys(trends);
-        if (months.length === 0) return;
-
-        let headHtml = '<th style="text-align:left;">KPI Metrics</th>';
-        months.forEach((m, i) => {
-            if (i > 0) headHtml += '<th class="growth-col"></th>';
-            headHtml += `<th>${m}</th>`;
-        });
-        $('#trend_head').html(headHtml);
-
-        const rows = [
-            { label: 'Total Sales', key: 'sales', icon: 'fa-dollar-sign', isMoney: true },
-            { label: 'Total Orders', key: 'orders', icon: 'fa-shopping-basket' },
-            { label: 'Total Unit Sold', key: 'units', icon: 'fa-shopping-cart' },
-            { label: 'Page Views', key: 'page_views', icon: 'fa-eye' },
-            { label: 'Conversion Rate', key: 'conv', icon: 'fa-percentage', isRate: true }
-        ];
-
-        let bodyHtml = '';
-        rows.forEach(r => {
-            bodyHtml += `<tr><td><i class="fas ${r.icon}" style="opacity:0.35; width:1.25rem; text-align:center;"></i> ${r.label}</td>`;
-            let prevVal = null;
-            months.forEach((m, i) => {
-                const raw = (trends[m] && trends[m][r.key] != null) ? trends[m][r.key] : 0;
-                let n = Number(raw);
-                if (!Number.isFinite(n)) n = 0;
-
-                if (i > 0) {
-                    let growthHtml = '<td class="growth-col"></td>';
-                    if (prevVal !== null && prevVal !== 0) {
-                        const pct = ((n - prevVal) / prevVal) * 100;
-                        if (Math.abs(pct) >= 0.1) {
-                            const isUp = pct > 0;
-                            const cls = isUp ? 'up' : 'down';
-                            const icon = isUp ? 'fa-arrow-up' : 'fa-arrow-down';
-                            growthHtml = `<td class="growth-col"><span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% <i class="fas ${icon}"></i></span></td>`;
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(148, 163, 184, 0.08)', drawBorder: false },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { weight: '600' },
+                                callback: (v) => (isMoneyChart ? '$' : '') + formatAbbrev(v),
+                                padding: 10
+                            }
+                        },
+                        y1: {
+                            display: false,
+                            position: 'right',
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8', font: { weight: '600' }, callback: (v) => formatAbbrev(v) }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8', font: { weight: '600' }, maxRotation: 0, autoSkip: true, maxTicksLimit: 10, padding: 10 }
                         }
                     }
-                    bodyHtml += growthHtml;
                 }
+            };
 
-                let displayVal = n.toLocaleString();
-                if (r.isRate) displayVal = n.toFixed(1) + '%';
-                else if (r.isMoney) displayVal = '$' + n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            const map = {
+                'sales': { label: 'Revenue', data: globalData.charts.sales, color: '#10B981' },
+                'orders': { label: 'Orders', data: globalData.charts.orders, color: '#6366f1' },
+                'units': { label: 'Units', data: globalData.charts.units, color: '#10b981' },
+                'page_views': { label: 'Page Views', data: globalData.charts.page_views, color: '#8b5cf6' },
+                'sessions': { label: 'Sessions', data: globalData.charts.sessions, color: '#f59e0b' },
+                'buy_box': { label: 'Buy Box %', data: globalData.charts.buy_box, color: '#f59e0b' },
+                'conversion': { label: 'Conv Rate %', data: globalData.charts.conversion, color: '#f43f5e' },
+                'refund_rate': { label: 'Refund Rate %', data: globalData.charts.refund_rate, color: '#84cc16' },
+                'b2b_sales': { label: 'B2B Sales', data: globalData.charts.b2b_sales, color: '#10b981' },
+                'shipped': { label: 'Shipped Sales', data: globalData.charts.shipped_sales, color: '#1e293b' },
+                'feedback': { label: 'Feedback', data: globalData.charts.feedback, color: '#fbbf24' },
+                'atoz': { label: 'A-to-Z', data: globalData.charts.atoz, color: '#ef4444' }
+            };
 
-                bodyHtml += `<td style="white-space:nowrap;">${displayVal}</td>`;
-                prevVal = n;
-            });
-            bodyHtml += `</tr>`;
-        });
-        $('#trend_body').html(bodyHtml);
-    }
-
-    function animateCurrentTab() {
-        const tab = '<?php echo $active_tab; ?>';
-        const $content = $('#tab_' + tab);
-        $content.addClass('animating');
-        setTimeout(() => $content.removeClass('animating'), prefersReducedMotion ? 0 : 260);
-
-        if (tab === 'kpi') {
-            staggerIn('#tab_kpi .ov-card', 0, 70);
-            staggerIn('#tab_kpi .overview-row', 220, 100);
-        } else if (tab === 'financial') {
-            staggerIn('#tab_financial .card', 0, 100);
-        } else if (tab === 'products') {
-            staggerIn('#tab_products .card', 0, 90);
-            staggerIn('#product_list .pp-sku-row', 180, 60);
-            staggerIn('#product_analysis_body tr', 260, 40);
-        } else if (tab === 'traffic') {
-            staggerIn('#tab_traffic .kpi-card', 0, 70);
-            staggerIn('#tab_traffic .card', 200, 100);
-        }
-    }
-
-    // Global attachments for dynamic page clicks
-    window.onTrafficPageClick = function(page) {
-        trafficCurrentPage = page;
-        renderTrafficTable();
-    };
-
-    window.onSkuPlPageClick = function(page) {
-        skuPlCurrentPage = page;
-        renderSkuPlTable();
-    };
-
-    window.onProductsPageClick = function(page) {
-        productsCurrentPage = page;
-        renderProductPerformanceTable();
-    };
-
-    function getProductImage(sku) {
-        return '';
-    }
-
-    function generateBentoSparkline(values) {
-        if (!values || values.length === 0) return '';
-        const min = Math.min(...values);
-        const max = Math.max(...values);
-        const range = max - min;
-        
-        const height = 24;
-        const width = 100;
-        const padding = 3;
-        
-        const points = values.map((val, idx) => {
-            const x = padding + (idx / (values.length - 1)) * (width - 2 * padding);
-            const y = (range === 0) ? (height / 2) : (height - padding - ((val - min) / range) * (height - 2 * padding));
-            return { x, y };
-        });
-        
-        const firstVal = values[0];
-        const lastVal = values[values.length - 1];
-        let strokeColor = '#0051d5'; // Bento Blue
-        
-        if (lastVal > firstVal * 1.05) {
-            strokeColor = '#009668'; // Bento Green
-        } else if (lastVal < firstVal * 0.95) {
-            strokeColor = '#ef4444'; // Bento Red
-        }
-        
-        let pathD = '';
-        points.forEach((pt, idx) => {
-            if (idx === 0) {
-                pathD += `M ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
+            if (type === 'refund_rate') {
+                const refunded = (globalData.charts.refunds || []).map(toNumber);
+                const rate = (globalData.charts.refund_rate || []).map(toNumber);
+                config.type = 'bar';
+                config.data.datasets = [
+                    { label: 'Refunded Units', data: refunded, backgroundColor: '#ef4444cc', borderRadius: 8, maxBarThickness: 40 },
+                    { label: 'Refund Rate %', data: rate, type: 'line', yAxisID: 'y1', borderColor: '#10B981', borderWidth: 3, fill: false, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#fff', pointBorderWidth: 2 }
+                ];
+                config.options.scales.y1.display = true;
+                config.options.scales.y1.ticks.callback = (v) => toNumber(v).toFixed(0) + '%';
+            } else if (type === 'units_orders') {
+                config.type = 'bar';
+                config.data.datasets = [
+                    { label: 'Units', data: (globalData.charts.units || []).map(toNumber), backgroundColor: '#10B98133', borderColor: '#10B981', borderWidth: 2, borderRadius: 8, maxBarThickness: 40 },
+                    { label: 'Orders', data: (globalData.charts.orders || []).map(toNumber), type: 'line', yAxisID: 'y1', borderColor: '#6366f1', borderWidth: 3, fill: true, backgroundColor: makeFillGradient(ctx, '#6366f1'), tension: 0.4, pointRadius: 4, pointBackgroundColor: '#fff', pointBorderWidth: 2 }
+                ];
+                config.options.scales.y1.display = true;
+                config.options.scales.y1.title = { display: true, text: 'Orders' };
+                config.options.scales.y.title = { display: true, text: 'Units' };
+            } else if (type === 'page_views') {
+                config.type = 'bar';
+                config.data.datasets = [
+                    { label: 'Browser PV', data: (globalData.charts.page_views_browser || []).map(toNumber), backgroundColor: '#f59e0b', borderRadius: 6, maxBarThickness: 30 },
+                    { label: 'Mobile App PV', data: (globalData.charts.page_views_mobile || []).map(toNumber), backgroundColor: '#8b5cf6', borderRadius: 6, maxBarThickness: 30 }
+                ];
+                config.options.scales.x.stacked = true;
+                config.options.scales.y.stacked = true;
+                config.options.scales.y.title = { display: true, text: 'Page Views' };
+            } else if (type === 'sessions') {
+                config.type = 'bar';
+                config.data.datasets = [
+                    { label: 'Browser Sessions', data: (globalData.charts.sessions_browser || []).map(toNumber), backgroundColor: '#f59e0b', borderRadius: 6, maxBarThickness: 30 },
+                    { label: 'Mobile App Sessions', data: (globalData.charts.sessions_mobile || []).map(toNumber), backgroundColor: '#6366f1', borderRadius: 6, maxBarThickness: 30 }
+                ];
+                config.options.scales.x.stacked = true;
+                config.options.scales.y.stacked = true;
+                config.options.scales.y.title = { display: true, text: 'Sessions' };
+            } else if (type === 'conversion') {
+                config.type = 'bar';
+                config.data.datasets = [
+                    { label: 'Conversion Rate %', data: (globalData.charts.conversion || []).map(toNumber), backgroundColor: '#f43f5e', borderRadius: 8, maxBarThickness: 50, borderColor: '#be123c', borderWidth: 1 }
+                ];
+                config.options.scales.y.ticks.callback = (v) => v + '%';
+                config.options.scales.y.title = { display: true, text: 'Conversion Percentage (%)' };
             } else {
-                pathD += ` L ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
+                const d = map[type] || map['sales'];
+                const data = (d.data || []).map(toNumber);
+                config.type = 'line';
+                config.data.datasets = [{
+                    label: d.label,
+                    data: data,
+                    borderColor: d.color,
+                    backgroundColor: makeFillGradient(ctx, d.color),
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointRadius: 0,
+                    pointHoverRadius: 6
+                }];
             }
-        });
-        
-        return `
+            mainChart = new Chart(ctx, config);
+        }
+
+        function renderTrafficTrendChart() {
+            if (!globalData || !globalData.charts) return;
+            const ctx = document.getElementById('trafficTrendChart').getContext('2d');
+            if (trafficTrendChart) trafficTrendChart.destroy();
+
+            const labels = globalData.charts.labels || [];
+            trafficTrendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Page Views',
+                            data: (globalData.charts.page_views || []).map(toNumber),
+                            borderColor: '#6366f1',
+                            backgroundColor: makeFillGradient(ctx, '#6366f1'),
+                            fill: true,
+                            tension: 0.4,
+                            borderWidth: 3,
+                            pointRadius: 0,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'Sessions',
+                            data: (globalData.charts.sessions || []).map(toNumber),
+                            borderColor: '#10b981',
+                            backgroundColor: makeFillGradient(ctx, '#10b981'),
+                            fill: true,
+                            tension: 0.4,
+                            borderWidth: 3,
+                            pointRadius: 0,
+                            pointHoverRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { position: 'top', labels: { usePointStyle: true, font: { weight: '600' } } }
+                    },
+                    scales: {
+                        y: { grid: { color: 'rgba(148, 163, 184, 0.08)' }, ticks: { font: { weight: '600' }, callback: v => formatAbbrev(v) } },
+                        x: { grid: { display: false }, ticks: { font: { weight: '600' }, maxTicksLimit: 12 } }
+                    }
+                }
+            });
+        }
+
+        function renderTrends(trends) {
+            if (!trends || typeof trends !== 'object') return;
+            const months = Object.keys(trends);
+            if (months.length === 0) return;
+
+            let headHtml = '<th style="text-align:left; font-weight:700; color:#475569; font-size:0.8rem; padding:12px 14px;">KPI Metrics</th>';
+            months.forEach((m, i) => {
+                if (i > 0) headHtml += '<th class="growth-col"></th>';
+                headHtml += `<th style="text-align:right; font-weight:700; color:#475569; font-size:0.8rem; padding:12px 14px;">${m}</th>`;
+            });
+            $('#trend_head').html(headHtml);
+
+            const rows = [
+                {
+                    label: 'Total Sales',
+                    key: 'sales',
+                    iconSvg: `<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M12.2775 5.43194C12.2775 3.90463 10.3622 2.6665 7.99967 2.6665C5.63712 2.6665 3.72189 3.90463 3.72189 5.43194C3.72189 6.95924 4.88856 7.8023 7.99967 7.8023C11.1108 7.8023 12.6663 8.59244 12.6663 10.5678C12.6663 12.543 10.577 13.3332 7.99967 13.3332C5.42235 13.3332 3.33301 12.095 3.33301 10.5678" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/><path d="M8 1.3335V14.6668" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+                    iconBg: 'background:#eff6ff;',
+                    isMoney: true
+                },
+                {
+                    label: 'Total Orders',
+                    key: 'orders',
+                    iconSvg: `<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M1.66699 5.6665H14.3337L13.5574 10.3241C13.2913 11.9204 13.1583 12.7186 12.5988 13.1926C12.0393 13.6665 11.2302 13.6665 9.61179 13.6665H6.38883C4.77049 13.6665 3.96132 13.6665 3.40183 13.1926C2.84234 12.7186 2.70931 11.9204 2.44326 10.3241L1.66699 5.6665Z" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 8.3335V11.0002" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.667 8.3335V11.0002" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.33301 8.3335V11.0002" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 5.6665H1" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 5.66683L10 2.3335" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 5.66683L6 2.3335" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+                    iconBg: 'background:#eff6ff;'
+                },
+                {
+                    label: 'Total Unit Sold',
+                    key: 'units',
+                    iconSvg: `<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M5.33301 10.6667L11.1464 10.1822C12.9654 10.0307 13.3737 9.63333 13.5753 7.81927L13.9997 4" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/><path d="M4 4H14.6667" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/><path d="M4.00033 14.6667C4.7367 14.6667 5.33366 14.0697 5.33366 13.3333C5.33366 12.597 4.7367 12 4.00033 12C3.26395 12 2.66699 12.597 2.66699 13.3333C2.66699 14.0697 3.26395 14.6667 4.00033 14.6667Z" stroke="#4362CE" stroke-width="1.3"/><path d="M11.3333 14.6667C12.0697 14.6667 12.6667 14.0697 12.6667 13.3333C12.6667 12.597 12.0697 12 11.3333 12C10.597 12 10 12.597 10 13.3333C10 14.0697 10.597 14.6667 11.3333 14.6667Z" stroke="#4362CE" stroke-width="1.3"/><path d="M5.33301 13.3335H9.99968" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/><path d="M1.33301 1.3335H1.97701C2.60679 1.3335 3.15577 1.74989 3.30851 2.34345L5.29202 10.0512C5.39225 10.4407 5.30647 10.8533 5.0585 11.1746L4.42109 12.0002" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/></svg>`,
+                    iconBg: 'background:#eff6ff;'
+                },
+                {
+                    label: 'Page Views',
+                    key: 'page_views',
+                    iconSvg: `<svg width="15" height="15" viewBox="0 0 22 20" fill="none"><path d="M20.294 9.045C20.598 9.4713 20.75 9.6845 20.75 10C20.75 10.3155 20.598 10.5287 20.294 10.955C18.9279 12.8706 15.4392 17 10.75 17C6.06078 17 2.5721 12.8706 1.20604 10.955C0.90201 10.5287 0.75 10.3155 0.75 10C0.75 9.6845 0.90201 9.4713 1.20604 9.045C2.5721 7.12944 6.06078 3 10.75 3C15.4392 3 18.9279 7.12944 20.294 9.045Z" stroke="#4362CE" stroke-width="1.4"/><path d="M13.75 10C13.75 8.3431 12.4069 7 10.75 7C9.0931 7 7.75 8.3431 7.75 10C7.75 11.6569 9.0931 13 10.75 13C12.4069 13 13.75 11.6569 13.75 10Z" stroke="#4362CE" stroke-width="1.4"/></svg>`,
+                    iconBg: 'background:#eff6ff;'
+                },
+                {
+                    label: 'Conversion Rate',
+                    key: 'conv',
+                    iconSvg: `<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2.66699 13.3332L13.3337 2.6665" stroke="#4362CE" stroke-width="1.4" stroke-linecap="round"/><path d="M5.51217 3.15466C6.16305 3.80553 6.16305 4.86081 5.51217 5.51169C4.8613 6.16256 3.80602 6.16256 3.15515 5.51169C2.50427 4.86081 2.50427 3.80553 3.15515 3.15466C3.80602 2.50379 4.8613 2.50379 5.51217 3.15466Z" stroke="#4362CE" stroke-width="1.4"/><path d="M12.8452 10.4882C13.4961 11.139 13.4961 12.1943 12.8452 12.8452C12.1943 13.4961 11.139 13.4961 10.4882 12.8452C9.83728 12.1943 9.83728 11.139 10.4882 10.4882C11.139 9.83728 12.1943 9.83728 12.8452 10.4882Z" stroke="#4362CE" stroke-width="1.4"/></svg>`,
+                    iconBg: 'background:#eff6ff;',
+                    isRate: true
+                }
+            ];
+
+            let bodyHtml = '';
+            rows.forEach(r => {
+                bodyHtml += `<tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:12px 14px; text-align:left; font-weight:600; color:#1e293b; font-size:0.85rem;"><div style="display:inline-flex; align-items:center; gap:10px;"><span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; ${r.iconBg} flex-shrink:0;">${r.iconSvg}</span> <span>${r.label}</span></div></td>`;
+                let prevVal = null;
+                months.forEach((m, i) => {
+                    const raw = (trends[m] && trends[m][r.key] != null) ? trends[m][r.key] : 0;
+                    let n = Number(raw);
+                    if (!Number.isFinite(n)) n = 0;
+
+                    if (i > 0) {
+                        let growthHtml = '<td class="growth-col"></td>';
+                        if (prevVal !== null && prevVal !== 0) {
+                            const pct = ((n - prevVal) / prevVal) * 100;
+                            if (Math.abs(pct) >= 0.1) {
+                                const isUp = pct > 0;
+                                const cls = isUp ? 'up' : 'down';
+                                const arrowSvg = isUp
+                                    ? `<svg width="10" height="11" viewBox="0 0 11 12" fill="none" style="vertical-align:middle; margin-left:3px;"><path d="M5.28442 1.00732V10.6502" stroke="#029153" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.57144 4.93562C9.57144 4.93562 6.41508 0.649909 5.28572 0.649902C4.15629 0.649895 1 4.93562 1 4.93562" stroke="#029153" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+                                    : `<svg width="10" height="11" viewBox="0 0 11 12" fill="none" style="vertical-align:middle; margin-left:3px;"><path d="M5.28442 10.293V0.650109" stroke="#EE473D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.57144 6.36468C9.57144 6.36468 6.41508 10.6504 5.28572 10.6504C4.15629 10.6504 1 6.36468 1 6.36468" stroke="#EE473D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+                                growthHtml = `<td class="growth-col" style="padding:12px 6px; text-align:center;"><span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% ${arrowSvg}</span></td>`;
+                            }
+                        }
+                        bodyHtml += growthHtml;
+                    }
+
+                    let displayVal = n.toLocaleString();
+                    if (r.isRate) displayVal = n.toFixed(1) + '%';
+                    else if (r.isMoney) displayVal = '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                    bodyHtml += `<td style="padding:12px 14px; text-align:right; font-weight:700; color:#0f172a; font-size:0.85rem; white-space:nowrap; font-variant-numeric:tabular-nums;">${displayVal}</td>`;
+                    prevVal = n;
+                });
+                bodyHtml += `</tr>`;
+            });
+            $('#trend_body').html(bodyHtml);
+        }
+
+        function animateCurrentTab() {
+            const tab = '<?php echo $active_tab; ?>';
+            const $content = $('#tab_' + tab);
+            $content.addClass('animating');
+            setTimeout(() => $content.removeClass('animating'), prefersReducedMotion ? 0 : 260);
+
+            if (tab === 'kpi') {
+                staggerIn('#tab_kpi .ov-card', 0, 70);
+                staggerIn('#tab_kpi .overview-row', 220, 100);
+            } else if (tab === 'financial') {
+                staggerIn('#tab_financial .card', 0, 100);
+            } else if (tab === 'products') {
+                staggerIn('#tab_products .card', 0, 90);
+                staggerIn('#product_list .pp-sku-row', 180, 60);
+                staggerIn('#product_analysis_body tr', 260, 40);
+            } else if (tab === 'traffic') {
+                staggerIn('#tab_traffic .kpi-card', 0, 70);
+                staggerIn('#tab_traffic .card', 200, 100);
+            }
+        }
+
+        // Global attachments for dynamic page clicks
+        window.onTrafficPageClick = function (page) {
+            trafficCurrentPage = page;
+            renderTrafficTable();
+        };
+
+        window.onSkuPlPageClick = function (page) {
+            skuPlCurrentPage = page;
+            renderSkuPlTable();
+        };
+
+        window.onProductsPageClick = function (page) {
+            productsCurrentPage = page;
+            renderProductPerformanceTable();
+        };
+
+        function getProductImage(sku) {
+            return '';
+        }
+
+        function generateBentoSparkline(values) {
+            if (!values || values.length === 0) return '';
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+            const range = max - min;
+
+            const height = 24;
+            const width = 100;
+            const padding = 3;
+
+            const points = values.map((val, idx) => {
+                const x = padding + (idx / (values.length - 1)) * (width - 2 * padding);
+                const y = (range === 0) ? (height / 2) : (height - padding - ((val - min) / range) * (height - 2 * padding));
+                return { x, y };
+            });
+
+            const firstVal = values[0];
+            const lastVal = values[values.length - 1];
+            let strokeColor = '#0051d5'; // Bento Blue
+
+            if (lastVal > firstVal * 1.05) {
+                strokeColor = '#009668'; // Bento Green
+            } else if (lastVal < firstVal * 0.95) {
+                strokeColor = '#ef4444'; // Bento Red
+            }
+
+            let pathD = '';
+            points.forEach((pt, idx) => {
+                if (idx === 0) {
+                    pathD += `M ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
+                } else {
+                    pathD += ` L ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
+                }
+            });
+
+            return `
         <svg class="w-16 h-8 overflow-visible" viewBox="0 0 100 40" style="display: block; margin: 0 auto;">
             <path class="sparkline-path" d="${pathD}" fill="none" stroke="${strokeColor}" stroke-width="2" stroke-linecap="round" />
         </svg>`;
-    }
+        }
 
-    function renderBentoPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        if (totalPages <= 1) return '';
-        
-        let paginationHtml = '';
-        
-        // Chevron Left
-        const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
-        paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})">
+        function renderBentoPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            if (totalPages <= 1) return '';
+
+            let paginationHtml = '';
+
+            // Chevron Left
+            const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
+            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})">
             <span class="material-symbols-outlined text-[18px]">chevron_left</span>
         </button>`;
-        
-        // Page Numbers (Up to 5 page buttons)
-        let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(totalPages, startPage + 4);
-        if (endPage - startPage < 4) {
-            startPage = Math.max(1, endPage - 4);
-        }
-        
-        for (let page = startPage; page <= endPage; page++) {
-            if (page === currentPage) {
-                paginationHtml += `<button class="px-3 py-1 rounded bg-secondary text-white font-label-md text-label-md" style="background: #0051d5; color: #ffffff; font-weight: 700; border: none; cursor: default;">${page}</button>`;
-            } else {
-                paginationHtml += `<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors font-label-md text-label-md bg-white" style="cursor: pointer;" onclick="${onClickPage}(${page})">${page}</button>`;
+
+            // Page Numbers (Up to 5 page buttons)
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
             }
-        }
-        
-        // Chevron Right
-        const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
-        paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})">
+
+            for (let page = startPage; page <= endPage; page++) {
+                if (page === currentPage) {
+                    paginationHtml += `<button class="px-3 py-1 rounded bg-secondary text-white font-label-md text-label-md" style="background: #0051d5; color: #ffffff; font-weight: 700; border: none; cursor: default;">${page}</button>`;
+                } else {
+                    paginationHtml += `<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors font-label-md text-label-md bg-white" style="cursor: pointer;" onclick="${onClickPage}(${page})">${page}</button>`;
+                }
+            }
+
+            // Chevron Right
+            const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
+            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})">
             <span class="material-symbols-outlined text-[18px]">chevron_right</span>
         </button>`;
-        
-        return paginationHtml;
-    }
 
-    function renderTrafficTable() {
-        let filtered = globalTrafficData;
-        if (trafficSearchQuery) {
-            const query = trafficSearchQuery.toLowerCase();
-            filtered = globalTrafficData.filter(item => {
-                return (item.date && item.date.toLowerCase().includes(query)) ||
-                       (item.sessions && item.sessions.toString().includes(query)) ||
-                       (item.pageViews && item.pageViews.toString().includes(query));
-            });
+            return paginationHtml;
         }
-        
-        const totalItems = filtered.length;
-        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
-        if (trafficCurrentPage > totalPages) trafficCurrentPage = totalPages;
-        if (trafficCurrentPage < 1) trafficCurrentPage = 1;
-        
-        const startIndex = (trafficCurrentPage - 1) * ITEMS_PER_PAGE;
-        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
-        const paginatedItems = filtered.slice(startIndex, endIndex);
-        
-        let html = '';
-        if (paginatedItems.length > 0) {
-            paginatedItems.forEach(item => {
-                html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3);">
+
+        function renderTrafficTable() {
+            let filtered = globalTrafficData;
+            if (trafficSearchQuery) {
+                const query = trafficSearchQuery.toLowerCase();
+                filtered = globalTrafficData.filter(item => {
+                    return (item.date && item.date.toLowerCase().includes(query)) ||
+                        (item.sessions && item.sessions.toString().includes(query)) ||
+                        (item.pageViews && item.pageViews.toString().includes(query));
+                });
+            }
+
+            const totalItems = filtered.length;
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+            if (trafficCurrentPage > totalPages) trafficCurrentPage = totalPages;
+            if (trafficCurrentPage < 1) trafficCurrentPage = 1;
+
+            const startIndex = (trafficCurrentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+            const paginatedItems = filtered.slice(startIndex, endIndex);
+
+            let html = '';
+            if (paginatedItems.length > 0) {
+                paginatedItems.forEach(item => {
+                    html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3);">
                     <td style="padding: 14px 16px; font-weight: 700; color: #64748b; font-family: 'Inter', sans-serif; text-align: center;">${item.date}</td>
                     <td style="padding: 14px 16px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.sessions.toLocaleString()}</td>
                     <td style="padding: 14px 16px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.pageViews.toLocaleString()}</td>
@@ -2928,133 +4899,117 @@ $(document).ready(function() {
                     <td style="padding: 14px 16px; text-align: right; color: #45464d; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.orders.toLocaleString()}</td>
                     <td style="padding: 14px 16px; text-align: right; font-family: 'Inter', sans-serif;"><span style="background: rgba(219, 225, 255, 0.4); color: #0051d5; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-variant-numeric: tabular-nums;">${item.conv.toFixed(2)}%</span></td>
                 </tr>`;
-            });
-        } else {
-            html = `<tr><td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8;">No traffic breakdown data matches your search query.</td></tr>`;
-        }
-        
-        $('#traffic_daily_body').html(html);
-        
-        const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
-        $('#traffic_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
-        
-        const paginationButtons = renderBentoPagination(totalItems, trafficCurrentPage, ITEMS_PER_PAGE, 'window.onTrafficPageClick');
-        $('#traffic_pagination').html(paginationButtons);
-    }
-
-    let plMixedChartInst = null;
-    let currentPlTime = 'monthly';
-
-    function renderEfficiencySpeedo(score) {
-        const svg = $('#efficiencyGaugeSvg');
-        if (!svg.length) return;
-        svg.empty();
-
-        const cx = 120, cy = 105, rOuter = 88, rInner = 72;
-        const totalTicks = 24;
-        const startAngle = 180;
-        const endAngle = 360;
-        const activeCount = Math.round((Math.max(0, Math.min(100, score)) / 100) * totalTicks);
-
-        for (let i = 0; i <= totalTicks; i++) {
-            const angleDeg = startAngle + (i / totalTicks) * (endAngle - startAngle);
-            const angleRad = (angleDeg * Math.PI) / 180;
-            const x1 = cx + rInner * Math.cos(angleRad);
-            const y1 = cy + rInner * Math.sin(angleRad);
-            const x2 = cx + rOuter * Math.cos(angleRad);
-            const y2 = cy + rOuter * Math.sin(angleRad);
-
-            const isActive = i <= activeCount;
-            const color = isActive ? '#00a86b' : '#e2e8f0';
-
-            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            line.setAttribute('x1', x1.toFixed(2));
-            line.setAttribute('y1', y1.toFixed(2));
-            line.setAttribute('x2', x2.toFixed(2));
-            line.setAttribute('y2', y2.toFixed(2));
-            line.setAttribute('stroke', color);
-            line.setAttribute('stroke-width', '4.2');
-            line.setAttribute('stroke-linecap', 'round');
-            svg[0].appendChild(line);
-        }
-        $('#pl_efficiency_val').text(score);
-    }
-
-    function renderProfitLossChart() {
-        if (!globalData || !globalData.charts) return;
-        const canvas = document.getElementById('plMixedChart');
-        if (!canvas) return;
-
-        // Ensure the wrapper has explicit height so Chart.js can determine canvas size
-        const wrapper = canvas.closest('.pl-chart-wrapper');
-        if (wrapper && wrapper.offsetHeight === 0) {
-            setTimeout(renderProfitLossChart, 200);
-            return;
-        }
-
-        const barMetric = $('#pl_bar_metric').val() || 'sales';
-        const lineMetric = $('#pl_line_metric').val() || 'net_profit';
-
-        const barLabelsMap = { 'sales': 'Sales', 'units': 'Units', 'orders': 'Orders' };
-        const lineLabelsMap = { 'net_profit': 'Net Profit', 'margin': 'Net Margin %', 'roi': 'ROI %' };
-
-        $('#pl_legend_bar_label').text(barLabelsMap[barMetric] || 'Sales');
-        $('#pl_legend_line_label').text(lineLabelsMap[lineMetric] || 'Net Profit');
-
-        let labels = [];
-        let barValues = [];
-        let lineValues = [];
-
-        const rawLabels = globalData.charts.labels || [];
-        const rawSales = (globalData.charts.sales || []).map(toNumber);
-        const rawUnits = (globalData.charts.units || []).map(toNumber);
-        const rawOrders = (globalData.charts.orders || []).map(toNumber);
-        const f = globalData.financials || {};
-        const netMarginRatio = (f.revenue > 0 ? (f.net_profit / f.revenue) : 0.457);
-
-        if (currentPlTime === 'daily') {
-            labels = rawLabels;
-            if (barMetric === 'sales') barValues = rawSales;
-            else if (barMetric === 'units') barValues = rawUnits;
-            else barValues = rawOrders;
-
-            if (lineMetric === 'net_profit') {
-                lineValues = rawSales.map(s => Number((s * netMarginRatio).toFixed(2)));
-            } else if (lineMetric === 'margin') {
-                lineValues = rawSales.map(() => Number((netMarginRatio * 100).toFixed(1)));
+                });
             } else {
-                lineValues = rawSales.map(() => Number((f.roi || 38.1).toFixed(1)));
+                html = `<tr><td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8;">No traffic breakdown data matches your search query.</td></tr>`;
             }
-        } else if (currentPlTime === 'weekly') {
-            const chunkSize = 7;
-            for (let i = 0; i < rawLabels.length; i += chunkSize) {
-                const chunkEnd = Math.min(rawLabels.length, i + chunkSize);
-                const lbl = `W${Math.floor(i/chunkSize) + 1} (${rawLabels[i]})`;
-                labels.push(lbl);
 
-                const bSum = (barMetric === 'sales' ? rawSales : (barMetric === 'units' ? rawUnits : rawOrders))
-                                .slice(i, chunkEnd).reduce((a, b) => a + b, 0);
-                barValues.push(bSum);
+            $('#traffic_daily_body').html(html);
 
-                const sSum = rawSales.slice(i, chunkEnd).reduce((a, b) => a + b, 0);
+            const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
+            $('#traffic_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
+
+            const paginationButtons = renderBentoPagination(totalItems, trafficCurrentPage, ITEMS_PER_PAGE, 'window.onTrafficPageClick');
+            $('#traffic_pagination').html(paginationButtons);
+        }
+
+        let plMixedChartInst = null;
+        let currentPlTime = 'monthly';
+
+        function renderEfficiencySpeedo(score) {
+            const svg = $('#efficiencyGaugeSvg');
+            if (!svg.length) return;
+            svg.empty();
+
+            const cx = 120, cy = 105, rOuter = 88, rInner = 72;
+            const totalTicks = 24;
+            const startAngle = 180;
+            const endAngle = 360;
+            const activeCount = Math.round((Math.max(0, Math.min(100, score)) / 100) * totalTicks);
+
+            for (let i = 0; i <= totalTicks; i++) {
+                const angleDeg = startAngle + (i / totalTicks) * (endAngle - startAngle);
+                const angleRad = (angleDeg * Math.PI) / 180;
+                const x1 = cx + rInner * Math.cos(angleRad);
+                const y1 = cy + rInner * Math.sin(angleRad);
+                const x2 = cx + rOuter * Math.cos(angleRad);
+                const y2 = cy + rOuter * Math.sin(angleRad);
+
+                const isActive = i <= activeCount;
+                const color = isActive ? '#00a86b' : '#e2e8f0';
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', x1.toFixed(2));
+                line.setAttribute('y1', y1.toFixed(2));
+                line.setAttribute('x2', x2.toFixed(2));
+                line.setAttribute('y2', y2.toFixed(2));
+                line.setAttribute('stroke', color);
+                line.setAttribute('stroke-width', '4.2');
+                line.setAttribute('stroke-linecap', 'round');
+                svg[0].appendChild(line);
+            }
+            $('#pl_efficiency_val').text(score);
+        }
+
+        function renderProfitLossChart() {
+            if (!globalData || !globalData.charts) return;
+            const canvas = document.getElementById('plMixedChart');
+            if (!canvas) return;
+
+            // Ensure the wrapper has explicit height so Chart.js can determine canvas size
+            const wrapper = canvas.closest('.pl-chart-wrapper');
+            if (wrapper && wrapper.offsetHeight === 0) {
+                setTimeout(renderProfitLossChart, 200);
+                return;
+            }
+
+            const barMetric = $('#pl_bar_metric').val() || 'sales';
+            const lineMetric = $('#pl_line_metric').val() || 'net_profit';
+
+            const barLabelsMap = { 'sales': 'Sales', 'units': 'Units', 'orders': 'Orders' };
+            const lineLabelsMap = { 'net_profit': 'Net Profit', 'margin': 'Net Margin %', 'roi': 'ROI %' };
+
+            $('#pl_legend_bar_label').text(barLabelsMap[barMetric] || 'Sales');
+            $('#pl_legend_line_label').text(lineLabelsMap[lineMetric] || 'Net Profit');
+
+            let labels = [];
+            let barValues = [];
+            let lineValues = [];
+
+            const rawLabels = globalData.charts.labels || [];
+            const rawSales = (globalData.charts.sales || []).map(toNumber);
+            const rawUnits = (globalData.charts.units || []).map(toNumber);
+            const rawOrders = (globalData.charts.orders || []).map(toNumber);
+            const f = globalData.financials || {};
+            const netMarginRatio = (f.revenue > 0 ? (f.net_profit / f.revenue) : 0.457);
+
+            if (currentPlTime === 'daily') {
+                labels = rawLabels;
+                if (barMetric === 'sales') barValues = rawSales;
+                else if (barMetric === 'units') barValues = rawUnits;
+                else barValues = rawOrders;
+
                 if (lineMetric === 'net_profit') {
-                    lineValues.push(Number((sSum * netMarginRatio).toFixed(2)));
+                    lineValues = rawSales.map(s => Number((s * netMarginRatio).toFixed(2)));
                 } else if (lineMetric === 'margin') {
-                    lineValues.push(Number((netMarginRatio * 100).toFixed(1)));
+                    lineValues = rawSales.map(() => Number((netMarginRatio * 100).toFixed(1)));
                 } else {
-                    lineValues.push(Number((f.roi || 38.1).toFixed(1)));
+                    lineValues = rawSales.map(() => Number((f.roi || 38.1).toFixed(1)));
                 }
-            }
-        } else {
-            // Monthly aggregation
-            if (globalData.trends && Object.keys(globalData.trends).length > 0) {
-                for (let m in globalData.trends) {
-                    labels.push(m);
-                    const t = globalData.trends[m];
-                    const bVal = barMetric === 'sales' ? (t.sales || 0) : (barMetric === 'units' ? (t.units || 0) : (t.orders || 0));
-                    barValues.push(bVal);
+            } else if (currentPlTime === 'weekly') {
+                const chunkSize = 7;
+                for (let i = 0; i < rawLabels.length; i += chunkSize) {
+                    const chunkEnd = Math.min(rawLabels.length, i + chunkSize);
+                    const lbl = `W${Math.floor(i / chunkSize) + 1} (${rawLabels[i]})`;
+                    labels.push(lbl);
+
+                    const bSum = (barMetric === 'sales' ? rawSales : (barMetric === 'units' ? rawUnits : rawOrders))
+                        .slice(i, chunkEnd).reduce((a, b) => a + b, 0);
+                    barValues.push(bSum);
+
+                    const sSum = rawSales.slice(i, chunkEnd).reduce((a, b) => a + b, 0);
                     if (lineMetric === 'net_profit') {
-                        lineValues.push(Number(((t.sales || 0) * netMarginRatio).toFixed(2)));
+                        lineValues.push(Number((sSum * netMarginRatio).toFixed(2)));
                     } else if (lineMetric === 'margin') {
                         lineValues.push(Number((netMarginRatio * 100).toFixed(1)));
                     } else {
@@ -3062,587 +5017,587 @@ $(document).ready(function() {
                     }
                 }
             } else {
-                labels = ['Jan 2026', 'Feb 2026', 'Mar 2026'];
-                const totalBar = barMetric === 'sales' ? rawSales.reduce((a,b)=>a+b,0) : (barMetric === 'units' ? rawUnits.reduce((a,b)=>a+b,0) : rawOrders.reduce((a,b)=>a+b,0));
-                barValues = [totalBar * 0.28, totalBar * 0.34, totalBar * 0.38];
-                const totalNet = f.net_profit || 21702.24;
-                lineValues = [totalNet * 0.26, totalNet * 0.35, totalNet * 0.39];
+                // Monthly aggregation
+                if (globalData.trends && Object.keys(globalData.trends).length > 0) {
+                    for (let m in globalData.trends) {
+                        labels.push(m);
+                        const t = globalData.trends[m];
+                        const bVal = barMetric === 'sales' ? (t.sales || 0) : (barMetric === 'units' ? (t.units || 0) : (t.orders || 0));
+                        barValues.push(bVal);
+                        if (lineMetric === 'net_profit') {
+                            lineValues.push(Number(((t.sales || 0) * netMarginRatio).toFixed(2)));
+                        } else if (lineMetric === 'margin') {
+                            lineValues.push(Number((netMarginRatio * 100).toFixed(1)));
+                        } else {
+                            lineValues.push(Number((f.roi || 38.1).toFixed(1)));
+                        }
+                    }
+                } else {
+                    labels = ['Jan 2026', 'Feb 2026', 'Mar 2026'];
+                    const totalBar = barMetric === 'sales' ? rawSales.reduce((a, b) => a + b, 0) : (barMetric === 'units' ? rawUnits.reduce((a, b) => a + b, 0) : rawOrders.reduce((a, b) => a + b, 0));
+                    barValues = [totalBar * 0.28, totalBar * 0.34, totalBar * 0.38];
+                    const totalNet = f.net_profit || 21702.24;
+                    lineValues = [totalNet * 0.26, totalNet * 0.35, totalNet * 0.39];
+                }
             }
-        }
 
-        if (plMixedChartInst) plMixedChartInst.destroy();
+            if (plMixedChartInst) plMixedChartInst.destroy();
 
-        const isLinePercent = (lineMetric === 'margin' || lineMetric === 'roi');
-        const isBarCurrency = (barMetric === 'sales');
+            const isLinePercent = (lineMetric === 'margin' || lineMetric === 'roi');
+            const isBarCurrency = (barMetric === 'sales');
 
-        plMixedChartInst = new Chart(canvas.getContext('2d'), {
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        type: 'bar',
-                        label: barLabelsMap[barMetric] || 'Sales',
-                        data: barValues,
-                        backgroundColor: 'rgba(199, 210, 254, 0.65)',
-                        hoverBackgroundColor: 'rgba(147, 197, 253, 0.9)',
-                        borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
-                        barPercentage: 0.45,
-                        categoryPercentage: 0.65,
-                        yAxisID: 'yBar'
-                    },
-                    {
-                        type: 'line',
-                        label: lineLabelsMap[lineMetric] || 'Net Profit',
-                        data: lineValues,
-                        borderColor: '#10b981',
-                        backgroundColor: '#10b981',
-                        borderWidth: 2.8,
-                        tension: 0.35,
-                        pointBackgroundColor: '#10b981',
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 2,
-                        pointRadius: 4,
-                        pointHoverRadius: 6,
-                        yAxisID: 'yLine'
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: '#ffffff',
-                        titleColor: '#0f172a',
-                        bodyColor: '#334155',
-                        borderColor: '#e2e8f0',
-                        borderWidth: 1,
-                        padding: 10,
-                        usePointStyle: true,
-                        titleFont: { size: 12, weight: '700' },
-                        bodyFont: { size: 11, weight: '600' },
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) label += ': ';
-                                if (context.dataset.type === 'line' && isLinePercent) {
-                                    label += Number(context.parsed.y).toFixed(1) + '%';
-                                } else if ((context.datasetIndex === 0 && isBarCurrency) || (context.dataset.type === 'line' && !isLinePercent)) {
-                                    label += '$' + Number(context.parsed.y).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                                } else {
-                                    label += Number(context.parsed.y).toLocaleString();
-                                }
-                                return label;
-                            }
+            plMixedChartInst = new Chart(canvas.getContext('2d'), {
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'bar',
+                            label: barLabelsMap[barMetric] || 'Sales',
+                            data: barValues,
+                            backgroundColor: 'rgba(199, 210, 254, 0.65)',
+                            hoverBackgroundColor: 'rgba(147, 197, 253, 0.9)',
+                            borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
+                            barPercentage: 0.45,
+                            categoryPercentage: 0.65,
+                            yAxisID: 'yBar'
+                        },
+                        {
+                            type: 'line',
+                            label: lineLabelsMap[lineMetric] || 'Net Profit',
+                            data: lineValues,
+                            borderColor: '#10b981',
+                            backgroundColor: '#10b981',
+                            borderWidth: 2.8,
+                            tension: 0.35,
+                            pointBackgroundColor: '#10b981',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            yAxisID: 'yLine'
                         }
-                    }
+                    ]
                 },
-                scales: {
-                    x: {
-                        grid: { display: false },
-                        ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }
-                    },
-                    yBar: {
-                        type: 'linear',
-                        position: 'left',
-                        grid: { color: '#f1f5f9' },
-                        ticks: {
-                            font: { size: 10, weight: '600' },
-                            color: '#64748b',
-                            callback: function(val) {
-                                if (isBarCurrency) {
-                                    return '$' + (val >= 1000 ? (val/1000).toFixed(0) + 'k' : val);
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#ffffff',
+                            titleColor: '#0f172a',
+                            bodyColor: '#334155',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            padding: 10,
+                            usePointStyle: true,
+                            titleFont: { size: 12, weight: '700' },
+                            bodyFont: { size: 11, weight: '600' },
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) label += ': ';
+                                    if (context.dataset.type === 'line' && isLinePercent) {
+                                        label += Number(context.parsed.y).toFixed(1) + '%';
+                                    } else if ((context.datasetIndex === 0 && isBarCurrency) || (context.dataset.type === 'line' && !isLinePercent)) {
+                                        label += '$' + Number(context.parsed.y).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                    } else {
+                                        label += Number(context.parsed.y).toLocaleString();
+                                    }
+                                    return label;
                                 }
-                                return val >= 1000 ? (val/1000).toFixed(0) + 'k' : val;
                             }
                         }
                     },
-                    yLine: {
-                        type: 'linear',
-                        position: 'right',
-                        grid: { display: false },
-                        ticks: {
-                            font: { size: 10, weight: '600' },
-                            color: '#10b981',
-                            callback: function(val) {
-                                if (isLinePercent) return val.toFixed(0) + '%';
-                                return '$' + (val >= 1000 ? (val/1000).toFixed(0) + 'k' : val);
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }
+                        },
+                        yBar: {
+                            type: 'linear',
+                            position: 'left',
+                            grid: { color: '#f1f5f9' },
+                            ticks: {
+                                font: { size: 10, weight: '600' },
+                                color: '#64748b',
+                                callback: function (val) {
+                                    if (isBarCurrency) {
+                                        return '$' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
+                                    }
+                                    return val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val;
+                                }
+                            }
+                        },
+                        yLine: {
+                            type: 'linear',
+                            position: 'right',
+                            grid: { display: false },
+                            ticks: {
+                                font: { size: 10, weight: '600' },
+                                color: '#10b981',
+                                callback: function (val) {
+                                    if (isLinePercent) return val.toFixed(0) + '%';
+                                    return '$' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
-    }
-
-    let skuPlPageSize = 10;
-    $(document).on('change', '#sku_pl_page_size', function() {
-        skuPlPageSize = parseInt($(this).val()) || 10;
-        skuPlCurrentPage = 1;
-        renderSkuPlTable();
-    });
-
-    function renderFigmaPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        if (totalPages <= 1) return '';
-        
-        let html = '';
-        const prevDisabled = currentPage === 1 ? 'disabled' : '';
-        html += `<button class="pl-page-nav" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})"><i class="fas fa-chevron-left" style="font-size:0.65rem;"></i></button>`;
-        
-        let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(totalPages, startPage + 4);
-        if (endPage - startPage < 4) {
-            startPage = Math.max(1, endPage - 4);
-        }
-        
-        for (let page = startPage; page <= endPage; page++) {
-            if (page === currentPage) {
-                html += `<button class="pl-page-num active">${page}</button>`;
-            } else {
-                html += `<button class="pl-page-num" onclick="${onClickPage}(${page})">${page}</button>`;
-            }
-        }
-        
-        const nextDisabled = currentPage === totalPages ? 'disabled' : '';
-        html += `<button class="pl-page-nav" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})"><i class="fas fa-chevron-right" style="font-size:0.65rem;"></i></button>`;
-        
-        return html;
-    }
-
-    function renderSkuPlTable() {
-        let filtered = globalSkuPlData;
-        if (skuPlSearchQuery) {
-            const query = skuPlSearchQuery.toLowerCase();
-            filtered = globalSkuPlData.filter(item => {
-                return (item.sku && item.sku.toLowerCase().includes(query)) ||
-                       (item.name && item.name.toLowerCase().includes(query));
             });
         }
-        
-        const pageSize = skuPlPageSize || 10;
-        const totalItems = filtered.length;
-        const totalPages = Math.ceil(totalItems / pageSize) || 1;
-        if (skuPlCurrentPage > totalPages) skuPlCurrentPage = totalPages;
-        if (skuPlCurrentPage < 1) skuPlCurrentPage = 1;
-        
-        const startIndex = (skuPlCurrentPage - 1) * pageSize;
-        const endIndex = Math.min(startIndex + pageSize, totalItems);
-        const paginatedItems = filtered.slice(startIndex, endIndex);
-        
-        let html = '';
-        if (paginatedItems.length > 0) {
-            paginatedItems.forEach((p, idx) => {
-                const globalIndex = startIndex + idx;
-                const productRevenue = toNumber(p.revenue || 0);
-                const productNet = toNumber(p.net || 0);
-                const productUnits = toNumber(p.units || 0);
-                const productMargin = toNumber(p.margin || 0);
-                
-                html += `<tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;">
+
+        let skuPlPageSize = 10;
+        $(document).on('change', '#sku_pl_page_size', function () {
+            skuPlPageSize = parseInt($(this).val()) || 10;
+            skuPlCurrentPage = 1;
+            renderSkuPlTable();
+        });
+
+        function renderFigmaPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            if (totalPages <= 1) return '';
+
+            let html = '';
+            const prevDisabled = currentPage === 1 ? 'disabled' : '';
+            html += `<button class="pl-page-nav" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})"><i class="fas fa-chevron-left" style="font-size:0.65rem;"></i></button>`;
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
+            }
+
+            for (let page = startPage; page <= endPage; page++) {
+                if (page === currentPage) {
+                    html += `<button class="pl-page-num active">${page}</button>`;
+                } else {
+                    html += `<button class="pl-page-num" onclick="${onClickPage}(${page})">${page}</button>`;
+                }
+            }
+
+            const nextDisabled = currentPage === totalPages ? 'disabled' : '';
+            html += `<button class="pl-page-nav" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})"><i class="fas fa-chevron-right" style="font-size:0.65rem;"></i></button>`;
+
+            return html;
+        }
+
+        function renderSkuPlTable() {
+            let filtered = globalSkuPlData;
+            if (skuPlSearchQuery) {
+                const query = skuPlSearchQuery.toLowerCase();
+                filtered = globalSkuPlData.filter(item => {
+                    return (item.sku && item.sku.toLowerCase().includes(query)) ||
+                        (item.name && item.name.toLowerCase().includes(query));
+                });
+            }
+
+            const pageSize = skuPlPageSize || 10;
+            const totalItems = filtered.length;
+            const totalPages = Math.ceil(totalItems / pageSize) || 1;
+            if (skuPlCurrentPage > totalPages) skuPlCurrentPage = totalPages;
+            if (skuPlCurrentPage < 1) skuPlCurrentPage = 1;
+
+            const startIndex = (skuPlCurrentPage - 1) * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, totalItems);
+            const paginatedItems = filtered.slice(startIndex, endIndex);
+
+            let html = '';
+            if (paginatedItems.length > 0) {
+                paginatedItems.forEach((p, idx) => {
+                    const globalIndex = startIndex + idx;
+                    const productRevenue = toNumber(p.revenue || 0);
+                    const productNet = toNumber(p.net || 0);
+                    const productUnits = toNumber(p.units || 0);
+                    const productMargin = toNumber(p.margin || 0);
+
+                    html += `<tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;">
                     <td style="width: 8%; padding: 12px 14px; text-align: center; font-size: 0.85rem; font-weight: 700; color: #64748b;">${globalIndex + 1}</td>
                     <td style="width: 32%; padding: 12px 16px; text-align: left; font-weight: 700; color: #1e293b; font-family: 'Inter', sans-serif; font-size: 0.85rem;">
                         <span style="display: block; font-weight: 700; color: #0f172a;">${p.sku}</span>
                     </td>
                     <td style="width: 15%; padding: 12px 16px; text-align: right; font-weight: 700; color: #475569; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-variant-numeric: tabular-nums;">${productUnits.toLocaleString()}</td>
-                    <td style="width: 15%; padding: 12px 16px; text-align: right; font-weight: 800; color: #0f172a; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-variant-numeric: tabular-nums;">$${productRevenue.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
-                    <td style="width: 15%; padding: 12px 16px; text-align: right; font-weight: 800; color: #0f172a; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-variant-numeric: tabular-nums;">$${productNet.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td style="width: 15%; padding: 12px 16px; text-align: right; font-weight: 800; color: #0f172a; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-variant-numeric: tabular-nums;">$${productRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="width: 15%; padding: 12px 16px; text-align: right; font-weight: 800; color: #0f172a; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-variant-numeric: tabular-nums;">$${productNet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td style="width: 15%; padding: 12px 16px; text-align: right; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; color: #475569; font-variant-numeric: tabular-nums;">${productMargin.toFixed(1)}%</td>
                 </tr>`;
-            });
-        } else {
-            html = `<tr><td colspan="6" style="text-align: center; padding: 3rem; color: #94a3b8;">No SKU matching your search query.</td></tr>`;
-        }
-        
-        $('#sku_pl_body').html(html);
-        
-        const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
-        $('#sku_pl_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
-        
-        const paginationButtons = renderFigmaPagination(totalItems, skuPlCurrentPage, pageSize, 'window.onSkuPlPageClick');
-        $('#sku_pl_pagination').html(paginationButtons);
-    }
-
-    window.onSkuPlPageClick = function(page) {
-        skuPlCurrentPage = page;
-        renderSkuPlTable();
-    };
-
-    function renderProductPerformanceTable() {
-        let filtered = globalProductsData;
-        if (productsSearchQuery) {
-            const query = productsSearchQuery.toLowerCase();
-            filtered = globalProductsData.filter(p => {
-                return (p.sku && p.sku.toLowerCase().includes(query)) ||
-                       (p.name && p.name.toLowerCase().includes(query)) ||
-                       (p.title && p.title.toLowerCase().includes(query));
-            });
-        }
-        
-        const totalItems = filtered.length;
-        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
-        if (productsCurrentPage > totalPages) productsCurrentPage = totalPages;
-        if (productsCurrentPage < 1) productsCurrentPage = 1;
-        
-        const startIndex = (productsCurrentPage - 1) * ITEMS_PER_PAGE;
-        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
-        const paginatedItems = filtered.slice(startIndex, endIndex);
-        
-        let html = '';
-        if (paginatedItems.length > 0) {
-            paginatedItems.forEach((p, idx) => {
-                const globalIndex = startIndex + idx;
-                const productRevenue = toNumber(p.revenue || p.sales || 0);
-                const productFullTitle = p.name || p.title || 'Unknown Product';
-                const productOrders = toNumber(p.total_orders || p.orders || 0);
-                const productUnits = toNumber(p.units || 0);
-                const adSpend = toNumber(p.ad_spend || 0);
-                const roasVal = adSpend > 0 ? (productRevenue / adSpend) : 0;
-                
-                const roasText = roasVal > 0 ? roasVal.toFixed(1) + 'x' : '0.0x';
-                const roasBg = roasVal >= 15 ? '#e6fcf5' : (roasVal > 0 ? '#fff1f2' : '#f2f4f6');
-                const roasColor = roasVal >= 15 ? '#009668' : (roasVal > 0 ? '#ef4444' : '#45464d');
-                const roasBadgeHtml = `<span style="background: ${roasBg}; color: ${roasColor}; padding: 6px 12px; border-radius: 6px; font-weight: 800; font-size: 0.9rem; display: inline-block;">${roasText}</span>`;
-                
-                const imgUrl = getProductImage(p.sku);
-                let visualIdentityHtml = '';
-                if (imgUrl) {
-                    visualIdentityHtml = `<img alt="${p.sku}" class="w-10 h-10 rounded-lg bg-surface-container object-cover" style="width: 40px; height: 40px; border-radius: 8px; background: #eceef0; object-fit: cover;" src="${imgUrl}"/>`;
-                } else {
-                    visualIdentityHtml = `
-                    <div style="width: 40px; height: 40px; background: #0f172a; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                        </svg>
-                    </div>`;
-                }
-                
-                const productIdentityHtml = `
-                <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
-                    <div style="display: flex; flex-direction: column; min-width: 0; flex: 1;">
-                        <div style="font-weight: 800; color: #191c1e; font-size: 0.95rem; line-height: 1.2; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${p.sku}">${p.sku}</div>
-                        <div style="font-size: 0.75rem; color: #45464d; font-weight: 500; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;" title="${productFullTitle}">${productFullTitle}</div>
-                    </div>
-                </div>`;
-                
-                let trendValues = [];
-                const sortedMonthly = ((globalData && globalData.monthly_products) || [])
-                    .filter(m => m.asin === p.asin)
-                    .sort((a, b) => (a.month || '').localeCompare(b.month || ''));
-                if (sortedMonthly.length >= 2) {
-                    trendValues = sortedMonthly.map(m => toNumber(m.revenue));
-                } else {
-                    const skuStr = p.sku || '';
-                    let seed = (skuStr.charCodeAt(0) || 0) + (skuStr.charCodeAt(skuStr.length - 1) || 0) + globalIndex;
-                    for (let j = 0; j < 5; j++) {
-                        const factor = 1 + (Math.sin(seed + j) * 0.18);
-                        trendValues.push(productRevenue * factor);
-                    }
-                }
-                const sparklineHtml = generateBentoSparkline(trendValues);
-                
-                html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3);">
-                    <td style="width: 10%; padding: 14px 32px; font-weight: 800; color: #0051d5; text-align: center;">#${globalIndex + 1}</td>
-                    <td style="width: 30%; padding: 14px 24px;">${productIdentityHtml}</td>
-                    <td style="width: 12%; padding: 14px 24px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${productRevenue.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                    <td style="width: 10%; padding: 14px 24px; font-weight: 700; color: #45464d; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${productOrders.toLocaleString()}</td>
-                    <td style="width: 10%; padding: 14px 24px; font-weight: 700; color: #45464d; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${productUnits.toLocaleString()}</td>
-                    <td style="width: 12%; padding: 14px 24px; font-weight: 800; color: #ef4444; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${adSpend.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                    <td style="width: 8%; padding: 14px 24px; text-align: center; vertical-align: middle;">${roasBadgeHtml}</td>
-                    <td style="width: 8%; padding: 14px 32px; text-align: center; vertical-align: middle;">${sparklineHtml}</td>
-                </tr>`;
-            });
-        } else {
-            html = `<tr><td colspan="8" style="text-align: center; padding: 3rem; color: #94a3b8;">No products matching your search query.</td></tr>`;
-        }
-        
-        $('#product_analysis_body').html(html);
-        
-        const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
-        $('#product_perf_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
-        
-        const paginationButtons = renderBentoPagination(totalItems, productsCurrentPage, ITEMS_PER_PAGE, 'window.onProductsPageClick');
-        $('#product_perf_pagination').html(paginationButtons);
-    }
-
-    function loadDashboard() {
-        if (dashboardLoadInProgress) return;
-        dashboardLoadInProgress = true;
-        showLoader();
-        const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : ($('#filter_customer').val() || $('.filter-customer-select').val() || '');
-        let from = $('#filter_from').val() || $('.filter-from-input').val() || '2026-01-01';
-        let to = $('#filter_to').val() || $('.filter-to-input').val() || '2026-03-31';
-
-        // Synchronize all filters
-        $('#filter_customer, .filter-customer-select').val(customerId);
-        $('#filter_from, .filter-from-input').val(from);
-        $('#filter_to, .filter-to-input').val(to);
-
-        $.ajax({
-            url: '<?php echo BASE_URL; ?>api/dashboard_data.php',
-            data: { customer_id: customerId, from_date: from, to_date: to },
-            dataType: 'json',
-            success: function(res) {
-                if (res && res.error === 'Unauthorized') {
-                    window.location.href = '<?php echo BASE_URL; ?>login.php';
-                    return;
-                }
-                if (!res || !res.kpis) {
-                    return;
-                }
-                
-                // Load product-specific charts
-                loadProductAnalytics(customerId, from, to);
-                loadSettlementAnalytics(customerId, from, to);
-
-                globalData = res;
-                const k = res.kpis;
-                const f = res.financials;
-                
-                setMoneyAnimated('#kpi_sales', k.total_sales, 1);
-                setCmpTag('#cmp_sales', k.revenue_cmp, k.revenue_cmp_status);
-
-                setIntAnimated('#kpi_orders', k.total_orders);
-                // setCmpTag('#cmp_orders', k.orders_cmp, k.orders_cmp_status);
-
-                setIntAnimated('#kpi_units', k.total_units);
-                setCmpTag('#cmp_units', k.units_cmp, k.units_cmp_status);
-
-                setMoneyAnimated('#kpi_dsr', k.dsr, 1);
-                // setCmpTag('#cmp_dsr', k.dsr_cmp, k.dsr_cmp_status);
-
-                setMoneyAnimated('#kpi_ad_sales', k.ad_sales, 1);
-                // setCmpTag('#cmp_ad_sales', k.ad_sales_cmp, k.ad_sales_cmp_status);
-
-                setMoneyAnimated('#kpi_organic', k.organic_sales, 1);
-                // setCmpTag('#cmp_organic', k.organic_cmp, k.organic_cmp_status);
-
-                setMoneyAnimated('#kpi_spend', k.ad_spend, 1);
-                // setCmpTag('#cmp_spend', k.spend_cmp, k.spend_cmp_status);
-
-                setPercentAnimated('#kpi_acos', k.acos, 2);
-                // setCmpTag('#cmp_acos', k.acos_cmp, k.acos_cmp_status);
-
-                setPercentAnimated('#kpi_tacos', k.tacos, 2);
-                // setCmpTag('#cmp_tacos', k.tacos_cmp, k.tacos_cmp_status);
-
-                setFloatAnimated('#kpi_roas', k.roas, 2);
-                // setCmpTag('#cmp_roas', k.roas_cmp, k.roas_cmp_status);
-
-                setIntAnimated('#kpi_sessions', k.total_sessions);
-                setCmpTag('#cmp_sessions', k.sessions_cmp, k.sessions_cmp_status);
-
-                setPercentAnimated('#kpi_conversion', k.avg_conversion, 2);
-                setCmpTag('#cmp_conv', k.conv_cmp, k.conv_cmp_status);
-
-                setIntAnimated('#kpi_refunds', k.total_refunds);
-                setCmpTag('#cmp_refunds', k.refunds_cmp, k.refunds_cmp_status);
-
-                setMoneyAnimated('#kpi_net_profit', k.net_profit, 1);
-                // setCmpTag('#cmp_net', k.net_cmp, k.net_cmp_status);
-                setPercentAnimated('#kpi_roi', k.roi, 1);
-
-                if (res.comparisons) {
-                    updateComparison('#cmp_sales', res.comparisons.sales);
-                    updateComparison('#cmp_orders', res.comparisons.orders);
-                    updateComparison('#cmp_units', res.comparisons.units);
-                    updateComparison('#cmp_dsr', res.comparisons.dsr);
-                    updateComparison('#cmp_ad_sales', res.comparisons.ad_sales);
-                    updateComparison('#cmp_organic', res.comparisons.organic);
-                    updateComparison('#cmp_spend', res.comparisons.spend);
-                    updateComparison('#cmp_acos', res.comparisons.acos);
-                    updateComparison('#cmp_tacos', res.comparisons.tacos);
-                    updateComparison('#cmp_roas', res.comparisons.roas);
-                    updateComparison('#cmp_conv', res.comparisons.conv);
-                    updateComparison('#cmp_refunds', res.comparisons.refunds);
-                    updateComparison('#cmp_b2b', res.comparisons.b2b);
-                    if (res.comparisons.net_profit) updateComparison('#cmp_net', res.comparisons.net_profit);
-                    
-                    // Tab Traffic Comparisons
-                    updateComparison('#cmp_sessions_t', res.comparisons.sessions);
-                    updateComparison('#cmp_pv_t', res.comparisons.page_views);
-                }
-
-                // Traffic Tab Population
-                setIntAnimated('#kpi_sessions_t', k.total_sessions);
-                setIntAnimated('#kpi_pv_t', k.total_page_views);
-                setPercentAnimated('#kpi_conv_t', k.avg_conversion, 2);
-                setPercentAnimated('#kpi_buybox_t', k.buy_box, 0);
-                
-                // Mobile Share Calc
-                const totalPV = toNumber(k.total_page_views);
-                const mobilePV = res.charts.page_views_mobile.reduce((a, b) => a + b, 0);
-                const mobileShare = totalPV > 0 ? (mobilePV / totalPV) * 100 : 0;
-                setPercentAnimated('#kpi_mobile_t', mobileShare, 1);
-
-                // Populate Daily Traffic global dataset and render Bento table
-                globalTrafficData = [];
-                if (res.charts && res.charts.labels) {
-                    res.charts.labels.forEach((label, i) => {
-                        globalTrafficData.push({
-                            date: label,
-                            sessions: toNumber(res.charts.sessions[i]),
-                            pageViews: toNumber(res.charts.page_views[i]),
-                            buyBox: toNumber(res.charts.buy_box[i]),
-                            units: toNumber(res.charts.units[i]),
-                            orders: toNumber(res.charts.orders[i]),
-                            conv: toNumber(res.charts.conversion[i])
-                        });
-                    });
-                }
-                trafficCurrentPage = 1;
-                renderTrafficTable();
-
-                renderTrafficTrendChart();
-
-                // --- FIGMA PROFIT & LOSS POPULATION ---
-                // 1. Top 3 Hero Cards
-                setMoneyAnimated('#pl_hero_revenue', f.revenue, 1);
-                
-                const totalAmazonFees = Number(f.amazon_fees || (f.selling_fees + f.fba_fees + f.service_fees + f.adjustments + f.inventory_fees + f.return_fees));
-                const operationalDeductions = Number(f.operational_deductions || (Math.abs(totalAmazonFees) + Math.abs(f.cogs) + Math.abs(f.advertising_cost || 0)));
-                
-                setMoneyAnimated('#pl_hero_deductions', operationalDeductions, 1);
-                const dedPct = f.revenue > 0 ? ((operationalDeductions / f.revenue) * 100).toFixed(1) : '54.3';
-                $('#pl_deductions_pct').text(dedPct + '%');
-
-                setMoneyAnimated('#pl_hero_net_profit', f.net_profit, 1);
-                $('#pl_margin_pct').text(Number(f.net_margin || 0).toFixed(1) + '%');
-
-                // 2. Efficiency Speedometer Gauge (Right Sidebar)
-                const effScore = Math.max(1, Math.min(100, Math.round(f.net_margin > 0 ? Math.min(98, 50 + f.net_margin * 1.1) : 45)));
-                renderEfficiencySpeedo(effScore);
-
-                // 3. Right Sidebar Waterfall Breakdown
-                // Gross Revenue Stream
-                $('#side_gross_total').text('$' + Number(f.revenue || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                $('#side_sales').text('$' + Number(f.sales || f.revenue || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                $('#side_units').text(Number(f.units || k.total_units || 0).toLocaleString());
-                $('#side_orders').text(Number(f.orders || k.total_orders || 0).toLocaleString());
-                $('#side_refunds').text('-$' + Math.abs(Number(f.refunds_amount || 0)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                $('#side_promo').text('-$' + Math.abs(Number(f.promotional_rebates || 0)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                $('#side_ad_cost').text('-$' + Math.abs(Number(f.advertising_cost || 0)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                $('#side_amazon_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                $('#side_cogs_row').text('$' + Number(f.cogs || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-
-                // Operational Deductions
-                $('#side_deductions_total').text('$' + Number(operationalDeductions).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                $('#side_ded_cogs').text('$' + Number(f.cogs || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                $('#side_ded_ads').text('$' + Number(f.advertising_cost || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                $('#side_ded_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-
-                // Executive Net Profit
-                $('#side_net_total').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                $('#side_net_gross').text('$' + Number(f.gross_profit || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                $('#side_net_profit').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                $('#side_net_payout').text('$' + Number(f.estimated_payout || f.net_profit || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-
-                // Profitability & Ratios
-                $('#side_ratio_margin').text(Number(f.net_margin || 0).toFixed(1) + '%');
-                $('#side_ratio_roi').text(Number(f.roi || 0).toFixed(1) + '%');
-                $('#side_ratio_acos').text(Number(f.real_acos || 0).toFixed(1) + '%');
-                $('#side_ratio_refunds').text(Number(f.refund_rate || 0).toFixed(1) + '%');
-
-                // 4. Render Profit & Loss Chart
-                renderProfitLossChart();
-
-                // 5. Global SKU P&L Dataset
-                globalSkuPlData = res.sku_pl || [];
-                let tUnits = 0, tRev = 0, tNet = 0;
-                globalSkuPlData.forEach((p) => {
-                    tUnits += toNumber(p.units || 0);
-                    tRev += toNumber(p.revenue || 0);
-                    tNet += toNumber(p.net || 0);
                 });
+            } else {
+                html = `<tr><td colspan="6" style="text-align: center; padding: 3rem; color: #94a3b8;">No SKU matching your search query.</td></tr>`;
+            }
 
-                const tMargin = tRev > 0 ? (tNet / tRev) * 100 : 0;
-                const skuPlFootHtml = `<tr>
+            $('#sku_pl_body').html(html);
+
+            const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
+            $('#sku_pl_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
+
+            const paginationButtons = renderFigmaPagination(totalItems, skuPlCurrentPage, pageSize, 'window.onSkuPlPageClick');
+            $('#sku_pl_pagination').html(paginationButtons);
+        }
+
+        window.onSkuPlPageClick = function (page) {
+            skuPlCurrentPage = page;
+            renderSkuPlTable();
+        };
+
+        function renderProductPerformanceTable() {
+            let filtered = globalProductsData;
+            if (productsSearchQuery) {
+                const query = productsSearchQuery.toLowerCase();
+                filtered = globalProductsData.filter(p => {
+                    return (p.sku && p.sku.toLowerCase().includes(query)) ||
+                        (p.name && p.name.toLowerCase().includes(query)) ||
+                        (p.title && p.title.toLowerCase().includes(query));
+                });
+            }
+
+            const totalItems = filtered.length;
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+            if (productsCurrentPage > totalPages) productsCurrentPage = totalPages;
+            if (productsCurrentPage < 1) productsCurrentPage = 1;
+
+            const startIndex = (productsCurrentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+            const paginatedItems = filtered.slice(startIndex, endIndex);
+
+            let html = '';
+            if (paginatedItems.length > 0) {
+                paginatedItems.forEach((p, idx) => {
+                    const globalIndex = startIndex + idx;
+                    const productRevenue = toNumber(p.revenue || p.sales || 0);
+                    const productFullTitle = p.name || p.title || 'Unknown Product';
+                    const productOrders = toNumber(p.total_orders || p.orders || 0);
+                    const productUnits = toNumber(p.units || 0);
+                    const adSpend = toNumber(p.ad_spend || 0);
+                    const roasVal = adSpend > 0 ? (productRevenue / adSpend) : 0;
+
+                    const roasText = roasVal > 0 ? roasVal.toFixed(1) + 'x' : '0.0x';
+                    const roasBg = roasVal >= 10 ? '#EEF8F1' : (roasVal > 0 ? '#FEF0EF' : '#F1F5F9');
+                    const roasColor = roasVal >= 10 ? '#029153' : (roasVal > 0 ? '#EE473D' : '#64748B');
+                    const roasBorder = roasVal >= 10 ? '#C4ECD0' : (roasVal > 0 ? '#FCD4D0' : '#E2E8F0');
+                    const roasBadgeHtml = `<span style="background: ${roasBg}; color: ${roasColor}; border: 1px solid ${roasBorder}; padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 0.75rem; display: inline-block;">${roasText}</span>`;
+
+                    const productIdentityHtml = `
+                    <div style="text-align: left;">
+                        <div style="font-weight: 700; color: #0f172a; font-size: 0.84rem; margin-bottom: 2px;" title="${p.sku}">${p.sku}</div>
+                        <div style="font-size: 0.72rem; color: #64748b; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;" title="${productFullTitle}">${productFullTitle}</div>
+                    </div>`;
+
+                    let trendValues = [];
+                    const sortedMonthly = ((globalData && globalData.monthly_products) || [])
+                        .filter(m => m.asin === p.asin)
+                        .sort((a, b) => (a.month || '').localeCompare(b.month || ''));
+                    if (sortedMonthly.length >= 2) {
+                        trendValues = sortedMonthly.map(m => toNumber(m.revenue));
+                    } else {
+                        const skuStr = p.sku || '';
+                        let seed = (skuStr.charCodeAt(0) || 0) + (skuStr.charCodeAt(skuStr.length - 1) || 0) + globalIndex;
+                        for (let j = 0; j < 5; j++) {
+                            const factor = 1 + (Math.sin(seed + j) * 0.18);
+                            trendValues.push(productRevenue * factor);
+                        }
+                    }
+                    const sparklineHtml = generateBentoSparkline(trendValues);
+
+                    html += `<tr style="border-bottom: 1px solid #f8fafc; transition: background 0.15s;">
+                    <td style="width: 8%; padding: 12px 16px; font-weight: 700; color: #475569; text-align: center;">#${globalIndex + 1}</td>
+                    <td style="width: 32%; padding: 12px 18px;">${productIdentityHtml}</td>
+                    <td style="width: 14%; padding: 12px 18px; font-weight: 700; color: #0f172a; text-align: right; font-variant-numeric: tabular-nums;">$${productRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="width: 10%; padding: 12px 14px; font-weight: 500; color: #475569; text-align: center; font-variant-numeric: tabular-nums;">${productOrders.toLocaleString()}</td>
+                    <td style="width: 10%; padding: 12px 14px; font-weight: 500; color: #475569; text-align: center; font-variant-numeric: tabular-nums;">${productUnits.toLocaleString()}</td>
+                    <td style="width: 12%; padding: 12px 18px; font-weight: 700; color: #EE473D; text-align: right; font-variant-numeric: tabular-nums;">$${adSpend.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="width: 8%; padding: 12px 14px; text-align: center; vertical-align: middle;">${roasBadgeHtml}</td>
+                    <td style="width: 8%; padding: 12px 16px; text-align: center; vertical-align: middle;">${sparklineHtml}</td>
+                </tr>`;
+                });
+            } else {
+                html = `<tr><td colspan="8" style="text-align: center; padding: 3rem; color: #94a3b8;">No products matching your search query.</td></tr>`;
+            }
+
+            $('#product_analysis_body').html(html);
+
+            const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
+            $('#product_perf_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
+
+            const paginationButtons = renderBentoPagination(totalItems, productsCurrentPage, ITEMS_PER_PAGE, 'window.onProductsPageClick');
+            $('#product_perf_pagination').html(paginationButtons);
+        }
+
+        function loadDashboard() {
+            if (dashboardLoadInProgress) return;
+            dashboardLoadInProgress = true;
+            showLoader();
+            const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : ($('#filter_customer').val() || $('.filter-customer-select').val() || '');
+            let from = $('#filter_from').val() || $('.filter-from-input').val() || '2026-01-01';
+            let to = $('#filter_to').val() || $('.filter-to-input').val() || '2026-03-31';
+
+            // Synchronize all filters
+            $('#filter_customer, .filter-customer-select').val(customerId);
+            $('#filter_from, .filter-from-input').val(from);
+            $('#filter_to, .filter-to-input').val(to);
+
+            $.ajax({
+                url: '<?php echo BASE_URL; ?>api/dashboard_data.php',
+                data: { customer_id: customerId, from_date: from, to_date: to },
+                dataType: 'json',
+                success: function (res) {
+                    if (res && res.error === 'Unauthorized') {
+                        window.location.href = '<?php echo BASE_URL; ?>login.php';
+                        return;
+                    }
+                    if (!res || !res.kpis) {
+                        return;
+                    }
+
+                    // Load product-specific charts
+                    loadProductAnalytics(customerId, from, to);
+                    loadSettlementAnalytics(customerId, from, to);
+
+                    globalData = res;
+                    const k = res.kpis;
+                    const f = res.financials;
+
+                    setMoneyAnimated('#kpi_sales', k.total_sales, 1);
+                    setCmpTag('#cmp_sales', k.revenue_cmp, k.revenue_cmp_status);
+
+                    setIntAnimated('#kpi_orders', k.total_orders);
+                    // setCmpTag('#cmp_orders', k.orders_cmp, k.orders_cmp_status);
+
+                    setIntAnimated('#kpi_units', k.total_units);
+                    setCmpTag('#cmp_units', k.units_cmp, k.units_cmp_status);
+
+                    setMoneyAnimated('#kpi_dsr', k.dsr, 1);
+                    // setCmpTag('#cmp_dsr', k.dsr_cmp, k.dsr_cmp_status);
+
+                    setMoneyAnimated('#kpi_ad_sales', k.ad_sales, 1);
+                    // setCmpTag('#cmp_ad_sales', k.ad_sales_cmp, k.ad_sales_cmp_status);
+
+                    setMoneyAnimated('#kpi_organic', k.organic_sales, 1);
+                    // setCmpTag('#cmp_organic', k.organic_cmp, k.organic_cmp_status);
+
+                    setMoneyAnimated('#kpi_spend', k.ad_spend, 1);
+                    // setCmpTag('#cmp_spend', k.spend_cmp, k.spend_cmp_status);
+
+                    setPercentAnimated('#kpi_acos', k.acos, 2);
+                    // setCmpTag('#cmp_acos', k.acos_cmp, k.acos_cmp_status);
+
+                    setPercentAnimated('#kpi_tacos', k.tacos, 2);
+                    // setCmpTag('#cmp_tacos', k.tacos_cmp, k.tacos_cmp_status);
+
+                    setFloatAnimated('#kpi_roas', k.roas, 2);
+                    // setCmpTag('#cmp_roas', k.roas_cmp, k.roas_cmp_status);
+
+                    setIntAnimated('#kpi_sessions', k.total_sessions);
+                    setCmpTag('#cmp_sessions', k.sessions_cmp, k.sessions_cmp_status);
+
+                    setPercentAnimated('#kpi_conversion', k.avg_conversion, 2);
+                    setCmpTag('#cmp_conv', k.conv_cmp, k.conv_cmp_status);
+
+                    setIntAnimated('#kpi_refunds', k.total_refunds);
+                    setCmpTag('#cmp_refunds', k.refunds_cmp, k.refunds_cmp_status);
+
+                    setMoneyAnimated('#kpi_net_profit', k.net_profit, 1);
+                    // setCmpTag('#cmp_net', k.net_cmp, k.net_cmp_status);
+                    setPercentAnimated('#kpi_roi', k.roi, 1);
+
+                    if (res.comparisons) {
+                        updateComparison('#cmp_sales', res.comparisons.sales);
+                        updateComparison('#cmp_orders', res.comparisons.orders);
+                        updateComparison('#cmp_units', res.comparisons.units);
+                        updateComparison('#cmp_dsr', res.comparisons.dsr);
+                        updateComparison('#cmp_ad_sales', res.comparisons.ad_sales);
+                        updateComparison('#cmp_organic', res.comparisons.organic);
+                        updateComparison('#cmp_spend', res.comparisons.spend);
+                        updateComparison('#cmp_acos', res.comparisons.acos);
+                        updateComparison('#cmp_tacos', res.comparisons.tacos);
+                        updateComparison('#cmp_roas', res.comparisons.roas);
+                        updateComparison('#cmp_conv', res.comparisons.conv);
+                        updateComparison('#cmp_refunds', res.comparisons.refunds);
+                        updateComparison('#cmp_b2b', res.comparisons.b2b);
+                        if (res.comparisons.net_profit) updateComparison('#cmp_net', res.comparisons.net_profit);
+
+                        // Tab Traffic Comparisons
+                        updateComparison('#cmp_sessions_t', res.comparisons.sessions);
+                        updateComparison('#cmp_pv_t', res.comparisons.page_views);
+                    }
+
+                    // Traffic Tab Population
+                    setIntAnimated('#kpi_sessions_t', k.total_sessions);
+                    setIntAnimated('#kpi_pv_t', k.total_page_views);
+                    setPercentAnimated('#kpi_conv_t', k.avg_conversion, 2);
+                    setPercentAnimated('#kpi_buybox_t', k.buy_box, 0);
+
+                    // Mobile Share Calc
+                    const totalPV = toNumber(k.total_page_views);
+                    const mobilePV = res.charts.page_views_mobile.reduce((a, b) => a + b, 0);
+                    const mobileShare = totalPV > 0 ? (mobilePV / totalPV) * 100 : 0;
+                    setPercentAnimated('#kpi_mobile_t', mobileShare, 1);
+
+                    // Populate Daily Traffic global dataset and render Bento table
+                    globalTrafficData = [];
+                    if (res.charts && res.charts.labels) {
+                        res.charts.labels.forEach((label, i) => {
+                            globalTrafficData.push({
+                                date: label,
+                                sessions: toNumber(res.charts.sessions[i]),
+                                pageViews: toNumber(res.charts.page_views[i]),
+                                buyBox: toNumber(res.charts.buy_box[i]),
+                                units: toNumber(res.charts.units[i]),
+                                orders: toNumber(res.charts.orders[i]),
+                                conv: toNumber(res.charts.conversion[i])
+                            });
+                        });
+                    }
+                    trafficCurrentPage = 1;
+                    renderTrafficTable();
+
+                    renderTrafficTrendChart();
+
+                    // --- FIGMA PROFIT & LOSS POPULATION ---
+                    // 1. Top 3 Hero Cards
+                    setMoneyAnimated('#pl_hero_revenue', f.revenue, 1);
+
+                    const totalAmazonFees = Number(f.amazon_fees || (f.selling_fees + f.fba_fees + f.service_fees + f.adjustments + f.inventory_fees + f.return_fees));
+                    const operationalDeductions = Number(f.operational_deductions || (Math.abs(totalAmazonFees) + Math.abs(f.cogs) + Math.abs(f.advertising_cost || 0)));
+
+                    setMoneyAnimated('#pl_hero_deductions', operationalDeductions, 1);
+                    const dedPct = f.revenue > 0 ? ((operationalDeductions / f.revenue) * 100).toFixed(1) : '54.3';
+                    $('#pl_deductions_pct').text(dedPct + '%');
+
+                    setMoneyAnimated('#pl_hero_net_profit', f.net_profit, 1);
+                    $('#pl_margin_pct').text(Number(f.net_margin || 0).toFixed(1) + '%');
+
+                    // 2. Efficiency Speedometer Gauge (Right Sidebar)
+                    const effScore = Math.max(1, Math.min(100, Math.round(f.net_margin > 0 ? Math.min(98, 50 + f.net_margin * 1.1) : 45)));
+                    renderEfficiencySpeedo(effScore);
+
+                    // 3. Right Sidebar Waterfall Breakdown
+                    // Gross Revenue Stream
+                    $('#side_gross_total').text('$' + Number(f.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_sales').text('$' + Number(f.sales || f.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_units').text(Number(f.units || k.total_units || 0).toLocaleString());
+                    $('#side_orders').text(Number(f.orders || k.total_orders || 0).toLocaleString());
+                    $('#side_refunds').text('-$' + Math.abs(Number(f.refunds_amount || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_promo').text('-$' + Math.abs(Number(f.promotional_rebates || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_ad_cost').text('-$' + Math.abs(Number(f.advertising_cost || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_amazon_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_cogs_row').text('$' + Number(f.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+                    // Operational Deductions
+                    $('#side_deductions_total').text('$' + Number(operationalDeductions).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_ded_cogs').text('$' + Number(f.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_ded_ads').text('$' + Number(f.advertising_cost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_ded_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+                    // Executive Net Profit
+                    $('#side_net_total').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_net_gross').text('$' + Number(f.gross_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_net_profit').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_net_payout').text('$' + Number(f.estimated_payout || f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+                    // Profitability & Ratios
+                    $('#side_ratio_margin').text(Number(f.net_margin || 0).toFixed(1) + '%');
+                    $('#side_ratio_roi').text(Number(f.roi || 0).toFixed(1) + '%');
+                    $('#side_ratio_acos').text(Number(f.real_acos || 0).toFixed(1) + '%');
+                    $('#side_ratio_refunds').text(Number(f.refund_rate || 0).toFixed(1) + '%');
+
+                    // 4. Render Profit & Loss Chart
+                    renderProfitLossChart();
+
+                    // 5. Global SKU P&L Dataset
+                    globalSkuPlData = res.sku_pl || [];
+                    let tUnits = 0, tRev = 0, tNet = 0;
+                    globalSkuPlData.forEach((p) => {
+                        tUnits += toNumber(p.units || 0);
+                        tRev += toNumber(p.revenue || 0);
+                        tNet += toNumber(p.net || 0);
+                    });
+
+                    const tMargin = tRev > 0 ? (tNet / tRev) * 100 : 0;
+                    const skuPlFootHtml = `<tr>
                     <td colspan="2" style="text-align: left; font-weight: 800; font-size: 0.9rem; padding: 14px 16px; font-family: 'Inter', sans-serif;">TOTAL SUMMARY</td>
                     <td style="text-align: right; font-size: 0.95rem; font-weight: 800; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${tUnits.toLocaleString()}</td>
-                    <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #0051d5; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tRev.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
-                    <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #009668; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tNet.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #0051d5; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tRev.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #009668; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tNet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #009668; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${tMargin.toFixed(1)}%</td>
                 </tr>`;
-                $('#sku_pl_foot').html(skuPlFootHtml);
+                    $('#sku_pl_foot').html(skuPlFootHtml);
 
-                skuPlCurrentPage = 1;
-                renderSkuPlTable();
+                    skuPlCurrentPage = 1;
+                    renderSkuPlTable();
 
-                renderTrends(res.trends);
-                renderChart($('.chart-tab-btn.active').data('chart'));
+                    renderTrends(res.trends);
+                    renderChart($('.chart-tab-btn.active').data('chart'));
 
-                const icons = [
-                    `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #a5f3fc, #22d3ee); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(34, 211, 238, 0.2);">
+                    const icons = [
+                        `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #a5f3fc, #22d3ee); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(34, 211, 238, 0.2);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0891b2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
                     </div>`,
-                    `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #c7d2fe, #818cf8); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(129, 140, 248, 0.2);">
+                        `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #c7d2fe, #818cf8); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(129, 140, 248, 0.2);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
                     </div>`,
-                    `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #99f6e4, #2dd4bf); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(45, 212, 191, 0.2);">
+                        `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #99f6e4, #2dd4bf); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(45, 212, 191, 0.2);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
                     </div>`,
-                    `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #fed7aa, #fb923c); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(251, 146, 60, 0.2);">
+                        `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #fed7aa, #fb923c); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(251, 146, 60, 0.2);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
                     </div>`
-                ];
+                    ];
 
-                let prodHtml = '';
-                globalProductsData = res.products || [];
-                globalProductsData.forEach((p, i) => {
-                    const productRevenue = toNumber(p.revenue || p.sales || 0);
-                    const productFullTitle = p.name || p.title || 'Unknown Product';
-                    const productUnits = toNumber(p.units || 0);
-                    
-                    // Top SKU list (Figma shows 6 compact rows)
-                    if (i < 6) {
-                        let displayName = productFullTitle;
-                        if (p.sku === 'BUNDLE-ROUL-1') displayName = 'Diaper Liner Roll';
-                        else if (p.sku === 'BUNDLE-10CLPS') displayName = 'Snap Cloth Set';
-                        else if (p.sku === 'BUNDLE-10CLPS-2') displayName = 'Premium Inserts';
-                        else if (p.sku === 'BUNDLE-WDRB-4') displayName = 'Wet Dry Bags';
-                        else {
-                            let cleanTitle = productFullTitle.replace(/^(LA PETITE OURSE|La Petite Ourse|la petite ourse)\s+/i, '');
-                            const words = cleanTitle.split(/[\s-,]+/);
-                            displayName = words[0] + ' ' + (words[1] || '');
-                        }
+                    let prodHtml = '';
+                    globalProductsData = res.products || [];
+                    globalProductsData.forEach((p, i) => {
+                        const productRevenue = toNumber(p.revenue || p.sales || 0);
+                        const productFullTitle = p.name || p.title || 'Unknown Product';
+                        const productUnits = toNumber(p.units || 0);
 
-                        let growthRate = 0;
-                        let isGrowthUp = true;
-                        if (i === 0) { growthRate = 14.5; isGrowthUp = true; }
-                        else if (i === 1) { growthRate = 2.1; isGrowthUp = false; }
-                        else if (i === 2) { growthRate = 1.9; isGrowthUp = true; }
-                        else if (i === 3) { growthRate = 3.4; isGrowthUp = true; }
-                        else {
-                            const seed = (p.sku.charCodeAt(0) || 0) + i;
-                            growthRate = Math.abs((seed % 150) / 10);
-                            isGrowthUp = (seed % 2 === 0);
-                        }
-                        const growthDir = isGrowthUp ? 'up' : 'down';
-                        const growthArrow = isGrowthUp ? '↑' : '↓';
+                        // Top SKU list (Figma shows 6 compact rows)
+                        if (i < 6) {
+                            let displayName = productFullTitle;
+                            if (p.sku === 'BUNDLE-ROUL-1') displayName = 'Diaper Liner Roll';
+                            else if (p.sku === 'BUNDLE-10CLPS') displayName = 'Snap Cloth Set';
+                            else if (p.sku === 'BUNDLE-10CLPS-2') displayName = 'Premium Inserts';
+                            else if (p.sku === 'BUNDLE-WDRB-4') displayName = 'Wet Dry Bags';
+                            else {
+                                let cleanTitle = productFullTitle.replace(/^(LA PETITE OURSE|La Petite Ourse|la petite ourse)\s+/i, '');
+                                const words = cleanTitle.split(/[\s-,]+/);
+                                displayName = words[0] + ' ' + (words[1] || '');
+                            }
 
-                        prodHtml += `
-                        <div class="pp-sku-row">
-                            <span class="pp-sku-rank">${i+1}</span>
+                            let growthRate = 0;
+                            let isGrowthUp = true;
+                            if (i === 0) { growthRate = 14.5; isGrowthUp = true; }
+                            else if (i === 1) { growthRate = 2.1; isGrowthUp = false; }
+                            else if (i === 2) { growthRate = 1.9; isGrowthUp = true; }
+                            else if (i === 3) { growthRate = 3.4; isGrowthUp = true; }
+                            else {
+                                const seed = (p.sku.charCodeAt(0) || 0) + i;
+                                growthRate = Math.abs((seed % 150) / 10);
+                                isGrowthUp = (seed % 2 === 0);
+                            }
+                            const growthDir = isGrowthUp ? 'up' : 'down';
+                            const growthArrow = isGrowthUp ? '↑' : '↓';
+
+                            prodHtml += `
+                        <div class="pp-sku-row ${i === 0 ? 'active' : ''}">
+                            <span class="pp-sku-rank">${i + 1}</span>
                             <div class="pp-sku-info">
                                 <strong title="${productFullTitle}">${displayName}</strong>
                                 <span>SKU: ${p.sku}</span>
@@ -3652,26 +5607,27 @@ $(document).ready(function() {
                                 <em class="${growthDir}">${growthRate.toFixed(1)}% ${growthArrow}</em>
                             </div>
                             <div class="pp-sku-rev">
+                                <small>Revenue</small>
                                 <strong>$${productRevenue.toLocaleString()}</strong>
                             </div>
                         </div>`;
-                    }
-                });
+                        }
+                    });
 
-                $('#product_list').html(prodHtml);
-                
-                // Render products and SKU P&L tables via Bento pagination renderers
-                productsCurrentPage = 1;
-                renderProductPerformanceTable();
+                    $('#product_list').html(prodHtml);
 
-                skuPlCurrentPage = 1;
-                renderSkuPlTable();
+                    // Render products and SKU P&L tables via Bento pagination renderers
+                    productsCurrentPage = 1;
+                    renderProductPerformanceTable();
 
-                // Populate Monthly SKU Matrix
-                let mHtml = '';
-                if (res.monthly_products && res.monthly_products.length > 0) {
-                    res.monthly_products.forEach(m => {
-                        mHtml += `<tr>
+                    skuPlCurrentPage = 1;
+                    renderSkuPlTable();
+
+                    // Populate Monthly SKU Matrix
+                    let mHtml = '';
+                    if (res.monthly_products && res.monthly_products.length > 0) {
+                        res.monthly_products.forEach(m => {
+                            mHtml += `<tr>
                             <td style="font-weight: 700; color: #64748b;">${m.month}</td>
                             <td style="font-weight: 800; color: #1e293b;">${m.asin}</td>
                             <td style="text-align: right; font-weight: 800; color: #4f46e5;">$${toNumber(m.revenue).toLocaleString()}</td>
@@ -3679,398 +5635,403 @@ $(document).ready(function() {
                             <td style="text-align: center;">${toNumber(m.sessions).toLocaleString()}</td>
                             <td style="text-align: center;"><span style="background: #eff6ff; padding: 4px 8px; border-radius: 6px; font-weight: 800; color: #3b82f6;">${toNumber(m.conv).toFixed(1)}%</span></td>
                         </tr>`;
-                    });
-                } else {
-                    mHtml = '<tr><td colspan="6" class="text-center">No monthly historical data found.</td></tr>';
+                        });
+                    } else {
+                        mHtml = '<tr><td colspan="6" class="text-center">No monthly historical data found.</td></tr>';
+                    }
+                    $('#monthly_sku_body').html(mHtml);
+
+                    // SKU P&L is now styled with custom Bento pagination/search.
+
+                    animateCurrentTab();
+                },
+                complete: () => {
+                    dashboardLoadInProgress = false;
+                    hideLoader();
                 }
-                $('#monthly_sku_body').html(mHtml);
-
-                // SKU P&L is now styled with custom Bento pagination/search.
-
-                animateCurrentTab();
-            },
-            complete: () => {
-                dashboardLoadInProgress = false;
-                hideLoader();
-            }
-        });
-    }
-
-    // Global Map reference
-    let regionalMap = null;
-    let mapMarkers = [];
-    let geoJsonLayer = null;
-    let dashboardLoadInProgress = false;
-
-    function toggleGeoSkuRow(state) {
-        const row = $('#row-child-' + state.replace(/\s+/g, '_'));
-        const chev = $('#chevron-' + state.replace(/\s+/g, '_'));
-        if (row.is(':visible')) {
-            row.fadeOut(200);
-            chev.css('transform', 'rotate(0deg)');
-        } else {
-            row.fadeIn(200);
-            chev.css('transform', 'rotate(90deg)');
-        }
-    }
-
-    function initRegionalMap(regionList) {
-        if (!$('#us_leaflet_map').length) return;
-        if (!$('link[href*="leaflet.css"]').length) {
-            $('head').append('<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>');
-        }
-        if (typeof L === 'undefined') {
-            $.getScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', function() {
-                buildLeafletMap(regionList);
             });
-        } else {
-            buildLeafletMap(regionList);
-        }
-    }
-
-    function buildLeafletMap(regionList) {
-        const mapContainer = document.getElementById('us_leaflet_map');
-        if (!mapContainer) return;
-        if (regionalMap) {
-            regionalMap.off();
-            regionalMap.remove();
-            regionalMap = null;
         }
 
-        const stateCenters = {
-            "Alabama": [32.806671, -86.791130], "Alaska": [61.370716, -152.404419], "Arizona": [33.729759, -111.431221], "Arkansas": [34.969704, -92.373123],
-            "California": [36.116203, -119.681564], "Colorado": [39.059811, -105.311104], "Connecticut": [41.597782, -72.755371], "Delaware": [39.318523, -75.507141],
-            "Florida": [27.766279, -81.686783], "Georgia": [33.040619, -83.643074], "Hawaii": [21.094318, -157.498337], "Idaho": [44.240459, -114.478828],
-            "Illinois": [40.349457, -88.986137], "Indiana": [39.849426, -86.258278], "Iowa": [42.011539, -93.210526], "Kansas": [38.526600, -96.726486],
-            "Kentucky": [37.668140, -84.670067], "Louisiana": [31.169546, -91.867805], "Maine": [44.693947, -69.381927], "Maryland": [39.063946, -76.802101],
-            "Massachusetts": [42.230171, -71.530106], "Michigan": [43.326618, -84.536095], "Minnesota": [45.694454, -93.900192], "Mississippi": [32.741646, -89.678696],
-            "Missouri": [38.456085, -92.288368], "Montana": [46.921925, -110.454353], "Nebraska": [41.125370, -98.268082], "Nevada": [38.313515, -117.055374],
-            "New Hampshire": [43.452492, -71.563896], "New Jersey": [40.298904, -74.521011], "New Mexico": [34.840515, -106.248482], "New York": [42.165726, -74.948051],
-            "North Carolina": [35.630066, -79.806419], "North Dakota": [47.528912, -99.784012], "Ohio": [40.388783, -82.764915], "Oklahoma": [35.565342, -96.928917],
-            "Oregon": [44.572021, -122.070938], "Pennsylvania": [40.590752, -77.209755], "Rhode Island": [41.680893, -71.511780], "South Carolina": [33.856890, -80.945007],
-            "South Dakota": [44.299782, -99.438828], "Tennessee": [35.747845, -86.692345], "Texas": [31.054487, -97.563461], "Utah": [40.150032, -111.862434],
-            "Vermont": [44.045876, -72.710686], "Virginia": [37.769337, -78.169968], "Washington": [47.400902, -121.490494], "West Virginia": [38.491226, -80.954453],
-            "Wisconsin": [44.268543, -89.616508], "Wyoming": [42.755966, -107.302490],
-            "Quebec": [52.0, -72.0], "Ontario": [50.0, -85.0], "British Columbia": [53.72, -122.64], "Alberta": [55.0, -115.0],
-            "Saskatchewan": [55.0, -106.0], "Manitoba": [55.0, -97.0], "Nova Scotia": [45.0, -63.0], "Newfoundland": [53.13, -57.66],
-            "Newfoundland and Labrador": [53.13, -57.66], "New Brunswick": [46.56, -66.46], "Prince Edward Island": [46.51, -63.41],
-            "Yukon": [64.0, -135.0], "Yukon Territory": [64.0, -135.0], "Northwest Territories": [65.0, -120.0], "Nunavut": [64.29, -98.10]
-        };
+        // Global Map reference
+        let regionalMap = null;
+        let mapMarkers = [];
+        let geoJsonLayer = null;
+        let dashboardLoadInProgress = false;
 
-        // Light sleek clean vector world map (matching Figma style)
-        regionalMap = L.map('us_leaflet_map', {
-            center: [25.0, 15.0],
-            zoom: 2.1,
-            minZoom: 1.5,
-            maxZoom: 9,
-            zoomControl: false,
-            attributionControl: false,
-            scrollWheelZoom: false
-        });
+        function toggleGeoSkuRow(state) {
+            const safeState = state.replace(/\s+/g, '_');
+            const row = $('#row-child-' + safeState);
+            const parentRow = $(`.geo-parent-row[data-state="${state}"]`);
+            if (row.is(':visible')) {
+                row.fadeOut(150);
+                parentRow.removeClass('expanded');
+            } else {
+                row.fadeIn(150);
+                parentRow.addClass('expanded');
+            }
+        }
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            maxZoom: 19,
-            subdomains: 'abcd'
-        }).addTo(regionalMap);
+        function initRegionalMap(regionList) {
+            if (!$('#us_leaflet_map').length) return;
+            if (!$('link[href*="leaflet.css"]').length) {
+                $('head').append('<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>');
+            }
+            if (typeof L === 'undefined') {
+                $.getScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', function () {
+                    buildLeafletMap(regionList);
+                });
+            } else {
+                buildLeafletMap(regionList);
+            }
+        }
 
-        // Custom Figma Glowing Blue Pin Marker
-        const figmaPinIcon = L.divIcon({
-            html: `<div class="figma-map-pin" style="display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 4px 8px rgba(0, 81, 213, 0.45)); cursor: pointer; transition: transform 0.2s;">
-                <svg width="28" height="36" viewBox="0 0 24 32" fill="none">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 9 12 20 12 20s12-11 12-20c0-6.63-5.37-12-12-12z" fill="#0051d5"/>
-                    <circle cx="12" cy="11" r="4.5" fill="#ffffff"/>
+        function buildLeafletMap(regionList) {
+            const mapContainer = document.getElementById('us_leaflet_map');
+            if (!mapContainer) return;
+            if (regionalMap) {
+                regionalMap.off();
+                regionalMap.remove();
+                regionalMap = null;
+            }
+
+            const stateCenters = {
+                "Alabama": [32.806671, -86.791130], "Alaska": [61.370716, -152.404419], "Arizona": [33.729759, -111.431221], "Arkansas": [34.969704, -92.373123],
+                "California": [36.116203, -119.681564], "Colorado": [39.059811, -105.311104], "Connecticut": [41.597782, -72.755371], "Delaware": [39.318523, -75.507141],
+                "Florida": [27.766279, -81.686783], "Georgia": [33.040619, -83.643074], "Hawaii": [21.094318, -157.498337], "Idaho": [44.240459, -114.478828],
+                "Illinois": [40.349457, -88.986137], "Indiana": [39.849426, -86.258278], "Iowa": [42.011539, -93.210526], "Kansas": [38.526600, -96.726486],
+                "Kentucky": [37.668140, -84.670067], "Louisiana": [31.169546, -91.867805], "Maine": [44.693947, -69.381927], "Maryland": [39.063946, -76.802101],
+                "Massachusetts": [42.230171, -71.530106], "Michigan": [43.326618, -84.536095], "Minnesota": [45.694454, -93.900192], "Mississippi": [32.741646, -89.678696],
+                "Missouri": [38.456085, -92.288368], "Montana": [46.921925, -110.454353], "Nebraska": [41.125370, -98.268082], "Nevada": [38.313515, -117.055374],
+                "New Hampshire": [43.452492, -71.563896], "New Jersey": [40.298904, -74.521011], "New Mexico": [34.840515, -106.248482], "New York": [42.165726, -74.948051],
+                "North Carolina": [35.630066, -79.806419], "North Dakota": [47.528912, -99.784012], "Ohio": [40.388783, -82.764915], "Oklahoma": [35.565342, -96.928917],
+                "Oregon": [44.572021, -122.070938], "Pennsylvania": [40.590752, -77.209755], "Rhode Island": [41.680893, -71.511780], "South Carolina": [33.856890, -80.945007],
+                "South Dakota": [44.299782, -99.438828], "Tennessee": [35.747845, -86.692345], "Texas": [31.054487, -97.563461], "Utah": [40.150032, -111.862434],
+                "Vermont": [44.045876, -72.710686], "Virginia": [37.769337, -78.169968], "Washington": [47.400902, -121.490494], "West Virginia": [38.491226, -80.954453],
+                "Wisconsin": [44.268543, -89.616508], "Wyoming": [42.755966, -107.302490],
+                "Quebec": [52.0, -72.0], "Ontario": [50.0, -85.0], "British Columbia": [53.72, -122.64], "Alberta": [55.0, -115.0],
+                "Saskatchewan": [55.0, -106.0], "Manitoba": [55.0, -97.0], "Nova Scotia": [45.0, -63.0], "Newfoundland": [53.13, -57.66],
+                "Newfoundland and Labrador": [53.13, -57.66], "New Brunswick": [46.56, -66.46], "Prince Edward Island": [46.51, -63.41],
+                "Yukon": [64.0, -135.0], "Yukon Territory": [64.0, -135.0], "Northwest Territories": [65.0, -120.0], "Nunavut": [64.29, -98.10]
+            };
+
+            // Light sleek clean vector world map (matching Figma style)
+            regionalMap = L.map('us_leaflet_map', {
+                center: [25.0, 15.0],
+                zoom: 2.1,
+                minZoom: 1.5,
+                maxZoom: 9,
+                zoomControl: false,
+                attributionControl: false,
+                scrollWheelZoom: false
+            });
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19,
+                subdomains: 'abcd'
+            }).addTo(regionalMap);
+
+            setTimeout(() => {
+                if (regionalMap) regionalMap.invalidateSize();
+            }, 250);
+
+            // Custom Figma Glowing Blue Pin Marker
+            const figmaPinIcon = L.divIcon({
+                html: `<div class="figma-map-pin" style="display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 3px 8px rgba(67, 98, 206, 0.45)); cursor: pointer; transition: transform 0.2s;">
+                <svg width="26" height="32" viewBox="0 0 24 30" fill="none">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 9 12 18 12 18s12-9 12-18c0-6.63-5.37-12-12-12z" fill="#4362CE"/>
+                    <circle cx="12" cy="11" r="4.2" fill="#ffffff"/>
                 </svg>
             </div>`,
-            className: 'custom-figma-pin-wrapper',
-            iconSize: [28, 36],
-            iconAnchor: [14, 36]
-        });
-
-        mapMarkers = [];
-
-        // 3 Key Global Hubs from Figma
-        const defaultHubs = [
-            { name: 'North America', coords: [45.4215, -75.6972], target: 'Quebec' },
-            { name: 'EMEA / Africa', coords: [28.0339, 1.6596], target: 'Ontario' },
-            { name: 'Asia / India', coords: [28.6139, 77.2090], target: 'California' }
-        ];
-
-        defaultHubs.forEach(hub => {
-            const hMarker = L.marker(hub.coords, { icon: figmaPinIcon }).addTo(regionalMap);
-            hMarker.bindTooltip(`<div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.75rem;padding:2px 4px;">${hub.name}</div>`, { sticky: true });
-            hMarker.on('click', function() {
-                if (regionList && regionList.length > 0) {
-                    scrollToStateRow(regionList[0].province);
-                }
+                className: 'custom-figma-pin-wrapper',
+                iconSize: [26, 32],
+                iconAnchor: [13, 32]
             });
-            mapMarkers.push(hMarker);
-        });
 
-        // Add pins for provinces with sales
-        regionList.forEach(p => {
-            const coords = stateCenters[p.province];
-            if (coords && !defaultHubs.some(h => Math.abs(h.coords[0] - coords[0]) < 5 && Math.abs(h.coords[1] - coords[1]) < 5)) {
-                const marker = L.marker(coords, { icon: figmaPinIcon }).addTo(regionalMap);
+            mapMarkers = [];
 
-                let tooltipContent = `<div style="font-family: 'Inter', sans-serif; padding: 4px 6px; text-align: center;">
+            // 3 Key Global Hubs from Figma
+            const defaultHubs = [
+                { name: 'North America', coords: [45.4215, -75.6972], target: 'Quebec' },
+                { name: 'EMEA / Africa', coords: [28.0339, 1.6596], target: 'Ontario' },
+                { name: 'Asia / India', coords: [28.6139, 77.2090], target: 'California' }
+            ];
+
+            defaultHubs.forEach(hub => {
+                const hMarker = L.marker(hub.coords, { icon: figmaPinIcon }).addTo(regionalMap);
+                hMarker.bindTooltip(`<div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.75rem;padding:2px 4px;">${hub.name}</div>`, { sticky: true });
+                hMarker.on('click', function () {
+                    if (regionList && regionList.length > 0) {
+                        scrollToStateRow(regionList[0].province);
+                    }
+                });
+                mapMarkers.push(hMarker);
+            });
+
+            // Add pins for provinces with sales
+            regionList.forEach(p => {
+                const coords = stateCenters[p.province];
+                if (coords && !defaultHubs.some(h => Math.abs(h.coords[0] - coords[0]) < 5 && Math.abs(h.coords[1] - coords[1]) < 5)) {
+                    const marker = L.marker(coords, { icon: figmaPinIcon }).addTo(regionalMap);
+
+                    let tooltipContent = `<div style="font-family: 'Inter', sans-serif; padding: 4px 6px; text-align: center;">
                     <div style="font-weight: 800; font-size: 0.85rem; color: #0f172a; margin-bottom: 2px;">${p.province}</div>
-                    <div style="font-weight: 800; color: #0051d5; font-size: 0.95rem; margin: 2px 0;">$${p.total_sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    <div style="font-weight: 800; color: #4362CE; font-size: 0.95rem; margin: 2px 0;">$${p.total_sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                     <div style="font-size: 0.72rem; color: #64748b; font-weight: 600;">${p.order_count.toLocaleString()} Orders | ${p.units_sold.toLocaleString()} Units</div>
                 </div>`;
-                
-                marker.bindTooltip(tooltipContent, { sticky: true });
 
-                let popupContent = `<div style="font-family: 'Inter', sans-serif; padding: 6px 8px; text-align: center;">
+                    marker.bindTooltip(tooltipContent, { sticky: true });
+
+                    let popupContent = `<div style="font-family: 'Inter', sans-serif; padding: 6px 8px; text-align: center;">
                     <div style="font-weight: 800; font-size: 0.9rem; color: #0f172a; margin-bottom: 2px;">${p.province}</div>
-                    <div style="font-weight: 900; color: #0051d5; font-size: 1.1rem; margin: 4px 0;">$${p.total_sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    <div style="font-weight: 900; color: #4362CE; font-size: 1.1rem; margin: 4px 0;">$${p.total_sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                     <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-bottom: 6px;">${p.order_count.toLocaleString()} Orders | ${p.units_sold.toLocaleString()} Units</div>
-                    <button class="btn btn-xs btn-primary" style="padding: 3px 8px; font-size: 0.7rem; font-weight: 700; border-radius: 6px; background: #0051d5; color: #fff; border: none; cursor: pointer;" onclick="scrollToStateRow('${p.province}')">View SKU Breakdown</button>
+                    <button class="btn btn-xs btn-primary" style="padding: 3px 8px; font-size: 0.7rem; font-weight: 700; border-radius: 6px; background: #4362CE; color: #fff; border: none; cursor: pointer;" onclick="scrollToStateRow('${p.province}')">View SKU Breakdown</button>
                 </div>`;
-                
-                marker.bindPopup(popupContent);
-                marker.on('click', function() {
-                    scrollToStateRow(p.province);
-                });
 
-                mapMarkers.push(marker);
-            }
-        });
-    }
+                    marker.bindPopup(popupContent);
+                    marker.on('click', function () {
+                        scrollToStateRow(p.province);
+                    });
 
-    function scrollToStateRow(state) {
-        const row = $(`.geo-parent-row[data-state="${state}"]`);
-        if (row.length) {
-            $('html, body').animate({
-                scrollTop: row.offset().top - 180
-            }, 500);
-            
-            toggleGeoSkuRow(state);
-            
-            row.css('background', '#eff6ff');
-            setTimeout(() => {
-                row.css('background', '');
-            }, 2000);
+                    mapMarkers.push(marker);
+                }
+            });
         }
-    }
 
-    window.toggleGeoSkuRow = toggleGeoSkuRow;
-    window.scrollToStateRow = scrollToStateRow;
+        function scrollToStateRow(state) {
+            const row = $(`.geo-parent-row[data-state="${state}"]`);
+            if (row.length) {
+                $('html, body').animate({
+                    scrollTop: row.offset().top - 180
+                }, 500);
 
-    function loadSettlementAnalytics(customerId, from, to) {
-        $.ajax({
-            url: '<?php echo BASE_URL; ?>api/transaction_analytics.php',
-            data: { customer_id: customerId, from_date: from, to_date: to },
-            dataType: 'json',
-            success: function(res) {
-                if (!res) return;
-                
-                // Populating Region Table with SKU Breakdown (Figma Redesign)
-                if (res.province_breakdown) {
-                    let regionList = res.province_breakdown;
-                    regionList.sort((a, b) => b.total_sales - a.total_sales);
-                    
-                    let regHtml = '';
-                    regionList.forEach((p, idx) => {
-                        const netProfitValue = p.total_sales + p.fees + (p.refunds || 0) - (p.cogs || 0);
-                        const netProfitColor = netProfitValue >= 0 ? '#0f172a' : '#dc2626';
-                        const netProfitSign = netProfitValue >= 0 ? '' : '-';
-                        const formattedNetProfit = netProfitValue >= 0 ? netProfitValue : Math.abs(netProfitValue);
+                toggleGeoSkuRow(state);
 
-                        regHtml += `
-                            <tr class="geo-parent-row" data-state="${p.province}" style="cursor: pointer; transition: background 0.15s; border-bottom: 1px solid #f1f5f9;" onclick="toggleGeoSkuRow('${p.province}')">
-                                <td style="padding: 14px 18px; text-align: left; font-weight: 700; color: #1e293b;">
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <i class="fas fa-chevron-right geo-chevron" id="chevron-${p.province.replace(/\s+/g, '_')}" style="font-size: 0.72rem; color: #94a3b8; transition: transform 0.2s;"></i>
-                                        <span style="font-weight: 700; font-size: 0.88rem;">${p.province}</span>
+                row.css('background', '#eff6ff');
+                setTimeout(() => {
+                    row.css('background', '');
+                }, 2000);
+            }
+        }
+
+        window.toggleGeoSkuRow = toggleGeoSkuRow;
+        window.scrollToStateRow = scrollToStateRow;
+
+        function loadSettlementAnalytics(customerId, from, to) {
+            $.ajax({
+                url: '<?php echo BASE_URL; ?>api/transaction_analytics.php',
+                data: { customer_id: customerId, from_date: from, to_date: to },
+                dataType: 'json',
+                success: function (res) {
+                    if (!res) return;
+
+                    // Populating Region Table with SKU Breakdown (Figma Redesign)
+                    if (res.province_breakdown) {
+                        let regionList = res.province_breakdown;
+                        regionList.sort((a, b) => b.total_sales - a.total_sales);
+
+                        let regHtml = '';
+                        regionList.forEach((p, idx) => {
+                            const netProfitValue = p.total_sales + p.fees + (p.refunds || 0) - (p.cogs || 0);
+                            const netProfitColor = netProfitValue >= 0 ? '#0f172a' : '#EE473D';
+                            const netProfitSign = netProfitValue >= 0 ? '' : '-';
+                            const formattedNetProfit = netProfitValue >= 0 ? netProfitValue : Math.abs(netProfitValue);
+                            const safeState = p.province.replace(/\s+/g, '_');
+
+                            regHtml += `
+                            <tr class="geo-parent-row" data-state="${p.province}" style="cursor: pointer; transition: background 0.15s;" onclick="toggleGeoSkuRow('${p.province}')">
+                                <td style="padding: 12px 14px; text-align: left;">
+                                    <div style="display: inline-flex; align-items: center;">
+                                        <span class="geo-chevron-btn" id="chevron-${safeState}"><i class="fas fa-chevron-down"></i></span>
+                                        <span style="font-weight: 600; font-size: 0.84rem; color: #1e293b;">${p.province}</span>
                                     </div>
                                 </td>
-                                <td style="padding: 14px 18px; text-align: right; color: #475569; font-weight: 600; font-variant-numeric: tabular-nums;">${p.order_count.toLocaleString()}</td>
-                                <td style="padding: 14px 18px; text-align: right; color: #475569; font-weight: 600; font-variant-numeric: tabular-nums;">${p.units_sold.toLocaleString()}</td>
-                                <td style="padding: 14px 18px; text-align: right; color: #0f172a; font-weight: 700; font-variant-numeric: tabular-nums;">$${p.total_sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                <td style="padding: 14px 18px; text-align: right; color: #dc2626; font-weight: 600; font-variant-numeric: tabular-nums;">-$${Math.abs(p.fees).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                <td style="padding: 14px 18px; text-align: right; color: #475569; font-weight: 600; font-variant-numeric: tabular-nums;">-$${Math.abs(p.cogs || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                <td style="padding: 14px 18px; text-align: right; color: ${netProfitColor}; font-weight: 700; font-variant-numeric: tabular-nums;">${netProfitSign}$${formattedNetProfit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                <td style="padding: 12px 14px; text-align: center; color: #475569; font-weight: 500; font-variant-numeric: tabular-nums;">${p.order_count.toLocaleString()}</td>
+                                <td style="padding: 12px 14px; text-align: center; color: #475569; font-weight: 500; font-variant-numeric: tabular-nums;">${p.units_sold.toLocaleString()}</td>
+                                <td style="padding: 12px 14px; text-align: right; color: #0f172a; font-weight: 700; font-variant-numeric: tabular-nums;">$${p.total_sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td style="padding: 12px 14px; text-align: right; color: #EE473D; font-weight: 600; font-variant-numeric: tabular-nums;">-$${Math.abs(p.fees).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td style="padding: 12px 14px; text-align: right; color: #475569; font-weight: 600; font-variant-numeric: tabular-nums;">-$${Math.abs(p.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td style="padding: 12px 14px; text-align: right; color: ${netProfitColor}; font-weight: 700; font-variant-numeric: tabular-nums;">${netProfitSign}$${formattedNetProfit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                             </tr>
-                            <tr class="geo-child-row" id="row-child-${p.province.replace(/\s+/g, '_')}" style="display: none; background: #f8fafc;">
-                                <td colspan="7" style="padding: 1.25rem 2rem; border-bottom: 1px solid #e2e8f0;">
-                                    <div style="font-weight: 700; color: #64748b; margin-bottom: 0.75rem; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
-                                        <i class="fas fa-box-open" style="color: #3b82f6;"></i>
-                                        <span>SKU Performance Breakdown in ${p.province}</span>
-                                    </div>
-                                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
-                                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr class="geo-child-row" id="row-child-${safeState}" style="display: none; background: transparent;">
+                                <td colspan="7" style="padding: 0.4rem 0.5rem 1rem 0.5rem; border-bottom: 1px solid #f1f5f9;">
+                                    <div class="geo-sku-subcard">
+                                        <div style="font-weight: 700; color: #0f172a; margin-bottom: 0.75rem; text-align: left; font-size: 0.82rem; font-family: 'Inter', sans-serif;">
+                                            SKU Performance Breakdown in ${p.province}
+                                        </div>
+                                        <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
                                             <thead>
-                                                <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
-                                                    <th style="padding: 10px 14px; text-align: left; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Product SKU</th>
-                                                    <th style="padding: 10px 14px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Orders</th>
-                                                    <th style="padding: 10px 14px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Units Sold</th>
-                                                    <th style="padding: 10px 14px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Sales</th>
-                                                    <th style="padding: 10px 14px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Amazon Fees</th>
-                                                    <th style="padding: 10px 14px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">COGS</th>
-                                                    <th style="padding: 10px 14px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Net Profit</th>
+                                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                                    <th style="padding: 8px 12px; text-align: left; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">Product SKU</th>
+                                                    <th style="padding: 8px 12px; text-align: center; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">Orders</th>
+                                                    <th style="padding: 8px 12px; text-align: center; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">Units Sold</th>
+                                                    <th style="padding: 8px 12px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">Sales</th>
+                                                    <th style="padding: 8px 12px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">Amazon Fees</th>
+                                                    <th style="padding: 8px 12px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">COGS</th>
+                                                    <th style="padding: 8px 12px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">Net Profit</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                ${p.skus.length === 0 ? 
-                                                    `<tr><td colspan="7" style="text-align: center; padding: 1.5rem; color: #94a3b8; font-weight: 600;">No product sales in this region.</td></tr>` : 
-                                                    p.skus.map(s => {
-                                                        const sNetProfit = s.sales + s.fees + (s.refunds || 0) - (s.cogs || 0);
-                                                        const sNetColor = sNetProfit >= 0 ? '#0f172a' : '#dc2626';
-                                                        const sNetSign = sNetProfit >= 0 ? '' : '-';
-                                                        const sFormattedNet = sNetProfit >= 0 ? sNetProfit : Math.abs(sNetProfit);
-                                                        return `
-                                                            <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;">
-                                                                <td style="padding: 10px 14px; text-align: left;">
-                                                                    <div style="font-weight: 700; color: #0f172a; font-size: 0.82rem;">${s.sku}</div>
+                                                ${p.skus.length === 0 ?
+                                    `<tr><td colspan="7" style="text-align: center; padding: 1.5rem; color: #94a3b8; font-weight: 600;">No product sales in this region.</td></tr>` :
+                                    p.skus.map(s => {
+                                        const sNetProfit = s.sales + s.fees + (s.refunds || 0) - (s.cogs || 0);
+                                        const sNetColor = sNetProfit >= 0 ? '#0f172a' : '#EE473D';
+                                        const sNetSign = sNetProfit >= 0 ? '' : '-';
+                                        const sFormattedNet = sNetProfit >= 0 ? sNetProfit : Math.abs(sNetProfit);
+                                        return `
+                                                            <tr style="border-bottom: 1px solid #f8fafc; transition: background 0.15s;">
+                                                                <td style="padding: 10px 12px; text-align: left;">
+                                                                    <div style="font-weight: 700; color: #0f172a; font-size: 0.8rem;">${s.sku}</div>
                                                                     <div style="font-size: 0.7rem; color: #94a3b8; font-weight: 500;">${s.sku}</div>
                                                                 </td>
-                                                                <td style="padding: 10px 14px; text-align: right; color: #475569; font-weight: 600; font-size: 0.82rem; font-variant-numeric: tabular-nums;">${s.order_count.toLocaleString()}</td>
-                                                                <td style="padding: 10px 14px; text-align: right; color: #475569; font-weight: 600; font-size: 0.82rem; font-variant-numeric: tabular-nums;">${s.units_sold.toLocaleString()}</td>
-                                                                <td style="padding: 10px 14px; text-align: right; color: #0f172a; font-weight: 700; font-size: 0.82rem; font-variant-numeric: tabular-nums;">$${s.sales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                                                <td style="padding: 10px 14px; text-align: right; color: #dc2626; font-weight: 600; font-size: 0.82rem; font-variant-numeric: tabular-nums;">-$${Math.abs(s.fees).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                                                <td style="padding: 10px 14px; text-align: right; color: #475569; font-weight: 600; font-size: 0.82rem; font-variant-numeric: tabular-nums;">-$${Math.abs(s.cogs || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                                                <td style="padding: 10px 14px; text-align: right; color: ${sNetColor}; font-weight: 700; font-size: 0.82rem; font-variant-numeric: tabular-nums;">${sNetSign}$${sFormattedNet.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                                                <td style="padding: 10px 12px; text-align: center; color: #475569; font-weight: 500; font-size: 0.8rem; font-variant-numeric: tabular-nums;">${s.order_count.toLocaleString()}</td>
+                                                                <td style="padding: 10px 12px; text-align: center; color: #475569; font-weight: 500; font-size: 0.8rem; font-variant-numeric: tabular-nums;">${s.units_sold.toLocaleString()}</td>
+                                                                <td style="padding: 10px 12px; text-align: right; color: #0f172a; font-weight: 700; font-size: 0.8rem; font-variant-numeric: tabular-nums;">$${s.sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                                <td style="padding: 10px 12px; text-align: right; color: #EE473D; font-weight: 600; font-size: 0.8rem; font-variant-numeric: tabular-nums;">-$${Math.abs(s.fees).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                                <td style="padding: 10px 12px; text-align: right; color: #475569; font-weight: 600; font-size: 0.8rem; font-variant-numeric: tabular-nums;">-$${Math.abs(s.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                                <td style="padding: 10px 12px; text-align: right; color: ${sNetColor}; font-weight: 700; font-size: 0.8rem; font-variant-numeric: tabular-nums;">${sNetSign}$${sFormattedNet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                                             </tr>
                                                         `;
-                                                    }).join('')
-                                                }
+                                    }).join('')
+                                }
                                             </tbody>
                                         </table>
                                     </div>
                                 </td>
                             </tr>
                         `;
-                    });
-                    
-                    $('#region_sales_body').html(regHtml || '<tr><td colspan="7" style="text-align:center; padding: 2rem; color: #94a3b8; font-weight: 700;">No regional data.</td></tr>');
-                    
-                    // Initialize Regional Map visuals
-                    initRegionalMap(regionList);
+                        });
+
+                        $('#region_sales_body').html(regHtml || '<tr><td colspan="7" style="text-align:center; padding: 2rem; color: #94a3b8; font-weight: 700;">No regional data.</td></tr>');
+
+                        // Initialize Regional Map visuals
+                        initRegionalMap(regionList);
+                    }
+
+                    renderFinancialInsights(res.insights);
                 }
+            });
+        }
 
-                renderFinancialInsights(res.insights);
-            }
-        });
-    }
+        function renderFeeDonut(feeData) {
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            if (expenseChart) expenseChart.destroy();
 
-    function renderFeeDonut(feeData) {
-        const ctx = document.getElementById('expenseChart').getContext('2d');
-        if (expenseChart) expenseChart.destroy();
-        
-        expenseChart = new Chart(ctx, {
-            type: 'bar',
-            data: { 
-                labels: feeData.labels, 
-                datasets: [{ 
-                    data: feeData.values, 
-                    backgroundColor: ['#f43f5e', '#8b5cf6', '#3b82f6', '#f59e0b', '#10b981', '#6366f1', '#94a3b8'], 
-                    borderRadius: 8,
-                    maxBarThickness: 50
-                }] 
-            },
-            options: { 
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { 
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: '#0f172a',
-                        padding: 12,
-                        cornerRadius: 8,
-                        callbacks: {
-                            label: (context) => ' Amount: $' + context.parsed.y.toLocaleString()
+            expenseChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: feeData.labels,
+                    datasets: [{
+                        data: feeData.values,
+                        backgroundColor: ['#f43f5e', '#8b5cf6', '#3b82f6', '#f59e0b', '#10b981', '#6366f1', '#94a3b8'],
+                        borderRadius: 8,
+                        maxBarThickness: 50
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: (context) => ' Amount: $' + context.parsed.y.toLocaleString()
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { weight: '600', size: 10 } } },
+                        y: {
+                            grid: { color: '#f1f5f9' },
+                            ticks: { callback: v => '$' + formatAbbrev(v) }
                         }
                     }
-                },
-                scales: {
-                    x: { grid: { display: false }, ticks: { font: { weight: '600', size: 10 } } },
-                    y: { 
-                        grid: { color: '#f1f5f9' }, 
-                        ticks: { callback: v => '$' + formatAbbrev(v) } 
-                    }
                 }
-            }
-        });
-        const total = feeData.values.reduce((a, b) => a + b, 0);
-        $('#fee_breakdown_note').html(`
+            });
+            const total = feeData.values.reduce((a, b) => a + b, 0);
+            $('#fee_breakdown_note').html(`
             <div style="font-size: 1.25rem; font-weight: 800; color: #1e293b; margin-top: 1rem;">$${total.toLocaleString()}</div>
             <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Total Platform Fees</div>
         `);
-    }
-
-    function renderProvinceBars(provinces) {
-        const ctx = document.getElementById('provinceChart').getContext('2d');
-        if (provinceChart) provinceChart.destroy();
-
-        // Sort and group for a clean distribution view
-        const sorted = [...provinces].sort((a, b) => b.total_sales - a.total_sales);
-        const topCount = 8;
-        const top = sorted.slice(0, topCount);
-        const others = sorted.slice(topCount);
-        
-        let finalData = top.map(p => ({ label: p.province, value: p.total_sales }));
-        if (others.length > 0) {
-            const othersSum = others.reduce((sum, p) => sum + p.total_sales, 0);
-            finalData.push({ label: 'Other Provinces', value: othersSum });
         }
 
-        provinceChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: { 
-                labels: finalData.map(d => d.label), 
-                datasets: [{ 
-                    data: finalData.map(d => d.value), 
-                    backgroundColor: ['#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#f97316', '#eab308', '#94a3b8'],
-                    hoverOffset: 20,
-                    borderWidth: 5,
-                    borderColor: '#ffffff'
-                }] 
-            },
-            options: { 
-                cutout: '65%',
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { 
-                    legend: { 
-                        position: 'bottom',
-                        labels: { 
-                            usePointStyle: true, 
-                            padding: 20,
-                            font: { size: 11, weight: '600' },
-                            color: '#475569'
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: '#0f172a',
-                        padding: 12,
-                        cornerRadius: 8,
-                        callbacks: {
-                            label: (context) => ` $${context.parsed.toLocaleString()}`
+        function renderProvinceBars(provinces) {
+            const ctx = document.getElementById('provinceChart').getContext('2d');
+            if (provinceChart) provinceChart.destroy();
+
+            // Sort and group for a clean distribution view
+            const sorted = [...provinces].sort((a, b) => b.total_sales - a.total_sales);
+            const topCount = 8;
+            const top = sorted.slice(0, topCount);
+            const others = sorted.slice(topCount);
+
+            let finalData = top.map(p => ({ label: p.province, value: p.total_sales }));
+            if (others.length > 0) {
+                const othersSum = others.reduce((sum, p) => sum + p.total_sales, 0);
+                finalData.push({ label: 'Other Provinces', value: othersSum });
+            }
+
+            provinceChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: finalData.map(d => d.label),
+                    datasets: [{
+                        data: finalData.map(d => d.value),
+                        backgroundColor: ['#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#f97316', '#eab308', '#94a3b8'],
+                        hoverOffset: 20,
+                        borderWidth: 5,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    cutout: '65%',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: { size: 11, weight: '600' },
+                                color: '#475569'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: (context) => ` $${context.parsed.toLocaleString()}`
+                            }
                         }
                     }
                 }
-            }
-        });
-    }
+            });
+        }
 
-    function renderTxnSummary(summary) {
-        let html = '';
-        const types = summary || {};
-        if (Object.keys(types).length === 0) {
-            html = '<div style="text-align: center; color: #94a3b8; padding: 3rem;">No transactions found for this period.</div>';
-        } else {
-            html = '<div style="display: grid; gap: 1rem;">';
-            for (let type in types) {
-                const s = types[type];
-                const isPositive = s.total_amount >= 0;
-                const accentColor = isPositive ? '#10b981' : '#f43f5e';
-                
-                html += `
+        function renderTxnSummary(summary) {
+            let html = '';
+            const types = summary || {};
+            if (Object.keys(types).length === 0) {
+                html = '<div style="text-align: center; color: #94a3b8; padding: 3rem;">No transactions found for this period.</div>';
+            } else {
+                html = '<div style="display: grid; gap: 1rem;">';
+                for (let type in types) {
+                    const s = types[type];
+                    const isPositive = s.total_amount >= 0;
+                    const accentColor = isPositive ? '#10b981' : '#f43f5e';
+
+                    html += `
                 <div style="background: #ffffff; border: 1px solid #f1f5f9; border-left: 4px solid ${accentColor}; padding: 1.25rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
                         <span style="font-weight: 800; color: #1e293b; font-size: 0.95rem;">${type}</span>
                         <span style="font-weight: 800; color: ${accentColor}; font-size: 1.1rem;">
-                            ${isPositive ? '' : '-'}$${Math.abs(s.total_amount).toLocaleString(undefined, {minimumFractionDigits: 2})}
+                            ${isPositive ? '' : '-'}$${Math.abs(s.total_amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                         </span>
                     </div>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -4080,87 +6041,87 @@ $(document).ready(function() {
                         </div>
                     </div>
                 </div>`;
+                }
+                html += '</div>';
             }
-            html += '</div>';
+            $('#txn_summary_list').html(html);
         }
-        $('#txn_summary_list').html(html);
-    }
 
-    function renderFinancialInsights(insights) {
-        let html = '';
-        (insights || []).forEach(ins => {
-            html += `<div style="background:#f0f9ff; border-left:4px solid #7dd3fc; padding:1rem; border-radius:8px; margin-bottom:1rem;">
+        function renderFinancialInsights(insights) {
+            let html = '';
+            (insights || []).forEach(ins => {
+                html += `<div style="background:#f0f9ff; border-left:4px solid #7dd3fc; padding:1rem; border-radius:8px; margin-bottom:1rem;">
                 <h4 style="font-size:0.9rem; font-weight:700;">${ins.title}</h4><p style="font-size:0.8rem;">${ins.text}</p>
             </div>`;
-        });
-        $('#financial_insights_container').html(html);
-    }
+            });
+            $('#financial_insights_container').html(html);
+        }
 
-    function loadProductAnalytics(customerId, from, to) {
-        $.ajax({
-            url: '<?php echo BASE_URL; ?>api/product_analytics.php',
-            data: { customer_id: customerId, from_date: from, to_date: to },
-            dataType: 'json',
-            success: function(res) {
-                if (!res || !res.success) return;
-                
-                // Helper to format abbreviation
-                const formatAbbrev = (num) => {
-                    if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-                    if (num >= 1000) return (num / 1000).toFixed(0) + 'k';
-                    return num.toFixed(0);
-                };
+        function loadProductAnalytics(customerId, from, to) {
+            $.ajax({
+                url: '<?php echo BASE_URL; ?>api/product_analytics.php',
+                data: { customer_id: customerId, from_date: from, to_date: to },
+                dataType: 'json',
+                success: function (res) {
+                    if (!res || !res.success) return;
 
-                // Sum and populate the 3 stacked metric cards
-                let totalProdRevenue = 0;
-                let totalProdAdSpend = 0;
-                let totalProdSessions = 0;
-                let activeSkusCount = res.top_products.length;
+                    // Helper to format abbreviation
+                    const formatAbbrev = (num) => {
+                        if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+                        if (num >= 1000) return (num / 1000).toFixed(0) + 'k';
+                        return num.toFixed(0);
+                    };
 
-                res.top_products.forEach(p => {
-                    totalProdRevenue += parseFloat(p.revenue || 0);
-                    totalProdAdSpend += parseFloat(p.ad_spend || 0);
-                    totalProdSessions += parseInt(p.sessions || 0);
-                });
+                    // Sum and populate the 3 stacked metric cards
+                    let totalProdRevenue = 0;
+                    let totalProdAdSpend = 0;
+                    let totalProdSessions = 0;
+                    let activeSkusCount = res.top_products.length;
 
-                // Set Active SKUs
-                $('#prod_meta_skus').text(activeSkusCount);
+                    res.top_products.forEach(p => {
+                        totalProdRevenue += parseFloat(p.revenue || 0);
+                        totalProdAdSpend += parseFloat(p.ad_spend || 0);
+                        totalProdSessions += parseInt(p.sessions || 0);
+                    });
 
-                // Set Sessions with dynamic sum (fallback to mockup value 12,482 if zero)
-                const sessionsDisplay = totalProdSessions > 0 ? totalProdSessions : 12482;
-                $('#prod_meta_sessions').text(sessionsDisplay.toLocaleString());
+                    // Set Active SKUs
+                    $('#prod_meta_skus').text(activeSkusCount);
 
-                // Set ROAS with dynamic calc (fallback to mockup 4.2x if zero)
-                const roasDisplay = totalProdAdSpend > 0 ? (totalProdRevenue / totalProdAdSpend) : 4.2;
-                $('#prod_meta_roas').text(roasDisplay.toFixed(1) + 'x');
+                    // Set Sessions with dynamic sum (fallback to mockup value 12,482 if zero)
+                    const sessionsDisplay = totalProdSessions > 0 ? totalProdSessions : 12482;
+                    $('#prod_meta_sessions').text(sessionsDisplay.toLocaleString());
 
-                // Doughnut chart center overlay total
-                $('#doughnut_center_val').text('$' + formatAbbrev(totalProdRevenue));
+                    // Set ROAS with dynamic calc (fallback to mockup 4.2x if zero)
+                    const roasDisplay = totalProdAdSpend > 0 ? (totalProdRevenue / totalProdAdSpend) : 4.2;
+                    $('#prod_meta_roas').text(roasDisplay.toFixed(1) + 'x');
 
-                // Group top 3 individually + Others
-                const top3 = res.top_products.slice(0, 3);
-                const remaining = res.top_products.slice(3);
-                const remainingSum = remaining.reduce((sum, p) => sum + parseFloat(p.revenue || 0), 0);
+                    // Doughnut chart center overlay total
+                    $('#doughnut_center_val').text('$' + formatAbbrev(totalProdRevenue));
 
-                const chartColors = ['#2563eb', '#ef4444', '#10b981', '#f59e0b'];
-                const doughnutData = [...top3.map(p => parseFloat(p.revenue || 0))];
-                if (remaining.length > 0) {
-                    doughnutData.push(remainingSum);
-                }
+                    // Group top 3 individually + Others
+                    const top3 = res.top_products.slice(0, 3);
+                    const remaining = res.top_products.slice(3);
+                    const remainingSum = remaining.reduce((sum, p) => sum + parseFloat(p.revenue || 0), 0);
 
-                const doughnutLabels = [...top3.map(p => p.sku)];
-                if (remaining.length > 0) {
-                    doughnutLabels.push('Others');
-                }
+                    const chartColors = ['#2563eb', '#ef4444', '#10b981', '#f59e0b'];
+                    const doughnutData = [...top3.map(p => parseFloat(p.revenue || 0))];
+                    if (remaining.length > 0) {
+                        doughnutData.push(remainingSum);
+                    }
 
-                // Populate Custom HTML Legend (SKU + $ + %)
-                let legendHtml = '';
-                let colorIdx = 0;
-                top3.forEach(p => {
-                    const rev = parseFloat(p.revenue || 0);
-                    const pct = totalProdRevenue > 0 ? ((rev / totalProdRevenue) * 100).toFixed(0) : '0';
-                    const color = chartColors[colorIdx];
-                    legendHtml += `
+                    const doughnutLabels = [...top3.map(p => p.sku)];
+                    if (remaining.length > 0) {
+                        doughnutLabels.push('Others');
+                    }
+
+                    // Populate Custom HTML Legend (SKU + $ + %)
+                    let legendHtml = '';
+                    let colorIdx = 0;
+                    top3.forEach(p => {
+                        const rev = parseFloat(p.revenue || 0);
+                        const pct = totalProdRevenue > 0 ? ((rev / totalProdRevenue) * 100).toFixed(0) : '0';
+                        const color = chartColors[colorIdx];
+                        legendHtml += `
                     <div class="pp-legend-row">
                         <div style="display:flex; align-items:center; gap:8px; min-width:0;">
                             <span class="dot" style="background:${color};"></span>
@@ -4169,13 +6130,13 @@ $(document).ready(function() {
                         <span style="color:#64748b; font-weight:700;">$${rev.toLocaleString()}</span>
                         <span style="color:#0f172a; font-weight:800;">${pct}%</span>
                     </div>`;
-                    colorIdx++;
-                });
+                        colorIdx++;
+                    });
 
-                if (remaining.length > 0) {
-                    const pct = totalProdRevenue > 0 ? ((remainingSum / totalProdRevenue) * 100).toFixed(0) : '0';
-                    const color = chartColors[3];
-                    legendHtml += `
+                    if (remaining.length > 0) {
+                        const pct = totalProdRevenue > 0 ? ((remainingSum / totalProdRevenue) * 100).toFixed(0) : '0';
+                        const color = chartColors[3];
+                        legendHtml += `
                     <div class="pp-legend-row">
                         <div style="display:flex; align-items:center; gap:8px; min-width:0;">
                             <span class="dot" style="background:${color};"></span>
@@ -4184,267 +6145,297 @@ $(document).ready(function() {
                         <span style="color:#64748b; font-weight:700;">$${Math.round(remainingSum).toLocaleString()}</span>
                         <span style="color:#0f172a; font-weight:800;">${pct}%</span>
                     </div>`;
-                }
-                $('#doughnut_custom_legend').html(legendHtml);
-
-                // 1. Revenue Share by SKU (Doughnut ChartJS)
-                const ctxRev = document.getElementById('productRevenueShareChart').getContext('2d');
-                if (window.productRevenueShareChartInst) window.productRevenueShareChartInst.destroy();
-                window.productRevenueShareChartInst = new Chart(ctxRev, {
-                    type: 'doughnut',
-                    data: {
-                        labels: doughnutLabels,
-                        datasets: [{
-                            data: doughnutData,
-                            backgroundColor: chartColors,
-                            borderWidth: 4,
-                            borderColor: '#ffffff',
-                            hoverOffset: 12
-                        }]
-                    },
-                    options: { 
-                        cutout: '78%', 
-                        responsive: true, 
-                        maintainAspectRatio: false, 
-                        plugins: { 
-                            legend: { display: false },
-                            tooltip: { 
-                                backgroundColor: '#ffffff',
-                                titleColor: '#0f172a',
-                                bodyColor: '#0f172a',
-                                borderColor: '#e2e8f0',
-                                borderWidth: 1,
-                                padding: 10,
-                                cornerRadius: 8,
-                                displayColors: true,
-                                callbacks: {
-                                    label: function(context) {
-                                        return context.label + ': $' + Number(context.parsed).toLocaleString();
-                                    }
-                                }
-                            }
-                        } 
                     }
-                });
+                    $('#doughnut_custom_legend').html(legendHtml);
 
-                // 2. ULTIMATE COMBO REPORT (One report for everything)
-                const ctxCombo = document.getElementById('productComboChart').getContext('2d');
-                if (window.productComboChartInst) window.productComboChartInst.destroy();
-                
-                const labels = res.top_products.slice(0, 12).map(p => p.sku); 
-                
-                window.productComboChartInst = new Chart(ctxCombo, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: 'Sessions',
-                                data: res.top_products.slice(0, 12).map(p => p.sessions),
-                                backgroundColor: 'rgba(147, 197, 253, 0.75)',
-                                borderColor: '#93c5fd',
-                                borderWidth: 0,
-                                yAxisID: 'yVolume',
-                                order: 3
-                            },
-                            {
-                                label: 'Revenue ($)',
-                                data: res.top_products.slice(0, 12).map(p => p.revenue),
-                                type: 'line',
-                                borderColor: '#2563eb',
-                                backgroundColor: '#2563eb',
-                                borderWidth: 3,
-                                pointRadius: 4,
-                                tension: 0.3,
-                                yAxisID: 'yRevenue',
-                                order: 1
-                            },
-                            {
-                                label: 'Conv %',
-                                data: res.top_products.slice(0, 12).map(p => p.conv),
-                                type: 'line',
-                                borderColor: '#f59e0b',
-                                backgroundColor: '#f59e0b',
-                                borderDash: [5, 5],
-                                borderWidth: 2,
-                                pointRadius: 4,
-                                yAxisID: 'yPercent',
-                                order: 2
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        interaction: { mode: 'index', intersect: false },
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                backgroundColor: '#0f172a',
-                                padding: 12,
-                                cornerRadius: 8,
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) label += ': ';
-                                        if (context.dataset.yAxisID === 'yRevenue') label += '$' + context.parsed.y.toLocaleString();
-                                        else if (context.dataset.yAxisID === 'yPercent') label += context.parsed.y.toFixed(2) + '%';
-                                        else label += context.parsed.y.toLocaleString();
-                                        return label;
+                    // 1. Revenue Share by SKU (Doughnut ChartJS)
+                    const ctxRev = document.getElementById('productRevenueShareChart').getContext('2d');
+                    if (window.productRevenueShareChartInst) window.productRevenueShareChartInst.destroy();
+                    window.productRevenueShareChartInst = new Chart(ctxRev, {
+                        type: 'doughnut',
+                        data: {
+                            labels: doughnutLabels,
+                            datasets: [{
+                                data: doughnutData,
+                                backgroundColor: chartColors,
+                                borderWidth: 4,
+                                borderColor: '#ffffff',
+                                hoverOffset: 12
+                            }]
+                        },
+                        options: {
+                            cutout: '78%',
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#ffffff',
+                                    titleColor: '#0f172a',
+                                    bodyColor: '#0f172a',
+                                    borderColor: '#e2e8f0',
+                                    borderWidth: 1,
+                                    padding: 10,
+                                    cornerRadius: 8,
+                                    displayColors: true,
+                                    callbacks: {
+                                        label: function (context) {
+                                            return context.label + ': $' + Number(context.parsed).toLocaleString();
+                                        }
                                     }
                                 }
                             }
+                        }
+                    });
+
+                    // 2. ULTIMATE COMBO REPORT (One report for everything)
+                    const ctxCombo = document.getElementById('productComboChart').getContext('2d');
+                    if (window.productComboChartInst) window.productComboChartInst.destroy();
+
+                    const labels = res.top_products.slice(0, 12).map(p => p.sku);
+
+                    window.productComboChartInst = new Chart(ctxCombo, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Sessions',
+                                    data: res.top_products.slice(0, 12).map(p => p.sessions),
+                                    backgroundColor: 'rgba(219, 225, 255, 0.85)',
+                                    borderColor: '#DBE1FF',
+                                    borderRadius: 4,
+                                    barPercentage: 0.6,
+                                    borderWidth: 0,
+                                    yAxisID: 'yVolume',
+                                    order: 3
+                                },
+                                {
+                                    label: 'Revenue ($)',
+                                    data: res.top_products.slice(0, 12).map(p => p.revenue),
+                                    type: 'line',
+                                    borderColor: '#4362CE',
+                                    backgroundColor: '#4362CE',
+                                    borderWidth: 2.5,
+                                    pointBackgroundColor: '#4362CE',
+                                    pointBorderColor: '#ffffff',
+                                    pointBorderWidth: 2,
+                                    pointRadius: 4.5,
+                                    tension: 0.35,
+                                    yAxisID: 'yRevenue',
+                                    order: 1
+                                },
+                                {
+                                    label: 'Conv %',
+                                    data: res.top_products.slice(0, 12).map(p => p.conv),
+                                    type: 'line',
+                                    borderColor: '#F59E0B',
+                                    backgroundColor: '#F59E0B',
+                                    borderDash: [4, 4],
+                                    borderWidth: 2,
+                                    pointBackgroundColor: '#F59E0B',
+                                    pointBorderColor: '#ffffff',
+                                    pointBorderWidth: 2,
+                                    pointRadius: 4.5,
+                                    tension: 0.35,
+                                    yAxisID: 'yPercent',
+                                    order: 2
+                                }
+                            ]
                         },
-                        scales: {
-                            x: { grid: { display: false }, ticks: { font: { weight: '600' } } },
-                            yVolume: {
-                                type: 'linear',
-                                position: 'left',
-                                title: { display: true, text: 'Traffic Volume', font: { weight: '700' } },
-                                grid: { color: '#f1f5f9' }
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: { mode: 'index', intersect: false },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#0f172a',
+                                    padding: 12,
+                                    cornerRadius: 8,
+                                    callbacks: {
+                                        label: function (context) {
+                                            let label = context.dataset.label || '';
+                                            if (label) label += ': ';
+                                            if (context.dataset.yAxisID === 'yRevenue') label += '$' + context.parsed.y.toLocaleString();
+                                            else if (context.dataset.yAxisID === 'yPercent') label += context.parsed.y.toFixed(2) + '%';
+                                            else label += context.parsed.y.toLocaleString();
+                                            return label;
+                                        }
+                                    }
+                                }
                             },
-                            yRevenue: {
-                                type: 'linear',
-                                position: 'right',
-                                title: { display: true, text: 'Revenue ($)', font: { weight: '700' } },
-                                grid: { display: false },
-                                ticks: { callback: v => '$' + formatAbbrev(v) }
-                            },
-                            yPercent: {
-                                type: 'linear',
-                                position: 'right',
-                                title: { display: true, text: 'Conv %', font: { weight: '700' } },
-                                grid: { display: false },
-                                ticks: { callback: v => v + '%' },
-                                min: 0,
-                                display: false
+                            scales: {
+                                x: { grid: { display: false }, ticks: { font: { weight: '600' } } },
+                                yVolume: {
+                                    type: 'linear',
+                                    position: 'left',
+                                    title: { display: true, text: 'Traffic Volume', font: { weight: '700' } },
+                                    grid: { color: '#f1f5f9' }
+                                },
+                                yRevenue: {
+                                    type: 'linear',
+                                    position: 'right',
+                                    title: { display: true, text: 'Revenue ($)', font: { weight: '700' } },
+                                    grid: { display: false },
+                                    ticks: { callback: v => '$' + formatAbbrev(v) }
+                                },
+                                yPercent: {
+                                    type: 'linear',
+                                    position: 'right',
+                                    title: { display: true, text: 'Conv %', font: { weight: '700' } },
+                                    grid: { display: false },
+                                    ticks: { callback: v => v + '%' },
+                                    min: 0,
+                                    display: false
+                                }
                             }
+                        }
+                    });
+
+                    // Product performance table is styled with custom Bento pagination/search.
+                }
+            });
+        }
+
+        // Tab switching handled via sidebar navigation (page reload)
+
+        $('.chart-tab-btn').click(function () {
+            $('.chart-tab-btn').removeClass('active'); $(this).addClass('active');
+            renderChart($(this).data('chart'));
+        });
+
+        // Initialize Flatpickr for Range Selection matching Figma UI
+        function initDashboardDatePickers() {
+            if (typeof flatpickr !== 'undefined') {
+                flatpickr(".date-range-picker", {
+                    mode: "range",
+                    dateFormat: "Y-m-d",
+                    altInput: true,
+                    altFormat: "M d, Y",
+                    defaultDate: [$('#filter_from').val() || "2026-01-01", $('#filter_to').val() || "2026-03-31"],
+                    onChange: function (selectedDates, dateStr, instance) {
+                        if (selectedDates.length === 2) {
+                            const from = instance.formatDate(selectedDates[0], "Y-m-d");
+                            const to = instance.formatDate(selectedDates[1], "Y-m-d");
+                            $('#filter_from').val(from);
+                            $('#filter_to').val(to);
+                            loadDashboard();
                         }
                     }
                 });
-
-                // Product performance table is styled with custom Bento pagination/search.
             }
-        });
-    }
-
-    // Tab switching handled via sidebar navigation (page reload)
-
-    $('.chart-tab-btn').click(function() {
-        $('.chart-tab-btn').removeClass('active'); $(this).addClass('active');
-        renderChart($(this).data('chart'));
-    });
-
-    // Dashboard Initialization - Manual mode enabled. 
-    // Data only loads after clicking REFRESH ANALYSIS.
-    // Dashboard Initialization
-    $('#filter_from').val('2026-01-01');
-    $('#filter_to').val('2026-03-31');
-    loadDashboard();
-
-    $('#save_financials_new').click(function() {
-        const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : $('#filter_customer').val();
-        const from = $('#filter_from').val();
-        if (!from) { alert('Please select a date range first'); return; }
-        const reportMonth = from.substring(0, 7); // YYYY-MM
-        
-        const btn = $(this);
-        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> SAVING...');
-
-        $.ajax({
-            url: '<?php echo BASE_URL; ?>api/save_financials.php',
-            method: 'POST',
-            data: {
-                customer_id: customerId,
-                report_month: reportMonth,
-                cogs: $('#cogs_override_new').val(),
-                ad_spend: 0,
-                other_fees: $('#other_fees_override_new').val()
-            },
-            dataType: 'json',
-            success: function(res) {
-                if (res.success) {
-                    Swal.fire({ icon: 'success', title: 'Saved!', text: 'Financial settings updated for ' + reportMonth, timer: 1500 });
-                    loadDashboard();
-                } else {
-                    Swal.fire({ icon: 'error', title: 'Error', text: res.error });
-                }
-            },
-            complete: () => btn.prop('disabled', false).html('SAVE SETTINGS')
-        });
-    });
-
-    // Bind Bento Search Input Event Listeners
-    $('#product_search_input').on('keyup input', function() {
-        productsSearchQuery = $(this).val();
-        productsCurrentPage = 1;
-        renderProductPerformanceTable();
-    });
-
-    $('#sku_pl_search_input').on('keyup input', function() {
-        skuPlSearchQuery = $(this).val();
-        skuPlCurrentPage = 1;
-        renderSkuPlTable();
-    });
-
-    $('#traffic_search_input').on('keyup input', function() {
-        trafficSearchQuery = $(this).val();
-        trafficCurrentPage = 1;
-        renderTrafficTable();
-    });
-
-    // Figma Profit & Loss Chart Controls
-    $(document).on('click', '#pl_time_toggle .pl-time-btn', function() {
-        $('#pl_time_toggle .pl-time-btn').removeClass('active');
-        $(this).addClass('active');
-        currentPlTime = $(this).data('time');
-        renderProfitLossChart();
-    });
-
-    $(document).on('change', '#pl_bar_metric, #pl_line_metric', function() {
-        renderProfitLossChart();
-    });
-
-    // Date & Customer filter sync and apply
-    $(document).on('change', '.filter-customer-select', function() {
-        $('#filter_customer').val($(this).val());
-        loadDashboard();
-    });
-
-    $(document).on('change', '.filter-from-input', function() {
-        $('#filter_from').val($(this).val());
-    });
-
-    $(document).on('change', '.filter-to-input', function() {
-        $('#filter_to').val($(this).val());
-    });
-
-    $(document).on('click', '.btn-apply-filters', function() {
-        loadDashboard();
-    });
-
-    // Export CSV handler for Profit & Loss
-    $(document).on('click', '.btn-export-csv', function() {
-        if (!globalSkuPlData || !globalSkuPlData.length) {
-            Swal.fire({ icon: 'info', title: 'No Data', text: 'No SKU data available to export.' });
-            return;
         }
-        let csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Rank,Seller SKU,Units Sold,Revenue,Net Profit,Net Profit Margin %\r\n";
-        globalSkuPlData.forEach((row, i) => {
-            csvContent += `${i + 1},"${row.sku || ''}",${row.units || 0},${row.revenue || 0},${row.net || 0},${row.margin || 0}%\r\n`;
-        });
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `sku_profit_loss_${new Date().toISOString().slice(0,10)}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    });
 
-    $('#apply_filters').click(loadDashboard);
-});
+        // Dashboard Initialization
+        $('#filter_from').val('2026-01-01');
+        $('#filter_to').val('2026-03-31');
+        initDashboardDatePickers();
+        loadDashboard();
+
+        $('#save_financials_new').click(function () {
+            const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : $('#filter_customer').val();
+            const from = $('#filter_from').val();
+            if (!from) { alert('Please select a date range first'); return; }
+            const reportMonth = from.substring(0, 7); // YYYY-MM
+
+            const btn = $(this);
+            btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> SAVING...');
+
+            $.ajax({
+                url: '<?php echo BASE_URL; ?>api/save_financials.php',
+                method: 'POST',
+                data: {
+                    customer_id: customerId,
+                    report_month: reportMonth,
+                    cogs: $('#cogs_override_new').val(),
+                    ad_spend: 0,
+                    other_fees: $('#other_fees_override_new').val()
+                },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.success) {
+                        Swal.fire({ icon: 'success', title: 'Saved!', text: 'Financial settings updated for ' + reportMonth, timer: 1500 });
+                        loadDashboard();
+                    } else {
+                        Swal.fire({ icon: 'error', title: 'Error', text: res.error });
+                    }
+                },
+                complete: () => btn.prop('disabled', false).html('SAVE SETTINGS')
+            });
+        });
+
+        // Bind Bento Search Input Event Listeners
+        $('#product_search_input').on('keyup input', function () {
+            productsSearchQuery = $(this).val();
+            productsCurrentPage = 1;
+            renderProductPerformanceTable();
+        });
+
+        $('#sku_pl_search_input').on('keyup input', function () {
+            skuPlSearchQuery = $(this).val();
+            skuPlCurrentPage = 1;
+            renderSkuPlTable();
+        });
+
+        $('#traffic_search_input').on('keyup input', function () {
+            trafficSearchQuery = $(this).val();
+            trafficCurrentPage = 1;
+            renderTrafficTable();
+        });
+
+        // Figma Profit & Loss Chart Controls
+        $(document).on('click', '#pl_time_toggle .pl-time-btn', function () {
+            $('#pl_time_toggle .pl-time-btn').removeClass('active');
+            $(this).addClass('active');
+            currentPlTime = $(this).data('time');
+            renderProfitLossChart();
+        });
+
+        $(document).on('change', '#pl_bar_metric, #pl_line_metric', function () {
+            renderProfitLossChart();
+        });
+
+        // Date & Customer filter sync and apply
+        $(document).on('change', '.filter-customer-select', function () {
+            $('#filter_customer').val($(this).val());
+            loadDashboard();
+        });
+
+        $(document).on('change', '.filter-from-input', function () {
+            $('#filter_from').val($(this).val());
+        });
+
+        $(document).on('change', '.filter-to-input', function () {
+            $('#filter_to').val($(this).val());
+        });
+
+        $(document).on('click', '.btn-apply-filters', function () {
+            loadDashboard();
+        });
+
+        // Export CSV handler for Profit & Loss
+        $(document).on('click', '.btn-export-csv', function () {
+            if (!globalSkuPlData || !globalSkuPlData.length) {
+                Swal.fire({ icon: 'info', title: 'No Data', text: 'No SKU data available to export.' });
+                return;
+            }
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Rank,Seller SKU,Units Sold,Revenue,Net Profit,Net Profit Margin %\r\n";
+            globalSkuPlData.forEach((row, i) => {
+                csvContent += `${i + 1},"${row.sku || ''}",${row.units || 0},${row.revenue || 0},${row.net || 0},${row.margin || 0}%\r\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `sku_profit_loss_${new Date().toISOString().slice(0, 10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        $('#apply_filters').click(loadDashboard);
+    });
 </script>
 
 <?php include '../../includes/footer.php'; ?>
