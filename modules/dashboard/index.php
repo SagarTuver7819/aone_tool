@@ -4732,9 +4732,9 @@ include '../../includes/sidebar.php';
             const months = Object.keys(trends);
             if (months.length === 0) return;
 
-            let headHtml = '<th style="text-align:left; font-weight:700; color:#1E293B; font-size:0.82rem; padding:12px 16px;">KPI Metrics</th>';
+            let headHtml = '<th style="text-align:left; font-family:\'Inter\', sans-serif !important; font-weight:600; color:#475569; font-size:14px; padding:12px 16px;">KPI Metrics</th>';
             months.forEach((m, i) => {
-                headHtml += `<th style="text-align:right; font-weight:700; color:#1E293B; font-size:0.82rem; padding:12px 16px;">${m}</th>`;
+                headHtml += `<th style="text-align:right; font-family:\'Inter\', sans-serif !important; font-weight:600; color:#475569; font-size:14px; padding:12px 16px;">${m}</th>`;
             });
             $('#trend_head').html(headHtml);
 
@@ -4775,7 +4775,7 @@ include '../../includes/sidebar.php';
 
             let bodyHtml = '';
             rows.forEach(r => {
-                bodyHtml += `<tr><td style="padding:10px 16px; text-align:left; font-weight:500; color:#1e293b; font-size:0.85rem;"><div style="display:inline-flex; align-items:center; gap:10px;"><span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; ${r.iconBg} flex-shrink:0;">${r.iconSvg}</span> <span>${r.label}</span></div></td>`;
+                bodyHtml += `<tr><td style="padding:10px 16px; text-align:left; font-family:\'Inter\', sans-serif !important; font-weight:500; color:#1E293B; font-size:14px;"><div style="display:inline-flex; align-items:center; gap:10px;"><span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; ${r.iconBg} flex-shrink:0;">${r.iconSvg}</span> <span>${r.label}</span></div></td>`;
                 let prevVal = null;
                 months.forEach((m, i) => {
                     const raw = (trends[m] && trends[m][r.key] != null) ? trends[m][r.key] : 0;
@@ -4802,11 +4802,11 @@ include '../../includes/sidebar.php';
                         }
                         cellContent = `<div style="display:flex; align-items:center; justify-content:flex-end; gap:6px;">
                             <div style="width:78px; display:flex; justify-content:flex-end; flex-shrink:0;">${pillHtml}</div>
-                            <div style="width:84px; text-align:right; font-weight:700; color:#0f172a; font-size:0.85rem; white-space:nowrap; font-variant-numeric:tabular-nums; flex-shrink:0;">${displayVal}</div>
+                            <div style="width:84px; text-align:right; font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; flex-shrink:0;">${displayVal}</div>
                         </div>`;
                     } else {
                         cellContent = `<div style="display:flex; align-items:center; justify-content:flex-end;">
-                            <div style="width:84px; text-align:right; font-weight:700; color:#0f172a; font-size:0.85rem; white-space:nowrap; font-variant-numeric:tabular-nums; flex-shrink:0;">${displayVal}</div>
+                            <div style="width:84px; text-align:right; font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; flex-shrink:0;">${displayVal}</div>
                         </div>`;
                     }
 
@@ -4819,147 +4819,147 @@ include '../../includes/sidebar.php';
         }
 
         function animateCurrentTab() {
-            const tab = '<?php echo $active_tab; ?>';
-            const $content = $('#tab_' + tab);
-            $content.addClass('animating');
-            setTimeout(() => $content.removeClass('animating'), prefersReducedMotion ? 0 : 260);
+        const tab = '<?php echo $active_tab; ?>';
+        const $content = $('#tab_' + tab);
+        $content.addClass('animating');
+        setTimeout(() => $content.removeClass('animating'), prefersReducedMotion ? 0 : 260);
 
-            if (tab === 'kpi') {
-                staggerIn('#tab_kpi .ov-card', 0, 70);
-                staggerIn('#tab_kpi .overview-row', 220, 100);
-            } else if (tab === 'financial') {
-                staggerIn('#tab_financial .card', 0, 100);
-            } else if (tab === 'products') {
-                staggerIn('#tab_products .card', 0, 90);
-                staggerIn('#product_list .pp-sku-row', 180, 60);
-                staggerIn('#product_analysis_body tr', 260, 40);
-            } else if (tab === 'traffic') {
-                staggerIn('#tab_traffic .kpi-card', 0, 70);
-                staggerIn('#tab_traffic .card', 200, 100);
-            }
+        if (tab === 'kpi') {
+            staggerIn('#tab_kpi .ov-card', 0, 70);
+            staggerIn('#tab_kpi .overview-row', 220, 100);
+        } else if (tab === 'financial') {
+            staggerIn('#tab_financial .card', 0, 100);
+        } else if (tab === 'products') {
+            staggerIn('#tab_products .card', 0, 90);
+            staggerIn('#product_list .pp-sku-row', 180, 60);
+            staggerIn('#product_analysis_body tr', 260, 40);
+        } else if (tab === 'traffic') {
+            staggerIn('#tab_traffic .kpi-card', 0, 70);
+            staggerIn('#tab_traffic .card', 200, 100);
+        }
+    }
+
+    // Global attachments for dynamic page clicks
+    window.onTrafficPageClick = function (page) {
+        trafficCurrentPage = page;
+        renderTrafficTable();
+    };
+
+    window.onSkuPlPageClick = function (page) {
+        skuPlCurrentPage = page;
+        renderSkuPlTable();
+    };
+
+    window.onProductsPageClick = function (page) {
+        productsCurrentPage = page;
+        renderProductPerformanceTable();
+    };
+
+    function getProductImage(sku) {
+        return '';
+    }
+
+    function generateBentoSparkline(values) {
+        if (!values || values.length === 0) return '';
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+        const range = max - min;
+
+        const height = 24;
+        const width = 100;
+        const padding = 3;
+
+        const points = values.map((val, idx) => {
+            const x = padding + (idx / (values.length - 1)) * (width - 2 * padding);
+            const y = (range === 0) ? (height / 2) : (height - padding - ((val - min) / range) * (height - 2 * padding));
+            return { x, y };
+        });
+
+        const firstVal = values[0];
+        const lastVal = values[values.length - 1];
+        let strokeColor = '#0051d5'; // Bento Blue
+
+        if (lastVal > firstVal * 1.05) {
+            strokeColor = '#009668'; // Bento Green
+        } else if (lastVal < firstVal * 0.95) {
+            strokeColor = '#ef4444'; // Bento Red
         }
 
-        // Global attachments for dynamic page clicks
-        window.onTrafficPageClick = function (page) {
-            trafficCurrentPage = page;
-            renderTrafficTable();
-        };
-
-        window.onSkuPlPageClick = function (page) {
-            skuPlCurrentPage = page;
-            renderSkuPlTable();
-        };
-
-        window.onProductsPageClick = function (page) {
-            productsCurrentPage = page;
-            renderProductPerformanceTable();
-        };
-
-        function getProductImage(sku) {
-            return '';
-        }
-
-        function generateBentoSparkline(values) {
-            if (!values || values.length === 0) return '';
-            const min = Math.min(...values);
-            const max = Math.max(...values);
-            const range = max - min;
-
-            const height = 24;
-            const width = 100;
-            const padding = 3;
-
-            const points = values.map((val, idx) => {
-                const x = padding + (idx / (values.length - 1)) * (width - 2 * padding);
-                const y = (range === 0) ? (height / 2) : (height - padding - ((val - min) / range) * (height - 2 * padding));
-                return { x, y };
-            });
-
-            const firstVal = values[0];
-            const lastVal = values[values.length - 1];
-            let strokeColor = '#0051d5'; // Bento Blue
-
-            if (lastVal > firstVal * 1.05) {
-                strokeColor = '#009668'; // Bento Green
-            } else if (lastVal < firstVal * 0.95) {
-                strokeColor = '#ef4444'; // Bento Red
+        let pathD = '';
+        points.forEach((pt, idx) => {
+            if (idx === 0) {
+                pathD += `M ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
+            } else {
+                pathD += ` L ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
             }
+        });
 
-            let pathD = '';
-            points.forEach((pt, idx) => {
-                if (idx === 0) {
-                    pathD += `M ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
-                } else {
-                    pathD += ` L ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
-                }
-            });
-
-            return `
+        return `
         <svg class="w-16 h-8 overflow-visible" viewBox="0 0 100 40" style="display: block; margin: 0 auto;">
             <path class="sparkline-path" d="${pathD}" fill="none" stroke="${strokeColor}" stroke-width="2" stroke-linecap="round" />
         </svg>`;
-        }
+    }
 
-        function renderBentoPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
-            if (totalPages <= 1) return '';
+    function renderBentoPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        if (totalPages <= 1) return '';
 
-            let paginationHtml = '';
+        let paginationHtml = '';
 
-            // Chevron Left
-            const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
-            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})">
+        // Chevron Left
+        const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
+        paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})">
             <span class="material-symbols-outlined text-[18px]">chevron_left</span>
         </button>`;
 
-            // Page Numbers (Up to 5 page buttons)
-            let startPage = Math.max(1, currentPage - 2);
-            let endPage = Math.min(totalPages, startPage + 4);
-            if (endPage - startPage < 4) {
-                startPage = Math.max(1, endPage - 4);
-            }
+        // Page Numbers (Up to 5 page buttons)
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, startPage + 4);
+        if (endPage - startPage < 4) {
+            startPage = Math.max(1, endPage - 4);
+        }
 
-            for (let page = startPage; page <= endPage; page++) {
-                if (page === currentPage) {
-                    paginationHtml += `<button class="px-3 py-1 rounded bg-secondary text-white font-label-md text-label-md" style="background: #0051d5; color: #ffffff; font-weight: 700; border: none; cursor: default;">${page}</button>`;
-                } else {
-                    paginationHtml += `<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors font-label-md text-label-md bg-white" style="cursor: pointer;" onclick="${onClickPage}(${page})">${page}</button>`;
-                }
+        for (let page = startPage; page <= endPage; page++) {
+            if (page === currentPage) {
+                paginationHtml += `<button class="px-3 py-1 rounded bg-secondary text-white font-label-md text-label-md" style="background: #0051d5; color: #ffffff; font-weight: 700; border: none; cursor: default;">${page}</button>`;
+            } else {
+                paginationHtml += `<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors font-label-md text-label-md bg-white" style="cursor: pointer;" onclick="${onClickPage}(${page})">${page}</button>`;
             }
+        }
 
-            // Chevron Right
-            const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
-            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})">
+        // Chevron Right
+        const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
+        paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})">
             <span class="material-symbols-outlined text-[18px]">chevron_right</span>
         </button>`;
 
-            return paginationHtml;
+        return paginationHtml;
+    }
+
+    function renderTrafficTable() {
+        let filtered = globalTrafficData;
+        if (trafficSearchQuery) {
+            const query = trafficSearchQuery.toLowerCase();
+            filtered = globalTrafficData.filter(item => {
+                return (item.date && item.date.toLowerCase().includes(query)) ||
+                    (item.sessions && item.sessions.toString().includes(query)) ||
+                    (item.pageViews && item.pageViews.toString().includes(query));
+            });
         }
 
-        function renderTrafficTable() {
-            let filtered = globalTrafficData;
-            if (trafficSearchQuery) {
-                const query = trafficSearchQuery.toLowerCase();
-                filtered = globalTrafficData.filter(item => {
-                    return (item.date && item.date.toLowerCase().includes(query)) ||
-                        (item.sessions && item.sessions.toString().includes(query)) ||
-                        (item.pageViews && item.pageViews.toString().includes(query));
-                });
-            }
+        const totalItems = filtered.length;
+        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+        if (trafficCurrentPage > totalPages) trafficCurrentPage = totalPages;
+        if (trafficCurrentPage < 1) trafficCurrentPage = 1;
 
-            const totalItems = filtered.length;
-            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
-            if (trafficCurrentPage > totalPages) trafficCurrentPage = totalPages;
-            if (trafficCurrentPage < 1) trafficCurrentPage = 1;
+        const startIndex = (trafficCurrentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+        const paginatedItems = filtered.slice(startIndex, endIndex);
 
-            const startIndex = (trafficCurrentPage - 1) * ITEMS_PER_PAGE;
-            const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
-            const paginatedItems = filtered.slice(startIndex, endIndex);
-
-            let html = '';
-            if (paginatedItems.length > 0) {
-                paginatedItems.forEach(item => {
-                    html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3);">
+        let html = '';
+        if (paginatedItems.length > 0) {
+            paginatedItems.forEach(item => {
+                html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3);">
                     <td style="padding: 14px 16px; font-weight: 700; color: #64748b; font-family: 'Inter', sans-serif; text-align: center;">${item.date}</td>
                     <td style="padding: 14px 16px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.sessions.toLocaleString()}</td>
                     <td style="padding: 14px 16px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.pageViews.toLocaleString()}</td>
@@ -4968,117 +4968,133 @@ include '../../includes/sidebar.php';
                     <td style="padding: 14px 16px; text-align: right; color: #45464d; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.orders.toLocaleString()}</td>
                     <td style="padding: 14px 16px; text-align: right; font-family: 'Inter', sans-serif;"><span style="background: rgba(219, 225, 255, 0.4); color: #0051d5; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-variant-numeric: tabular-nums;">${item.conv.toFixed(2)}%</span></td>
                 </tr>`;
-                });
+            });
+        } else {
+            html = `<tr><td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8;">No traffic breakdown data matches your search query.</td></tr>`;
+        }
+
+        $('#traffic_daily_body').html(html);
+
+        const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
+        $('#traffic_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
+
+        const paginationButtons = renderBentoPagination(totalItems, trafficCurrentPage, ITEMS_PER_PAGE, 'window.onTrafficPageClick');
+        $('#traffic_pagination').html(paginationButtons);
+    }
+
+    let plMixedChartInst = null;
+    let currentPlTime = 'monthly';
+
+    function renderEfficiencySpeedo(score) {
+        const svg = $('#efficiencyGaugeSvg');
+        if (!svg.length) return;
+        svg.empty();
+
+        const cx = 120, cy = 105, rOuter = 88, rInner = 72;
+        const totalTicks = 24;
+        const startAngle = 180;
+        const endAngle = 360;
+        const activeCount = Math.round((Math.max(0, Math.min(100, score)) / 100) * totalTicks);
+
+        for (let i = 0; i <= totalTicks; i++) {
+            const angleDeg = startAngle + (i / totalTicks) * (endAngle - startAngle);
+            const angleRad = (angleDeg * Math.PI) / 180;
+            const x1 = cx + rInner * Math.cos(angleRad);
+            const y1 = cy + rInner * Math.sin(angleRad);
+            const x2 = cx + rOuter * Math.cos(angleRad);
+            const y2 = cy + rOuter * Math.sin(angleRad);
+
+            const isActive = i <= activeCount;
+            const color = isActive ? '#00a86b' : '#e2e8f0';
+
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', x1.toFixed(2));
+            line.setAttribute('y1', y1.toFixed(2));
+            line.setAttribute('x2', x2.toFixed(2));
+            line.setAttribute('y2', y2.toFixed(2));
+            line.setAttribute('stroke', color);
+            line.setAttribute('stroke-width', '4.2');
+            line.setAttribute('stroke-linecap', 'round');
+            svg[0].appendChild(line);
+        }
+        $('#pl_efficiency_val').text(score);
+    }
+
+    function renderProfitLossChart() {
+        if (!globalData || !globalData.charts) return;
+        const canvas = document.getElementById('plMixedChart');
+        if (!canvas) return;
+
+        // Ensure the wrapper has explicit height so Chart.js can determine canvas size
+        const wrapper = canvas.closest('.pl-chart-wrapper');
+        if (wrapper && wrapper.offsetHeight === 0) {
+            setTimeout(renderProfitLossChart, 200);
+            return;
+        }
+
+        const barMetric = $('#pl_bar_metric').val() || 'sales';
+        const lineMetric = $('#pl_line_metric').val() || 'net_profit';
+
+        const barLabelsMap = { 'sales': 'Sales', 'units': 'Units', 'orders': 'Orders' };
+        const lineLabelsMap = { 'net_profit': 'Net Profit', 'margin': 'Net Margin %', 'roi': 'ROI %' };
+
+        $('#pl_legend_bar_label').text(barLabelsMap[barMetric] || 'Sales');
+        $('#pl_legend_line_label').text(lineLabelsMap[lineMetric] || 'Net Profit');
+
+        let labels = [];
+        let barValues = [];
+        let lineValues = [];
+
+        const rawLabels = globalData.charts.labels || [];
+        const rawSales = (globalData.charts.sales || []).map(toNumber);
+        const rawUnits = (globalData.charts.units || []).map(toNumber);
+        const rawOrders = (globalData.charts.orders || []).map(toNumber);
+        const f = globalData.financials || {};
+        const netMarginRatio = (f.revenue > 0 ? (f.net_profit / f.revenue) : 0.457);
+
+        if (currentPlTime === 'daily') {
+            labels = rawLabels;
+            if (barMetric === 'sales') barValues = rawSales;
+            else if (barMetric === 'units') barValues = rawUnits;
+            else barValues = rawOrders;
+
+            if (lineMetric === 'net_profit') {
+                lineValues = rawSales.map(s => Number((s * netMarginRatio).toFixed(2)));
+            } else if (lineMetric === 'margin') {
+                lineValues = rawSales.map(() => Number((netMarginRatio * 100).toFixed(1)));
             } else {
-                html = `<tr><td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8;">No traffic breakdown data matches your search query.</td></tr>`;
+                lineValues = rawSales.map(() => Number((f.roi || 38.1).toFixed(1)));
             }
+        } else if (currentPlTime === 'weekly') {
+            const chunkSize = 7;
+            for (let i = 0; i < rawLabels.length; i += chunkSize) {
+                const chunkEnd = Math.min(rawLabels.length, i + chunkSize);
+                const lbl = `W${Math.floor(i / chunkSize) + 1} (${rawLabels[i]})`;
+                labels.push(lbl);
 
-            $('#traffic_daily_body').html(html);
+                const bSum = (barMetric === 'sales' ? rawSales : (barMetric === 'units' ? rawUnits : rawOrders))
+                    .slice(i, chunkEnd).reduce((a, b) => a + b, 0);
+                barValues.push(bSum);
 
-            const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
-            $('#traffic_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
-
-            const paginationButtons = renderBentoPagination(totalItems, trafficCurrentPage, ITEMS_PER_PAGE, 'window.onTrafficPageClick');
-            $('#traffic_pagination').html(paginationButtons);
-        }
-
-        let plMixedChartInst = null;
-        let currentPlTime = 'monthly';
-
-        function renderEfficiencySpeedo(score) {
-            const svg = $('#efficiencyGaugeSvg');
-            if (!svg.length) return;
-            svg.empty();
-
-            const cx = 120, cy = 105, rOuter = 88, rInner = 72;
-            const totalTicks = 24;
-            const startAngle = 180;
-            const endAngle = 360;
-            const activeCount = Math.round((Math.max(0, Math.min(100, score)) / 100) * totalTicks);
-
-            for (let i = 0; i <= totalTicks; i++) {
-                const angleDeg = startAngle + (i / totalTicks) * (endAngle - startAngle);
-                const angleRad = (angleDeg * Math.PI) / 180;
-                const x1 = cx + rInner * Math.cos(angleRad);
-                const y1 = cy + rInner * Math.sin(angleRad);
-                const x2 = cx + rOuter * Math.cos(angleRad);
-                const y2 = cy + rOuter * Math.sin(angleRad);
-
-                const isActive = i <= activeCount;
-                const color = isActive ? '#00a86b' : '#e2e8f0';
-
-                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1', x1.toFixed(2));
-                line.setAttribute('y1', y1.toFixed(2));
-                line.setAttribute('x2', x2.toFixed(2));
-                line.setAttribute('y2', y2.toFixed(2));
-                line.setAttribute('stroke', color);
-                line.setAttribute('stroke-width', '4.2');
-                line.setAttribute('stroke-linecap', 'round');
-                svg[0].appendChild(line);
-            }
-            $('#pl_efficiency_val').text(score);
-        }
-
-        function renderProfitLossChart() {
-            if (!globalData || !globalData.charts) return;
-            const canvas = document.getElementById('plMixedChart');
-            if (!canvas) return;
-
-            // Ensure the wrapper has explicit height so Chart.js can determine canvas size
-            const wrapper = canvas.closest('.pl-chart-wrapper');
-            if (wrapper && wrapper.offsetHeight === 0) {
-                setTimeout(renderProfitLossChart, 200);
-                return;
-            }
-
-            const barMetric = $('#pl_bar_metric').val() || 'sales';
-            const lineMetric = $('#pl_line_metric').val() || 'net_profit';
-
-            const barLabelsMap = { 'sales': 'Sales', 'units': 'Units', 'orders': 'Orders' };
-            const lineLabelsMap = { 'net_profit': 'Net Profit', 'margin': 'Net Margin %', 'roi': 'ROI %' };
-
-            $('#pl_legend_bar_label').text(barLabelsMap[barMetric] || 'Sales');
-            $('#pl_legend_line_label').text(lineLabelsMap[lineMetric] || 'Net Profit');
-
-            let labels = [];
-            let barValues = [];
-            let lineValues = [];
-
-            const rawLabels = globalData.charts.labels || [];
-            const rawSales = (globalData.charts.sales || []).map(toNumber);
-            const rawUnits = (globalData.charts.units || []).map(toNumber);
-            const rawOrders = (globalData.charts.orders || []).map(toNumber);
-            const f = globalData.financials || {};
-            const netMarginRatio = (f.revenue > 0 ? (f.net_profit / f.revenue) : 0.457);
-
-            if (currentPlTime === 'daily') {
-                labels = rawLabels;
-                if (barMetric === 'sales') barValues = rawSales;
-                else if (barMetric === 'units') barValues = rawUnits;
-                else barValues = rawOrders;
-
+                const sSum = rawSales.slice(i, chunkEnd).reduce((a, b) => a + b, 0);
                 if (lineMetric === 'net_profit') {
-                    lineValues = rawSales.map(s => Number((s * netMarginRatio).toFixed(2)));
+                    lineValues.push(Number((sSum * netMarginRatio).toFixed(2)));
                 } else if (lineMetric === 'margin') {
-                    lineValues = rawSales.map(() => Number((netMarginRatio * 100).toFixed(1)));
+                    lineValues.push(Number((netMarginRatio * 100).toFixed(1)));
                 } else {
-                    lineValues = rawSales.map(() => Number((f.roi || 38.1).toFixed(1)));
+                    lineValues.push(Number((f.roi || 38.1).toFixed(1)));
                 }
-            } else if (currentPlTime === 'weekly') {
-                const chunkSize = 7;
-                for (let i = 0; i < rawLabels.length; i += chunkSize) {
-                    const chunkEnd = Math.min(rawLabels.length, i + chunkSize);
-                    const lbl = `W${Math.floor(i / chunkSize) + 1} (${rawLabels[i]})`;
-                    labels.push(lbl);
-
-                    const bSum = (barMetric === 'sales' ? rawSales : (barMetric === 'units' ? rawUnits : rawOrders))
-                        .slice(i, chunkEnd).reduce((a, b) => a + b, 0);
-                    barValues.push(bSum);
-
-                    const sSum = rawSales.slice(i, chunkEnd).reduce((a, b) => a + b, 0);
+            }
+        } else {
+            // Monthly aggregation
+            if (globalData.trends && Object.keys(globalData.trends).length > 0) {
+                for (let m in globalData.trends) {
+                    labels.push(m);
+                    const t = globalData.trends[m];
+                    const bVal = barMetric === 'sales' ? (t.sales || 0) : (barMetric === 'units' ? (t.units || 0) : (t.orders || 0));
+                    barValues.push(bVal);
                     if (lineMetric === 'net_profit') {
-                        lineValues.push(Number((sSum * netMarginRatio).toFixed(2)));
+                        lineValues.push(Number(((t.sales || 0) * netMarginRatio).toFixed(2)));
                     } else if (lineMetric === 'margin') {
                         lineValues.push(Number((netMarginRatio * 100).toFixed(1)));
                     } else {
@@ -5086,202 +5102,186 @@ include '../../includes/sidebar.php';
                     }
                 }
             } else {
-                // Monthly aggregation
-                if (globalData.trends && Object.keys(globalData.trends).length > 0) {
-                    for (let m in globalData.trends) {
-                        labels.push(m);
-                        const t = globalData.trends[m];
-                        const bVal = barMetric === 'sales' ? (t.sales || 0) : (barMetric === 'units' ? (t.units || 0) : (t.orders || 0));
-                        barValues.push(bVal);
-                        if (lineMetric === 'net_profit') {
-                            lineValues.push(Number(((t.sales || 0) * netMarginRatio).toFixed(2)));
-                        } else if (lineMetric === 'margin') {
-                            lineValues.push(Number((netMarginRatio * 100).toFixed(1)));
-                        } else {
-                            lineValues.push(Number((f.roi || 38.1).toFixed(1)));
+                labels = ['Jan 2026', 'Feb 2026', 'Mar 2026'];
+                const totalBar = barMetric === 'sales' ? rawSales.reduce((a, b) => a + b, 0) : (barMetric === 'units' ? rawUnits.reduce((a, b) => a + b, 0) : rawOrders.reduce((a, b) => a + b, 0));
+                barValues = [totalBar * 0.28, totalBar * 0.34, totalBar * 0.38];
+                const totalNet = f.net_profit || 21702.24;
+                lineValues = [totalNet * 0.26, totalNet * 0.35, totalNet * 0.39];
+            }
+        }
+
+        if (plMixedChartInst) plMixedChartInst.destroy();
+
+        const isLinePercent = (lineMetric === 'margin' || lineMetric === 'roi');
+        const isBarCurrency = (barMetric === 'sales');
+
+        plMixedChartInst = new Chart(canvas.getContext('2d'), {
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: barLabelsMap[barMetric] || 'Sales',
+                        data: barValues,
+                        backgroundColor: 'rgba(199, 210, 254, 0.65)',
+                        hoverBackgroundColor: 'rgba(147, 197, 253, 0.9)',
+                        borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
+                        barPercentage: 0.45,
+                        categoryPercentage: 0.65,
+                        yAxisID: 'yBar'
+                    },
+                    {
+                        type: 'line',
+                        label: lineLabelsMap[lineMetric] || 'Net Profit',
+                        data: lineValues,
+                        borderColor: '#10b981',
+                        backgroundColor: '#10b981',
+                        borderWidth: 2.8,
+                        tension: 0.35,
+                        pointBackgroundColor: '#10b981',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        yAxisID: 'yLine'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#ffffff',
+                        titleColor: '#0f172a',
+                        bodyColor: '#334155',
+                        borderColor: '#e2e8f0',
+                        borderWidth: 1,
+                        padding: 10,
+                        usePointStyle: true,
+                        titleFont: { size: 12, weight: '700' },
+                        bodyFont: { size: 11, weight: '600' },
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.dataset.label || '';
+                                if (label) label += ': ';
+                                if (context.dataset.type === 'line' && isLinePercent) {
+                                    label += Number(context.parsed.y).toFixed(1) + '%';
+                                } else if ((context.datasetIndex === 0 && isBarCurrency) || (context.dataset.type === 'line' && !isLinePercent)) {
+                                    label += '$' + Number(context.parsed.y).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                } else {
+                                    label += Number(context.parsed.y).toLocaleString();
+                                }
+                                return label;
+                            }
                         }
                     }
-                } else {
-                    labels = ['Jan 2026', 'Feb 2026', 'Mar 2026'];
-                    const totalBar = barMetric === 'sales' ? rawSales.reduce((a, b) => a + b, 0) : (barMetric === 'units' ? rawUnits.reduce((a, b) => a + b, 0) : rawOrders.reduce((a, b) => a + b, 0));
-                    barValues = [totalBar * 0.28, totalBar * 0.34, totalBar * 0.38];
-                    const totalNet = f.net_profit || 21702.24;
-                    lineValues = [totalNet * 0.26, totalNet * 0.35, totalNet * 0.39];
-                }
-            }
-
-            if (plMixedChartInst) plMixedChartInst.destroy();
-
-            const isLinePercent = (lineMetric === 'margin' || lineMetric === 'roi');
-            const isBarCurrency = (barMetric === 'sales');
-
-            plMixedChartInst = new Chart(canvas.getContext('2d'), {
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            type: 'bar',
-                            label: barLabelsMap[barMetric] || 'Sales',
-                            data: barValues,
-                            backgroundColor: 'rgba(199, 210, 254, 0.65)',
-                            hoverBackgroundColor: 'rgba(147, 197, 253, 0.9)',
-                            borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
-                            barPercentage: 0.45,
-                            categoryPercentage: 0.65,
-                            yAxisID: 'yBar'
-                        },
-                        {
-                            type: 'line',
-                            label: lineLabelsMap[lineMetric] || 'Net Profit',
-                            data: lineValues,
-                            borderColor: '#10b981',
-                            backgroundColor: '#10b981',
-                            borderWidth: 2.8,
-                            tension: 0.35,
-                            pointBackgroundColor: '#10b981',
-                            pointBorderColor: '#ffffff',
-                            pointBorderWidth: 2,
-                            pointRadius: 4,
-                            pointHoverRadius: 6,
-                            yAxisID: 'yLine'
-                        }
-                    ]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#ffffff',
-                            titleColor: '#0f172a',
-                            bodyColor: '#334155',
-                            borderColor: '#e2e8f0',
-                            borderWidth: 1,
-                            padding: 10,
-                            usePointStyle: true,
-                            titleFont: { size: 12, weight: '700' },
-                            bodyFont: { size: 11, weight: '600' },
-                            callbacks: {
-                                label: function (context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) label += ': ';
-                                    if (context.dataset.type === 'line' && isLinePercent) {
-                                        label += Number(context.parsed.y).toFixed(1) + '%';
-                                    } else if ((context.datasetIndex === 0 && isBarCurrency) || (context.dataset.type === 'line' && !isLinePercent)) {
-                                        label += '$' + Number(context.parsed.y).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                                    } else {
-                                        label += Number(context.parsed.y).toLocaleString();
-                                    }
-                                    return label;
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }
+                    },
+                    yBar: {
+                        type: 'linear',
+                        position: 'left',
+                        grid: { color: '#f1f5f9' },
+                        ticks: {
+                            font: { size: 10, weight: '600' },
+                            color: '#64748b',
+                            callback: function (val) {
+                                if (isBarCurrency) {
+                                    return '$' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
                                 }
+                                return val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val;
                             }
                         }
                     },
-                    scales: {
-                        x: {
-                            grid: { display: false },
-                            ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }
-                        },
-                        yBar: {
-                            type: 'linear',
-                            position: 'left',
-                            grid: { color: '#f1f5f9' },
-                            ticks: {
-                                font: { size: 10, weight: '600' },
-                                color: '#64748b',
-                                callback: function (val) {
-                                    if (isBarCurrency) {
-                                        return '$' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
-                                    }
-                                    return val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val;
-                                }
-                            }
-                        },
-                        yLine: {
-                            type: 'linear',
-                            position: 'right',
-                            grid: { display: false },
-                            ticks: {
-                                font: { size: 10, weight: '600' },
-                                color: '#10b981',
-                                callback: function (val) {
-                                    if (isLinePercent) return val.toFixed(0) + '%';
-                                    return '$' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
-                                }
+                    yLine: {
+                        type: 'linear',
+                        position: 'right',
+                        grid: { display: false },
+                        ticks: {
+                            font: { size: 10, weight: '600' },
+                            color: '#10b981',
+                            callback: function (val) {
+                                if (isLinePercent) return val.toFixed(0) + '%';
+                                return '$' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
                             }
                         }
                     }
                 }
+            }
+        });
+    }
+
+    let skuPlPageSize = 10;
+    $(document).on('change', '#sku_pl_page_size', function () {
+        skuPlPageSize = parseInt($(this).val()) || 10;
+        skuPlCurrentPage = 1;
+        renderSkuPlTable();
+    });
+
+    function renderFigmaPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        if (totalPages <= 1) return '';
+
+        let html = '';
+        const prevDisabled = currentPage === 1 ? 'disabled' : '';
+        html += `<button class="pl-page-nav" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})"><i class="fas fa-chevron-left" style="font-size:0.65rem;"></i></button>`;
+
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, startPage + 4);
+        if (endPage - startPage < 4) {
+            startPage = Math.max(1, endPage - 4);
+        }
+
+        for (let page = startPage; page <= endPage; page++) {
+            if (page === currentPage) {
+                html += `<button class="pl-page-num active">${page}</button>`;
+            } else {
+                html += `<button class="pl-page-num" onclick="${onClickPage}(${page})">${page}</button>`;
+            }
+        }
+
+        const nextDisabled = currentPage === totalPages ? 'disabled' : '';
+        html += `<button class="pl-page-nav" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})"><i class="fas fa-chevron-right" style="font-size:0.65rem;"></i></button>`;
+
+        return html;
+    }
+
+    function renderSkuPlTable() {
+        let filtered = globalSkuPlData;
+        if (skuPlSearchQuery) {
+            const query = skuPlSearchQuery.toLowerCase();
+            filtered = globalSkuPlData.filter(item => {
+                return (item.sku && item.sku.toLowerCase().includes(query)) ||
+                    (item.name && item.name.toLowerCase().includes(query));
             });
         }
 
-        let skuPlPageSize = 10;
-        $(document).on('change', '#sku_pl_page_size', function () {
-            skuPlPageSize = parseInt($(this).val()) || 10;
-            skuPlCurrentPage = 1;
-            renderSkuPlTable();
-        });
+        const pageSize = skuPlPageSize || 10;
+        const totalItems = filtered.length;
+        const totalPages = Math.ceil(totalItems / pageSize) || 1;
+        if (skuPlCurrentPage > totalPages) skuPlCurrentPage = totalPages;
+        if (skuPlCurrentPage < 1) skuPlCurrentPage = 1;
 
-        function renderFigmaPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
-            if (totalPages <= 1) return '';
+        const startIndex = (skuPlCurrentPage - 1) * pageSize;
+        const endIndex = Math.min(startIndex + pageSize, totalItems);
+        const paginatedItems = filtered.slice(startIndex, endIndex);
 
-            let html = '';
-            const prevDisabled = currentPage === 1 ? 'disabled' : '';
-            html += `<button class="pl-page-nav" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})"><i class="fas fa-chevron-left" style="font-size:0.65rem;"></i></button>`;
+        let html = '';
+        if (paginatedItems.length > 0) {
+            paginatedItems.forEach((p, idx) => {
+                const globalIndex = startIndex + idx;
+                const productRevenue = toNumber(p.revenue || 0);
+                const productNet = toNumber(p.net || 0);
+                const productUnits = toNumber(p.units || 0);
+                const productMargin = toNumber(p.margin || 0);
 
-            let startPage = Math.max(1, currentPage - 2);
-            let endPage = Math.min(totalPages, startPage + 4);
-            if (endPage - startPage < 4) {
-                startPage = Math.max(1, endPage - 4);
-            }
-
-            for (let page = startPage; page <= endPage; page++) {
-                if (page === currentPage) {
-                    html += `<button class="pl-page-num active">${page}</button>`;
-                } else {
-                    html += `<button class="pl-page-num" onclick="${onClickPage}(${page})">${page}</button>`;
-                }
-            }
-
-            const nextDisabled = currentPage === totalPages ? 'disabled' : '';
-            html += `<button class="pl-page-nav" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})"><i class="fas fa-chevron-right" style="font-size:0.65rem;"></i></button>`;
-
-            return html;
-        }
-
-        function renderSkuPlTable() {
-            let filtered = globalSkuPlData;
-            if (skuPlSearchQuery) {
-                const query = skuPlSearchQuery.toLowerCase();
-                filtered = globalSkuPlData.filter(item => {
-                    return (item.sku && item.sku.toLowerCase().includes(query)) ||
-                        (item.name && item.name.toLowerCase().includes(query));
-                });
-            }
-
-            const pageSize = skuPlPageSize || 10;
-            const totalItems = filtered.length;
-            const totalPages = Math.ceil(totalItems / pageSize) || 1;
-            if (skuPlCurrentPage > totalPages) skuPlCurrentPage = totalPages;
-            if (skuPlCurrentPage < 1) skuPlCurrentPage = 1;
-
-            const startIndex = (skuPlCurrentPage - 1) * pageSize;
-            const endIndex = Math.min(startIndex + pageSize, totalItems);
-            const paginatedItems = filtered.slice(startIndex, endIndex);
-
-            let html = '';
-            if (paginatedItems.length > 0) {
-                paginatedItems.forEach((p, idx) => {
-                    const globalIndex = startIndex + idx;
-                    const productRevenue = toNumber(p.revenue || 0);
-                    const productNet = toNumber(p.net || 0);
-                    const productUnits = toNumber(p.units || 0);
-                    const productMargin = toNumber(p.margin || 0);
-
-                    html += `<tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;">
+                html += `<tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;">
                     <td style="width: 8%; padding: 12px 14px; text-align: center; font-size: 0.85rem; font-weight: 700; color: #64748b;">${globalIndex + 1}</td>
                     <td style="width: 32%; padding: 12px 16px; text-align: left; font-weight: 700; color: #1e293b; font-family: 'Inter', sans-serif; font-size: 0.85rem;">
                         <span style="display: block; font-weight: 700; color: #0f172a;">${p.sku}</span>
@@ -5291,85 +5291,85 @@ include '../../includes/sidebar.php';
                     <td style="width: 15%; padding: 12px 16px; text-align: right; font-weight: 800; color: #0f172a; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-variant-numeric: tabular-nums;">$${productNet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td style="width: 15%; padding: 12px 16px; text-align: right; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; color: #475569; font-variant-numeric: tabular-nums;">${productMargin.toFixed(1)}%</td>
                 </tr>`;
-                });
-            } else {
-                html = `<tr><td colspan="6" style="text-align: center; padding: 3rem; color: #94a3b8;">No SKU matching your search query.</td></tr>`;
-            }
-
-            $('#sku_pl_body').html(html);
-
-            const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
-            $('#sku_pl_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
-
-            const paginationButtons = renderFigmaPagination(totalItems, skuPlCurrentPage, pageSize, 'window.onSkuPlPageClick');
-            $('#sku_pl_pagination').html(paginationButtons);
+            });
+        } else {
+            html = `<tr><td colspan="6" style="text-align: center; padding: 3rem; color: #94a3b8;">No SKU matching your search query.</td></tr>`;
         }
 
-        window.onSkuPlPageClick = function (page) {
-            skuPlCurrentPage = page;
-            renderSkuPlTable();
-        };
+        $('#sku_pl_body').html(html);
 
-        function renderProductPerformanceTable() {
-            let filtered = globalProductsData;
-            if (productsSearchQuery) {
-                const query = productsSearchQuery.toLowerCase();
-                filtered = globalProductsData.filter(p => {
-                    return (p.sku && p.sku.toLowerCase().includes(query)) ||
-                        (p.name && p.name.toLowerCase().includes(query)) ||
-                        (p.title && p.title.toLowerCase().includes(query));
-                });
-            }
+        const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
+        $('#sku_pl_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
 
-            const totalItems = filtered.length;
-            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
-            if (productsCurrentPage > totalPages) productsCurrentPage = totalPages;
-            if (productsCurrentPage < 1) productsCurrentPage = 1;
+        const paginationButtons = renderFigmaPagination(totalItems, skuPlCurrentPage, pageSize, 'window.onSkuPlPageClick');
+        $('#sku_pl_pagination').html(paginationButtons);
+    }
 
-            const startIndex = (productsCurrentPage - 1) * ITEMS_PER_PAGE;
-            const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
-            const paginatedItems = filtered.slice(startIndex, endIndex);
+    window.onSkuPlPageClick = function (page) {
+        skuPlCurrentPage = page;
+        renderSkuPlTable();
+    };
 
-            let html = '';
-            if (paginatedItems.length > 0) {
-                paginatedItems.forEach((p, idx) => {
-                    const globalIndex = startIndex + idx;
-                    const productRevenue = toNumber(p.revenue || p.sales || 0);
-                    const productFullTitle = p.name || p.title || 'Unknown Product';
-                    const productOrders = toNumber(p.total_orders || p.orders || 0);
-                    const productUnits = toNumber(p.units || 0);
-                    const adSpend = toNumber(p.ad_spend || 0);
-                    const roasVal = adSpend > 0 ? (productRevenue / adSpend) : 0;
+    function renderProductPerformanceTable() {
+        let filtered = globalProductsData;
+        if (productsSearchQuery) {
+            const query = productsSearchQuery.toLowerCase();
+            filtered = globalProductsData.filter(p => {
+                return (p.sku && p.sku.toLowerCase().includes(query)) ||
+                    (p.name && p.name.toLowerCase().includes(query)) ||
+                    (p.title && p.title.toLowerCase().includes(query));
+            });
+        }
 
-                    const roasText = roasVal > 0 ? roasVal.toFixed(1) + 'x' : '0.0x';
-                    const roasBg = roasVal >= 10 ? '#EEF8F1' : (roasVal > 0 ? '#FEF0EF' : '#F1F5F9');
-                    const roasColor = roasVal >= 10 ? '#029153' : (roasVal > 0 ? '#EE473D' : '#64748B');
-                    const roasBorder = roasVal >= 10 ? '#C4ECD0' : (roasVal > 0 ? '#FCD4D0' : '#E2E8F0');
-                    const roasBadgeHtml = `<span style="background: ${roasBg}; color: ${roasColor}; border: 1px solid ${roasBorder}; padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 0.75rem; display: inline-block;">${roasText}</span>`;
+        const totalItems = filtered.length;
+        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+        if (productsCurrentPage > totalPages) productsCurrentPage = totalPages;
+        if (productsCurrentPage < 1) productsCurrentPage = 1;
 
-                    const productIdentityHtml = `
+        const startIndex = (productsCurrentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+        const paginatedItems = filtered.slice(startIndex, endIndex);
+
+        let html = '';
+        if (paginatedItems.length > 0) {
+            paginatedItems.forEach((p, idx) => {
+                const globalIndex = startIndex + idx;
+                const productRevenue = toNumber(p.revenue || p.sales || 0);
+                const productFullTitle = p.name || p.title || 'Unknown Product';
+                const productOrders = toNumber(p.total_orders || p.orders || 0);
+                const productUnits = toNumber(p.units || 0);
+                const adSpend = toNumber(p.ad_spend || 0);
+                const roasVal = adSpend > 0 ? (productRevenue / adSpend) : 0;
+
+                const roasText = roasVal > 0 ? roasVal.toFixed(1) + 'x' : '0.0x';
+                const roasBg = roasVal >= 10 ? '#EEF8F1' : (roasVal > 0 ? '#FEF0EF' : '#F1F5F9');
+                const roasColor = roasVal >= 10 ? '#029153' : (roasVal > 0 ? '#EE473D' : '#64748B');
+                const roasBorder = roasVal >= 10 ? '#C4ECD0' : (roasVal > 0 ? '#FCD4D0' : '#E2E8F0');
+                const roasBadgeHtml = `<span style="background: ${roasBg}; color: ${roasColor}; border: 1px solid ${roasBorder}; padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 0.75rem; display: inline-block;">${roasText}</span>`;
+
+                const productIdentityHtml = `
                     <div style="text-align: left;">
                         <div style="font-weight: 700; color: #0f172a; font-size: 0.84rem; margin-bottom: 2px;" title="${p.sku}">${p.sku}</div>
                         <div style="font-size: 0.72rem; color: #64748b; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;" title="${productFullTitle}">${productFullTitle}</div>
                     </div>`;
 
-                    let trendValues = [];
-                    const sortedMonthly = ((globalData && globalData.monthly_products) || [])
-                        .filter(m => m.asin === p.asin)
-                        .sort((a, b) => (a.month || '').localeCompare(b.month || ''));
-                    if (sortedMonthly.length >= 2) {
-                        trendValues = sortedMonthly.map(m => toNumber(m.revenue));
-                    } else {
-                        const skuStr = p.sku || '';
-                        let seed = (skuStr.charCodeAt(0) || 0) + (skuStr.charCodeAt(skuStr.length - 1) || 0) + globalIndex;
-                        for (let j = 0; j < 5; j++) {
-                            const factor = 1 + (Math.sin(seed + j) * 0.18);
-                            trendValues.push(productRevenue * factor);
-                        }
+                let trendValues = [];
+                const sortedMonthly = ((globalData && globalData.monthly_products) || [])
+                    .filter(m => m.asin === p.asin)
+                    .sort((a, b) => (a.month || '').localeCompare(b.month || ''));
+                if (sortedMonthly.length >= 2) {
+                    trendValues = sortedMonthly.map(m => toNumber(m.revenue));
+                } else {
+                    const skuStr = p.sku || '';
+                    let seed = (skuStr.charCodeAt(0) || 0) + (skuStr.charCodeAt(skuStr.length - 1) || 0) + globalIndex;
+                    for (let j = 0; j < 5; j++) {
+                        const factor = 1 + (Math.sin(seed + j) * 0.18);
+                        trendValues.push(productRevenue * factor);
                     }
-                    const sparklineHtml = generateBentoSparkline(trendValues);
+                }
+                const sparklineHtml = generateBentoSparkline(trendValues);
 
-                    html += `<tr style="border-bottom: 1px solid #f8fafc; transition: background 0.15s;">
+                html += `<tr style="border-bottom: 1px solid #f8fafc; transition: background 0.15s;">
                     <td style="width: 8%; padding: 12px 16px; font-weight: 700; color: #475569; text-align: center;">#${globalIndex + 1}</td>
                     <td style="width: 32%; padding: 12px 18px;">${productIdentityHtml}</td>
                     <td style="width: 14%; padding: 12px 18px; font-weight: 700; color: #0f172a; text-align: right; font-variant-numeric: tabular-nums;">$${productRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
@@ -5379,292 +5379,292 @@ include '../../includes/sidebar.php';
                     <td style="width: 8%; padding: 12px 14px; text-align: center; vertical-align: middle;">${roasBadgeHtml}</td>
                     <td style="width: 8%; padding: 12px 16px; text-align: center; vertical-align: middle;">${sparklineHtml}</td>
                 </tr>`;
-                });
-            } else {
-                html = `<tr><td colspan="8" style="text-align: center; padding: 3rem; color: #94a3b8;">No products matching your search query.</td></tr>`;
-            }
-
-            $('#product_analysis_body').html(html);
-
-            const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
-            $('#product_perf_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
-
-            const paginationButtons = renderBentoPagination(totalItems, productsCurrentPage, ITEMS_PER_PAGE, 'window.onProductsPageClick');
-            $('#product_perf_pagination').html(paginationButtons);
+            });
+        } else {
+            html = `<tr><td colspan="8" style="text-align: center; padding: 3rem; color: #94a3b8;">No products matching your search query.</td></tr>`;
         }
 
-        function loadDashboard() {
-            if (dashboardLoadInProgress) return;
-            dashboardLoadInProgress = true;
-            showLoader();
-            const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : ($('#filter_customer').val() || $('.filter-customer-select').val() || '');
-            let from = $('#filter_from').val() || $('.filter-from-input').val() || '2026-01-01';
-            let to = $('#filter_to').val() || $('.filter-to-input').val() || '2026-03-31';
+        $('#product_analysis_body').html(html);
 
-            // Synchronize all filters
-            $('#filter_customer, .filter-customer-select').val(customerId);
-            $('#filter_from, .filter-from-input').val(from);
-            $('#filter_to, .filter-to-input').val(to);
+        const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
+        $('#product_perf_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
 
-            $.ajax({
-                url: '<?php echo BASE_URL; ?>api/dashboard_data.php',
-                data: { customer_id: customerId, from_date: from, to_date: to },
-                dataType: 'json',
-                success: function (res) {
-                    if (res && res.error === 'Unauthorized') {
-                        window.location.href = '<?php echo BASE_URL; ?>login.php';
-                        return;
-                    }
-                    if (!res || !res.kpis) {
-                        return;
-                    }
+        const paginationButtons = renderBentoPagination(totalItems, productsCurrentPage, ITEMS_PER_PAGE, 'window.onProductsPageClick');
+        $('#product_perf_pagination').html(paginationButtons);
+    }
 
-                    // Load product-specific charts
-                    loadProductAnalytics(customerId, from, to);
-                    loadSettlementAnalytics(customerId, from, to);
+    function loadDashboard() {
+        if (dashboardLoadInProgress) return;
+        dashboardLoadInProgress = true;
+        showLoader();
+        const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : ($('#filter_customer').val() || $('.filter-customer-select').val() || '');
+        let from = $('#filter_from').val() || $('.filter-from-input').val() || '2026-01-01';
+        let to = $('#filter_to').val() || $('.filter-to-input').val() || '2026-03-31';
 
-                    globalData = res;
-                    const k = res.kpis;
-                    const f = res.financials;
+        // Synchronize all filters
+        $('#filter_customer, .filter-customer-select').val(customerId);
+        $('#filter_from, .filter-from-input').val(from);
+        $('#filter_to, .filter-to-input').val(to);
 
-                    setMoneyAnimated('#kpi_sales', k.total_sales, 1);
-                    setCmpTag('#cmp_sales', k.revenue_cmp, k.revenue_cmp_status);
+        $.ajax({
+            url: '<?php echo BASE_URL; ?>api/dashboard_data.php',
+            data: { customer_id: customerId, from_date: from, to_date: to },
+            dataType: 'json',
+            success: function (res) {
+                if (res && res.error === 'Unauthorized') {
+                    window.location.href = '<?php echo BASE_URL; ?>login.php';
+                    return;
+                }
+                if (!res || !res.kpis) {
+                    return;
+                }
 
-                    setIntAnimated('#kpi_orders', k.total_orders);
-                    // setCmpTag('#cmp_orders', k.orders_cmp, k.orders_cmp_status);
+                // Load product-specific charts
+                loadProductAnalytics(customerId, from, to);
+                loadSettlementAnalytics(customerId, from, to);
 
-                    setIntAnimated('#kpi_units', k.total_units);
-                    setCmpTag('#cmp_units', k.units_cmp, k.units_cmp_status);
+                globalData = res;
+                const k = res.kpis;
+                const f = res.financials;
 
-                    setMoneyAnimated('#kpi_dsr', k.dsr, 1);
-                    // setCmpTag('#cmp_dsr', k.dsr_cmp, k.dsr_cmp_status);
+                setMoneyAnimated('#kpi_sales', k.total_sales, 1);
+                setCmpTag('#cmp_sales', k.revenue_cmp, k.revenue_cmp_status);
 
-                    setMoneyAnimated('#kpi_ad_sales', k.ad_sales, 1);
-                    // setCmpTag('#cmp_ad_sales', k.ad_sales_cmp, k.ad_sales_cmp_status);
+                setIntAnimated('#kpi_orders', k.total_orders);
+                // setCmpTag('#cmp_orders', k.orders_cmp, k.orders_cmp_status);
 
-                    setMoneyAnimated('#kpi_organic', k.organic_sales, 1);
-                    // setCmpTag('#cmp_organic', k.organic_cmp, k.organic_cmp_status);
+                setIntAnimated('#kpi_units', k.total_units);
+                setCmpTag('#cmp_units', k.units_cmp, k.units_cmp_status);
 
-                    setMoneyAnimated('#kpi_spend', k.ad_spend, 1);
-                    // setCmpTag('#cmp_spend', k.spend_cmp, k.spend_cmp_status);
+                setMoneyAnimated('#kpi_dsr', k.dsr, 1);
+                // setCmpTag('#cmp_dsr', k.dsr_cmp, k.dsr_cmp_status);
 
-                    setPercentAnimated('#kpi_acos', k.acos, 2);
-                    // setCmpTag('#cmp_acos', k.acos_cmp, k.acos_cmp_status);
+                setMoneyAnimated('#kpi_ad_sales', k.ad_sales, 1);
+                // setCmpTag('#cmp_ad_sales', k.ad_sales_cmp, k.ad_sales_cmp_status);
 
-                    setPercentAnimated('#kpi_tacos', k.tacos, 2);
-                    // setCmpTag('#cmp_tacos', k.tacos_cmp, k.tacos_cmp_status);
+                setMoneyAnimated('#kpi_organic', k.organic_sales, 1);
+                // setCmpTag('#cmp_organic', k.organic_cmp, k.organic_cmp_status);
 
-                    setFloatAnimated('#kpi_roas', k.roas, 2);
-                    // setCmpTag('#cmp_roas', k.roas_cmp, k.roas_cmp_status);
+                setMoneyAnimated('#kpi_spend', k.ad_spend, 1);
+                // setCmpTag('#cmp_spend', k.spend_cmp, k.spend_cmp_status);
 
-                    setIntAnimated('#kpi_sessions', k.total_sessions);
-                    setCmpTag('#cmp_sessions', k.sessions_cmp, k.sessions_cmp_status);
+                setPercentAnimated('#kpi_acos', k.acos, 2);
+                // setCmpTag('#cmp_acos', k.acos_cmp, k.acos_cmp_status);
 
-                    setPercentAnimated('#kpi_conversion', k.avg_conversion, 2);
-                    setCmpTag('#cmp_conv', k.conv_cmp, k.conv_cmp_status);
+                setPercentAnimated('#kpi_tacos', k.tacos, 2);
+                // setCmpTag('#cmp_tacos', k.tacos_cmp, k.tacos_cmp_status);
 
-                    setIntAnimated('#kpi_refunds', k.total_refunds);
-                    setCmpTag('#cmp_refunds', k.refunds_cmp, k.refunds_cmp_status);
+                setFloatAnimated('#kpi_roas', k.roas, 2);
+                // setCmpTag('#cmp_roas', k.roas_cmp, k.roas_cmp_status);
 
-                    setMoneyAnimated('#kpi_net_profit', k.net_profit, 1);
-                    // setCmpTag('#cmp_net', k.net_cmp, k.net_cmp_status);
-                    setPercentAnimated('#kpi_roi', k.roi, 1);
+                setIntAnimated('#kpi_sessions', k.total_sessions);
+                setCmpTag('#cmp_sessions', k.sessions_cmp, k.sessions_cmp_status);
 
-                    if (res.comparisons) {
-                        updateComparison('#cmp_sales', res.comparisons.sales);
-                        updateComparison('#cmp_orders', res.comparisons.orders);
-                        updateComparison('#cmp_units', res.comparisons.units);
-                        updateComparison('#cmp_dsr', res.comparisons.dsr);
-                        updateComparison('#cmp_ad_sales', res.comparisons.ad_sales);
-                        updateComparison('#cmp_organic', res.comparisons.organic);
-                        updateComparison('#cmp_spend', res.comparisons.spend);
-                        updateComparison('#cmp_acos', res.comparisons.acos);
-                        updateComparison('#cmp_tacos', res.comparisons.tacos);
-                        updateComparison('#cmp_roas', res.comparisons.roas);
-                        updateComparison('#cmp_conv', res.comparisons.conv);
-                        updateComparison('#cmp_refunds', res.comparisons.refunds);
-                        updateComparison('#cmp_b2b', res.comparisons.b2b);
-                        if (res.comparisons.net_profit) updateComparison('#cmp_net', res.comparisons.net_profit);
+                setPercentAnimated('#kpi_conversion', k.avg_conversion, 2);
+                setCmpTag('#cmp_conv', k.conv_cmp, k.conv_cmp_status);
 
-                        // Tab Traffic Comparisons
-                        updateComparison('#cmp_sessions_t', res.comparisons.sessions);
-                        updateComparison('#cmp_pv_t', res.comparisons.page_views);
-                    }
+                setIntAnimated('#kpi_refunds', k.total_refunds);
+                setCmpTag('#cmp_refunds', k.refunds_cmp, k.refunds_cmp_status);
 
-                    // Traffic Tab Population
-                    setIntAnimated('#kpi_sessions_t', k.total_sessions);
-                    setIntAnimated('#kpi_pv_t', k.total_page_views);
-                    setPercentAnimated('#kpi_conv_t', k.avg_conversion, 2);
-                    setPercentAnimated('#kpi_buybox_t', k.buy_box, 0);
+                setMoneyAnimated('#kpi_net_profit', k.net_profit, 1);
+                // setCmpTag('#cmp_net', k.net_cmp, k.net_cmp_status);
+                setPercentAnimated('#kpi_roi', k.roi, 1);
 
-                    // Mobile Share Calc
-                    const totalPV = toNumber(k.total_page_views);
-                    const mobilePV = res.charts.page_views_mobile.reduce((a, b) => a + b, 0);
-                    const mobileShare = totalPV > 0 ? (mobilePV / totalPV) * 100 : 0;
-                    setPercentAnimated('#kpi_mobile_t', mobileShare, 1);
+                if (res.comparisons) {
+                    updateComparison('#cmp_sales', res.comparisons.sales);
+                    updateComparison('#cmp_orders', res.comparisons.orders);
+                    updateComparison('#cmp_units', res.comparisons.units);
+                    updateComparison('#cmp_dsr', res.comparisons.dsr);
+                    updateComparison('#cmp_ad_sales', res.comparisons.ad_sales);
+                    updateComparison('#cmp_organic', res.comparisons.organic);
+                    updateComparison('#cmp_spend', res.comparisons.spend);
+                    updateComparison('#cmp_acos', res.comparisons.acos);
+                    updateComparison('#cmp_tacos', res.comparisons.tacos);
+                    updateComparison('#cmp_roas', res.comparisons.roas);
+                    updateComparison('#cmp_conv', res.comparisons.conv);
+                    updateComparison('#cmp_refunds', res.comparisons.refunds);
+                    updateComparison('#cmp_b2b', res.comparisons.b2b);
+                    if (res.comparisons.net_profit) updateComparison('#cmp_net', res.comparisons.net_profit);
 
-                    // Populate Daily Traffic global dataset and render Bento table
-                    globalTrafficData = [];
-                    if (res.charts && res.charts.labels) {
-                        res.charts.labels.forEach((label, i) => {
-                            globalTrafficData.push({
-                                date: label,
-                                sessions: toNumber(res.charts.sessions[i]),
-                                pageViews: toNumber(res.charts.page_views[i]),
-                                buyBox: toNumber(res.charts.buy_box[i]),
-                                units: toNumber(res.charts.units[i]),
-                                orders: toNumber(res.charts.orders[i]),
-                                conv: toNumber(res.charts.conversion[i])
-                            });
+                    // Tab Traffic Comparisons
+                    updateComparison('#cmp_sessions_t', res.comparisons.sessions);
+                    updateComparison('#cmp_pv_t', res.comparisons.page_views);
+                }
+
+                // Traffic Tab Population
+                setIntAnimated('#kpi_sessions_t', k.total_sessions);
+                setIntAnimated('#kpi_pv_t', k.total_page_views);
+                setPercentAnimated('#kpi_conv_t', k.avg_conversion, 2);
+                setPercentAnimated('#kpi_buybox_t', k.buy_box, 0);
+
+                // Mobile Share Calc
+                const totalPV = toNumber(k.total_page_views);
+                const mobilePV = res.charts.page_views_mobile.reduce((a, b) => a + b, 0);
+                const mobileShare = totalPV > 0 ? (mobilePV / totalPV) * 100 : 0;
+                setPercentAnimated('#kpi_mobile_t', mobileShare, 1);
+
+                // Populate Daily Traffic global dataset and render Bento table
+                globalTrafficData = [];
+                if (res.charts && res.charts.labels) {
+                    res.charts.labels.forEach((label, i) => {
+                        globalTrafficData.push({
+                            date: label,
+                            sessions: toNumber(res.charts.sessions[i]),
+                            pageViews: toNumber(res.charts.page_views[i]),
+                            buyBox: toNumber(res.charts.buy_box[i]),
+                            units: toNumber(res.charts.units[i]),
+                            orders: toNumber(res.charts.orders[i]),
+                            conv: toNumber(res.charts.conversion[i])
                         });
-                    }
-                    trafficCurrentPage = 1;
-                    renderTrafficTable();
-
-                    renderTrafficTrendChart();
-
-                    // --- FIGMA PROFIT & LOSS POPULATION ---
-                    // 1. Top 3 Hero Cards
-                    setMoneyAnimated('#pl_hero_revenue', f.revenue, 1);
-
-                    const totalAmazonFees = Number(f.amazon_fees || (f.selling_fees + f.fba_fees + f.service_fees + f.adjustments + f.inventory_fees + f.return_fees));
-                    const operationalDeductions = Number(f.operational_deductions || (Math.abs(totalAmazonFees) + Math.abs(f.cogs) + Math.abs(f.advertising_cost || 0)));
-
-                    setMoneyAnimated('#pl_hero_deductions', operationalDeductions, 1);
-                    const dedPct = f.revenue > 0 ? ((operationalDeductions / f.revenue) * 100).toFixed(1) : '54.3';
-                    $('#pl_deductions_pct').text(dedPct + '%');
-
-                    setMoneyAnimated('#pl_hero_net_profit', f.net_profit, 1);
-                    $('#pl_margin_pct').text(Number(f.net_margin || 0).toFixed(1) + '%');
-
-                    // 2. Efficiency Speedometer Gauge (Right Sidebar)
-                    const effScore = Math.max(1, Math.min(100, Math.round(f.net_margin > 0 ? Math.min(98, 50 + f.net_margin * 1.1) : 45)));
-                    renderEfficiencySpeedo(effScore);
-
-                    // 3. Right Sidebar Waterfall Breakdown
-                    // Gross Revenue Stream
-                    $('#side_gross_total').text('$' + Number(f.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                    $('#side_sales').text('$' + Number(f.sales || f.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                    $('#side_units').text(Number(f.units || k.total_units || 0).toLocaleString());
-                    $('#side_orders').text(Number(f.orders || k.total_orders || 0).toLocaleString());
-                    $('#side_refunds').text('-$' + Math.abs(Number(f.refunds_amount || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                    $('#side_promo').text('-$' + Math.abs(Number(f.promotional_rebates || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                    $('#side_ad_cost').text('-$' + Math.abs(Number(f.advertising_cost || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                    $('#side_amazon_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                    $('#side_cogs_row').text('$' + Number(f.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-
-                    // Operational Deductions
-                    $('#side_deductions_total').text('$' + Number(operationalDeductions).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                    $('#side_ded_cogs').text('$' + Number(f.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                    $('#side_ded_ads').text('$' + Number(f.advertising_cost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                    $('#side_ded_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-
-                    // Executive Net Profit
-                    $('#side_net_total').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                    $('#side_net_gross').text('$' + Number(f.gross_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                    $('#side_net_profit').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                    $('#side_net_payout').text('$' + Number(f.estimated_payout || f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-
-                    // Profitability & Ratios
-                    $('#side_ratio_margin').text(Number(f.net_margin || 0).toFixed(1) + '%');
-                    $('#side_ratio_roi').text(Number(f.roi || 0).toFixed(1) + '%');
-                    $('#side_ratio_acos').text(Number(f.real_acos || 0).toFixed(1) + '%');
-                    $('#side_ratio_refunds').text(Number(f.refund_rate || 0).toFixed(1) + '%');
-
-                    // 4. Render Profit & Loss Chart
-                    renderProfitLossChart();
-
-                    // 5. Global SKU P&L Dataset
-                    globalSkuPlData = res.sku_pl || [];
-                    let tUnits = 0, tRev = 0, tNet = 0;
-                    globalSkuPlData.forEach((p) => {
-                        tUnits += toNumber(p.units || 0);
-                        tRev += toNumber(p.revenue || 0);
-                        tNet += toNumber(p.net || 0);
                     });
+                }
+                trafficCurrentPage = 1;
+                renderTrafficTable();
 
-                    const tMargin = tRev > 0 ? (tNet / tRev) * 100 : 0;
-                    const skuPlFootHtml = `<tr>
+                renderTrafficTrendChart();
+
+                // --- FIGMA PROFIT & LOSS POPULATION ---
+                // 1. Top 3 Hero Cards
+                setMoneyAnimated('#pl_hero_revenue', f.revenue, 1);
+
+                const totalAmazonFees = Number(f.amazon_fees || (f.selling_fees + f.fba_fees + f.service_fees + f.adjustments + f.inventory_fees + f.return_fees));
+                const operationalDeductions = Number(f.operational_deductions || (Math.abs(totalAmazonFees) + Math.abs(f.cogs) + Math.abs(f.advertising_cost || 0)));
+
+                setMoneyAnimated('#pl_hero_deductions', operationalDeductions, 1);
+                const dedPct = f.revenue > 0 ? ((operationalDeductions / f.revenue) * 100).toFixed(1) : '54.3';
+                $('#pl_deductions_pct').text(dedPct + '%');
+
+                setMoneyAnimated('#pl_hero_net_profit', f.net_profit, 1);
+                $('#pl_margin_pct').text(Number(f.net_margin || 0).toFixed(1) + '%');
+
+                // 2. Efficiency Speedometer Gauge (Right Sidebar)
+                const effScore = Math.max(1, Math.min(100, Math.round(f.net_margin > 0 ? Math.min(98, 50 + f.net_margin * 1.1) : 45)));
+                renderEfficiencySpeedo(effScore);
+
+                // 3. Right Sidebar Waterfall Breakdown
+                // Gross Revenue Stream
+                $('#side_gross_total').text('$' + Number(f.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                $('#side_sales').text('$' + Number(f.sales || f.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                $('#side_units').text(Number(f.units || k.total_units || 0).toLocaleString());
+                $('#side_orders').text(Number(f.orders || k.total_orders || 0).toLocaleString());
+                $('#side_refunds').text('-$' + Math.abs(Number(f.refunds_amount || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                $('#side_promo').text('-$' + Math.abs(Number(f.promotional_rebates || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                $('#side_ad_cost').text('-$' + Math.abs(Number(f.advertising_cost || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                $('#side_amazon_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                $('#side_cogs_row').text('$' + Number(f.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+                // Operational Deductions
+                $('#side_deductions_total').text('$' + Number(operationalDeductions).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                $('#side_ded_cogs').text('$' + Number(f.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                $('#side_ded_ads').text('$' + Number(f.advertising_cost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                $('#side_ded_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+                // Executive Net Profit
+                $('#side_net_total').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                $('#side_net_gross').text('$' + Number(f.gross_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                $('#side_net_profit').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                $('#side_net_payout').text('$' + Number(f.estimated_payout || f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+                // Profitability & Ratios
+                $('#side_ratio_margin').text(Number(f.net_margin || 0).toFixed(1) + '%');
+                $('#side_ratio_roi').text(Number(f.roi || 0).toFixed(1) + '%');
+                $('#side_ratio_acos').text(Number(f.real_acos || 0).toFixed(1) + '%');
+                $('#side_ratio_refunds').text(Number(f.refund_rate || 0).toFixed(1) + '%');
+
+                // 4. Render Profit & Loss Chart
+                renderProfitLossChart();
+
+                // 5. Global SKU P&L Dataset
+                globalSkuPlData = res.sku_pl || [];
+                let tUnits = 0, tRev = 0, tNet = 0;
+                globalSkuPlData.forEach((p) => {
+                    tUnits += toNumber(p.units || 0);
+                    tRev += toNumber(p.revenue || 0);
+                    tNet += toNumber(p.net || 0);
+                });
+
+                const tMargin = tRev > 0 ? (tNet / tRev) * 100 : 0;
+                const skuPlFootHtml = `<tr>
                     <td colspan="2" style="text-align: left; font-weight: 800; font-size: 0.9rem; padding: 14px 16px; font-family: 'Inter', sans-serif;">TOTAL SUMMARY</td>
                     <td style="text-align: right; font-size: 0.95rem; font-weight: 800; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${tUnits.toLocaleString()}</td>
                     <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #0051d5; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tRev.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #009668; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tNet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #009668; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${tMargin.toFixed(1)}%</td>
                 </tr>`;
-                    $('#sku_pl_foot').html(skuPlFootHtml);
+                $('#sku_pl_foot').html(skuPlFootHtml);
 
-                    skuPlCurrentPage = 1;
-                    renderSkuPlTable();
+                skuPlCurrentPage = 1;
+                renderSkuPlTable();
 
-                    renderTrends(res.trends);
-                    renderChart($('.chart-tab-btn.active').data('chart'));
+                renderTrends(res.trends);
+                renderChart($('.chart-tab-btn.active').data('chart'));
 
-                    const icons = [
-                        `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #a5f3fc, #22d3ee); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(34, 211, 238, 0.2);">
+                const icons = [
+                    `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #a5f3fc, #22d3ee); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(34, 211, 238, 0.2);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0891b2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
                     </div>`,
-                        `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #c7d2fe, #818cf8); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(129, 140, 248, 0.2);">
+                    `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #c7d2fe, #818cf8); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(129, 140, 248, 0.2);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
                     </div>`,
-                        `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #99f6e4, #2dd4bf); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(45, 212, 191, 0.2);">
+                    `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #99f6e4, #2dd4bf); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(45, 212, 191, 0.2);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
                     </div>`,
-                        `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #fed7aa, #fb923c); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(251, 146, 60, 0.2);">
+                    `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #fed7aa, #fb923c); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(251, 146, 60, 0.2);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
                     </div>`
-                    ];
+                ];
 
-                    let prodHtml = '';
-                    globalProductsData = res.products || [];
-                    globalProductsData.forEach((p, i) => {
-                        const productRevenue = toNumber(p.revenue || p.sales || 0);
-                        const productFullTitle = p.name || p.title || 'Unknown Product';
-                        const productUnits = toNumber(p.units || 0);
+                let prodHtml = '';
+                globalProductsData = res.products || [];
+                globalProductsData.forEach((p, i) => {
+                    const productRevenue = toNumber(p.revenue || p.sales || 0);
+                    const productFullTitle = p.name || p.title || 'Unknown Product';
+                    const productUnits = toNumber(p.units || 0);
 
-                        // Top SKU list (Figma shows 6 compact rows)
-                        if (i < 6) {
-                            let displayName = productFullTitle;
-                            if (p.sku === 'BUNDLE-ROUL-1') displayName = 'Diaper Liner Roll';
-                            else if (p.sku === 'BUNDLE-10CLPS') displayName = 'Snap Cloth Set';
-                            else if (p.sku === 'BUNDLE-10CLPS-2') displayName = 'Premium Inserts';
-                            else if (p.sku === 'BUNDLE-WDRB-4') displayName = 'Wet Dry Bags';
-                            else {
-                                let cleanTitle = productFullTitle.replace(/^(LA PETITE OURSE|La Petite Ourse|la petite ourse)\s+/i, '');
-                                const words = cleanTitle.split(/[\s-,]+/);
-                                displayName = words[0] + ' ' + (words[1] || '');
-                            }
+                    // Top SKU list (Figma shows 6 compact rows)
+                    if (i < 6) {
+                        let displayName = productFullTitle;
+                        if (p.sku === 'BUNDLE-ROUL-1') displayName = 'Diaper Liner Roll';
+                        else if (p.sku === 'BUNDLE-10CLPS') displayName = 'Snap Cloth Set';
+                        else if (p.sku === 'BUNDLE-10CLPS-2') displayName = 'Premium Inserts';
+                        else if (p.sku === 'BUNDLE-WDRB-4') displayName = 'Wet Dry Bags';
+                        else {
+                            let cleanTitle = productFullTitle.replace(/^(LA PETITE OURSE|La Petite Ourse|la petite ourse)\s+/i, '');
+                            const words = cleanTitle.split(/[\s-,]+/);
+                            displayName = words[0] + ' ' + (words[1] || '');
+                        }
 
-                            let growthRate = 0;
-                            let isGrowthUp = true;
-                            if (i === 0) { growthRate = 14.5; isGrowthUp = true; }
-                            else if (i === 1) { growthRate = 2.1; isGrowthUp = false; }
-                            else if (i === 2) { growthRate = 1.9; isGrowthUp = true; }
-                            else if (i === 3) { growthRate = 3.4; isGrowthUp = true; }
-                            else {
-                                const seed = (p.sku.charCodeAt(0) || 0) + i;
-                                growthRate = Math.abs((seed % 150) / 10);
-                                isGrowthUp = (seed % 2 === 0);
-                            }
-                            const growthDir = isGrowthUp ? 'up' : 'down';
-                            const growthArrow = isGrowthUp ? '↑' : '↓';
+                        let growthRate = 0;
+                        let isGrowthUp = true;
+                        if (i === 0) { growthRate = 14.5; isGrowthUp = true; }
+                        else if (i === 1) { growthRate = 2.1; isGrowthUp = false; }
+                        else if (i === 2) { growthRate = 1.9; isGrowthUp = true; }
+                        else if (i === 3) { growthRate = 3.4; isGrowthUp = true; }
+                        else {
+                            const seed = (p.sku.charCodeAt(0) || 0) + i;
+                            growthRate = Math.abs((seed % 150) / 10);
+                            isGrowthUp = (seed % 2 === 0);
+                        }
+                        const growthDir = isGrowthUp ? 'up' : 'down';
+                        const growthArrow = isGrowthUp ? '↑' : '↓';
 
-                            prodHtml += `
+                        prodHtml += `
                         <div class="pp-sku-row ${i === 0 ? 'active' : ''}">
                             <span class="pp-sku-rank">${i + 1}</span>
                             <div class="pp-sku-info">
@@ -5680,23 +5680,23 @@ include '../../includes/sidebar.php';
                                 <strong>$${productRevenue.toLocaleString()}</strong>
                             </div>
                         </div>`;
-                        }
-                    });
+                    }
+                });
 
-                    $('#product_list').html(prodHtml);
+                $('#product_list').html(prodHtml);
 
-                    // Render products and SKU P&L tables via Bento pagination renderers
-                    productsCurrentPage = 1;
-                    renderProductPerformanceTable();
+                // Render products and SKU P&L tables via Bento pagination renderers
+                productsCurrentPage = 1;
+                renderProductPerformanceTable();
 
-                    skuPlCurrentPage = 1;
-                    renderSkuPlTable();
+                skuPlCurrentPage = 1;
+                renderSkuPlTable();
 
-                    // Populate Monthly SKU Matrix
-                    let mHtml = '';
-                    if (res.monthly_products && res.monthly_products.length > 0) {
-                        res.monthly_products.forEach(m => {
-                            mHtml += `<tr>
+                // Populate Monthly SKU Matrix
+                let mHtml = '';
+                if (res.monthly_products && res.monthly_products.length > 0) {
+                    res.monthly_products.forEach(m => {
+                        mHtml += `<tr>
                             <td style="font-weight: 700; color: #64748b;">${m.month}</td>
                             <td style="font-weight: 800; color: #1e293b;">${m.asin}</td>
                             <td style="text-align: right; font-weight: 800; color: #4f46e5;">$${toNumber(m.revenue).toLocaleString()}</td>
@@ -5704,210 +5704,210 @@ include '../../includes/sidebar.php';
                             <td style="text-align: center;">${toNumber(m.sessions).toLocaleString()}</td>
                             <td style="text-align: center;"><span style="background: #eff6ff; padding: 4px 8px; border-radius: 6px; font-weight: 800; color: #3b82f6;">${toNumber(m.conv).toFixed(1)}%</span></td>
                         </tr>`;
-                        });
-                    } else {
-                        mHtml = '<tr><td colspan="6" class="text-center">No monthly historical data found.</td></tr>';
-                    }
-                    $('#monthly_sku_body').html(mHtml);
-
-                    // SKU P&L is now styled with custom Bento pagination/search.
-
-                    animateCurrentTab();
-                },
-                complete: () => {
-                    dashboardLoadInProgress = false;
-                    hideLoader();
+                    });
+                } else {
+                    mHtml = '<tr><td colspan="6" class="text-center">No monthly historical data found.</td></tr>';
                 }
-            });
-        }
+                $('#monthly_sku_body').html(mHtml);
 
-        // Global Map reference
-        let regionalMap = null;
-        let mapMarkers = [];
-        let geoJsonLayer = null;
-        let dashboardLoadInProgress = false;
+                // SKU P&L is now styled with custom Bento pagination/search.
 
-        function toggleGeoSkuRow(state) {
-            const safeState = state.replace(/\s+/g, '_');
-            const row = $('#row-child-' + safeState);
-            const parentRow = $(`.geo-parent-row[data-state="${state}"]`);
-            if (row.is(':visible')) {
-                row.fadeOut(150);
-                parentRow.removeClass('expanded');
-            } else {
-                row.fadeIn(150);
-                parentRow.addClass('expanded');
+                animateCurrentTab();
+            },
+            complete: () => {
+                dashboardLoadInProgress = false;
+                hideLoader();
             }
-        }
+        });
+    }
 
-        function initRegionalMap(regionList) {
-            if (!$('#us_leaflet_map').length) return;
-            if (!$('link[href*="leaflet.css"]').length) {
-                $('head').append('<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>');
-            }
-            if (typeof L === 'undefined') {
-                $.getScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', function () {
-                    buildLeafletMap(regionList);
-                });
-            } else {
+    // Global Map reference
+    let regionalMap = null;
+    let mapMarkers = [];
+    let geoJsonLayer = null;
+    let dashboardLoadInProgress = false;
+
+    function toggleGeoSkuRow(state) {
+        const safeState = state.replace(/\s+/g, '_');
+        const row = $('#row-child-' + safeState);
+        const parentRow = $(`.geo-parent-row[data-state="${state}"]`);
+        if (row.is(':visible')) {
+            row.fadeOut(150);
+            parentRow.removeClass('expanded');
+        } else {
+            row.fadeIn(150);
+            parentRow.addClass('expanded');
+        }
+    }
+
+    function initRegionalMap(regionList) {
+        if (!$('#us_leaflet_map').length) return;
+        if (!$('link[href*="leaflet.css"]').length) {
+            $('head').append('<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>');
+        }
+        if (typeof L === 'undefined') {
+            $.getScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', function () {
                 buildLeafletMap(regionList);
-            }
+            });
+        } else {
+            buildLeafletMap(regionList);
+        }
+    }
+
+    function buildLeafletMap(regionList) {
+        const mapContainer = document.getElementById('us_leaflet_map');
+        if (!mapContainer) return;
+        if (regionalMap) {
+            regionalMap.off();
+            regionalMap.remove();
+            regionalMap = null;
         }
 
-        function buildLeafletMap(regionList) {
-            const mapContainer = document.getElementById('us_leaflet_map');
-            if (!mapContainer) return;
-            if (regionalMap) {
-                regionalMap.off();
-                regionalMap.remove();
-                regionalMap = null;
-            }
+        const stateCenters = {
+            "Alabama": [32.806671, -86.791130], "Alaska": [61.370716, -152.404419], "Arizona": [33.729759, -111.431221], "Arkansas": [34.969704, -92.373123],
+            "California": [36.116203, -119.681564], "Colorado": [39.059811, -105.311104], "Connecticut": [41.597782, -72.755371], "Delaware": [39.318523, -75.507141],
+            "Florida": [27.766279, -81.686783], "Georgia": [33.040619, -83.643074], "Hawaii": [21.094318, -157.498337], "Idaho": [44.240459, -114.478828],
+            "Illinois": [40.349457, -88.986137], "Indiana": [39.849426, -86.258278], "Iowa": [42.011539, -93.210526], "Kansas": [38.526600, -96.726486],
+            "Kentucky": [37.668140, -84.670067], "Louisiana": [31.169546, -91.867805], "Maine": [44.693947, -69.381927], "Maryland": [39.063946, -76.802101],
+            "Massachusetts": [42.230171, -71.530106], "Michigan": [43.326618, -84.536095], "Minnesota": [45.694454, -93.900192], "Mississippi": [32.741646, -89.678696],
+            "Missouri": [38.456085, -92.288368], "Montana": [46.921925, -110.454353], "Nebraska": [41.125370, -98.268082], "Nevada": [38.313515, -117.055374],
+            "New Hampshire": [43.452492, -71.563896], "New Jersey": [40.298904, -74.521011], "New Mexico": [34.840515, -106.248482], "New York": [42.165726, -74.948051],
+            "North Carolina": [35.630066, -79.806419], "North Dakota": [47.528912, -99.784012], "Ohio": [40.388783, -82.764915], "Oklahoma": [35.565342, -96.928917],
+            "Oregon": [44.572021, -122.070938], "Pennsylvania": [40.590752, -77.209755], "Rhode Island": [41.680893, -71.511780], "South Carolina": [33.856890, -80.945007],
+            "South Dakota": [44.299782, -99.438828], "Tennessee": [35.747845, -86.692345], "Texas": [31.054487, -97.563461], "Utah": [40.150032, -111.862434],
+            "Vermont": [44.045876, -72.710686], "Virginia": [37.769337, -78.169968], "Washington": [47.400902, -121.490494], "West Virginia": [38.491226, -80.954453],
+            "Wisconsin": [44.268543, -89.616508], "Wyoming": [42.755966, -107.302490],
+            "Quebec": [52.0, -72.0], "Ontario": [50.0, -85.0], "British Columbia": [53.72, -122.64], "Alberta": [55.0, -115.0],
+            "Saskatchewan": [55.0, -106.0], "Manitoba": [55.0, -97.0], "Nova Scotia": [45.0, -63.0], "Newfoundland": [53.13, -57.66],
+            "Newfoundland and Labrador": [53.13, -57.66], "New Brunswick": [46.56, -66.46], "Prince Edward Island": [46.51, -63.41],
+            "Yukon": [64.0, -135.0], "Yukon Territory": [64.0, -135.0], "Northwest Territories": [65.0, -120.0], "Nunavut": [64.29, -98.10]
+        };
 
-            const stateCenters = {
-                "Alabama": [32.806671, -86.791130], "Alaska": [61.370716, -152.404419], "Arizona": [33.729759, -111.431221], "Arkansas": [34.969704, -92.373123],
-                "California": [36.116203, -119.681564], "Colorado": [39.059811, -105.311104], "Connecticut": [41.597782, -72.755371], "Delaware": [39.318523, -75.507141],
-                "Florida": [27.766279, -81.686783], "Georgia": [33.040619, -83.643074], "Hawaii": [21.094318, -157.498337], "Idaho": [44.240459, -114.478828],
-                "Illinois": [40.349457, -88.986137], "Indiana": [39.849426, -86.258278], "Iowa": [42.011539, -93.210526], "Kansas": [38.526600, -96.726486],
-                "Kentucky": [37.668140, -84.670067], "Louisiana": [31.169546, -91.867805], "Maine": [44.693947, -69.381927], "Maryland": [39.063946, -76.802101],
-                "Massachusetts": [42.230171, -71.530106], "Michigan": [43.326618, -84.536095], "Minnesota": [45.694454, -93.900192], "Mississippi": [32.741646, -89.678696],
-                "Missouri": [38.456085, -92.288368], "Montana": [46.921925, -110.454353], "Nebraska": [41.125370, -98.268082], "Nevada": [38.313515, -117.055374],
-                "New Hampshire": [43.452492, -71.563896], "New Jersey": [40.298904, -74.521011], "New Mexico": [34.840515, -106.248482], "New York": [42.165726, -74.948051],
-                "North Carolina": [35.630066, -79.806419], "North Dakota": [47.528912, -99.784012], "Ohio": [40.388783, -82.764915], "Oklahoma": [35.565342, -96.928917],
-                "Oregon": [44.572021, -122.070938], "Pennsylvania": [40.590752, -77.209755], "Rhode Island": [41.680893, -71.511780], "South Carolina": [33.856890, -80.945007],
-                "South Dakota": [44.299782, -99.438828], "Tennessee": [35.747845, -86.692345], "Texas": [31.054487, -97.563461], "Utah": [40.150032, -111.862434],
-                "Vermont": [44.045876, -72.710686], "Virginia": [37.769337, -78.169968], "Washington": [47.400902, -121.490494], "West Virginia": [38.491226, -80.954453],
-                "Wisconsin": [44.268543, -89.616508], "Wyoming": [42.755966, -107.302490],
-                "Quebec": [52.0, -72.0], "Ontario": [50.0, -85.0], "British Columbia": [53.72, -122.64], "Alberta": [55.0, -115.0],
-                "Saskatchewan": [55.0, -106.0], "Manitoba": [55.0, -97.0], "Nova Scotia": [45.0, -63.0], "Newfoundland": [53.13, -57.66],
-                "Newfoundland and Labrador": [53.13, -57.66], "New Brunswick": [46.56, -66.46], "Prince Edward Island": [46.51, -63.41],
-                "Yukon": [64.0, -135.0], "Yukon Territory": [64.0, -135.0], "Northwest Territories": [65.0, -120.0], "Nunavut": [64.29, -98.10]
-            };
+        // Light sleek clean vector world map (matching Figma style)
+        regionalMap = L.map('us_leaflet_map', {
+            center: [25.0, 15.0],
+            zoom: 2.1,
+            minZoom: 1.5,
+            maxZoom: 9,
+            zoomControl: false,
+            attributionControl: false,
+            scrollWheelZoom: false
+        });
 
-            // Light sleek clean vector world map (matching Figma style)
-            regionalMap = L.map('us_leaflet_map', {
-                center: [25.0, 15.0],
-                zoom: 2.1,
-                minZoom: 1.5,
-                maxZoom: 9,
-                zoomControl: false,
-                attributionControl: false,
-                scrollWheelZoom: false
-            });
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19,
+            subdomains: 'abcd'
+        }).addTo(regionalMap);
 
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                maxZoom: 19,
-                subdomains: 'abcd'
-            }).addTo(regionalMap);
+        setTimeout(() => {
+            if (regionalMap) regionalMap.invalidateSize();
+        }, 250);
 
-            setTimeout(() => {
-                if (regionalMap) regionalMap.invalidateSize();
-            }, 250);
-
-            // Custom Figma Glowing Blue Pin Marker
-            const figmaPinIcon = L.divIcon({
-                html: `<div class="figma-map-pin" style="display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 3px 8px rgba(67, 98, 206, 0.45)); cursor: pointer; transition: transform 0.2s;">
+        // Custom Figma Glowing Blue Pin Marker
+        const figmaPinIcon = L.divIcon({
+            html: `<div class="figma-map-pin" style="display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 3px 8px rgba(67, 98, 206, 0.45)); cursor: pointer; transition: transform 0.2s;">
                 <svg width="26" height="32" viewBox="0 0 24 30" fill="none">
                     <path d="M12 0C5.37 0 0 5.37 0 12c0 9 12 18 12 18s12-9 12-18c0-6.63-5.37-12-12-12z" fill="#4362CE"/>
                     <circle cx="12" cy="11" r="4.2" fill="#ffffff"/>
                 </svg>
             </div>`,
-                className: 'custom-figma-pin-wrapper',
-                iconSize: [26, 32],
-                iconAnchor: [13, 32]
+            className: 'custom-figma-pin-wrapper',
+            iconSize: [26, 32],
+            iconAnchor: [13, 32]
+        });
+
+        mapMarkers = [];
+
+        // 3 Key Global Hubs from Figma
+        const defaultHubs = [
+            { name: 'North America', coords: [45.4215, -75.6972], target: 'Quebec' },
+            { name: 'EMEA / Africa', coords: [28.0339, 1.6596], target: 'Ontario' },
+            { name: 'Asia / India', coords: [28.6139, 77.2090], target: 'California' }
+        ];
+
+        defaultHubs.forEach(hub => {
+            const hMarker = L.marker(hub.coords, { icon: figmaPinIcon }).addTo(regionalMap);
+            hMarker.bindTooltip(`<div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.75rem;padding:2px 4px;">${hub.name}</div>`, { sticky: true });
+            hMarker.on('click', function () {
+                if (regionList && regionList.length > 0) {
+                    scrollToStateRow(regionList[0].province);
+                }
             });
+            mapMarkers.push(hMarker);
+        });
 
-            mapMarkers = [];
+        // Add pins for provinces with sales
+        regionList.forEach(p => {
+            const coords = stateCenters[p.province];
+            if (coords && !defaultHubs.some(h => Math.abs(h.coords[0] - coords[0]) < 5 && Math.abs(h.coords[1] - coords[1]) < 5)) {
+                const marker = L.marker(coords, { icon: figmaPinIcon }).addTo(regionalMap);
 
-            // 3 Key Global Hubs from Figma
-            const defaultHubs = [
-                { name: 'North America', coords: [45.4215, -75.6972], target: 'Quebec' },
-                { name: 'EMEA / Africa', coords: [28.0339, 1.6596], target: 'Ontario' },
-                { name: 'Asia / India', coords: [28.6139, 77.2090], target: 'California' }
-            ];
-
-            defaultHubs.forEach(hub => {
-                const hMarker = L.marker(hub.coords, { icon: figmaPinIcon }).addTo(regionalMap);
-                hMarker.bindTooltip(`<div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.75rem;padding:2px 4px;">${hub.name}</div>`, { sticky: true });
-                hMarker.on('click', function () {
-                    if (regionList && regionList.length > 0) {
-                        scrollToStateRow(regionList[0].province);
-                    }
-                });
-                mapMarkers.push(hMarker);
-            });
-
-            // Add pins for provinces with sales
-            regionList.forEach(p => {
-                const coords = stateCenters[p.province];
-                if (coords && !defaultHubs.some(h => Math.abs(h.coords[0] - coords[0]) < 5 && Math.abs(h.coords[1] - coords[1]) < 5)) {
-                    const marker = L.marker(coords, { icon: figmaPinIcon }).addTo(regionalMap);
-
-                    let tooltipContent = `<div style="font-family: 'Inter', sans-serif; padding: 4px 6px; text-align: center;">
+                let tooltipContent = `<div style="font-family: 'Inter', sans-serif; padding: 4px 6px; text-align: center;">
                     <div style="font-weight: 800; font-size: 0.85rem; color: #0f172a; margin-bottom: 2px;">${p.province}</div>
                     <div style="font-weight: 800; color: #4362CE; font-size: 0.95rem; margin: 2px 0;">$${p.total_sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                     <div style="font-size: 0.72rem; color: #64748b; font-weight: 600;">${p.order_count.toLocaleString()} Orders | ${p.units_sold.toLocaleString()} Units</div>
                 </div>`;
 
-                    marker.bindTooltip(tooltipContent, { sticky: true });
+                marker.bindTooltip(tooltipContent, { sticky: true });
 
-                    let popupContent = `<div style="font-family: 'Inter', sans-serif; padding: 6px 8px; text-align: center;">
+                let popupContent = `<div style="font-family: 'Inter', sans-serif; padding: 6px 8px; text-align: center;">
                     <div style="font-weight: 800; font-size: 0.9rem; color: #0f172a; margin-bottom: 2px;">${p.province}</div>
                     <div style="font-weight: 900; color: #4362CE; font-size: 1.1rem; margin: 4px 0;">$${p.total_sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                     <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-bottom: 6px;">${p.order_count.toLocaleString()} Orders | ${p.units_sold.toLocaleString()} Units</div>
                     <button class="btn btn-xs btn-primary" style="padding: 3px 8px; font-size: 0.7rem; font-weight: 700; border-radius: 6px; background: #4362CE; color: #fff; border: none; cursor: pointer;" onclick="scrollToStateRow('${p.province}')">View SKU Breakdown</button>
                 </div>`;
 
-                    marker.bindPopup(popupContent);
-                    marker.on('click', function () {
-                        scrollToStateRow(p.province);
-                    });
+                marker.bindPopup(popupContent);
+                marker.on('click', function () {
+                    scrollToStateRow(p.province);
+                });
 
-                    mapMarkers.push(marker);
-                }
-            });
-        }
-
-        function scrollToStateRow(state) {
-            const row = $(`.geo-parent-row[data-state="${state}"]`);
-            if (row.length) {
-                $('html, body').animate({
-                    scrollTop: row.offset().top - 180
-                }, 500);
-
-                toggleGeoSkuRow(state);
-
-                row.css('background', '#eff6ff');
-                setTimeout(() => {
-                    row.css('background', '');
-                }, 2000);
+                mapMarkers.push(marker);
             }
+        });
+    }
+
+    function scrollToStateRow(state) {
+        const row = $(`.geo-parent-row[data-state="${state}"]`);
+        if (row.length) {
+            $('html, body').animate({
+                scrollTop: row.offset().top - 180
+            }, 500);
+
+            toggleGeoSkuRow(state);
+
+            row.css('background', '#eff6ff');
+            setTimeout(() => {
+                row.css('background', '');
+            }, 2000);
         }
+    }
 
-        window.toggleGeoSkuRow = toggleGeoSkuRow;
-        window.scrollToStateRow = scrollToStateRow;
+    window.toggleGeoSkuRow = toggleGeoSkuRow;
+    window.scrollToStateRow = scrollToStateRow;
 
-        function loadSettlementAnalytics(customerId, from, to) {
-            $.ajax({
-                url: '<?php echo BASE_URL; ?>api/transaction_analytics.php',
-                data: { customer_id: customerId, from_date: from, to_date: to },
-                dataType: 'json',
-                success: function (res) {
-                    if (!res) return;
+    function loadSettlementAnalytics(customerId, from, to) {
+        $.ajax({
+            url: '<?php echo BASE_URL; ?>api/transaction_analytics.php',
+            data: { customer_id: customerId, from_date: from, to_date: to },
+            dataType: 'json',
+            success: function (res) {
+                if (!res) return;
 
-                    // Populating Region Table with SKU Breakdown (Figma Redesign)
-                    if (res.province_breakdown) {
-                        let regionList = res.province_breakdown;
-                        regionList.sort((a, b) => b.total_sales - a.total_sales);
+                // Populating Region Table with SKU Breakdown (Figma Redesign)
+                if (res.province_breakdown) {
+                    let regionList = res.province_breakdown;
+                    regionList.sort((a, b) => b.total_sales - a.total_sales);
 
-                        let regHtml = '';
-                        regionList.forEach((p, idx) => {
-                            const netProfitValue = p.total_sales + p.fees + (p.refunds || 0) - (p.cogs || 0);
-                            const netProfitColor = netProfitValue >= 0 ? '#0f172a' : '#EE473D';
-                            const netProfitSign = netProfitValue >= 0 ? '' : '-';
-                            const formattedNetProfit = netProfitValue >= 0 ? netProfitValue : Math.abs(netProfitValue);
-                            const safeState = p.province.replace(/\s+/g, '_');
+                    let regHtml = '';
+                    regionList.forEach((p, idx) => {
+                        const netProfitValue = p.total_sales + p.fees + (p.refunds || 0) - (p.cogs || 0);
+                        const netProfitColor = netProfitValue >= 0 ? '#0f172a' : '#EE473D';
+                        const netProfitSign = netProfitValue >= 0 ? '' : '-';
+                        const formattedNetProfit = netProfitValue >= 0 ? netProfitValue : Math.abs(netProfitValue);
+                        const safeState = p.province.replace(/\s+/g, '_');
 
-                            regHtml += `
+                        regHtml += `
                             <tr class="geo-parent-row" data-state="${p.province}" style="cursor: pointer; transition: background 0.15s;" onclick="toggleGeoSkuRow('${p.province}')">
                                 <td style="padding: 12px 14px; text-align: left;">
                                     <div style="display: inline-flex; align-items: center;">
@@ -5942,13 +5942,13 @@ include '../../includes/sidebar.php';
                                             </thead>
                                             <tbody>
                                                 ${p.skus.length === 0 ?
-                                    `<tr><td colspan="7" style="text-align: center; padding: 1.5rem; color: #94a3b8; font-weight: 600;">No product sales in this region.</td></tr>` :
-                                    p.skus.map(s => {
-                                        const sNetProfit = s.sales + s.fees + (s.refunds || 0) - (s.cogs || 0);
-                                        const sNetColor = sNetProfit >= 0 ? '#0f172a' : '#EE473D';
-                                        const sNetSign = sNetProfit >= 0 ? '' : '-';
-                                        const sFormattedNet = sNetProfit >= 0 ? sNetProfit : Math.abs(sNetProfit);
-                                        return `
+                                `<tr><td colspan="7" style="text-align: center; padding: 1.5rem; color: #94a3b8; font-weight: 600;">No product sales in this region.</td></tr>` :
+                                p.skus.map(s => {
+                                    const sNetProfit = s.sales + s.fees + (s.refunds || 0) - (s.cogs || 0);
+                                    const sNetColor = sNetProfit >= 0 ? '#0f172a' : '#EE473D';
+                                    const sNetSign = sNetProfit >= 0 ? '' : '-';
+                                    const sFormattedNet = sNetProfit >= 0 ? sNetProfit : Math.abs(sNetProfit);
+                                    return `
                                                             <tr style="border-bottom: 1px solid #f8fafc; transition: background 0.15s;">
                                                                 <td style="padding: 10px 12px; text-align: left;">
                                                                     <div style="font-weight: 700; color: #0f172a; font-size: 0.8rem;">${s.sku}</div>
@@ -5962,140 +5962,140 @@ include '../../includes/sidebar.php';
                                                                 <td style="padding: 10px 12px; text-align: right; color: ${sNetColor}; font-weight: 700; font-size: 0.8rem; font-variant-numeric: tabular-nums;">${sNetSign}$${sFormattedNet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                                             </tr>
                                                         `;
-                                    }).join('')
-                                }
+                                }).join('')
+                            }
                                             </tbody>
                                         </table>
                                     </div>
                                 </td>
                             </tr>
                         `;
-                        });
+                    });
 
-                        $('#region_sales_body').html(regHtml || '<tr><td colspan="7" style="text-align:center; padding: 2rem; color: #94a3b8; font-weight: 700;">No regional data.</td></tr>');
+                    $('#region_sales_body').html(regHtml || '<tr><td colspan="7" style="text-align:center; padding: 2rem; color: #94a3b8; font-weight: 700;">No regional data.</td></tr>');
 
-                        // Initialize Regional Map visuals
-                        initRegionalMap(regionList);
-                    }
-
-                    renderFinancialInsights(res.insights);
+                    // Initialize Regional Map visuals
+                    initRegionalMap(regionList);
                 }
-            });
-        }
 
-        function renderFeeDonut(feeData) {
-            const ctx = document.getElementById('expenseChart').getContext('2d');
-            if (expenseChart) expenseChart.destroy();
+                renderFinancialInsights(res.insights);
+            }
+        });
+    }
 
-            expenseChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: feeData.labels,
-                    datasets: [{
-                        data: feeData.values,
-                        backgroundColor: ['#f43f5e', '#8b5cf6', '#3b82f6', '#f59e0b', '#10b981', '#6366f1', '#94a3b8'],
-                        borderRadius: 8,
-                        maxBarThickness: 50
-                    }]
+    function renderFeeDonut(feeData) {
+        const ctx = document.getElementById('expenseChart').getContext('2d');
+        if (expenseChart) expenseChart.destroy();
+
+        expenseChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: feeData.labels,
+                datasets: [{
+                    data: feeData.values,
+                    backgroundColor: ['#f43f5e', '#8b5cf6', '#3b82f6', '#f59e0b', '#10b981', '#6366f1', '#94a3b8'],
+                    borderRadius: 8,
+                    maxBarThickness: 50
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#0f172a',
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: (context) => ' Amount: $' + context.parsed.y.toLocaleString()
+                        }
+                    }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#0f172a',
-                            padding: 12,
-                            cornerRadius: 8,
-                            callbacks: {
-                                label: (context) => ' Amount: $' + context.parsed.y.toLocaleString()
-                            }
-                        }
-                    },
-                    scales: {
-                        x: { grid: { display: false }, ticks: { font: { weight: '600', size: 10 } } },
-                        y: {
-                            grid: { color: '#f1f5f9' },
-                            ticks: { callback: v => '$' + formatAbbrev(v) }
-                        }
+                scales: {
+                    x: { grid: { display: false }, ticks: { font: { weight: '600', size: 10 } } },
+                    y: {
+                        grid: { color: '#f1f5f9' },
+                        ticks: { callback: v => '$' + formatAbbrev(v) }
                     }
                 }
-            });
-            const total = feeData.values.reduce((a, b) => a + b, 0);
-            $('#fee_breakdown_note').html(`
+            }
+        });
+        const total = feeData.values.reduce((a, b) => a + b, 0);
+        $('#fee_breakdown_note').html(`
             <div style="font-size: 1.25rem; font-weight: 800; color: #1e293b; margin-top: 1rem;">$${total.toLocaleString()}</div>
             <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Total Platform Fees</div>
         `);
+    }
+
+    function renderProvinceBars(provinces) {
+        const ctx = document.getElementById('provinceChart').getContext('2d');
+        if (provinceChart) provinceChart.destroy();
+
+        // Sort and group for a clean distribution view
+        const sorted = [...provinces].sort((a, b) => b.total_sales - a.total_sales);
+        const topCount = 8;
+        const top = sorted.slice(0, topCount);
+        const others = sorted.slice(topCount);
+
+        let finalData = top.map(p => ({ label: p.province, value: p.total_sales }));
+        if (others.length > 0) {
+            const othersSum = others.reduce((sum, p) => sum + p.total_sales, 0);
+            finalData.push({ label: 'Other Provinces', value: othersSum });
         }
 
-        function renderProvinceBars(provinces) {
-            const ctx = document.getElementById('provinceChart').getContext('2d');
-            if (provinceChart) provinceChart.destroy();
-
-            // Sort and group for a clean distribution view
-            const sorted = [...provinces].sort((a, b) => b.total_sales - a.total_sales);
-            const topCount = 8;
-            const top = sorted.slice(0, topCount);
-            const others = sorted.slice(topCount);
-
-            let finalData = top.map(p => ({ label: p.province, value: p.total_sales }));
-            if (others.length > 0) {
-                const othersSum = others.reduce((sum, p) => sum + p.total_sales, 0);
-                finalData.push({ label: 'Other Provinces', value: othersSum });
-            }
-
-            provinceChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: finalData.map(d => d.label),
-                    datasets: [{
-                        data: finalData.map(d => d.value),
-                        backgroundColor: ['#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#f97316', '#eab308', '#94a3b8'],
-                        hoverOffset: 20,
-                        borderWidth: 5,
-                        borderColor: '#ffffff'
-                    }]
-                },
-                options: {
-                    cutout: '65%',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                usePointStyle: true,
-                                padding: 20,
-                                font: { size: 11, weight: '600' },
-                                color: '#475569'
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: '#0f172a',
-                            padding: 12,
-                            cornerRadius: 8,
-                            callbacks: {
-                                label: (context) => ` $${context.parsed.toLocaleString()}`
-                            }
+        provinceChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: finalData.map(d => d.label),
+                datasets: [{
+                    data: finalData.map(d => d.value),
+                    backgroundColor: ['#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#f97316', '#eab308', '#94a3b8'],
+                    hoverOffset: 20,
+                    borderWidth: 5,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                cutout: '65%',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: { size: 11, weight: '600' },
+                            color: '#475569'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#0f172a',
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: (context) => ` $${context.parsed.toLocaleString()}`
                         }
                     }
                 }
-            });
-        }
+            }
+        });
+    }
 
-        function renderTxnSummary(summary) {
-            let html = '';
-            const types = summary || {};
-            if (Object.keys(types).length === 0) {
-                html = '<div style="text-align: center; color: #94a3b8; padding: 3rem;">No transactions found for this period.</div>';
-            } else {
-                html = '<div style="display: grid; gap: 1rem;">';
-                for (let type in types) {
-                    const s = types[type];
-                    const isPositive = s.total_amount >= 0;
-                    const accentColor = isPositive ? '#10b981' : '#f43f5e';
+    function renderTxnSummary(summary) {
+        let html = '';
+        const types = summary || {};
+        if (Object.keys(types).length === 0) {
+            html = '<div style="text-align: center; color: #94a3b8; padding: 3rem;">No transactions found for this period.</div>';
+        } else {
+            html = '<div style="display: grid; gap: 1rem;">';
+            for (let type in types) {
+                const s = types[type];
+                const isPositive = s.total_amount >= 0;
+                const accentColor = isPositive ? '#10b981' : '#f43f5e';
 
-                    html += `
+                html += `
                 <div style="background: #ffffff; border: 1px solid #f1f5f9; border-left: 4px solid ${accentColor}; padding: 1.25rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
                         <span style="font-weight: 800; color: #1e293b; font-size: 0.95rem;">${type}</span>
@@ -6110,87 +6110,87 @@ include '../../includes/sidebar.php';
                         </div>
                     </div>
                 </div>`;
-                }
-                html += '</div>';
             }
-            $('#txn_summary_list').html(html);
+            html += '</div>';
         }
+        $('#txn_summary_list').html(html);
+    }
 
-        function renderFinancialInsights(insights) {
-            let html = '';
-            (insights || []).forEach(ins => {
-                html += `<div style="background:#f0f9ff; border-left:4px solid #7dd3fc; padding:1rem; border-radius:8px; margin-bottom:1rem;">
+    function renderFinancialInsights(insights) {
+        let html = '';
+        (insights || []).forEach(ins => {
+            html += `<div style="background:#f0f9ff; border-left:4px solid #7dd3fc; padding:1rem; border-radius:8px; margin-bottom:1rem;">
                 <h4 style="font-size:0.9rem; font-weight:700;">${ins.title}</h4><p style="font-size:0.8rem;">${ins.text}</p>
             </div>`;
-            });
-            $('#financial_insights_container').html(html);
-        }
+        });
+        $('#financial_insights_container').html(html);
+    }
 
-        function loadProductAnalytics(customerId, from, to) {
-            $.ajax({
-                url: '<?php echo BASE_URL; ?>api/product_analytics.php',
-                data: { customer_id: customerId, from_date: from, to_date: to },
-                dataType: 'json',
-                success: function (res) {
-                    if (!res || !res.success) return;
+    function loadProductAnalytics(customerId, from, to) {
+        $.ajax({
+            url: '<?php echo BASE_URL; ?>api/product_analytics.php',
+            data: { customer_id: customerId, from_date: from, to_date: to },
+            dataType: 'json',
+            success: function (res) {
+                if (!res || !res.success) return;
 
-                    // Helper to format abbreviation
-                    const formatAbbrev = (num) => {
-                        if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-                        if (num >= 1000) return (num / 1000).toFixed(0) + 'k';
-                        return num.toFixed(0);
-                    };
+                // Helper to format abbreviation
+                const formatAbbrev = (num) => {
+                    if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+                    if (num >= 1000) return (num / 1000).toFixed(0) + 'k';
+                    return num.toFixed(0);
+                };
 
-                    // Sum and populate the 3 stacked metric cards
-                    let totalProdRevenue = 0;
-                    let totalProdAdSpend = 0;
-                    let totalProdSessions = 0;
-                    let activeSkusCount = res.top_products.length;
+                // Sum and populate the 3 stacked metric cards
+                let totalProdRevenue = 0;
+                let totalProdAdSpend = 0;
+                let totalProdSessions = 0;
+                let activeSkusCount = res.top_products.length;
 
-                    res.top_products.forEach(p => {
-                        totalProdRevenue += parseFloat(p.revenue || 0);
-                        totalProdAdSpend += parseFloat(p.ad_spend || 0);
-                        totalProdSessions += parseInt(p.sessions || 0);
-                    });
+                res.top_products.forEach(p => {
+                    totalProdRevenue += parseFloat(p.revenue || 0);
+                    totalProdAdSpend += parseFloat(p.ad_spend || 0);
+                    totalProdSessions += parseInt(p.sessions || 0);
+                });
 
-                    // Set Active SKUs
-                    $('#prod_meta_skus').text(activeSkusCount);
+                // Set Active SKUs
+                $('#prod_meta_skus').text(activeSkusCount);
 
-                    // Set Sessions with dynamic sum (fallback to mockup value 12,482 if zero)
-                    const sessionsDisplay = totalProdSessions > 0 ? totalProdSessions : 12482;
-                    $('#prod_meta_sessions').text(sessionsDisplay.toLocaleString());
+                // Set Sessions with dynamic sum (fallback to mockup value 12,482 if zero)
+                const sessionsDisplay = totalProdSessions > 0 ? totalProdSessions : 12482;
+                $('#prod_meta_sessions').text(sessionsDisplay.toLocaleString());
 
-                    // Set ROAS with dynamic calc (fallback to mockup 4.2x if zero)
-                    const roasDisplay = totalProdAdSpend > 0 ? (totalProdRevenue / totalProdAdSpend) : 4.2;
-                    $('#prod_meta_roas').text(roasDisplay.toFixed(1) + 'x');
+                // Set ROAS with dynamic calc (fallback to mockup 4.2x if zero)
+                const roasDisplay = totalProdAdSpend > 0 ? (totalProdRevenue / totalProdAdSpend) : 4.2;
+                $('#prod_meta_roas').text(roasDisplay.toFixed(1) + 'x');
 
-                    // Doughnut chart center overlay total
-                    $('#doughnut_center_val').text('$' + formatAbbrev(totalProdRevenue));
+                // Doughnut chart center overlay total
+                $('#doughnut_center_val').text('$' + formatAbbrev(totalProdRevenue));
 
-                    // Group top 3 individually + Others
-                    const top3 = res.top_products.slice(0, 3);
-                    const remaining = res.top_products.slice(3);
-                    const remainingSum = remaining.reduce((sum, p) => sum + parseFloat(p.revenue || 0), 0);
+                // Group top 3 individually + Others
+                const top3 = res.top_products.slice(0, 3);
+                const remaining = res.top_products.slice(3);
+                const remainingSum = remaining.reduce((sum, p) => sum + parseFloat(p.revenue || 0), 0);
 
-                    const chartColors = ['#2563eb', '#ef4444', '#10b981', '#f59e0b'];
-                    const doughnutData = [...top3.map(p => parseFloat(p.revenue || 0))];
-                    if (remaining.length > 0) {
-                        doughnutData.push(remainingSum);
-                    }
+                const chartColors = ['#2563eb', '#ef4444', '#10b981', '#f59e0b'];
+                const doughnutData = [...top3.map(p => parseFloat(p.revenue || 0))];
+                if (remaining.length > 0) {
+                    doughnutData.push(remainingSum);
+                }
 
-                    const doughnutLabels = [...top3.map(p => p.sku)];
-                    if (remaining.length > 0) {
-                        doughnutLabels.push('Others');
-                    }
+                const doughnutLabels = [...top3.map(p => p.sku)];
+                if (remaining.length > 0) {
+                    doughnutLabels.push('Others');
+                }
 
-                    // Populate Custom HTML Legend (SKU + $ + %)
-                    let legendHtml = '';
-                    let colorIdx = 0;
-                    top3.forEach(p => {
-                        const rev = parseFloat(p.revenue || 0);
-                        const pct = totalProdRevenue > 0 ? ((rev / totalProdRevenue) * 100).toFixed(0) : '0';
-                        const color = chartColors[colorIdx];
-                        legendHtml += `
+                // Populate Custom HTML Legend (SKU + $ + %)
+                let legendHtml = '';
+                let colorIdx = 0;
+                top3.forEach(p => {
+                    const rev = parseFloat(p.revenue || 0);
+                    const pct = totalProdRevenue > 0 ? ((rev / totalProdRevenue) * 100).toFixed(0) : '0';
+                    const color = chartColors[colorIdx];
+                    legendHtml += `
                     <div class="pp-legend-row">
                         <div style="display:flex; align-items:center; gap:8px; min-width:0;">
                             <span class="dot" style="background:${color};"></span>
@@ -6199,13 +6199,13 @@ include '../../includes/sidebar.php';
                         <span style="color:#64748b; font-weight:700;">$${rev.toLocaleString()}</span>
                         <span style="color:#0f172a; font-weight:800;">${pct}%</span>
                     </div>`;
-                        colorIdx++;
-                    });
+                    colorIdx++;
+                });
 
-                    if (remaining.length > 0) {
-                        const pct = totalProdRevenue > 0 ? ((remainingSum / totalProdRevenue) * 100).toFixed(0) : '0';
-                        const color = chartColors[3];
-                        legendHtml += `
+                if (remaining.length > 0) {
+                    const pct = totalProdRevenue > 0 ? ((remainingSum / totalProdRevenue) * 100).toFixed(0) : '0';
+                    const color = chartColors[3];
+                    legendHtml += `
                     <div class="pp-legend-row">
                         <div style="display:flex; align-items:center; gap:8px; min-width:0;">
                             <span class="dot" style="background:${color};"></span>
@@ -6214,296 +6214,296 @@ include '../../includes/sidebar.php';
                         <span style="color:#64748b; font-weight:700;">$${Math.round(remainingSum).toLocaleString()}</span>
                         <span style="color:#0f172a; font-weight:800;">${pct}%</span>
                     </div>`;
-                    }
-                    $('#doughnut_custom_legend').html(legendHtml);
-
-                    // 1. Revenue Share by SKU (Doughnut ChartJS)
-                    const ctxRev = document.getElementById('productRevenueShareChart').getContext('2d');
-                    if (window.productRevenueShareChartInst) window.productRevenueShareChartInst.destroy();
-                    window.productRevenueShareChartInst = new Chart(ctxRev, {
-                        type: 'doughnut',
-                        data: {
-                            labels: doughnutLabels,
-                            datasets: [{
-                                data: doughnutData,
-                                backgroundColor: chartColors,
-                                borderWidth: 4,
-                                borderColor: '#ffffff',
-                                hoverOffset: 12
-                            }]
-                        },
-                        options: {
-                            cutout: '78%',
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: { display: false },
-                                tooltip: {
-                                    backgroundColor: '#ffffff',
-                                    titleColor: '#0f172a',
-                                    bodyColor: '#0f172a',
-                                    borderColor: '#e2e8f0',
-                                    borderWidth: 1,
-                                    padding: 10,
-                                    cornerRadius: 8,
-                                    displayColors: true,
-                                    callbacks: {
-                                        label: function (context) {
-                                            return context.label + ': $' + Number(context.parsed).toLocaleString();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-
-                    // 2. ULTIMATE COMBO REPORT (One report for everything)
-                    const ctxCombo = document.getElementById('productComboChart').getContext('2d');
-                    if (window.productComboChartInst) window.productComboChartInst.destroy();
-
-                    const labels = res.top_products.slice(0, 12).map(p => p.sku);
-
-                    window.productComboChartInst = new Chart(ctxCombo, {
-                        type: 'bar',
-                        data: {
-                            labels: labels,
-                            datasets: [
-                                {
-                                    label: 'Sessions',
-                                    data: res.top_products.slice(0, 12).map(p => p.sessions),
-                                    backgroundColor: 'rgba(219, 225, 255, 0.85)',
-                                    borderColor: '#DBE1FF',
-                                    borderRadius: 4,
-                                    barPercentage: 0.6,
-                                    borderWidth: 0,
-                                    yAxisID: 'yVolume',
-                                    order: 3
-                                },
-                                {
-                                    label: 'Revenue ($)',
-                                    data: res.top_products.slice(0, 12).map(p => p.revenue),
-                                    type: 'line',
-                                    borderColor: '#4362CE',
-                                    backgroundColor: '#4362CE',
-                                    borderWidth: 2.5,
-                                    pointBackgroundColor: '#4362CE',
-                                    pointBorderColor: '#ffffff',
-                                    pointBorderWidth: 2,
-                                    pointRadius: 4.5,
-                                    tension: 0.35,
-                                    yAxisID: 'yRevenue',
-                                    order: 1
-                                },
-                                {
-                                    label: 'Conv %',
-                                    data: res.top_products.slice(0, 12).map(p => p.conv),
-                                    type: 'line',
-                                    borderColor: '#F59E0B',
-                                    backgroundColor: '#F59E0B',
-                                    borderDash: [4, 4],
-                                    borderWidth: 2,
-                                    pointBackgroundColor: '#F59E0B',
-                                    pointBorderColor: '#ffffff',
-                                    pointBorderWidth: 2,
-                                    pointRadius: 4.5,
-                                    tension: 0.35,
-                                    yAxisID: 'yPercent',
-                                    order: 2
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            interaction: { mode: 'index', intersect: false },
-                            plugins: {
-                                legend: { display: false },
-                                tooltip: {
-                                    backgroundColor: '#0f172a',
-                                    padding: 12,
-                                    cornerRadius: 8,
-                                    callbacks: {
-                                        label: function (context) {
-                                            let label = context.dataset.label || '';
-                                            if (label) label += ': ';
-                                            if (context.dataset.yAxisID === 'yRevenue') label += '$' + context.parsed.y.toLocaleString();
-                                            else if (context.dataset.yAxisID === 'yPercent') label += context.parsed.y.toFixed(2) + '%';
-                                            else label += context.parsed.y.toLocaleString();
-                                            return label;
-                                        }
-                                    }
-                                }
-                            },
-                            scales: {
-                                x: { grid: { display: false }, ticks: { font: { weight: '600' } } },
-                                yVolume: {
-                                    type: 'linear',
-                                    position: 'left',
-                                    title: { display: true, text: 'Traffic Volume', font: { weight: '700' } },
-                                    grid: { color: '#f1f5f9' }
-                                },
-                                yRevenue: {
-                                    type: 'linear',
-                                    position: 'right',
-                                    title: { display: true, text: 'Revenue ($)', font: { weight: '700' } },
-                                    grid: { display: false },
-                                    ticks: { callback: v => '$' + formatAbbrev(v) }
-                                },
-                                yPercent: {
-                                    type: 'linear',
-                                    position: 'right',
-                                    title: { display: true, text: 'Conv %', font: { weight: '700' } },
-                                    grid: { display: false },
-                                    ticks: { callback: v => v + '%' },
-                                    min: 0,
-                                    display: false
-                                }
-                            }
-                        }
-                    });
-
-                    // Product performance table is styled with custom Bento pagination/search.
                 }
-            });
-        }
+                $('#doughnut_custom_legend').html(legendHtml);
 
-        // Tab switching handled via sidebar navigation (page reload)
-
-        $('.chart-tab-btn').click(function () {
-            $('.chart-tab-btn').removeClass('active'); $(this).addClass('active');
-            renderChart($(this).data('chart'));
-        });
-
-        // Initialize Flatpickr for Range Selection matching Figma UI
-        function initDashboardDatePickers() {
-            if (typeof flatpickr !== 'undefined') {
-                flatpickr(".date-range-picker", {
-                    mode: "range",
-                    dateFormat: "Y-m-d",
-                    altInput: true,
-                    altFormat: "M d, Y",
-                    defaultDate: [$('#filter_from').val() || "2026-01-01", $('#filter_to').val() || "2026-03-31"],
-                    onChange: function (selectedDates, dateStr, instance) {
-                        if (selectedDates.length === 2) {
-                            const from = instance.formatDate(selectedDates[0], "Y-m-d");
-                            const to = instance.formatDate(selectedDates[1], "Y-m-d");
-                            $('#filter_from').val(from);
-                            $('#filter_to').val(to);
-                            loadDashboard();
+                // 1. Revenue Share by SKU (Doughnut ChartJS)
+                const ctxRev = document.getElementById('productRevenueShareChart').getContext('2d');
+                if (window.productRevenueShareChartInst) window.productRevenueShareChartInst.destroy();
+                window.productRevenueShareChartInst = new Chart(ctxRev, {
+                    type: 'doughnut',
+                    data: {
+                        labels: doughnutLabels,
+                        datasets: [{
+                            data: doughnutData,
+                            backgroundColor: chartColors,
+                            borderWidth: 4,
+                            borderColor: '#ffffff',
+                            hoverOffset: 12
+                        }]
+                    },
+                    options: {
+                        cutout: '78%',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#ffffff',
+                                titleColor: '#0f172a',
+                                bodyColor: '#0f172a',
+                                borderColor: '#e2e8f0',
+                                borderWidth: 1,
+                                padding: 10,
+                                cornerRadius: 8,
+                                displayColors: true,
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.label + ': $' + Number(context.parsed).toLocaleString();
+                                    }
+                                }
+                            }
                         }
                     }
                 });
-            }
-        }
 
-        // Dashboard Initialization
-        $('#filter_from').val('2026-01-01');
-        $('#filter_to').val('2026-03-31');
-        initDashboardDatePickers();
-        loadDashboard();
+                // 2. ULTIMATE COMBO REPORT (One report for everything)
+                const ctxCombo = document.getElementById('productComboChart').getContext('2d');
+                if (window.productComboChartInst) window.productComboChartInst.destroy();
 
-        $('#save_financials_new').click(function () {
-            const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : $('#filter_customer').val();
-            const from = $('#filter_from').val();
-            if (!from) { alert('Please select a date range first'); return; }
-            const reportMonth = from.substring(0, 7); // YYYY-MM
+                const labels = res.top_products.slice(0, 12).map(p => p.sku);
 
-            const btn = $(this);
-            btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> SAVING...');
-
-            $.ajax({
-                url: '<?php echo BASE_URL; ?>api/save_financials.php',
-                method: 'POST',
-                data: {
-                    customer_id: customerId,
-                    report_month: reportMonth,
-                    cogs: $('#cogs_override_new').val(),
-                    ad_spend: 0,
-                    other_fees: $('#other_fees_override_new').val()
-                },
-                dataType: 'json',
-                success: function (res) {
-                    if (res.success) {
-                        Swal.fire({ icon: 'success', title: 'Saved!', text: 'Financial settings updated for ' + reportMonth, timer: 1500 });
-                        loadDashboard();
-                    } else {
-                        Swal.fire({ icon: 'error', title: 'Error', text: res.error });
+                window.productComboChartInst = new Chart(ctxCombo, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Sessions',
+                                data: res.top_products.slice(0, 12).map(p => p.sessions),
+                                backgroundColor: 'rgba(219, 225, 255, 0.85)',
+                                borderColor: '#DBE1FF',
+                                borderRadius: 4,
+                                barPercentage: 0.6,
+                                borderWidth: 0,
+                                yAxisID: 'yVolume',
+                                order: 3
+                            },
+                            {
+                                label: 'Revenue ($)',
+                                data: res.top_products.slice(0, 12).map(p => p.revenue),
+                                type: 'line',
+                                borderColor: '#4362CE',
+                                backgroundColor: '#4362CE',
+                                borderWidth: 2.5,
+                                pointBackgroundColor: '#4362CE',
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 2,
+                                pointRadius: 4.5,
+                                tension: 0.35,
+                                yAxisID: 'yRevenue',
+                                order: 1
+                            },
+                            {
+                                label: 'Conv %',
+                                data: res.top_products.slice(0, 12).map(p => p.conv),
+                                type: 'line',
+                                borderColor: '#F59E0B',
+                                backgroundColor: '#F59E0B',
+                                borderDash: [4, 4],
+                                borderWidth: 2,
+                                pointBackgroundColor: '#F59E0B',
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 2,
+                                pointRadius: 4.5,
+                                tension: 0.35,
+                                yAxisID: 'yPercent',
+                                order: 2
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#0f172a',
+                                padding: 12,
+                                cornerRadius: 8,
+                                callbacks: {
+                                    label: function (context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) label += ': ';
+                                        if (context.dataset.yAxisID === 'yRevenue') label += '$' + context.parsed.y.toLocaleString();
+                                        else if (context.dataset.yAxisID === 'yPercent') label += context.parsed.y.toFixed(2) + '%';
+                                        else label += context.parsed.y.toLocaleString();
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: { grid: { display: false }, ticks: { font: { weight: '600' } } },
+                            yVolume: {
+                                type: 'linear',
+                                position: 'left',
+                                title: { display: true, text: 'Traffic Volume', font: { weight: '700' } },
+                                grid: { color: '#f1f5f9' }
+                            },
+                            yRevenue: {
+                                type: 'linear',
+                                position: 'right',
+                                title: { display: true, text: 'Revenue ($)', font: { weight: '700' } },
+                                grid: { display: false },
+                                ticks: { callback: v => '$' + formatAbbrev(v) }
+                            },
+                            yPercent: {
+                                type: 'linear',
+                                position: 'right',
+                                title: { display: true, text: 'Conv %', font: { weight: '700' } },
+                                grid: { display: false },
+                                ticks: { callback: v => v + '%' },
+                                min: 0,
+                                display: false
+                            }
+                        }
                     }
-                },
-                complete: () => btn.prop('disabled', false).html('SAVE SETTINGS')
-            });
-        });
+                });
 
-        // Bind Bento Search Input Event Listeners
-        $('#product_search_input').on('keyup input', function () {
-            productsSearchQuery = $(this).val();
-            productsCurrentPage = 1;
-            renderProductPerformanceTable();
-        });
-
-        $('#sku_pl_search_input').on('keyup input', function () {
-            skuPlSearchQuery = $(this).val();
-            skuPlCurrentPage = 1;
-            renderSkuPlTable();
-        });
-
-        $('#traffic_search_input').on('keyup input', function () {
-            trafficSearchQuery = $(this).val();
-            trafficCurrentPage = 1;
-            renderTrafficTable();
-        });
-
-        // Figma Profit & Loss Chart Controls
-        $(document).on('click', '#pl_time_toggle .pl-time-btn', function () {
-            $('#pl_time_toggle .pl-time-btn').removeClass('active');
-            $(this).addClass('active');
-            currentPlTime = $(this).data('time');
-            renderProfitLossChart();
-        });
-
-        $(document).on('change', '#pl_bar_metric, #pl_line_metric', function () {
-            renderProfitLossChart();
-        });
-
-        // Date & Customer filter sync and apply
-        $(document).on('change', '.filter-customer-select', function () {
-            $('#filter_customer').val($(this).val());
-            loadDashboard();
-        });
-
-        $(document).on('change', '.filter-from-input', function () {
-            $('#filter_from').val($(this).val());
-        });
-
-        $(document).on('change', '.filter-to-input', function () {
-            $('#filter_to').val($(this).val());
-        });
-
-        $(document).on('click', '.btn-apply-filters', function () {
-            loadDashboard();
-        });
-
-        // Export CSV handler for Profit & Loss
-        $(document).on('click', '.btn-export-csv', function () {
-            if (!globalSkuPlData || !globalSkuPlData.length) {
-                Swal.fire({ icon: 'info', title: 'No Data', text: 'No SKU data available to export.' });
-                return;
+                // Product performance table is styled with custom Bento pagination/search.
             }
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Rank,Seller SKU,Units Sold,Revenue,Net Profit,Net Profit Margin %\r\n";
-            globalSkuPlData.forEach((row, i) => {
-                csvContent += `${i + 1},"${row.sku || ''}",${row.units || 0},${row.revenue || 0},${row.net || 0},${row.margin || 0}%\r\n`;
-            });
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `sku_profit_loss_${new Date().toISOString().slice(0, 10)}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
         });
+    }
 
-        $('#apply_filters').click(loadDashboard);
+    // Tab switching handled via sidebar navigation (page reload)
+
+    $('.chart-tab-btn').click(function () {
+        $('.chart-tab-btn').removeClass('active'); $(this).addClass('active');
+        renderChart($(this).data('chart'));
+    });
+
+    // Initialize Flatpickr for Range Selection matching Figma UI
+    function initDashboardDatePickers() {
+        if (typeof flatpickr !== 'undefined') {
+            flatpickr(".date-range-picker", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "M d, Y",
+                defaultDate: [$('#filter_from').val() || "2026-01-01", $('#filter_to').val() || "2026-03-31"],
+                onChange: function (selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        const from = instance.formatDate(selectedDates[0], "Y-m-d");
+                        const to = instance.formatDate(selectedDates[1], "Y-m-d");
+                        $('#filter_from').val(from);
+                        $('#filter_to').val(to);
+                        loadDashboard();
+                    }
+                }
+            });
+        }
+    }
+
+    // Dashboard Initialization
+    $('#filter_from').val('2026-01-01');
+    $('#filter_to').val('2026-03-31');
+    initDashboardDatePickers();
+    loadDashboard();
+
+    $('#save_financials_new').click(function () {
+        const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : $('#filter_customer').val();
+        const from = $('#filter_from').val();
+        if (!from) { alert('Please select a date range first'); return; }
+        const reportMonth = from.substring(0, 7); // YYYY-MM
+
+        const btn = $(this);
+        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> SAVING...');
+
+        $.ajax({
+            url: '<?php echo BASE_URL; ?>api/save_financials.php',
+            method: 'POST',
+            data: {
+                customer_id: customerId,
+                report_month: reportMonth,
+                cogs: $('#cogs_override_new').val(),
+                ad_spend: 0,
+                other_fees: $('#other_fees_override_new').val()
+            },
+            dataType: 'json',
+            success: function (res) {
+                if (res.success) {
+                    Swal.fire({ icon: 'success', title: 'Saved!', text: 'Financial settings updated for ' + reportMonth, timer: 1500 });
+                    loadDashboard();
+                } else {
+                    Swal.fire({ icon: 'error', title: 'Error', text: res.error });
+                }
+            },
+            complete: () => btn.prop('disabled', false).html('SAVE SETTINGS')
+        });
+    });
+
+    // Bind Bento Search Input Event Listeners
+    $('#product_search_input').on('keyup input', function () {
+        productsSearchQuery = $(this).val();
+        productsCurrentPage = 1;
+        renderProductPerformanceTable();
+    });
+
+    $('#sku_pl_search_input').on('keyup input', function () {
+        skuPlSearchQuery = $(this).val();
+        skuPlCurrentPage = 1;
+        renderSkuPlTable();
+    });
+
+    $('#traffic_search_input').on('keyup input', function () {
+        trafficSearchQuery = $(this).val();
+        trafficCurrentPage = 1;
+        renderTrafficTable();
+    });
+
+    // Figma Profit & Loss Chart Controls
+    $(document).on('click', '#pl_time_toggle .pl-time-btn', function () {
+        $('#pl_time_toggle .pl-time-btn').removeClass('active');
+        $(this).addClass('active');
+        currentPlTime = $(this).data('time');
+        renderProfitLossChart();
+    });
+
+    $(document).on('change', '#pl_bar_metric, #pl_line_metric', function () {
+        renderProfitLossChart();
+    });
+
+    // Date & Customer filter sync and apply
+    $(document).on('change', '.filter-customer-select', function () {
+        $('#filter_customer').val($(this).val());
+        loadDashboard();
+    });
+
+    $(document).on('change', '.filter-from-input', function () {
+        $('#filter_from').val($(this).val());
+    });
+
+    $(document).on('change', '.filter-to-input', function () {
+        $('#filter_to').val($(this).val());
+    });
+
+    $(document).on('click', '.btn-apply-filters', function () {
+        loadDashboard();
+    });
+
+    // Export CSV handler for Profit & Loss
+    $(document).on('click', '.btn-export-csv', function () {
+        if (!globalSkuPlData || !globalSkuPlData.length) {
+            Swal.fire({ icon: 'info', title: 'No Data', text: 'No SKU data available to export.' });
+            return;
+        }
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Rank,Seller SKU,Units Sold,Revenue,Net Profit,Net Profit Margin %\r\n";
+        globalSkuPlData.forEach((row, i) => {
+            csvContent += `${i + 1},"${row.sku || ''}",${row.units || 0},${row.revenue || 0},${row.net || 0},${row.margin || 0}%\r\n`;
+        });
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `sku_profit_loss_${new Date().toISOString().slice(0, 10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+
+    $('#apply_filters').click(loadDashboard);
     });
 </script>
 
