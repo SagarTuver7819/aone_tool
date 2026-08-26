@@ -1147,140 +1147,667 @@ include '../../includes/sidebar.php';
 ?>
 
 <style>
-    .upload-zone {
-        border: 2px dashed #CBD5E1;
+    body {
+        background-color: #F8FAFC !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        color: #0F172A;
+    }
+
+    .top-header {
+        display: none !important;
+    }
+
+    .main-wrapper {
+        padding-top: 0 !important;
+    }
+
+    .up-container {
+        padding: 1.25rem 2rem 3rem 2rem;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    /* Topbar */
+    .up-topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid #EAECEF;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .up-topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .up-profile-select-wrap {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .up-profile-select {
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        height: 38px;
+        padding: 0 32px 0 12px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #0F172A;
+        outline: none;
+        cursor: pointer;
+        min-width: 170px;
+        appearance: none;
+        -webkit-appearance: none;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+
+    .up-breadcrumb {
+        font-size: 0.84rem;
+        color: #64748B;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .up-topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-up-primary {
+        background: #4362CE;
+        color: #FFFFFF !important;
+        font-size: 0.82rem;
+        font-weight: 700;
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        box-shadow: 0 1px 2px rgba(67, 98, 206, 0.2);
+        transition: all 0.15s ease;
+    }
+
+    .btn-up-primary:hover {
+        background: #3451B2;
+        color: #FFFFFF !important;
+    }
+
+    .btn-up-outline {
+        background: #FFFFFF;
+        color: #0F172A;
+        border: 1px solid #E2E8F0;
+        font-size: 0.82rem;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        text-decoration: none;
+    }
+
+    .btn-up-outline:hover {
         background: #F8FAFC;
-        border-radius: 12px;
-        padding: 3rem 2rem;
+        border-color: #CBD5E1;
+    }
+
+    .btn-up-icon-box {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748B;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+    .btn-up-icon-box:hover {
+        background: #F8FAFC;
+        color: #0F172A;
+    }
+
+    /* Page Head */
+    .up-page-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+    }
+
+    .up-page-title h2 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #0F172A;
+        margin: 0;
+        letter-spacing: -0.02em;
+    }
+
+    .up-page-title p {
+        font-size: 0.82rem;
+        color: #64748B;
+        font-weight: 500;
+        margin: 3px 0 0 0;
+    }
+
+    /* Main Upload Card */
+    .up-card {
+        background: #FFFFFF;
+        border: 1px solid #EAECEF;
+        border-radius: 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        padding: 1.75rem 2rem;
+        box-sizing: border-box;
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+
+    .up-card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.75rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .up-card-title h3 {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #0F172A;
+        margin: 0 0 4px 0;
+        letter-spacing: -0.01em;
+    }
+
+    .up-card-title p {
+        font-size: 0.84rem;
+        color: #64748B;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .up-badge-auto {
+        background: #EFF4FE;
+        color: #4362CE;
+        border-radius: 99px;
+        padding: 6px 14px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid rgba(67, 98, 206, 0.1);
+    }
+
+    /* Form Fields */
+    .up-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .up-form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .up-form-group label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #0F172A;
+        margin-bottom: 6px;
+    }
+
+    .up-input, .up-select {
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        height: 42px;
+        padding: 0 14px;
+        font-size: 0.84rem;
+        font-weight: 500;
+        color: #0F172A;
+        outline: none;
+        width: 100%;
+        box-sizing: border-box;
+        font-family: inherit;
+        transition: all 0.15s ease;
+    }
+
+    .up-input:focus, .up-select:focus {
+        background: #FFFFFF;
+        border-color: #4362CE;
+        box-shadow: 0 0 0 3px rgba(67, 98, 206, 0.1);
+    }
+
+    /* Dropzone */
+    .up-dropzone {
+        border: 2px dashed #CBD5E1;
+        background: #FAFCFF;
+        border-radius: 16px;
+        padding: 3.5rem 2rem;
         text-align: center;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         cursor: pointer;
         position: relative;
+        width: 100%;
+        box-sizing: border-box;
     }
-    .upload-zone:hover, .upload-zone.dragover {
-        border-color: var(--primary);
-        background: #F1F5F9;
-        transform: translateY(-2px);
+
+    .up-dropzone:hover, .up-dropzone.dragover {
+        border-color: #4362CE;
+        background: #F0F4FE;
+        transform: translateY(-1px);
     }
-    .upload-zone i {
-        font-size: 3rem;
-        color: var(--primary);
+
+    .up-dropzone-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: #EFF4FE;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #4362CE;
         margin-bottom: 1rem;
+        box-shadow: 0 2px 8px rgba(67, 98, 206, 0.12);
     }
+
+    .up-dropzone-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #0F172A;
+        margin: 0 0 6px 0;
+    }
+
+    .up-dropzone-sub {
+        font-size: 0.84rem;
+        color: #64748B;
+        font-weight: 500;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.4;
+    }
+
+    .up-clean-box {
+        margin-top: 1.5rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #EF4444;
+        background: #FFF1F2;
+        padding: 6px 14px;
+        border-radius: 6px;
+        border: 1px solid #FECDD3;
+    }
+
     .file-list {
         margin-top: 1.5rem;
         text-align: left;
-        max-width: 500px;
+        max-width: 560px;
         margin-left: auto;
         margin-right: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
+
     .file-item {
-        background: white;
+        background: #FFFFFF;
         padding: 0.75rem 1rem;
         border-radius: 8px;
         border: 1px solid #E2E8F0;
-        margin-bottom: 0.5rem;
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        font-size: 0.875rem;
-        animation: slideIn 0.3s ease;
+        font-size: 0.82rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
     }
-    @keyframes slideIn {
-        from { opacity: 0; transform: translateX(-10px); }
-        to { opacity: 1; transform: translateX(0); }
+
+    /* Submit Button */
+    .btn-up-batch {
+        width: 100%;
+        height: 48px;
+        background: #4362CE;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 1.75rem;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(67, 98, 206, 0.25);
+        transition: all 0.15s ease;
+    }
+
+    .btn-up-batch:hover {
+        background: #3451B2;
+        box-shadow: 0 6px 16px rgba(67, 98, 206, 0.35);
+    }
+
+    /* 4 Sub Category Cards */
+    .up-cat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .up-cat-card {
+        background: #FFFFFF;
+        border: 1px solid #EAECEF;
+        border-radius: 12px;
+        padding: 1.25rem 1rem;
+        text-align: center;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .up-cat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .up-cat-name {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #0F172A;
+    }
+
+    /* Pro Tips Card */
+    .up-tips-card {
+        background: #FFFFFF;
+        border: 1px solid #EAECEF;
+        border-radius: 14px;
+        padding: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .up-tips-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #0F172A;
+        margin: 0 0 0.75rem 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .up-tips-list {
+        margin: 0;
+        padding-left: 1.25rem;
+        font-size: 0.82rem;
+        color: #64748B;
+        line-height: 1.6;
+    }
+
+    .up-tips-list li {
+        margin-bottom: 4px;
+    }
+
+    /* Alerts */
+    .up-alert-error {
+        background: #FFF1F2;
+        border-left: 4px solid #EF4444;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.5rem;
+        border-radius: 8px;
+        color: #B91C1C;
+        font-weight: 600;
+        font-size: 0.84rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .up-alert-success {
+        background: #F0FDF4;
+        border-left: 4px solid #10B981;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.5rem;
+        border-radius: 8px;
+        color: #15803D;
+        font-weight: 600;
+        font-size: 0.84rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+        .up-topbar {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1rem;
+        }
+
+        .up-topbar-left, .up-topbar-right {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .up-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .up-cat-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .up-container {
+            padding: 0.75rem 0.75rem 100px 0.75rem !important;
+        }
+
+        .up-card {
+            padding: 1.25rem 1rem;
+        }
+
+        .up-cat-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
-<div class="card">
-    <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-start;">
-        <div>
-            <h2 style="font-size: 1.5rem; font-weight: 800;">Unified Amazon Data Ingestion</h2>
-            <p style="color: var(--text-muted); font-size: 0.875rem;">Drop all your reports together. We'll identify and process them automatically.</p>
+<div class="up-container">
+
+    <!-- Global Topbar (Figma Matching) -->
+    <div class="up-topbar">
+        <div class="up-topbar-left">
+            <div class="up-profile-select-wrap">
+                <select class="up-profile-select">
+                    <option value="">All Amazon Profiles</option>
+                    <?php $customers->data_seek(0); while ($c = $customers->fetch_assoc()): ?>
+                        <option value="<?php echo $c['id']; ?>">
+                            <?php echo htmlspecialchars($c['customer_name']); ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <i class="fas fa-chevron-down" style="position: absolute; right: 12px; pointer-events: none; font-size: 0.7rem; color: #64748B;"></i>
+            </div>
+            <div class="up-breadcrumb">
+                <span>Dashboard</span>
+                <i class="fas fa-circle" style="font-size: 0.25rem; color: #CBD5E1;"></i>
+                <span>Profit &amp; Loss Analysis</span>
+            </div>
         </div>
-        <div style="background: var(--primary-light); color: var(--primary); padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700;">
-            <i class="fas fa-magic"></i> AUTO-IDENTIFICATION ACTIVE
+
+        <div class="up-topbar-right">
+            <a href="index.php" class="btn-up-primary">
+                <i class="fas fa-plus"></i> New Upload
+            </a>
+            <a href="<?php echo BASE_URL; ?>modules/report_upload/tracking.php" class="btn-up-outline">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 1.5V10.5M8 10.5L5 7.5M8 10.5L11 7.5" stroke="#0F172A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12V13.5C2 14.0523 2.44772 14.5 3 14.5H13C13.5523 14.5 14 14.0523 14 13.5V12" stroke="#0F172A" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+                View Tracking
+            </a>
+            <button type="button" class="btn-up-icon-box" title="Search">
+                <i class="fas fa-search" style="font-size: 0.85rem;"></i>
+            </button>
+            <button type="button" class="btn-up-icon-box" title="Notifications">
+                <i class="fas fa-bell" style="font-size: 0.85rem;"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="up-page-head">
+        <div class="up-page-title">
+            <h2>Report Upload Center</h2>
+            <p>Unified Amazon Data Ingestion &amp; Automatic Report Classification</p>
         </div>
     </div>
 
     <?php if ($error): ?>
-        <div style="background: #FFF1F2; border-left: 4px solid var(--danger); padding: 1rem; margin-bottom: 1.5rem; border-radius: 8px; color: var(--danger); font-weight: 600;">
-            <i class="fas fa-exclamation-circle"></i> <?php echo $error; ?>
+        <div class="up-alert-error">
+            <i class="fas fa-exclamation-circle"></i>
+            <span><?php echo $error; ?></span>
         </div>
     <?php endif; ?>
 
     <?php if ($success): ?>
-        <div style="background: #F0FDF4; border-left: 4px solid var(--accent); padding: 1rem; margin-bottom: 1.5rem; border-radius: 8px; color: #166534; font-weight: 600;">
-            <i class="fas fa-check-circle"></i> <?php echo $success; ?>
+        <div class="up-alert-success">
+            <i class="fas fa-check-circle"></i>
+            <span><?php echo $success; ?></span>
         </div>
     <?php endif; ?>
 
-    <form method="POST" enctype="multipart/form-data" id="uploadForm">
-        <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 2rem;">
-            <div class="form-group">
-                <label>Target Customer</label>
-                <select name="customer_id" required style="width: 100%;">
-                    <option value="">-- Choose Account --</option>
-                    <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()): ?>
-                        <option value="<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['customer_name']); ?></option>
-                    <?php endwhile; ?>
-                </select>
+    <!-- Main Ingestion Card -->
+    <div class="up-card">
+        <div class="up-card-head">
+            <div class="up-card-title">
+                <h3>Unified Amazon Data Ingestion</h3>
+                <p>Drop all your reports together. We'll identify and process them automatically.</p>
             </div>
-            <div class="form-group">
-                <label>Reporting Month</label>
-                <input type="month" name="report_month" required style="width: 100%;">
+            <div class="up-badge-auto">
+                <i class="fas fa-magic"></i> AUTO-IDENTIFICATION ACTIVE
             </div>
         </div>
 
-        <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem;">Click or Drag ZIP/Reports Here</h3>
-            <p style="color: var(--text-muted); font-size: 0.875rem;">Support for ZIP Batches, Business, Advertising, Brand, and Transaction reports (.zip, .csv, .txt, .xlsx)</p>
-            <input type="file" name="reports[]" id="fileInput" multiple style="display: none;" onchange="updateFileList(this)">
-            
-            <div style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 2rem;">
-                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 700; color: #ef4444;">
-                    <input type="checkbox" name="clean_db" value="1"> Clean Database Before Import
-                </label>
+        <form method="POST" enctype="multipart/form-data" id="uploadForm">
+            <div class="up-form-grid">
+                <div class="up-form-group">
+                    <label>Target Customer *</label>
+                    <select name="customer_id" class="up-select" required>
+                        <option value="">-- Choose Account --</option>
+                        <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()): ?>
+                            <option value="<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['customer_name']); ?></option>
+                        <?php endwhile; ?>
+                    </select>
+                </div>
+                <div class="up-form-group">
+                    <label>Reporting Month *</label>
+                    <input type="month" name="report_month" class="up-input" required value="<?php echo date('Y-m'); ?>">
+                </div>
             </div>
 
-            <div id="fileList" class="file-list"></div>
+            <!-- Dropzone -->
+            <div class="up-dropzone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                <div class="up-dropzone-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 16C4.79086 16 3 14.2091 3 12C3 9.94474 4.55171 8.25145 6.55047 8.03176C7.03964 5.17066 9.51862 3 12.5 3C15.8646 3 18.6014 5.67916 18.9663 9.01479C20.7303 9.47934 22 11.0864 22 13C22 15.2091 20.2091 17 18 17H17" stroke="#4362CE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 12V21M12 12L8.5 15.5M12 12L15.5 15.5" stroke="#4362CE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="up-dropzone-title">Click or Drag ZIP/Reports Here</h3>
+                <p class="up-dropzone-sub">Support for ZIP Batches, Business, Advertising, Brand, and Transaction reports (.zip, .csv, .txt, .xlsx)</p>
+                <input type="file" name="reports[]" id="fileInput" multiple style="display: none;" onchange="updateFileList(this)">
+                
+                <div>
+                    <label class="up-clean-box" onclick="event.stopPropagation();">
+                        <input type="checkbox" name="clean_db" value="1"> Clean Database Before Import
+                    </label>
+                </div>
+
+                <div id="fileList" class="file-list"></div>
+            </div>
+
+            <button type="submit" class="btn-up-batch">
+                <i class="fas fa-bolt"></i> START BATCH PROCESSING
+            </button>
+        </form>
+    </div>
+
+    <!-- Category Highlights Grid -->
+    <div class="up-cat-grid">
+        <div class="up-cat-card">
+            <div class="up-cat-icon" style="background: #EFF6FF; color: #3B82F6;">
+                <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+            <div class="up-cat-name">Business Reports</div>
         </div>
+        <div class="up-cat-card">
+            <div class="up-cat-icon" style="background: #F0FDF4; color: #10B981;">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="up-cat-name">Detail Page Traffic</div>
+        </div>
+        <div class="up-cat-card">
+            <div class="up-cat-icon" style="background: #FFF1F2; color: #F43F5E;">
+                <i class="fas fa-file-invoice"></i>
+            </div>
+            <div class="up-cat-name">Settlement Summaries</div>
+        </div>
+        <div class="up-cat-card">
+            <div class="up-cat-icon" style="background: #FFFBEB; color: #F59E0B;">
+                <i class="fas fa-file-excel"></i>
+            </div>
+            <div class="up-cat-name">Transaction Data</div>
+        </div>
+    </div>
 
-        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1rem; margin-top: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
-            <i class="fas fa-bolt"></i> START BATCH PROCESSING
-        </button>
-    </form>
-</div>
+    <!-- Pro Tips -->
+    <div class="up-tips-card">
+        <h4 class="up-tips-title">
+            <i class="fas fa-lightbulb" style="color: #F59E0B;"></i> Pro Tips &amp; Guidance
+        </h4>
+        <ul class="up-tips-list">
+            <li>You can select multiple files or complete monthly ZIP archives at once in the file picker.</li>
+            <li>The system automatically detects the report type based on its internal structure and headers.</li>
+            <li><strong>Unknown Formats:</strong> If a report is not recognized, the system will automatically create a dynamic schema table (prefixed with <code>dyn_</code>) and securely store the records for tracking.</li>
+        </ul>
+    </div>
 
-<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem;">
-    <div class="card" style="margin-bottom: 0; padding: 1rem; text-align: center; background: #f0f9ff; border-color: #bae6fd;">
-        <i class="fas fa-file-invoice-dollar" style="color: #0369a1; margin-bottom: 0.5rem;"></i>
-        <div style="font-size: 0.75rem; font-weight: 700; color: #0369a1;">Business</div>
-    </div>
-    <div class="card" style="margin-bottom: 0; padding: 1rem; text-align: center; background: #f0fdf4; border-color: #bbf7d0;">
-        <i class="fas fa-chart-line" style="color: #15803d; margin-bottom: 0.5rem;"></i>
-        <div style="font-size: 0.75rem; font-weight: 700; color: #15803d;">Detail</div>
-    </div>
-    <div class="card" style="margin-bottom: 0; padding: 1rem; text-align: center; background: #fef2f2; border-color: #fecaca;">
-        <i class="fas fa-file-invoice" style="color: #b91c1c; margin-bottom: 0.5rem;"></i>
-        <div style="font-size: 0.75rem; font-weight: 700; color: #b91c1c;">Settlement</div>
-    </div>
-    <div class="card" style="margin-bottom: 0; padding: 1rem; text-align: center; background: #fffbeb; border-color: #fef3c7;">
-        <i class="fas fa-file-excel" style="color: #b45309; margin-bottom: 0.5rem;"></i>
-        <div style="font-size: 0.75rem; font-weight: 700; color: #b45309;">Transaction</div>
-    </div>
-</div>
-
-<div class="card" style="margin-top: 2rem; background: #F8FAFC; border-color: #E2E8F0;">
-    <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem;">
-        <i class="fas fa-lightbulb" style="color: #eab308;"></i> Pro Tips
-    </h3>
-    <ul style="font-size: 0.875rem; color: var(--text-muted); margin-left: 1.25rem;">
-        <li>You can select multiple files at once in the file picker.</li>
-        <li>The system automatically detects the report type based on its internal structure.</li>
-        <li><strong>Unknown Formats:</strong> If a report is not recognized, the system will automatically create a new table (prefixed with <code>dyn_</code>) and store the data there. You can view these in the "Dynamic Excel" section.</li>
-    </ul>
 </div>
 
 <script>
@@ -1297,14 +1824,15 @@ include '../../includes/sidebar.php';
                 if (file.name.endsWith('.csv')) icon = 'fa-file-csv';
                 if (file.name.endsWith('.xlsx')) icon = 'fa-file-excel';
                 if (file.name.endsWith('.txt')) icon = 'fa-file-alt';
+                if (file.name.endsWith('.zip')) icon = 'fa-file-archive';
                 
                 item.innerHTML = `
-                    <i class="fas ${icon}" style="color: var(--primary);"></i>
+                    <i class="fas ${icon}" style="color: #4362CE; font-size: 1.1rem;"></i>
                     <div style="flex: 1;">
-                        <div style="font-weight: 600;">${file.name}</div>
-                        <div style="font-size: 0.7rem; color: #64748b;">${(file.size / 1024).toFixed(1)} KB</div>
+                        <div style="font-weight: 700; color: #0F172A;">${file.name}</div>
+                        <div style="font-size: 0.72rem; color: #64748B;">${(file.size / 1024).toFixed(1)} KB</div>
                     </div>
-                    <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                    <i class="fas fa-check-circle" style="color: #10B981; font-size: 1rem;"></i>
                 `;
                 fileList.appendChild(item);
             });
@@ -1313,30 +1841,32 @@ include '../../includes/sidebar.php';
 
     const dropZone = document.getElementById('dropZone');
     
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, preventDefaults, false);
-    });
+    if (dropZone) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
 
-    function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
 
-    ['dragenter', 'dragover'].forEach(eventName => {
-        dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
-    });
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+        });
 
-    ['dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
-    });
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+        });
 
-    dropZone.addEventListener('drop', handleDrop, false);
+        dropZone.addEventListener('drop', handleDrop, false);
 
-    function handleDrop(e) {
-        const dt = e.dataTransfer;
-        const files = dt.files;
-        document.getElementById('fileInput').files = files;
-        updateFileList(document.getElementById('fileInput'));
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            document.getElementById('fileInput').files = files;
+            updateFileList(document.getElementById('fileInput'));
+        }
     }
 </script>
 

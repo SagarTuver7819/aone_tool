@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once '../../config.php';
 require_once '../../includes/functions.php';
 
@@ -301,21 +301,23 @@ include '../../includes/sidebar.php';
         justify-content: space-between;
         gap: 1rem;
         flex-wrap: wrap;
-        margin-bottom: 0.85rem;
+        margin-bottom: 20px;
     }
 
     .overview-page-head h2 {
         margin: 0;
-        font-family: 'Inter', sans-serif;
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #0f172a;
-        letter-spacing: -0.02em;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 22px !important;
+        font-weight: 600 !important;
+        line-height: 100% !important;
+        color: #1A1A1A !important;
+        letter-spacing: 0 !important;
     }
 
     .overview-page-head p {
-        margin: 0.25rem 0 0;
-        font-size: 0.82rem;
+        margin: 6px 0 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 0.84rem;
         color: #64748b;
         font-weight: 500;
     }
@@ -368,87 +370,86 @@ include '../../includes/sidebar.php';
 
     .overview-hero-grid {
         display: grid;
-        grid-template-columns: 1.4fr 1fr 1fr 1fr;
-        gap: 0.85rem;
+        grid-template-columns: 400px repeat(3, 1fr);
+        gap: 20px;
+        margin-bottom: 20px;
     }
 
     .ov-card {
         background: #ffffff;
-        border: 1px solid #e8eaed;
-        border-radius: 14px;
-        padding: 1.15rem 1.25rem;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-        min-height: 132px;
+        border: 1px solid #EAECEF;
+        border-radius: 16px;
+        padding: 22px 24px;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+        height: 176px;
+        min-height: 176px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         position: relative;
         overflow: hidden;
+        box-sizing: border-box;
     }
 
     .ov-card .ov-top {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 0.75rem;
+        align-items: center;
+        margin-bottom: 12px;
     }
 
     .ov-card .ov-label {
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: #64748b;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: #1E293B;
     }
 
     .ov-card .ov-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f1f5f9;
-        color: #475569;
+        background: #EFF6FF;
+        color: #4362CE;
         font-size: 0.9rem;
         flex-shrink: 0;
     }
 
-    .ov-card .ov-icon.green {
-        background: #ecfdf5;
-        color: #10b981;
-    }
-
-    .ov-card .ov-icon.blue {
-        background: #eff6ff;
-        color: #2563eb;
-    }
-
+    .ov-card .ov-icon.green,
+    .ov-card .ov-icon.blue,
     .ov-card .ov-icon.amber {
-        background: #fffbeb;
-        color: #d97706;
+        background: #EFF6FF;
+        color: #4362CE;
     }
 
     .ov-card .ov-value {
-        font-family: 'Inter', sans-serif;
-        font-size: 1.85rem;
-        font-weight: 700;
-        color: #0f172a;
-        letter-spacing: -0.025em;
-        line-height: 1.15;
-        margin-bottom: 0.65rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 26px !important;
+        font-weight: 600 !important;
+        color: #0F172A !important;
+        letter-spacing: -0.01em;
+        line-height: 100% !important;
+        margin-bottom: 24px;
     }
 
-    .ov-card .ov-trend {
+    .ov-card .cmp-tag {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        line-height: 100% !important;
+        padding: 5px 9px;
+        border-radius: 6px;
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        padding: 4px 10px;
-        border-radius: 999px;
         width: fit-content;
     }
 
     .ov-card.hero {
+        width: 400px;
         background-color: #4362CE !important;
         background-image: url('<?php echo BASE_URL; ?>assets/images/bg-3.png') !important;
         background-repeat: no-repeat !important;
@@ -456,8 +457,12 @@ include '../../includes/sidebar.php';
         background-size: auto 100% !important;
         border: none !important;
         color: #ffffff !important;
-        box-shadow: 0 8px 24px rgba(67, 98, 206, 0.25) !important;
+        box-shadow: 0 8px 24px rgba(67, 98, 206, 0.22) !important;
         border-radius: 16px !important;
+        padding: 24px !important;
+        height: 176px;
+        min-height: 176px;
+        box-sizing: border-box;
         position: relative;
         overflow: hidden;
     }
@@ -472,12 +477,19 @@ include '../../includes/sidebar.php';
     }
 
     .ov-card.hero .ov-label {
-        color: rgba(255, 255, 255, 0.88);
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.95) !important;
     }
 
     .ov-card.hero .ov-value {
-        color: #ffffff;
-        font-size: 2.1rem;
+        color: #FFFFFF !important;
+        font-size: 42px !important;
+        font-weight: 600 !important;
+        line-height: 100% !important;
+        letter-spacing: 0 !important;
+        margin-top: 14px;
+        margin-bottom: 24px;
     }
 
     .ov-card.hero .ov-icon {
@@ -485,53 +497,75 @@ include '../../includes/sidebar.php';
         color: #fff;
     }
 
+    .ov-card.hero .cmp-tag {
+        background: #FFFFFF !important;
+        border: none !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        border-radius: 6px !important;
+        padding: 5px 9px !important;
+    }
+
     .ov-card.hero .cmp-tag.up {
-        background: rgba(255, 255, 255, 0.95) !important;
-        color: #059669 !important;
+        background: #FFFFFF !important;
+        color: #029153 !important;
     }
 
     .ov-card.hero .cmp-tag.down {
-        background: rgba(255, 255, 255, 0.95) !important;
-        color: #dc2626 !important;
+        background: #FFFFFF !important;
+        color: #EE473D !important;
     }
 
     .ov-card.hero .cmp-tag.none {
-        background: rgba(255, 255, 255, 0.2) !important;
-        color: #fff !important;
+        background: rgba(255, 255, 255, 0.25) !important;
+        color: #FFFFFF !important;
     }
 
     .overview-rows {
         display: flex;
         flex-direction: column;
-        gap: 0.85rem;
+        gap: 20px;
     }
 
     .overview-row {
         display: grid;
-        grid-template-columns: minmax(280px, 38%) minmax(0, 1fr);
-        gap: 0.85rem;
+        grid-template-columns: 400px minmax(0, 1fr);
+        gap: 20px;
         align-items: stretch;
     }
 
     .overview-panel {
         background: #ffffff;
-        border: 1px solid #e8eaed;
-        border-radius: 14px;
-        padding: 1.15rem 1.25rem;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        border: 1px solid #EAECEF;
+        border-radius: 16px;
+        padding: 22px 24px;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
         min-width: 0;
         display: flex;
         flex-direction: column;
+        box-sizing: border-box;
     }
 
-    .overview-panel-chart {
-        min-height: 100%;
+    .overview-panel-ad,
+    .overview-panel-traffic {
+        width: 400px;
+        height: 390px;
+        min-height: 390px;
+        box-sizing: border-box;
+    }
+
+    .overview-panel-chart,
+    .overview-panel-table {
+        height: 390px;
+        min-height: 390px;
+        box-sizing: border-box;
     }
 
     .overview-chart-wrap {
         flex: 1;
-        min-height: 220px;
-        height: 240px;
+        min-height: 270px;
+        height: 285px;
+        position: relative;
     }
 
     #tab_kpi .table-container {
@@ -558,31 +592,57 @@ include '../../includes/sidebar.php';
 
     #tab_kpi .trend-table th {
         background: transparent !important;
-        color: #1e293b !important;
+        color: #1E293B !important;
         font-size: 0.82rem !important;
         font-weight: 600 !important;
         text-transform: none !important;
         letter-spacing: 0 !important;
-        padding: 0.75rem 0.65rem 0.65rem !important;
+        padding: 0.65rem 0.75rem !important;
         border: none !important;
-        border-bottom: 1px solid #e2e8f0 !important;
+        border-bottom: 1px solid #E8EAF2 !important;
         vertical-align: middle !important;
     }
 
+    #tab_kpi .trend-table tr {
+        height: 50px;
+    }
+
     #tab_kpi .trend-table td {
-        padding: 0.75rem 0.65rem !important;
+        padding: 0.5rem 0.75rem !important;
+        height: 50px;
         font-size: 0.86rem !important;
         font-weight: 600 !important;
         border: none !important;
-        border-bottom: 1px solid #f1f5f9 !important;
-        color: #0f172a !important;
+        border-bottom: 1px solid #E8EAF2 !important;
+        color: #0F172A !important;
         vertical-align: middle !important;
     }
 
     #tab_kpi .trend-table td:first-child {
-        color: #1e293b !important;
+        color: #1E293B !important;
         font-weight: 500 !important;
         font-size: 0.85rem !important;
+    }
+
+    /* Alternating Row Colors matching Figma (1: Color, 2: Transparent, 3: Color, 4: Transparent, 5: Color) */
+    #tab_kpi .trend-table tbody tr:nth-child(odd) td {
+        background: #F7F9FE !important;
+        border-bottom: 1px solid #E8EAF2 !important;
+    }
+
+    #tab_kpi .trend-table tbody tr:nth-child(odd) td:first-child {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+    }
+
+    #tab_kpi .trend-table tbody tr:nth-child(odd) td:last-child {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    #tab_kpi .trend-table tbody tr:nth-child(even) td {
+        background: transparent !important;
+        border-bottom: 1px solid #E8EAF2 !important;
     }
 
     #tab_kpi .trend-table tr:last-child td {
@@ -590,7 +650,7 @@ include '../../includes/sidebar.php';
     }
 
     #tab_kpi .trend-table tr:hover td {
-        background: #f8fafc !important;
+        background: #F1F4FD !important;
     }
 
     .overview-panel-title {
@@ -603,21 +663,23 @@ include '../../includes/sidebar.php';
 
     .overview-metric-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.65rem;
-        flex: 1;
+        grid-template-columns: repeat(2, 170px);
+        gap: 12px;
+        justify-content: space-between;
     }
 
     .overview-metric-card {
         background: #F8FAFC !important;
         border: 1px solid #EEF2F6 !important;
         border-radius: 14px !important;
-        padding: 1rem 1.15rem !important;
-        min-height: 105px !important;
+        width: 170px !important;
+        height: 144px !important;
+        min-height: 144px !important;
+        padding: 16px 18px !important;
+        box-sizing: border-box !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
-        gap: 0.4rem !important;
         transition: all 0.2s ease !important;
     }
 
@@ -627,57 +689,75 @@ include '../../includes/sidebar.php';
     }
 
     .overview-metric-card .om-label {
-        font-size: 0.78rem;
-        font-weight: 600;
-        color: #64748b;
-        line-height: 1.2;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: #1E293B !important;
+        line-height: 100% !important;
+        margin: 0 !important;
     }
 
     .overview-metric-card .om-value {
-        font-family: 'Inter', sans-serif;
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: #0f172a;
-        letter-spacing: -0.02em;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 22px !important;
+        font-weight: 600 !important;
+        color: #0F172A !important;
+        letter-spacing: -0.01em;
         white-space: nowrap;
-        line-height: 1.15;
-        flex: 1;
-        display: flex;
-        align-items: center;
+        line-height: 100% !important;
+        margin: 0 !important;
     }
 
     .overview-metric-card .cmp-tag,
     .ov-card .cmp-tag {
-        font-size: 0.72rem;
-        font-weight: 700;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
         padding: 4px 8px;
-        border-radius: 8px;
+        border-radius: 6px;
         display: inline-flex;
         align-items: center;
         gap: 4px;
         width: fit-content;
+        height: 28px;
+        box-sizing: border-box;
         line-height: 1.2;
         border: 1px solid transparent;
     }
 
     .overview-metric-card .cmp-tag {
-        margin-top: auto;
+        margin-top: 0;
         align-self: flex-start;
     }
 
     .overview-metric-card .cmp-tag.up,
-    .ov-card:not(.hero) .cmp-tag.up,
-    .trend-growth-pill.up {
+    .ov-card:not(.hero) .cmp-tag.up {
         background: #EEF8F1 !important;
         border-color: #C4ECD0 !important;
         color: #029153 !important;
     }
 
     .overview-metric-card .cmp-tag.down,
-    .ov-card:not(.hero) .cmp-tag.down,
-    .trend-growth-pill.down {
+    .ov-card:not(.hero) .cmp-tag.down {
         background: #FEF0EF !important;
         border-color: #FCD4D0 !important;
+        color: #EE473D !important;
+    }
+
+    .trend-growth-pill,
+    .trend-growth-pill.up,
+    .trend-growth-pill.down {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+
+    .trend-growth-pill.up {
+        color: #029153 !important;
+    }
+
+    .trend-growth-pill.down {
         color: #EE473D !important;
     }
 
@@ -775,50 +855,33 @@ include '../../includes/sidebar.php';
         border-left: 5px solid transparent;
         border-right: 5px solid transparent;
         border-top: 5px solid #4362CE;
-    }
-
-    #tab_kpi .trend-table th.growth-col {
-        background: transparent !important;
-        border: none !important;
-        border-bottom: 1px solid #e2e8f0 !important;
-        padding: 0.75rem 0.25rem !important;
-        width: 70px;
-        min-width: 65px;
-        font-size: 0 !important;
-    }
-
-    #tab_kpi .trend-table td.growth-col {
-        text-align: center !important;
-        padding: 0.75rem 0.25rem !important;
-        border: none !important;
-        border-bottom: 1px solid #f1f5f9 !important;
-        background: transparent !important;
-        vertical-align: middle !important;
-        width: 70px;
-        min-width: 65px;
+        display: block !important;
     }
 
     #tab_kpi .trend-growth-pill {
         display: inline-flex;
         align-items: center;
-        gap: 3px;
-        font-size: 0.68rem;
-        font-weight: 700;
-        padding: 4px 8px;
-        border-radius: 8px;
+        justify-content: center;
+        gap: 4px;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        height: 28px !important;
+        padding: 4px 10px !important;
+        border-radius: 6px !important;
         white-space: nowrap;
-        border: 1px solid transparent;
+        box-sizing: border-box !important;
     }
 
     #tab_kpi .trend-growth-pill.up {
         background: #EEF8F1 !important;
-        border-color: #C4ECD0 !important;
+        border: 1px solid #C4ECD0 !important;
         color: #029153 !important;
     }
 
     #tab_kpi .trend-growth-pill.down {
         background: #FEF0EF !important;
-        border-color: #FCD4D0 !important;
+        border: 1px solid #FCD4D0 !important;
         color: #EE473D !important;
     }
 
@@ -4172,8 +4235,7 @@ include '../../includes/sidebar.php';
         style="background: #ffffff; border-radius: 16px; border: 1px solid #EAECEF; box-shadow: 0 1px 3px rgba(0,0,0,0.03); overflow: hidden; margin-bottom: 1.5rem;">
         <div
             style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding: 16px 24px;">
-            <h3
-                style="font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0;">
+            <h3 style="font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0;">
                 Monthly Performance by SKU</h3>
             <div style="display: flex; align-items: center; gap: 10px;">
                 <div style="position: relative;">
@@ -4670,10 +4732,9 @@ include '../../includes/sidebar.php';
             const months = Object.keys(trends);
             if (months.length === 0) return;
 
-            let headHtml = '<th style="text-align:left; font-weight:700; color:#475569; font-size:0.8rem; padding:12px 14px;">KPI Metrics</th>';
+            let headHtml = '<th style="text-align:left; font-weight:700; color:#1E293B; font-size:0.82rem; padding:12px 16px;">KPI Metrics</th>';
             months.forEach((m, i) => {
-                if (i > 0) headHtml += '<th class="growth-col"></th>';
-                headHtml += `<th style="text-align:right; font-weight:700; color:#475569; font-size:0.8rem; padding:12px 14px;">${m}</th>`;
+                headHtml += `<th style="text-align:right; font-weight:700; color:#1E293B; font-size:0.82rem; padding:12px 16px;">${m}</th>`;
             });
             $('#trend_head').html(headHtml);
 
@@ -4714,15 +4775,20 @@ include '../../includes/sidebar.php';
 
             let bodyHtml = '';
             rows.forEach(r => {
-                bodyHtml += `<tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:12px 14px; text-align:left; font-weight:600; color:#1e293b; font-size:0.85rem;"><div style="display:inline-flex; align-items:center; gap:10px;"><span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; ${r.iconBg} flex-shrink:0;">${r.iconSvg}</span> <span>${r.label}</span></div></td>`;
+                bodyHtml += `<tr><td style="padding:10px 16px; text-align:left; font-weight:500; color:#1e293b; font-size:0.85rem;"><div style="display:inline-flex; align-items:center; gap:10px;"><span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; ${r.iconBg} flex-shrink:0;">${r.iconSvg}</span> <span>${r.label}</span></div></td>`;
                 let prevVal = null;
                 months.forEach((m, i) => {
                     const raw = (trends[m] && trends[m][r.key] != null) ? trends[m][r.key] : 0;
                     let n = Number(raw);
                     if (!Number.isFinite(n)) n = 0;
 
+                    let displayVal = n.toLocaleString();
+                    if (r.isRate) displayVal = n.toFixed(1) + '%';
+                    else if (r.isMoney) displayVal = '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                    let cellContent = '';
                     if (i > 0) {
-                        let growthHtml = '<td class="growth-col"></td>';
+                        let pillHtml = '';
                         if (prevVal !== null && prevVal !== 0) {
                             const pct = ((n - prevVal) / prevVal) * 100;
                             if (Math.abs(pct) >= 0.1) {
@@ -4731,17 +4797,20 @@ include '../../includes/sidebar.php';
                                 const arrowSvg = isUp
                                     ? `<svg width="10" height="11" viewBox="0 0 11 12" fill="none" style="vertical-align:middle; margin-left:3px;"><path d="M5.28442 1.00732V10.6502" stroke="#029153" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.57144 4.93562C9.57144 4.93562 6.41508 0.649909 5.28572 0.649902C4.15629 0.649895 1 4.93562 1 4.93562" stroke="#029153" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`
                                     : `<svg width="10" height="11" viewBox="0 0 11 12" fill="none" style="vertical-align:middle; margin-left:3px;"><path d="M5.28442 10.293V0.650109" stroke="#EE473D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.57144 6.36468C9.57144 6.36468 6.41508 10.6504 5.28572 10.6504C4.15629 10.6504 1 6.36468 1 6.36468" stroke="#EE473D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-                                growthHtml = `<td class="growth-col" style="padding:12px 6px; text-align:center;"><span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% ${arrowSvg}</span></td>`;
+                                pillHtml = `<span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% ${arrowSvg}</span>`;
                             }
                         }
-                        bodyHtml += growthHtml;
+                        cellContent = `<div style="display:flex; align-items:center; justify-content:flex-end; gap:6px;">
+                            <div style="width:78px; display:flex; justify-content:flex-end; flex-shrink:0;">${pillHtml}</div>
+                            <div style="width:84px; text-align:right; font-weight:700; color:#0f172a; font-size:0.85rem; white-space:nowrap; font-variant-numeric:tabular-nums; flex-shrink:0;">${displayVal}</div>
+                        </div>`;
+                    } else {
+                        cellContent = `<div style="display:flex; align-items:center; justify-content:flex-end;">
+                            <div style="width:84px; text-align:right; font-weight:700; color:#0f172a; font-size:0.85rem; white-space:nowrap; font-variant-numeric:tabular-nums; flex-shrink:0;">${displayVal}</div>
+                        </div>`;
                     }
 
-                    let displayVal = n.toLocaleString();
-                    if (r.isRate) displayVal = n.toFixed(1) + '%';
-                    else if (r.isMoney) displayVal = '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-                    bodyHtml += `<td style="padding:12px 14px; text-align:right; font-weight:700; color:#0f172a; font-size:0.85rem; white-space:nowrap; font-variant-numeric:tabular-nums;">${displayVal}</td>`;
+                    bodyHtml += `<td style="padding:10px 16px; text-align:right;">${cellContent}</td>`;
                     prevVal = n;
                 });
                 bodyHtml += `</tr>`;

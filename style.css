@@ -1,6 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Hanken+Grotesk:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
+    /* Exact Typography Scale from code 1.html */
+    --font-headline: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
     /* Premium SaaS Intelligence Palette matching code 1.html & DESIGN.md */
     --surface: #f7f9fb;
     --surface-dim: #d8dadc;
@@ -100,12 +104,116 @@ input,
 select,
 textarea,
 optgroup {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-family: var(--font-body) !important;
     background-color: var(--bg-main);
     color: var(--text-main);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     cursor: url('assets/icons/pointer_small.png') 0 0, url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA6ElEQVQ4jZ3TMUoDQRTG8R8aPIJIKrFOZZkTeAqxSJlWCBZpLDyAeAZzAYscwFgINjlAEC30DGK0mB0YsjvZ2f3gK+Yt+99v33tziBNc4wjv2OqpW/xV/sY9xjjoCrpIQKk3uMOoFDSokjTBote4wVkb7KEFlPoFU6G3NY07gKJ/sMSVMCiExm56wKJncTJbLNr+P6NPrNLCqPDrv3jFHOc5+noP4AkTDEtizvZAOum0ir4LmnQFwbN6Txp3JlXTfXrcOb/hq0+iY2HZYqJ5H0jUMgFlR1yiywryUfrCIFNfCPuyyjyv6R+AVHRMcCzIkQAAAABJRU5ErkJggg==') 0 0, auto;
+}
+
+/* Material Symbols Outlined Icon Font */
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+
+.material-symbols-outlined.filled {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ==========================================================================
+   Exact Typography Scale from code 1.html
+   ========================================================================== */
+.font-display-lg,
+.display-lg,
+.text-display-lg {
+    font-family: var(--font-headline) !important;
+    font-size: 48px !important;
+    line-height: 56px !important;
+    letter-spacing: -0.02em !important;
+    font-weight: 700 !important;
+}
+
+.font-headline-lg,
+.headline-lg,
+.text-headline-lg {
+    font-family: var(--font-headline) !important;
+    font-size: 32px !important;
+    line-height: 40px !important;
+    letter-spacing: -0.02em !important;
+    font-weight: 700 !important;
+}
+
+.font-headline-md,
+.headline-md,
+.text-headline-md {
+    font-family: var(--font-headline) !important;
+    font-size: 24px !important;
+    line-height: 32px !important;
+    letter-spacing: -0.01em !important;
+    font-weight: 600 !important;
+}
+
+.font-body-lg,
+.body-lg,
+.text-body-lg {
+    font-family: var(--font-body) !important;
+    font-size: 18px !important;
+    line-height: 28px !important;
+    font-weight: 400 !important;
+}
+
+.font-body-md,
+.body-md,
+.text-body-md {
+    font-family: var(--font-body) !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+    font-weight: 400 !important;
+}
+
+.font-body-sm,
+.body-sm,
+.text-body-sm {
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    font-weight: 400 !important;
+}
+
+.font-label-md,
+.label-md,
+.text-label-md {
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    letter-spacing: 0.02em !important;
+    font-weight: 600 !important;
+}
+
+.font-label-sm,
+.label-sm,
+.text-label-sm {
+    font-family: var(--font-body) !important;
+    font-size: 12px !important;
+    line-height: 16px !important;
+    letter-spacing: 0.05em !important;
+    font-weight: 600 !important;
 }
 
 a,
@@ -135,7 +243,7 @@ h5,
 h6,
 .header-title h1,
 .sidebar-header span {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-family: var(--font-headline) !important;
 }
 
 /* Force Tabular Numbers for numeric columns & metrics */
@@ -2275,9 +2383,15 @@ body.sidebar-collapsed .header-toggle-btn i {
 }
 
 /* Percentage Growth Badges (Squircle / Rounded Box Style) */
-.cmp-tag,
-.trend-growth-pill {
+.cmp-tag {
     border-radius: 8px !important;
+}
+
+.trend-growth-pill {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
 }
 
 /* Metric Sub-Cards Background & Border (Image 1 style) */
@@ -2285,12 +2399,14 @@ body.sidebar-collapsed .header-toggle-btn i {
     background: #F8FAFC !important;
     border: 1px solid #EEF2F6 !important;
     border-radius: 14px !important;
-    padding: 1rem 1.15rem !important;
-    min-height: 105px !important;
+    width: 170px !important;
+    height: 144px !important;
+    min-height: 144px !important;
+    padding: 16px 18px !important;
+    box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
-    gap: 0.4rem !important;
     transition: all 0.2s ease !important;
 }
 
@@ -2304,4 +2420,82 @@ body.sidebar-collapsed .header-toggle-btn i {
     border-bottom: 1px solid #EAECEF !important;
     padding-bottom: 1rem !important;
     margin-bottom: 1.25rem !important;
+}
+
+/* Chart Tabs Speech Bubble Indicator */
+.chart-tabs {
+    overflow: visible !important;
+}
+
+.chart-tab-btn.active {
+    background: #4362CE !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    padding: 5px 16px !important;
+    border-radius: 999px !important;
+    box-shadow: 0 4px 10px rgba(67, 98, 206, 0.25) !important;
+    position: relative !important;
+}
+
+.chart-tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #4362CE;
+    display: block !important;
+}
+
+/* Trend Table Alternating Zebra Rows (1: Color, 2: None, 3: Color, 4: None, 5: Color) */
+.trend-table tbody tr:nth-child(odd) td {
+    background-color: #F7F9FE !important;
+    border-bottom: 1px solid #E8EAF2 !important;
+}
+
+.trend-table tbody tr:nth-child(odd) td:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.trend-table tbody tr:nth-child(odd) td:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.trend-table tbody tr:nth-child(even) td {
+    background-color: transparent !important;
+    border-bottom: 1px solid #E8EAF2 !important;
+}
+
+/* Trend Table Growth Badges (28px height, rounded pill) */
+.trend-growth-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-family: var(--font-body) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    height: 28px !important;
+    padding: 4px 10px !important;
+    border-radius: 6px !important;
+    white-space: nowrap;
+    box-sizing: border-box !important;
+}
+
+.trend-growth-pill.up {
+    background: #EEF8F1 !important;
+    border: 1px solid #C4ECD0 !important;
+    color: #029153 !important;
+}
+
+.trend-growth-pill.down {
+    background: #FEF0EF !important;
+    border: 1px solid #FCD4D0 !important;
+    color: #EE473D !important;
 }
