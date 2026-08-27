@@ -370,7 +370,7 @@ include '../../includes/sidebar.php';
 
     .overview-hero-grid {
         display: grid;
-        grid-template-columns: 400px repeat(3, 1fr);
+        grid-template-columns: minmax(320px, 400px) repeat(3, minmax(0, 1fr));
         gap: 20px;
         margin-bottom: 20px;
     }
@@ -450,7 +450,7 @@ include '../../includes/sidebar.php';
 
     .ov-card.hero {
         width: 100%;
-        max-width: 400px;
+        max-width: 100%;
         background-color: #4362CE !important;
         background-image: url('<?php echo BASE_URL; ?>assets/images/bg-3.png') !important;
         background-repeat: no-repeat !important;
@@ -530,7 +530,7 @@ include '../../includes/sidebar.php';
 
     .overview-row {
         display: grid;
-        grid-template-columns: 400px minmax(0, 1fr);
+        grid-template-columns: minmax(320px, 400px) minmax(0, 1fr);
         gap: 20px;
         align-items: stretch;
     }
@@ -550,7 +550,7 @@ include '../../includes/sidebar.php';
     .overview-panel-ad,
     .overview-panel-traffic {
         width: 100%;
-        max-width: 400px;
+        max-width: 100%;
         height: 390px;
         min-height: 390px;
         box-sizing: border-box;
@@ -583,13 +583,20 @@ include '../../includes/sidebar.php';
 
     #tab_kpi .trend-table {
         width: 100%;
-        table-layout: fixed;
+        min-width: 560px;
+        table-layout: auto;
         border-collapse: separate;
         border-spacing: 0;
         border: none !important;
         box-shadow: none !important;
         margin: 0 !important;
         background: transparent !important;
+    }
+
+    #tab_kpi .overview-panel-table .table-container {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        width: 100% !important;
     }
 
     #tab_kpi .trend-table th {
@@ -600,34 +607,35 @@ include '../../includes/sidebar.php';
         font-weight: 600 !important;
         text-transform: none !important;
         letter-spacing: 0 !important;
-        padding: 0.65rem 20px !important;
+        padding: 0.65rem 12px !important;
         border: none !important;
         border-bottom: 1px solid #E8EAF2 !important;
         vertical-align: middle !important;
+        white-space: nowrap !important;
     }
 
     #tab_kpi .trend-table th:first-child {
         text-align: left !important;
-        width: 34%;
-        padding-left: 20px !important;
+        width: 26%;
+        padding-left: 16px !important;
     }
 
     #tab_kpi .trend-table th:nth-child(2) {
         text-align: right !important;
-        width: 22%;
-        padding-right: 20px !important;
+        width: 18%;
+        padding-right: 12px !important;
     }
 
     #tab_kpi .trend-table th:nth-child(3) {
         text-align: right !important;
-        width: 22%;
-        padding-right: 20px !important;
+        width: 28%;
+        padding-right: 12px !important;
     }
 
     #tab_kpi .trend-table th:nth-child(4) {
         text-align: right !important;
-        width: 22%;
-        padding-right: 20px !important;
+        width: 28%;
+        padding-right: 16px !important;
     }
 
     #tab_kpi .trend-table tr {
@@ -635,7 +643,7 @@ include '../../includes/sidebar.php';
     }
 
     #tab_kpi .trend-table td {
-        padding: 0 20px !important;
+        padding: 0 12px !important;
         height: 50px;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         font-size: 14px !important;
@@ -644,6 +652,7 @@ include '../../includes/sidebar.php';
         border-bottom: 1px solid #E8EAF2 !important;
         color: #0F172A !important;
         vertical-align: middle !important;
+        white-space: nowrap !important;
     }
 
     #tab_kpi .trend-table td:first-child {
@@ -651,14 +660,22 @@ include '../../includes/sidebar.php';
         color: #1E293B !important;
         font-weight: 500 !important;
         font-size: 14px !important;
-        padding-left: 20px !important;
+        padding-left: 16px !important;
     }
 
-    #tab_kpi .trend-table td:nth-child(2),
-    #tab_kpi .trend-table td:nth-child(3),
+    #tab_kpi .trend-table td:nth-child(2) {
+        text-align: right !important;
+        padding-right: 12px !important;
+    }
+
+    #tab_kpi .trend-table td:nth-child(3) {
+        text-align: right !important;
+        padding-right: 12px !important;
+    }
+
     #tab_kpi .trend-table td:nth-child(4) {
         text-align: right !important;
-        padding-right: 20px !important;
+        padding-right: 16px !important;
     }
 
     /* Alternating Row Colors matching Figma (1: Color, 2: Transparent, 3: Color, 4: Transparent, 5: Color) */
@@ -700,16 +717,17 @@ include '../../includes/sidebar.php';
 
     .overview-metric-grid {
         display: grid;
-        grid-template-columns: repeat(2, 170px);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
-        justify-content: space-between;
+        width: 100%;
     }
 
     .overview-metric-card {
         background: #F8FAFC !important;
         border: 1px solid #EEF2F6 !important;
         border-radius: 14px !important;
-        width: 170px !important;
+        width: 100% !important;
+        max-width: 100% !important;
         height: 144px !important;
         min-height: 144px !important;
         padding: 16px 18px !important;
@@ -929,12 +947,12 @@ include '../../includes/sidebar.php';
     /* Large Desktops & HD Displays (1200px - 1440px) */
     @media (max-width: 1399px) {
         .overview-hero-grid {
-            grid-template-columns: 1.25fr 1fr 1fr 1fr;
-            gap: 0.75rem;
+            grid-template-columns: minmax(280px, 1.25fr) repeat(3, minmax(0, 1fr));
+            gap: 1rem;
         }
 
         .ov-card {
-            padding: 1rem 1.1rem;
+            padding: 1.1rem 1.2rem;
         }
 
         .ov-card .ov-value {
@@ -942,8 +960,8 @@ include '../../includes/sidebar.php';
         }
 
         .overview-row {
-            grid-template-columns: minmax(260px, 35%) minmax(0, 1fr);
-            gap: 0.75rem;
+            grid-template-columns: minmax(300px, 38%) minmax(0, 1fr);
+            gap: 1rem;
         }
     }
 
@@ -1111,25 +1129,56 @@ include '../../includes/sidebar.php';
         }
 
         .overview-hero-grid {
-            grid-template-columns: 1fr;
-            gap: 0.65rem;
+            grid-template-columns: 1fr !important;
+            gap: 0.75rem !important;
         }
 
         .ov-card,
         .ov-card.hero {
             width: 100% !important;
             max-width: 100% !important;
-            min-height: 105px;
-            padding: 0.95rem 1.05rem;
+            min-height: 120px !important;
+            height: auto !important;
+            padding: 1rem 1.15rem !important;
+            box-sizing: border-box !important;
+        }
+
+        .ov-card .ov-top,
+        .ov-card.hero .ov-top {
+            margin-bottom: 8px !important;
+        }
+
+        .ov-card .ov-label,
+        .ov-card.hero .ov-label {
+            font-size: 13px !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
         }
 
         .ov-card .ov-value {
-            font-size: 1.5rem;
-            margin-bottom: 0.35rem;
+            font-size: clamp(20px, 5.5vw, 24px) !important;
+            margin-bottom: 12px !important;
+            line-height: 1.1 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
         }
 
         .ov-card.hero .ov-value {
-            font-size: 1.65rem;
+            font-size: clamp(24px, 6.5vw, 30px) !important;
+            margin-top: 6px !important;
+            margin-bottom: 12px !important;
+            line-height: 1.1 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        .ov-card .cmp-tag,
+        .ov-card.hero .cmp-tag {
+            font-size: 12px !important;
+            padding: 4px 8px !important;
         }
 
         .overview-metric-grid {
@@ -1325,10 +1374,6 @@ include '../../includes/sidebar.php';
             align-items: center !important;
             justify-content: center !important;
         }
-
-        .ov-card .ov-value {
-            font-size: 1.4rem;
-        }
     }
 
     /* Figma Profit & Fees (Profit & Loss Analysis) Styles */
@@ -1364,21 +1409,23 @@ include '../../includes/sidebar.php';
         border-radius: 16px !important;
         box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
         display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
         overflow: hidden !important;
-        height: 154px !important;
+        min-height: 154px !important;
+        height: auto !important;
         box-sizing: border-box !important;
     }
 
     .pl-hero-section {
-        padding: 20px 24px !important;
+        padding: 18px 20px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
-        gap: 0.25rem !important;
+        gap: 0.5rem !important;
         position: relative !important;
         border-right: 1px solid #EAECEF !important;
         box-sizing: border-box !important;
+        min-width: 0 !important;
     }
 
     .pl-hero-section:last-child {
@@ -1387,27 +1434,34 @@ include '../../includes/sidebar.php';
 
     .pl-hero-label {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 16px !important;
+        font-size: clamp(13px, 1.1vw, 16px) !important;
         font-weight: 500 !important;
         color: #1A1A1A !important;
-        line-height: 100% !important;
-        margin-bottom: 20px !important;
+        line-height: 1.2 !important;
+        margin-bottom: 8px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
 
     .pl-hero-value {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 28px !important;
+        font-size: clamp(20px, 1.85vw, 28px) !important;
         font-weight: 600 !important;
         color: #1A1A1A !important;
-        line-height: 100% !important;
-        margin: 0 0 14px 0 !important;
+        line-height: 1.1 !important;
+        margin: 0 0 10px 0 !important;
         font-variant-numeric: tabular-nums;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
 
     .pl-hero-stat-row {
-        display: inline-flex !important;
+        display: flex !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 6px !important;
+        flex-wrap: wrap !important;
     }
 
     .pl-hero-badge {
@@ -1415,21 +1469,24 @@ include '../../includes/sidebar.php';
         align-items: center !important;
         gap: 4px !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 13px !important;
+        font-size: clamp(11px, 0.9vw, 13px) !important;
         font-weight: 600 !important;
-        height: 28px !important;
-        padding: 4px 8px !important;
+        height: 26px !important;
+        padding: 3px 7px !important;
         border-radius: 6px !important;
         width: fit-content !important;
         box-sizing: border-box !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
     }
 
     .pl-hero-stat-text {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 13px !important;
+        font-size: clamp(11px, 0.9vw, 13px) !important;
         font-weight: 500 !important;
         color: #1A1A1A !important;
         line-height: 1 !important;
+        white-space: nowrap !important;
     }
 
     .pl-hero-badge.green {
@@ -1459,7 +1516,22 @@ include '../../includes/sidebar.php';
         max-width: 100%;
     }
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1300px) {
+        .pl-main-layout {
+            grid-template-columns: minmax(0, 1fr) 300px !important;
+            gap: 1rem !important;
+        }
+
+        .pl-right-col {
+            width: 300px !important;
+        }
+
+        .pl-hero-section {
+            padding: 14px 16px !important;
+        }
+    }
+
+    @media (max-width: 1100px) {
         .pl-main-layout {
             grid-template-columns: 1fr !important;
         }
@@ -1481,45 +1553,7 @@ include '../../includes/sidebar.php';
         }
     }
 
-    @media (max-width: 900px) {
-        .pl-hero-3in1-card {
-            grid-template-columns: repeat(3, 1fr) !important;
-        }
-
-        .pl-hero-section {
-            padding: 0.75rem 0.65rem !important;
-            border-right: 1px solid #f1f5f9 !important;
-            border-bottom: none !important;
-        }
-
-        .pl-hero-section:last-child {
-            border-right: none !important;
-        }
-
-        .pl-hero-label {
-            font-size: 0.68rem !important;
-            white-space: nowrap !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-        }
-
-        .pl-hero-stat-row {
-            gap: 4px !important;
-        }
-
-        .pl-hero-badge {
-            font-size: 0.62rem !important;
-            padding: 2px 5px !important;
-            border-radius: 6px !important;
-            height: auto !important;
-        }
-
-        .pl-hero-stat-text {
-            font-size: 0.65rem !important;
-        }
-    }
-
-    @media (max-width: 650px) {
+    @media (max-width: 768px) {
         .pl-hero-3in1-card {
             grid-template-columns: 1fr !important;
             height: auto !important;
@@ -1527,7 +1561,7 @@ include '../../includes/sidebar.php';
 
         .pl-hero-section {
             border-right: none !important;
-            border-bottom: 1px solid #f1f5f9 !important;
+            border-bottom: 1px solid #EAECEF !important;
             padding: 1rem 1.25rem !important;
         }
 
@@ -1536,7 +1570,7 @@ include '../../includes/sidebar.php';
         }
 
         .pl-hero-label {
-            font-size: 0.85rem !important;
+            font-size: 14px !important;
         }
 
         .pl-hero-value {
@@ -1544,12 +1578,12 @@ include '../../includes/sidebar.php';
         }
 
         .pl-hero-badge {
-            font-size: 0.75rem !important;
+            font-size: 12px !important;
             padding: 4px 8px !important;
         }
 
         .pl-hero-stat-text {
-            font-size: 0.75rem !important;
+            font-size: 12px !important;
         }
     }
 
@@ -2521,10 +2555,9 @@ include '../../includes/sidebar.php';
     }
 
     /* Product Performance Figma hero */
-    /* Product Performance Figma hero */
     .pp-hero-grid {
         display: grid;
-        grid-template-columns: 500px minmax(0, 1fr);
+        grid-template-columns: minmax(360px, 460px) minmax(0, 1fr);
         gap: 1.25rem;
         margin-bottom: 1.25rem;
         align-items: stretch;
@@ -2532,7 +2565,40 @@ include '../../includes/sidebar.php';
     }
 
     /* Responsive Breakpoints for Product Performance */
-    @media (max-width: 1200px) {
+    @media (max-width: 1400px) {
+        .pp-hero-grid {
+            grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+            gap: 1rem;
+        }
+
+        .pp-donut-body {
+            gap: 1rem !important;
+        }
+
+        .pp-donut-wrap {
+            width: 220px !important;
+            height: 220px !important;
+        }
+
+        .pp-donut-center {
+            width: 120px !important;
+            height: 120px !important;
+        }
+
+        .pp-donut-center p {
+            font-size: 24px !important;
+        }
+
+        .pp-kpi-card {
+            padding: 14px 16px !important;
+        }
+
+        .pp-kpi-value {
+            font-size: 22px !important;
+        }
+    }
+
+    @media (max-width: 1199px) {
         .pp-hero-grid {
             grid-template-columns: 1fr !important;
             gap: 1.25rem !important;
@@ -2566,19 +2632,19 @@ include '../../includes/sidebar.php';
         }
 
         .pp-donut-wrap {
-            width: 260px !important;
-            height: 260px !important;
+            width: 240px !important;
+            height: 240px !important;
             margin: 0 auto !important;
         }
 
         .pp-donut-center {
-            width: 175px !important;
-            height: 175px !important;
+            width: 140px !important;
+            height: 140px !important;
         }
 
         .pp-donut-legend {
             width: 100% !important;
-            max-width: 420px !important;
+            max-width: 100% !important;
             margin: 0 auto !important;
         }
 
@@ -2606,6 +2672,8 @@ include '../../includes/sidebar.php';
 
         .pp-sku-panel {
             padding: 16px !important;
+            height: auto !important;
+            min-height: 0 !important;
         }
 
         .pp-sku-row {
@@ -2627,21 +2695,21 @@ include '../../includes/sidebar.php';
         }
 
         .pp-donut-wrap {
-            width: 220px !important;
-            height: 220px !important;
+            width: 200px !important;
+            height: 200px !important;
         }
 
         .pp-donut-center {
-            width: 148px !important;
-            height: 148px !important;
+            width: 120px !important;
+            height: 120px !important;
         }
 
         .pp-donut-center p {
-            font-size: 24px !important;
+            font-size: 22px !important;
         }
 
         .pp-donut-center span {
-            font-size: 12px !important;
+            font-size: 11px !important;
         }
 
         .pp-legend-row {
@@ -2656,12 +2724,10 @@ include '../../includes/sidebar.php';
 
         .pp-kpi-card {
             height: auto !important;
-            min-height: 108px !important;
-            padding: 16px 18px !important;
+            min-height: 96px !important;
+            padding: 14px 16px !important;
         }
     }
-
-
 
     .pp-sku-panel,
     .pp-donut-card,
@@ -2676,10 +2742,9 @@ include '../../includes/sidebar.php';
         padding: 20px 20px 16px 20px !important;
         display: flex;
         flex-direction: column;
-        width: 500px;
+        width: 100%;
         max-width: 100%;
-        height: 598px;
-        min-height: 598px;
+        min-height: 560px;
         box-sizing: border-box;
     }
 
@@ -2715,12 +2780,12 @@ include '../../includes/sidebar.php';
         flex-direction: row !important;
         align-items: center !important;
         justify-content: space-between !important;
-        padding: 12px 16px !important;
+        padding: 12px 14px !important;
         border: 1px solid #EAECEF !important;
         border-radius: 12px !important;
         background: #ffffff !important;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
-        min-height: 76px !important;
+        min-height: 72px !important;
         box-sizing: border-box !important;
         position: relative;
         transition: all 0.15s ease !important;
@@ -2732,8 +2797,8 @@ include '../../includes/sidebar.php';
     }
 
     .pp-sku-rank {
-        width: 32px !important;
-        height: 32px !important;
+        width: 30px !important;
+        height: 30px !important;
         border-radius: 50% !important;
         display: flex !important;
         align-items: center !important;
@@ -2767,14 +2832,14 @@ include '../../includes/sidebar.php';
     .pp-sku-info {
         min-width: 0 !important;
         flex: 1 !important;
-        margin-left: 12px !important;
-        margin-right: 8px !important;
+        margin-left: 10px !important;
+        margin-right: 6px !important;
         text-align: left !important;
     }
 
     .pp-sku-info strong {
         display: block !important;
-        font-size: 15px !important;
+        font-size: 14px !important;
         font-weight: 600 !important;
         color: #1A1A1A !important;
         white-space: nowrap !important;
@@ -2785,7 +2850,7 @@ include '../../includes/sidebar.php';
 
     .pp-sku-info span {
         display: block !important;
-        font-size: 12px !important;
+        font-size: 11px !important;
         font-weight: 500 !important;
         color: #64748B !important;
         text-transform: none !important;
@@ -2797,14 +2862,14 @@ include '../../includes/sidebar.php';
         border: 1px solid #EAECEF !important;
         border-radius: 10px !important;
         background: #FFFFFF !important;
-        padding: 8px 12px !important;
-        width: 88px !important;
-        height: 52px !important;
+        padding: 6px 10px !important;
+        width: 80px !important;
+        height: 48px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 6px !important;
+        gap: 4px !important;
         flex-shrink: 0 !important;
         text-align: center !important;
         box-sizing: border-box !important;
@@ -2813,7 +2878,7 @@ include '../../includes/sidebar.php';
     .pp-sku-units strong {
         display: block !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 13px !important;
+        font-size: 12px !important;
         font-weight: 600 !important;
         color: #1A1A1A !important;
         line-height: 100% !important;
@@ -2830,7 +2895,7 @@ include '../../includes/sidebar.php';
         gap: 3px !important;
         font-style: normal !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 12px !important;
+        font-size: 11px !important;
         font-weight: 600 !important;
         line-height: 100% !important;
         letter-spacing: 0% !important;
@@ -2853,27 +2918,27 @@ include '../../includes/sidebar.php';
         flex-direction: column !important;
         align-items: flex-end !important;
         justify-content: center !important;
-        min-width: 80px !important;
+        min-width: 75px !important;
         flex-shrink: 0 !important;
-        margin-left: 12px !important;
+        margin-left: 8px !important;
         text-align: right !important;
     }
 
     .pp-sku-rev small {
         display: block !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 12px !important;
+        font-size: 11px !important;
         font-weight: 500 !important;
         color: #64748B !important;
         text-transform: none !important;
-        margin: 0 0 4px 0 !important;
+        margin: 0 0 3px 0 !important;
         line-height: 100% !important;
     }
 
     .pp-sku-rev strong {
         display: block !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 18px !important;
+        font-size: 16px !important;
         font-weight: 700 !important;
         color: #1A1A1A !important;
         line-height: 100% !important;
@@ -2887,13 +2952,12 @@ include '../../includes/sidebar.php';
         gap: 1.25rem;
         min-width: 0;
         width: 100%;
-        height: 598px;
-        min-height: 598px;
+        min-height: 560px;
         box-sizing: border-box;
     }
 
     .pp-donut-card {
-        padding: 24px 30px 24px 30px !important;
+        padding: 20px 24px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
@@ -2935,20 +2999,20 @@ include '../../includes/sidebar.php';
 
     .pp-donut-body {
         display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
+        grid-template-columns: minmax(200px, 1fr) minmax(220px, 1.25fr) !important;
         align-items: center !important;
         justify-items: center !important;
-        gap: 2rem !important;
+        gap: 1.5rem !important;
         width: 100% !important;
         flex: 1 !important;
-        padding: 10px 0 !important;
+        padding: 8px 0 !important;
         box-sizing: border-box !important;
     }
 
     .pp-donut-wrap {
         position: relative !important;
-        width: 280px !important;
-        height: 280px !important;
+        width: min(240px, 100%) !important;
+        height: 240px !important;
         flex-shrink: 0 !important;
         margin: 0 auto !important;
     }
@@ -2963,24 +3027,24 @@ include '../../includes/sidebar.php';
         top: 50% !important;
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
-        width: 190px !important;
-        height: 190px !important;
+        width: 135px !important;
+        height: 135px !important;
         border-radius: 50% !important;
         background: #ffffff !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
         pointer-events: none !important;
         text-align: center !important;
-        z-index: 2 !important;
+        z-index: 10 !important;
     }
 
     .pp-donut-center p {
         margin: 0 !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 32px !important;
+        font-size: 26px !important;
         font-weight: 800 !important;
         color: #1A1A1A !important;
         line-height: 1 !important;
@@ -2989,10 +3053,10 @@ include '../../includes/sidebar.php';
 
     .pp-donut-center span {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         color: #1A1A1A !important;
         font-weight: 500 !important;
-        margin-top: 4px !important;
+        margin-top: 3px !important;
         line-height: 1 !important;
     }
 
@@ -3001,7 +3065,7 @@ include '../../includes/sidebar.php';
         flex-direction: column !important;
         gap: 0 !important;
         width: 100% !important;
-        max-width: 380px !important;
+        min-width: 0 !important;
         margin: 0 auto !important;
     }
 
@@ -3010,11 +3074,13 @@ include '../../includes/sidebar.php';
         align-items: center !important;
         justify-content: space-between !important;
         width: 100% !important;
-        height: 52px !important;
-        min-height: 52px !important;
+        min-width: 0 !important;
+        height: 48px !important;
+        min-height: 48px !important;
         padding: 0 !important;
         border-bottom: 1px solid #F1F3F6 !important;
         box-sizing: border-box !important;
+        gap: 8px !important;
     }
 
     .pp-legend-row:last-child {
@@ -3024,9 +3090,10 @@ include '../../includes/sidebar.php';
     .pp-legend-row .name-wrap {
         display: flex !important;
         align-items: center !important;
-        gap: 10px !important;
+        gap: 8px !important;
         min-width: 0 !important;
         flex: 1 !important;
+        overflow: hidden !important;
     }
 
     .pp-legend-row .dot {
@@ -3038,7 +3105,7 @@ include '../../includes/sidebar.php';
 
     .pp-legend-row .name {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         font-weight: 500 !important;
         color: #475569 !important;
         overflow: hidden !important;
@@ -3048,29 +3115,31 @@ include '../../includes/sidebar.php';
 
     .pp-legend-row .val {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         font-weight: 700 !important;
         color: #1A1A1A !important;
         font-variant-numeric: tabular-nums !important;
         text-align: right !important;
-        margin-left: auto !important;
-        margin-right: 20px !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
     }
 
     .pp-legend-row .pct {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         font-weight: 700 !important;
         color: #1A1A1A !important;
         font-variant-numeric: tabular-nums !important;
-        min-width: 32px !important;
+        min-width: 30px !important;
         text-align: right !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
     }
 
     .pp-kpi-row {
         display: grid !important;
         grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        gap: 20px !important;
+        gap: 16px !important;
         width: 100% !important;
         margin: 0 !important;
         flex-shrink: 0 !important;
@@ -3078,10 +3147,10 @@ include '../../includes/sidebar.php';
     }
 
     .pp-kpi-card {
-        padding: 18px 22px !important;
+        padding: 16px 18px !important;
         position: relative !important;
-        min-height: 126px !important;
-        height: 126px !important;
+        min-height: 114px !important;
+        height: auto !important;
         margin: 0 !important;
         box-sizing: border-box !important;
         display: flex !important;
@@ -3091,15 +3160,16 @@ include '../../includes/sidebar.php';
         border: 1px solid #EAECEF !important;
         border-radius: 16px !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+        min-width: 0 !important;
     }
 
     .pp-kpi-icon {
         position: absolute !important;
-        top: 18px !important;
-        right: 18px !important;
-        width: 38px !important;
-        height: 38px !important;
-        border-radius: 10px !important;
+        top: 14px !important;
+        right: 14px !important;
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 8px !important;
         background: #EEF2FF !important;
         display: flex !important;
         align-items: center !important;
@@ -3108,19 +3178,23 @@ include '../../includes/sidebar.php';
 
     .pp-kpi-label {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         font-weight: 500 !important;
         color: #475569 !important;
         margin: 0 !important;
         line-height: 1 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        padding-right: 36px !important;
     }
 
     .pp-kpi-value {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 26px !important;
+        font-size: 24px !important;
         font-weight: 700 !important;
         color: #1A1A1A !important;
-        margin: 8px 0 16px 0 !important;
+        margin: 6px 0 10px 0 !important;
         line-height: 1 !important;
         font-variant-numeric: tabular-nums !important;
     }
@@ -3128,38 +3202,35 @@ include '../../includes/sidebar.php';
     .pp-kpi-footer {
         display: flex !important;
         align-items: center !important;
-        gap: 7px !important;
-        height: 28px !important;
+        gap: 6px !important;
+        height: auto !important;
+        flex-wrap: wrap !important;
     }
 
     .pp-kpi-badge {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        padding: 6px 10px !important;
-        height: 28px !important;
+        padding: 4px 8px !important;
+        height: 24px !important;
         box-sizing: border-box !important;
         border-radius: 6px !important;
         background: #EEF8F1 !important;
+        border: 1px solid #C4ECD0 !important;
         color: #029153 !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 13px !important;
+        font-size: 12px !important;
         font-weight: 600 !important;
-        line-height: 100% !important;
-        letter-spacing: 0% !important;
         white-space: nowrap !important;
     }
 
     .pp-kpi-subtext {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 13px !important;
-        font-weight: 400 !important;
+        font-size: 12px !important;
         color: #64748B !important;
-        line-height: 100% !important;
+        font-weight: 500 !important;
         white-space: nowrap !important;
     }
-
-
 
     #product_list {
         display: flex;
@@ -5578,9 +5649,9 @@ include '../../includes/sidebar.php';
                                 pillHtml = `<span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% ${arrowSvg}</span>`;
                             }
                         }
-                        cellContent = `<div style="display:inline-flex; align-items:center; justify-content:flex-end; gap:6px;">
-                            <div style="width:78px; display:flex; justify-content:flex-end; flex-shrink:0;">${pillHtml}</div>
-                            <div style="width:84px; text-align:right; font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; flex-shrink:0;">${displayVal}</div>
+                        cellContent = `<div style="display:inline-flex; align-items:center; justify-content:flex-end; gap:8px; white-space:nowrap;">
+                            ${pillHtml}
+                            <span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums;">${displayVal}</span>
                         </div>`;
                     } else {
                         cellContent = `<span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums;">${displayVal}</span>`;
@@ -7024,6 +7095,16 @@ include '../../includes/sidebar.php';
                     // 1. Revenue Share by SKU (Doughnut ChartJS)
                     const ctxRev = document.getElementById('productRevenueShareChart').getContext('2d');
                     if (window.productRevenueShareChartInst) window.productRevenueShareChartInst.destroy();
+
+                    if (Chart.Tooltip && Chart.Tooltip.positioners) {
+                        Chart.Tooltip.positioners.cursor = function (items, eventPosition) {
+                            return {
+                                x: eventPosition.x,
+                                y: eventPosition.y - 12
+                            };
+                        };
+                    }
+
                     window.productRevenueShareChartInst = new Chart(ctxRev, {
                         type: 'doughnut',
                         data: {
@@ -7036,23 +7117,25 @@ include '../../includes/sidebar.php';
                             }]
                         },
                         options: {
-                            cutout: '67%',
+                            cutout: '68%',
                             responsive: true,
                             maintainAspectRatio: false,
                             plugins: {
                                 legend: { display: false },
                                 tooltip: {
-                                    backgroundColor: '#ffffff',
-                                    titleColor: '#0f172a',
-                                    bodyColor: '#0f172a',
-                                    borderColor: '#e2e8f0',
+                                    position: 'cursor',
+                                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                    titleColor: '#ffffff',
+                                    bodyColor: '#ffffff',
+                                    borderColor: 'rgba(255, 255, 255, 0.1)',
                                     borderWidth: 1,
                                     padding: 10,
                                     cornerRadius: 8,
                                     displayColors: true,
                                     callbacks: {
                                         label: function (context) {
-                                            return context.label + ': $' + Number(context.parsed).toLocaleString();
+                                            const val = context.raw !== undefined ? context.raw : context.parsed;
+                                            return ' ' + context.label + ': $' + Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                                         }
                                     }
                                 }

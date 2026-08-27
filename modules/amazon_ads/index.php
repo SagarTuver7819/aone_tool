@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once '../../config.php';
 require_once '../../includes/functions.php';
 
@@ -330,105 +330,189 @@ include '../../includes/sidebar.php';
     /* Main 2-Column Grid */
     .ad-main-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1.95fr) minmax(360px, 0.95fr);
-        gap: 1.25rem;
+        grid-template-columns: minmax(0, 1fr) 350px;
+        gap: 20px;
         align-items: start;
     }
 
-    .ad-left-col,
+    .ad-left-col {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        min-width: 0;
+    }
+
     .ad-right-col {
         display: flex;
         flex-direction: column;
-        gap: 1.25rem;
+        gap: 20px;
+        width: 350px;
+        min-width: 350px;
+    }
+
+    .ad-section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        width: 100%;
+    }
+
+    .ad-section-title {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        color: #0F172A !important;
+        margin: 0 !important;
+        line-height: 100% !important;
     }
 
     .ad-card {
         background: #FFFFFF;
-        border: 1px solid #EAECEF;
-        border-radius: 16px;
-        padding: 1.4rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+        border: 1px solid #E8EAF2;
+        border-radius: 14px;
+        padding: 20px 24px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        box-sizing: border-box;
+    }
+
+    /* Left Chart Cards Heights */
+    .ad-chart-card-1 {
+        min-height: 381.5px;
+        border-radius: 14px;
+        border: 1px solid #E8EAF2;
+        padding: 20px 24px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .ad-chart-card-2 {
+        min-height: 389.5px;
+        border-radius: 14px;
+        border: 1px solid #E8EAF2;
+        padding: 20px 24px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    /* Right Ad Type Performance Card */
+    .ad-type-card {
+        border-radius: 14px;
+        border: 1px solid #E8EAF2;
+        background: #FFFFFF;
+        padding: 20px 20px !important;
+        box-sizing: border-box;
     }
 
     .ad-card-head {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 1.25rem;
+        align-items: center;
+        margin-bottom: 12px;
+        width: 100%;
     }
 
     .ad-card-title {
-        font-family: 'Inter', sans-serif;
-        font-size: 1rem;
-        font-weight: 800;
-        color: #0F172A;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        color: #0F172A !important;
         margin: 0;
+        line-height: 100% !important;
     }
 
     .ad-card-sub {
-        font-size: 0.75rem;
-        color: #64748B;
-        margin: 3px 0 0 0;
-        font-weight: 500;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        color: #64748B !important;
+        margin: 3px 0 0 0 !important;
+        font-weight: 400 !important;
+        line-height: 100% !important;
     }
 
-    /* Ad Type Performance Cards (Right column) */
+    /* Ad Type Performance Sections */
     .ad-type-sec {
-        margin-bottom: 1.25rem;
+        padding-bottom: 20px !important;
+        margin-bottom: 20px !important;
+        border-bottom: 1px solid #F1F3F6;
     }
 
     .ad-type-sec:last-child {
-        margin-bottom: 0;
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+        border-bottom: none;
     }
 
     .ad-type-head {
-        margin-bottom: 0.65rem;
+        margin-bottom: 20px !important;
     }
 
     .ad-type-head-title {
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: #0F172A;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        color: #1A1A1A !important;
         margin: 0;
+        line-height: 100% !important;
     }
 
     .ad-type-head-sub {
-        font-size: 0.7rem;
-        color: #64748B;
-        margin: 1px 0 0 0;
-        font-weight: 500;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px !important;
+        color: #64748B !important;
+        margin: 2px 0 0 0 !important;
+        font-weight: 400 !important;
+        line-height: 100% !important;
     }
 
     .ad-type-2x2 {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
+        gap: 10px !important;
     }
 
     .ad-mini-box {
         background: #F8FAFC;
         border: 1px solid #F1F5F9;
         border-radius: 10px;
-        padding: 10px 14px;
+        height: 68px !important;
+        min-height: 68px !important;
+        padding: 12px 14px !important;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .ad-mini-box .label {
-        font-size: 0.68rem;
-        font-weight: 700;
-        color: #64748B;
-        margin-bottom: 4px;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        color: #64748B !important;
+        margin-bottom: 10px !important;
+        line-height: 100% !important;
     }
 
     .ad-mini-box .val {
-        font-family: 'Inter', sans-serif;
-        font-size: 0.98rem;
-        font-weight: 800;
-        color: #0F172A;
-        margin: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        color: #0F172A !important;
+        margin: 0 !important;
+        line-height: 18px !important;
+        font-variant-numeric: tabular-nums !important;
     }
 
     .ad-mini-box .val.blue {
-        color: #4362CE;
+        color: #4362CE !important;
+    }
+
+    .ad-mini-box .val.red {
+        color: #EE473D !important;
     }
 
     /* 3-Month Comparison Table */
@@ -469,13 +553,17 @@ include '../../includes/sidebar.php';
         color: #475569;
     }
 
-    /* Pill Filter Toggle */
+    /* Pill Filter Toggle (Figma Pixel-Perfect Pill with Active Arrow) */
     .ad-pill-group {
-        display: flex;
-        background: #F1F5F9;
-        border-radius: 8px;
-        padding: 2px;
-        gap: 2px;
+        display: inline-flex;
+        align-items: center;
+        background: #F1F4F9 !important;
+        padding: 4px 6px;
+        border-radius: 999px;
+        gap: 0.25rem;
+        box-shadow: none !important;
+        border: none !important;
+        overflow: visible !important;
     }
 
     /* ==========================================================================
@@ -493,16 +581,23 @@ include '../../includes/sidebar.php';
         }
 
         .ad-right-col {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 1.25rem !important;
+            display: flex !important;
+            flex-direction: column !important;
             width: 100% !important;
+            min-width: 0 !important;
+            gap: 1.25rem !important;
+        }
+
+        .ad-chart-card-1,
+        .ad-chart-card-2 {
+            min-height: 0 !important;
+            height: auto !important;
         }
     }
 
     @media (max-width: 992px) {
         .ad-right-col {
-            grid-template-columns: 1fr !important;
+            width: 100% !important;
         }
     }
 
@@ -618,15 +713,30 @@ include '../../includes/sidebar.php';
 
         .ad-card-head .ad-pill-group {
             width: 100% !important;
+            max-width: 100% !important;
+            display: flex !important;
+            flex-wrap: nowrap !important;
             overflow-x: auto !important;
             -webkit-overflow-scrolling: touch !important;
+            scrollbar-width: none !important;
+            border-radius: 999px !important;
+            padding: 3px 4px !important;
+        }
+
+        .ad-card-head .ad-pill-group::-webkit-scrollbar {
+            display: none !important;
         }
 
         .ad-pill-btn {
-            flex: 1 !important;
+            flex: 1 0 auto !important;
             text-align: center !important;
-            padding: 4px 6px !important;
-            font-size: 0.72rem !important;
+            padding: 5px 12px !important;
+            font-size: 0.75rem !important;
+            border-radius: 999px !important;
+        }
+
+        .ad-pill-btn.active::after {
+            display: none !important;
         }
 
         .kpi-trend-table-wrap {
@@ -649,19 +759,46 @@ include '../../includes/sidebar.php';
     .ad-pill-btn {
         border: none;
         background: transparent;
-        color: #64748B;
-        padding: 4px 12px;
-        border-radius: 6px;
-        font-size: 0.75rem;
+        color: #475569;
+        padding: 5px 14px;
+        border-radius: 999px;
+        font-size: 0.78rem;
         font-weight: 600;
         cursor: pointer;
+        white-space: nowrap;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         transition: all 0.15s ease;
     }
 
+    .ad-pill-btn:hover {
+        color: #0f172a;
+    }
+
     .ad-pill-btn.active {
-        background: #4362CE;
-        color: #FFFFFF;
-        font-weight: 700;
+        background: #4362CE !important;
+        color: #FFFFFF !important;
+        font-weight: 700 !important;
+        padding: 5px 16px !important;
+        border-radius: 999px !important;
+        box-shadow: 0 4px 10px rgba(67, 98, 206, 0.25) !important;
+        position: relative !important;
+    }
+
+    .ad-pill-btn.active::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid #4362CE;
+        display: block !important;
     }
 </style>
 
@@ -706,15 +843,30 @@ include '../../includes/sidebar.php';
 
         .ad-card-head .ad-pill-group {
             width: 100% !important;
+            max-width: 100% !important;
+            display: flex !important;
+            flex-wrap: nowrap !important;
             overflow-x: auto !important;
             -webkit-overflow-scrolling: touch !important;
+            scrollbar-width: none !important;
+            border-radius: 999px !important;
+            padding: 3px 4px !important;
+        }
+
+        .ad-card-head .ad-pill-group::-webkit-scrollbar {
+            display: none !important;
         }
 
         .ad-pill-btn {
-            flex: 1 !important;
+            flex: 1 0 auto !important;
             text-align: center !important;
-            padding: 4px 6px !important;
-            font-size: 0.72rem !important;
+            padding: 5px 12px !important;
+            font-size: 0.75rem !important;
+            border-radius: 999px !important;
+        }
+
+        .ad-pill-btn.active::after {
+            display: none !important;
         }
 
         .kpi-trend-table-wrap {
@@ -896,20 +1048,20 @@ include '../../includes/sidebar.php';
         <!-- LEFT COLUMN: Charts & Heatmap -->
         <div class="ad-left-col">
             <!-- 1. Total Ad Spend vs Total Sales Line Chart Card -->
-            <div class="ad-card">
+            <div class="ad-card ad-chart-card-1">
                 <div class="ad-card-head">
                     <div>
                         <h3 class="ad-card-title">Total Ad Spend vs Total Sales</h3>
                         <p class="ad-card-sub">Comparison of Advertising Spend vs. Total Sales</p>
                     </div>
                 </div>
-                <div style="height: 310px; position: relative; width: 100%;">
+                <div style="height: 295px; position: relative; width: 100%;">
                     <canvas id="trendChart"></canvas>
                 </div>
             </div>
 
             <!-- 2. Sales / Ad Spend / ROAS Bar Chart Card -->
-            <div class="ad-card">
+            <div class="ad-card ad-chart-card-2">
                 <div class="ad-card-head">
                     <div>
                         <h3 class="ad-card-title">Sales / Ad Spend / ROAS Bar Chart</h3>
@@ -931,7 +1083,7 @@ include '../../includes/sidebar.php';
                         </div>
                     </div>
                 </div>
-                <div style="height: 310px; position: relative; width: 100%;">
+                <div style="height: 295px; position: relative; width: 100%;">
                     <canvas id="salesSpendRoasBarChart"></canvas>
                 </div>
             </div>
@@ -998,18 +1150,21 @@ include '../../includes/sidebar.php';
 
         <!-- RIGHT COLUMN: Ad Type Performance & KPI Trend Table -->
         <div class="ad-right-col">
-            <!-- 1. Ad Type Performance Card -->
-            <div class="ad-card">
-                <div class="ad-card-head">
-                    <h3 class="ad-card-title">Ad Type Performance</h3>
-                    <div class="figma-select-wrapper">
-                        <select style="padding: 4px 20px 4px 8px; font-size: 0.75rem; border-radius: 6px;">
-                            <option>7 Days</option>
-                            <option>30 Days</option>
-                        </select>
-                        <i class="fas fa-chevron-down select-icon" style="font-size: 0.6rem; color: #94A3B8;"></i>
-                    </div>
+            <!-- 1. Ad Type Performance Section Header (Above Card) -->
+            <div class="ad-section-head">
+                <h3 class="ad-section-title">Ad Type Performance</h3>
+                <div class="figma-select-wrapper" style="position: relative;">
+                    <select
+                        style="min-width: 85px !important; width: auto !important; padding: 4px 22px 4px 10px !important; font-size: 0.75rem !important; border-radius: 6px !important; background: #fff !important; border: 1px solid #E2E8F0 !important; font-weight: 500 !important; height: 28px !important;">
+                        <option>7 Days</option>
+                        <option>30 Days</option>
+                    </select>
+                    <i class="fas fa-chevron-down select-icon" style="font-size: 0.6rem; color: #94A3B8;"></i>
                 </div>
+            </div>
+
+            <!-- Ad Type Performance Card -->
+            <div class="ad-card ad-type-card">
 
                 <!-- Sponsored Products -->
                 <div class="ad-type-sec">
@@ -1080,7 +1235,7 @@ include '../../includes/sidebar.php';
                         </div>
                         <div class="ad-mini-box">
                             <div class="label">Acos</div>
-                            <div class="val blue" id="sd-acos">0.00%</div>
+                            <div class="val red" id="sd-acos">0.00%</div>
                         </div>
                         <div class="ad-mini-box">
                             <div class="label">Roas</div>
