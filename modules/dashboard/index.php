@@ -449,7 +449,8 @@ include '../../includes/sidebar.php';
     }
 
     .ov-card.hero {
-        width: 400px;
+        width: 100%;
+        max-width: 400px;
         background-color: #4362CE !important;
         background-image: url('<?php echo BASE_URL; ?>assets/images/bg-3.png') !important;
         background-repeat: no-repeat !important;
@@ -548,7 +549,8 @@ include '../../includes/sidebar.php';
 
     .overview-panel-ad,
     .overview-panel-traffic {
-        width: 400px;
+        width: 100%;
+        max-width: 400px;
         height: 390px;
         min-height: 390px;
         box-sizing: border-box;
@@ -948,17 +950,52 @@ include '../../includes/sidebar.php';
     /* Tablets Landscape & Medium Desktops (992px - 1199px) */
     @media (max-width: 1199px) {
         .overview-hero-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.85rem;
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 1rem !important;
+            width: 100% !important;
+        }
+
+        .ov-card,
+        .ov-card.hero {
+            width: 100% !important;
+            max-width: 100% !important;
         }
 
         .overview-row {
-            grid-template-columns: 1fr;
-            gap: 0.85rem;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 1rem !important;
+            width: 100% !important;
+        }
+
+        .overview-panel,
+        .overview-panel-ad,
+        .overview-panel-traffic,
+        .overview-panel-chart,
+        .overview-panel-table {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+        }
+
+        .overview-metric-grid {
+            display: grid !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            gap: 12px !important;
+            width: 100% !important;
+        }
+
+        .overview-metric-card {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: 130px !important;
+            min-height: 130px !important;
         }
 
         .overview-chart-wrap {
-            height: 260px;
+            height: 280px;
         }
     }
 
@@ -1078,7 +1115,10 @@ include '../../includes/sidebar.php';
             gap: 0.65rem;
         }
 
-        .ov-card {
+        .ov-card,
+        .ov-card.hero {
+            width: 100% !important;
+            max-width: 100% !important;
             min-height: 105px;
             padding: 0.95rem 1.05rem;
         }
@@ -1093,13 +1133,18 @@ include '../../includes/sidebar.php';
         }
 
         .overview-metric-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 0.5rem !important;
+            width: 100% !important;
         }
 
         .overview-metric-card {
+            width: 100% !important;
+            max-width: 100% !important;
             padding: 0.85rem 0.95rem !important;
             min-height: 90px !important;
+            height: auto !important;
         }
 
         .overview-metric-card .om-value {
@@ -1122,12 +1167,18 @@ include '../../includes/sidebar.php';
             max-width: 100%;
         }
 
-        .overview-panel {
-            width: 100%;
-            max-width: 100%;
-            min-width: 0;
-            padding: 0.85rem;
-            border-radius: 12px;
+        .overview-panel,
+        .overview-panel-ad,
+        .overview-panel-traffic,
+        .overview-panel-chart,
+        .overview-panel-table {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            height: auto !important;
+            min-height: 0 !important;
+            padding: 1rem !important;
+            border-radius: 14px;
         }
 
         .overview-chart-head {
@@ -1141,25 +1192,32 @@ include '../../includes/sidebar.php';
             width: 100% !important;
             max-width: 100% !important;
             display: flex !important;
-            flex-wrap: wrap !important;
-            gap: 4px !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            gap: 6px !important;
             background: #F1F4F9 !important;
-            padding: 4px !important;
+            padding: 4px 6px !important;
             border-radius: 12px !important;
-            overflow: visible !important;
+            scrollbar-width: none !important;
+        }
+
+        #tab_kpi .chart-tabs::-webkit-scrollbar {
+            display: none !important;
         }
 
         #tab_kpi .chart-tab-btn {
-            flex: 1 1 auto !important;
+            flex: 0 0 auto !important;
             text-align: center !important;
-            padding: 5px 8px !important;
-            font-size: 0.72rem !important;
+            padding: 6px 14px !important;
+            font-size: 0.76rem !important;
+            font-weight: 600 !important;
             white-space: nowrap !important;
             border-radius: 8px !important;
         }
 
         #tab_kpi .chart-tab-btn.active {
-            padding: 5px 10px !important;
+            padding: 6px 14px !important;
             box-shadow: 0 2px 6px rgba(67, 98, 206, 0.2) !important;
         }
 
@@ -1176,31 +1234,96 @@ include '../../includes/sidebar.php';
         }
 
         #tab_kpi .table-container {
-            width: 100%;
-            max-width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            display: block;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            display: block !important;
         }
 
         #tab_kpi .trend-table {
-            width: 100%;
-            min-width: 480px;
+            width: 100% !important;
+            min-width: 640px !important;
+            table-layout: auto !important;
+        }
+
+        #tab_kpi .trend-table th,
+        #tab_kpi .trend-table td {
+            white-space: nowrap !important;
+        }
+
+        #tab_kpi .trend-table th:first-child,
+        #tab_kpi .trend-table td:first-child {
+            width: auto !important;
+            min-width: 180px !important;
+        }
+
+        #tab_kpi .trend-table th:nth-child(2),
+        #tab_kpi .trend-table td:nth-child(2),
+        #tab_kpi .trend-table th:nth-child(3),
+        #tab_kpi .trend-table td:nth-child(3),
+        #tab_kpi .trend-table th:nth-child(4),
+        #tab_kpi .trend-table td:nth-child(4) {
+            width: auto !important;
+            min-width: 150px !important;
         }
     }
 
     /* Small Mobile Devices (max-width: 420px) */
     @media (max-width: 420px) {
         .overview-metric-grid {
-            grid-template-columns: 1fr;
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 8px !important;
+            width: 100% !important;
         }
 
-        .overview-topbar-right {
-            grid-template-columns: 1fr;
+        .overview-metric-card {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-height: 110px !important;
+            height: auto !important;
+            padding: 12px 12px !important;
+        }
+
+        .overview-metric-card .om-label {
+            font-size: 12px !important;
         }
 
         .overview-metric-card .om-value {
-            font-size: 1.1rem;
+            font-size: 18px !important;
+            margin: 4px 0 6px 0 !important;
+        }
+
+        .overview-metric-card .cmp-tag {
+            font-size: 11px !important;
+            padding: 3px 6px !important;
+        }
+
+        .overview-topbar-right {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            align-items: center !important;
+            gap: 8px !important;
+            width: 100% !important;
+        }
+
+        .overview-topbar-right .btn-figma-primary,
+        .overview-topbar-right .btn-figma-outline {
+            flex: 1 1 calc(50% - 4px) !important;
+            min-width: 110px !important;
+            height: 38px !important;
+        }
+
+        .overview-topbar-right .btn-figma-icon,
+        .overview-topbar-right .btn-figma-icon-sm {
+            width: 38px !important;
+            height: 38px !important;
+            flex: 0 0 38px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
 
         .ov-card .ov-value {
@@ -1396,6 +1519,40 @@ include '../../includes/sidebar.php';
         }
     }
 
+    @media (max-width: 650px) {
+        .pl-hero-3in1-card {
+            grid-template-columns: 1fr !important;
+            height: auto !important;
+        }
+
+        .pl-hero-section {
+            border-right: none !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            padding: 1rem 1.25rem !important;
+        }
+
+        .pl-hero-section:last-child {
+            border-bottom: none !important;
+        }
+
+        .pl-hero-label {
+            font-size: 0.85rem !important;
+        }
+
+        .pl-hero-value {
+            font-size: 26px !important;
+        }
+
+        .pl-hero-badge {
+            font-size: 0.75rem !important;
+            padding: 4px 8px !important;
+        }
+
+        .pl-hero-stat-text {
+            font-size: 0.75rem !important;
+        }
+    }
+
     @media (max-width: 768px) {
         .pl-card-header {
             flex-direction: column !important;
@@ -1536,16 +1693,19 @@ include '../../includes/sidebar.php';
     }
 
     .pl-chart-card {
-        height: 285px !important;
+        height: auto !important;
+        min-height: 380px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
         box-sizing: border-box !important;
+        padding-bottom: 8px !important;
     }
 
     .pl-chart-wrapper {
-        padding: 0.25rem 1.4rem 0 !important;
-        height: 185px !important;
+        padding: 0.5rem 1.4rem 1rem 1.4rem !important;
+        height: 260px !important;
+        min-height: 260px !important;
         position: relative !important;
         flex: 1 !important;
     }
@@ -2371,57 +2531,137 @@ include '../../includes/sidebar.php';
         width: 100%;
     }
 
+    /* Responsive Breakpoints for Product Performance */
     @media (max-width: 1200px) {
         .pp-hero-grid {
             grid-template-columns: 1fr !important;
-            gap: 1rem !important;
+            gap: 1.25rem !important;
         }
 
         .pp-sku-panel,
         .pp-right-col {
             width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+        }
+
+        .pp-donut-card {
             height: auto !important;
             min-height: 0 !important;
         }
 
         .pp-kpi-row {
             grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 16px !important;
         }
     }
 
-    @media (max-width: 768px) {
-        .pp-hero-grid {
-            grid-template-columns: 1fr !important;
-        }
-
+    @media (max-width: 992px) {
         .pp-donut-body {
-            flex-direction: column !important;
-            align-items: center !important;
-            gap: 1rem !important;
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+            justify-items: center !important;
+            padding: 10px 0 !important;
         }
 
         .pp-donut-wrap {
-            width: 160px !important;
-            height: 160px !important;
+            width: 260px !important;
+            height: 260px !important;
+            margin: 0 auto !important;
+        }
+
+        .pp-donut-center {
+            width: 175px !important;
+            height: 175px !important;
         }
 
         .pp-donut-legend {
             width: 100% !important;
+            max-width: 420px !important;
+            margin: 0 auto !important;
+        }
+
+        .pp-kpi-row {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 12px !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .overview-page-head {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+        }
+
+        .overview-page-head .d-flex {
+            width: 100% !important;
+        }
+
+        .figma-date-picker-wrap {
+            flex: 1 !important;
+            width: 100% !important;
+        }
+
+        .pp-sku-panel {
+            padding: 16px !important;
+        }
+
+        .pp-sku-row {
+            padding: 10px 12px !important;
+            gap: 10px !important;
+        }
+
+        .pp-sku-units {
+            width: 80px !important;
+            height: 48px !important;
+        }
+
+        .pp-sku-rev strong {
+            font-size: 16px !important;
+        }
+
+        .pp-donut-card {
+            padding: 18px 16px !important;
+        }
+
+        .pp-donut-wrap {
+            width: 220px !important;
+            height: 220px !important;
+        }
+
+        .pp-donut-center {
+            width: 148px !important;
+            height: 148px !important;
+        }
+
+        .pp-donut-center p {
+            font-size: 24px !important;
+        }
+
+        .pp-donut-center span {
+            font-size: 12px !important;
+        }
+
+        .pp-legend-row {
+            height: 46px !important;
+            min-height: 46px !important;
         }
 
         .pp-kpi-row {
             grid-template-columns: 1fr !important;
-            gap: 0.65rem !important;
+            gap: 12px !important;
         }
 
-        .pp-sku-row {
-            padding: 0.65rem 0.25rem !important;
-        }
-
-        .pp-sku-info strong {
-            max-width: 140px !important;
+        .pp-kpi-card {
+            height: auto !important;
+            min-height: 108px !important;
+            padding: 16px 18px !important;
         }
     }
+
+
 
     .pp-sku-panel,
     .pp-donut-card,
@@ -2919,11 +3159,7 @@ include '../../includes/sidebar.php';
         white-space: nowrap !important;
     }
 
-    @media (max-width: 1100px) {
-        .pp-hero-grid {
-            grid-template-columns: 1fr;
-        }
-    }
+
 
     #product_list {
         display: flex;
@@ -2931,11 +3167,301 @@ include '../../includes/sidebar.php';
         gap: 0;
     }
 
-    .pp-sku-row.product-item,
-    .product-item.pp-sku-row {
-        display: flex !important;
-        flex-direction: row !important;
-        transform: none !important;
+    /* Product Performance Mobile Responsive Overrides */
+    @media (max-width: 600px) {
+
+        .pp-sku-row,
+        .pp-sku-row.product-item,
+        .product-item.pp-sku-row {
+            display: grid !important;
+            grid-template-columns: 32px 1fr auto !important;
+            grid-template-rows: auto auto !important;
+            align-items: center !important;
+            gap: 6px 10px !important;
+            padding: 12px 14px !important;
+            height: auto !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .pp-sku-rank {
+            grid-column: 1 !important;
+            grid-row: 1 / 3 !important;
+            align-self: center !important;
+            margin: 0 !important;
+        }
+
+        .pp-sku-info {
+            grid-column: 2 !important;
+            grid-row: 1 !important;
+            min-width: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+        }
+
+        .pp-sku-info strong {
+            font-size: 14px !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            display: block !important;
+            max-width: 100% !important;
+            color: #1A1A1A !important;
+        }
+
+        .pp-sku-info span {
+            font-size: 11px !important;
+            display: block !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            color: #64748B !important;
+            margin-top: 2px !important;
+        }
+
+        .pp-sku-units {
+            grid-column: 2 !important;
+            grid-row: 2 !important;
+            width: fit-content !important;
+            height: 26px !important;
+            padding: 3px 8px !important;
+            display: inline-flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 6px !important;
+            margin: 0 !important;
+            justify-self: start !important;
+        }
+
+        .pp-sku-units strong {
+            font-size: 12px !important;
+            line-height: 1 !important;
+        }
+
+        .pp-sku-units em {
+            font-size: 11px !important;
+            line-height: 1 !important;
+        }
+
+        .pp-sku-rev {
+            grid-column: 3 !important;
+            grid-row: 1 / 3 !important;
+            text-align: right !important;
+            align-self: center !important;
+            margin: 0 !important;
+            padding-left: 6px !important;
+            min-width: 0 !important;
+        }
+
+        .pp-sku-rev small {
+            font-size: 11px !important;
+            display: block !important;
+            color: #64748B !important;
+            margin: 0 0 2px 0 !important;
+        }
+
+        .pp-sku-rev strong {
+            font-size: 16px !important;
+            color: #1A1A1A !important;
+        }
+
+        /* Donut Chart & Legend Mobile Stacking */
+        .pp-donut-card {
+            padding: 18px 14px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .pp-donut-body {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 1.25rem !important;
+            width: 100% !important;
+            padding: 10px 0 !important;
+        }
+
+        .pp-donut-wrap {
+            width: 220px !important;
+            height: 220px !important;
+            margin: 0 auto !important;
+            flex-shrink: 0 !important;
+        }
+
+        .pp-donut-center {
+            width: 142px !important;
+            height: 142px !important;
+        }
+
+        .pp-donut-center p {
+            font-size: 24px !important;
+        }
+
+        .pp-donut-legend {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
+            box-sizing: border-box !important;
+        }
+
+        .pp-legend-row {
+            padding: 0 4px !important;
+            height: 48px !important;
+            min-height: 48px !important;
+        }
+
+        .pp-legend-row .name {
+            font-size: 13px !important;
+        }
+
+        .pp-legend-row .val {
+            font-size: 13px !important;
+            margin-right: 12px !important;
+        }
+
+        .pp-legend-row .pct {
+            font-size: 13px !important;
+        }
+
+        /* 3 Bottom KPI Cards - Single Column Stack on Mobile */
+        .pp-kpi-row {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 12px !important;
+            width: 100% !important;
+        }
+
+        .pp-kpi-card {
+            width: 100% !important;
+            height: auto !important;
+            min-height: 112px !important;
+            padding: 18px 20px !important;
+            box-sizing: border-box !important;
+        }
+
+        .pp-kpi-header h4 {
+            font-size: 14px !important;
+        }
+
+        .pp-kpi-value {
+            font-size: 26px !important;
+            margin: 8px 0 14px 0 !important;
+        }
+
+        /* Traffic vs Revenue Correlation Mobile Responsiveness */
+        .pp-correlation-card {
+            padding: 16px 14px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .pp-correlation-head {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+            margin-bottom: 1rem !important;
+            width: 100% !important;
+        }
+
+        .pp-correlation-legend {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 14px !important;
+            width: 100% !important;
+            align-items: center !important;
+        }
+
+        .pp-correlation-chart-wrap {
+            height: 300px !important;
+            min-height: 300px !important;
+            width: 100% !important;
+            position: relative !important;
+        }
+
+        .pp-correlation-insights {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 10px !important;
+            margin-top: 1rem !important;
+            width: 100% !important;
+        }
+
+        /* Monthly Performance by SKU Table Mobile Responsiveness */
+        .pp-table-card-head {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 12px !important;
+            padding: 14px 16px !important;
+        }
+
+        .pp-table-card-actions {
+            width: 100% !important;
+        }
+
+        .pp-table-card-actions>div {
+            width: 100% !important;
+        }
+
+        #product_search_input {
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .pp-table-footer {
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 12px !important;
+            padding: 14px 16px !important;
+            text-align: center !important;
+        }
+
+        #product_perf_showing_text {
+            text-align: center !important;
+            width: 100% !important;
+            font-size: 13px !important;
+            white-space: nowrap !important;
+        }
+
+        #product_perf_pagination {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            align-items: center !important;
+            gap: 6px !important;
+            width: 100% !important;
+        }
+
+        #product_perf_pagination button {
+            min-width: 32px !important;
+            height: 32px !important;
+            padding: 0 6px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 12px !important;
+            border-radius: 6px !important;
+        }
+    }
+
+    .pp-table-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        display: block !important;
+    }
+
+    #product_perf_table {
+        width: 100% !important;
+        min-width: 900px !important;
+    }
+
+    #product_perf_table th,
+    #product_perf_table td {
+        white-space: nowrap !important;
     }
 
     .product-rank {
@@ -3362,7 +3888,7 @@ include '../../includes/sidebar.php';
             padding-top: 1.25rem !important;
         }
     </style>
-    <div class="overview-topbar" style="margin-bottom:0.5rem;">
+    <div class="overview-topbar" style="margin-bottom: 24px;">
         <div class="overview-topbar-left">
             <div class="figma-select-wrapper">
                 <select id="filter_customer" class="filter-customer-select" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
@@ -3433,10 +3959,10 @@ include '../../includes/sidebar.php';
         </div>
     </div>
     <!-- Product Performance Page Head with date -->
-    <div class="overview-page-head" style="margin-bottom:1rem;">
+    <div class="overview-page-head" style="margin-bottom: 25.5px; align-items: center;">
         <div>
             <h2
-                style="font-size:1.65rem; font-weight:800; color:#0f172a; margin:0; font-family:'Inter', sans-serif; letter-spacing:-0.02em;">
+                style="font-size: 22px; font-weight: 600; color: #1A1A1A; margin: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 100%; letter-spacing: 0;">
                 Product Performance</h2>
         </div>
         <div class="d-flex align-items-center gap-2">
@@ -4436,9 +4962,10 @@ include '../../includes/sidebar.php';
     </div>
 
     <!-- Section 5: Traffic vs Revenue Correlation (Figma middle row) -->
-    <section
+    <section class="pp-correlation-card"
         style="padding: 1.5rem; box-sizing: border-box; background: #ffffff; border: 1px solid #EAECEF; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); margin-bottom: 1.25rem;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+        <div class="pp-correlation-head"
+            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
             <div>
                 <h3
                     style="font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0;">
@@ -4446,7 +4973,7 @@ include '../../includes/sidebar.php';
                 <p style="font-size: 0.75rem; color: #64748b; margin: 4px 0 0; font-weight: 500;">Analyzing sessions
                     (bars) against revenue generation (line) per top 10 SKUs.</p>
             </div>
-            <div style="display: flex; gap: 20px; align-items: center;">
+            <div class="pp-correlation-legend" style="display: flex; gap: 20px; align-items: center;">
                 <div style="display: flex; gap: 6px; align-items: center;">
                     <span
                         style="width: 12px; height: 12px; background: #DBE1FF; border-radius: 2px; display: inline-block;"></span>
@@ -4463,10 +4990,12 @@ include '../../includes/sidebar.php';
                 </div>
             </div>
         </div>
-        <div style="height: 320px; width: 100%; position: relative; box-sizing: border-box;">
+        <div class="pp-correlation-chart-wrap"
+            style="height: 320px; width: 100%; position: relative; box-sizing: border-box;">
             <canvas id="productComboChart"></canvas>
         </div>
-        <div style="margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+        <div class="pp-correlation-insights"
+            style="margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
             <div style="padding: 14px 18px; background: #EFF6FF; border: 1px solid #DBEAFE; border-radius: 12px;">
                 <p style="font-weight: 700; font-size: 0.84rem; margin-bottom: 4px; color: #1E40AF;">Strategic
                     Correlation</p>
@@ -4485,14 +5014,14 @@ include '../../includes/sidebar.php';
     </section>
 
     <!-- Section 4: Monthly Performance by SKU (Figma bottom table) -->
-    <section
+    <section class="pp-table-card"
         style="background: #ffffff; border-radius: 16px; border: 1px solid #EAECEF; box-shadow: 0 1px 3px rgba(0,0,0,0.03); overflow: hidden; margin-bottom: 1.5rem;">
-        <div
+        <div class="pp-table-card-head"
             style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding: 16px 24px;">
             <h3 style="font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0;">
                 Monthly Performance by SKU</h3>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="position: relative;">
+            <div class="pp-table-card-actions" style="display: flex; align-items: center; gap: 10px;">
+                <div style="position: relative; flex: 1;">
                     <i class="fas fa-search"
                         style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94A3B8; font-size: 0.75rem; pointer-events: none;"></i>
                     <input id="product_search_input"
@@ -4506,9 +5035,9 @@ include '../../includes/sidebar.php';
                 </button>
             </div>
         </div>
-        <div style="overflow-x: auto;">
+        <div class="pp-table-container" style="overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%;">
             <table id="product_perf_table"
-                style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed;">
+                style="width: 100%; min-width: 900px; border-collapse: collapse; text-align: left;">
                 <thead style="background: transparent; border-bottom: 1px solid #E8EAF2;">
                     <tr>
                         <th
@@ -4542,7 +5071,7 @@ include '../../includes/sidebar.php';
                 </tbody>
             </table>
         </div>
-        <div
+        <div class="pp-table-footer"
             style="display: flex; justify-content: space-between; align-items: center; background: transparent; border-top: 1px solid #F1F5F9; padding: 14px 24px; box-sizing: border-box;">
             <p style="font-size: 0.78rem; color: #64748B; margin: 0; font-weight: 500;" id="product_perf_showing_text">
                 Showing 1 to 10 of 48 entries</p>
@@ -5406,6 +5935,14 @@ include '../../includes/sidebar.php';
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 10,
+                            bottom: 12,
+                            left: 6,
+                            right: 6
+                        }
+                    },
                     interaction: { mode: 'index', intersect: false },
                     plugins: {
                         legend: { display: false },
@@ -5438,7 +5975,13 @@ include '../../includes/sidebar.php';
                     scales: {
                         x: {
                             grid: { display: false },
-                            ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }
+                            ticks: {
+                                font: { size: 11, weight: '600' },
+                                color: '#64748b',
+                                maxTicksLimit: 8,
+                                maxRotation: 0,
+                                autoSkip: true
+                            }
                         },
                         yBar: {
                             type: 'linear',
@@ -6595,19 +7138,32 @@ include '../../includes/sidebar.php';
                                 }
                             },
                             scales: {
-                                x: { grid: { display: false }, ticks: { font: { weight: '600' } } },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: {
+                                        font: { weight: '600', size: (window.innerWidth < 600 ? 9 : 11) },
+                                        maxRotation: 45,
+                                        minRotation: 30,
+                                        autoSkip: true,
+                                        maxTicksLimit: (window.innerWidth < 600 ? 6 : 12)
+                                    }
+                                },
                                 yVolume: {
                                     type: 'linear',
                                     position: 'left',
-                                    title: { display: true, text: 'Traffic Volume', font: { weight: '700' } },
-                                    grid: { color: '#f1f5f9' }
+                                    title: { display: (window.innerWidth >= 600), text: 'Traffic Volume', font: { weight: '700' } },
+                                    grid: { color: '#f1f5f9' },
+                                    ticks: { font: { size: (window.innerWidth < 600 ? 9 : 11) } }
                                 },
                                 yRevenue: {
                                     type: 'linear',
                                     position: 'right',
-                                    title: { display: true, text: 'Revenue ($)', font: { weight: '700' } },
+                                    title: { display: (window.innerWidth >= 600), text: 'Revenue ($)', font: { weight: '700' } },
                                     grid: { display: false },
-                                    ticks: { callback: v => '$' + formatAbbrev(v) }
+                                    ticks: {
+                                        font: { size: (window.innerWidth < 600 ? 9 : 11) },
+                                        callback: v => '$' + formatAbbrev(v)
+                                    }
                                 },
                                 yPercent: {
                                     type: 'linear',
