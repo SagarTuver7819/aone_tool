@@ -616,25 +616,25 @@ include '../../includes/sidebar.php';
 
     #tab_kpi .trend-table th:first-child {
         text-align: left !important;
-        width: 26%;
+        width: 25%;
         padding-left: 16px !important;
     }
 
     #tab_kpi .trend-table th:nth-child(2) {
         text-align: right !important;
-        width: 18%;
-        padding-right: 12px !important;
+        width: 25%;
+        padding-right: 16px !important;
     }
 
     #tab_kpi .trend-table th:nth-child(3) {
         text-align: right !important;
-        width: 28%;
-        padding-right: 12px !important;
+        width: 25%;
+        padding-right: 16px !important;
     }
 
     #tab_kpi .trend-table th:nth-child(4) {
         text-align: right !important;
-        width: 28%;
+        width: 25%;
         padding-right: 16px !important;
     }
 
@@ -665,12 +665,12 @@ include '../../includes/sidebar.php';
 
     #tab_kpi .trend-table td:nth-child(2) {
         text-align: right !important;
-        padding-right: 12px !important;
+        padding-right: 16px !important;
     }
 
     #tab_kpi .trend-table td:nth-child(3) {
         text-align: right !important;
-        padding-right: 12px !important;
+        padding-right: 16px !important;
     }
 
     #tab_kpi .trend-table td:nth-child(4) {
@@ -5649,12 +5649,12 @@ include '../../includes/sidebar.php';
                                 pillHtml = `<span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% ${arrowSvg}</span>`;
                             }
                         }
-                        cellContent = `<div style="display:inline-flex; align-items:center; justify-content:flex-end; gap:8px; white-space:nowrap;">
-                            ${pillHtml}
-                            <span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums;">${displayVal}</span>
+                        cellContent = `<div style="display:flex; align-items:center; justify-content:flex-end; gap:10px; width:100%;">
+                            <div style="min-width:76px; display:inline-flex; justify-content:flex-end;">${pillHtml}</div>
+                            <span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; min-width:65px; text-align:right;">${displayVal}</span>
                         </div>`;
                     } else {
-                        cellContent = `<span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums;">${displayVal}</span>`;
+                        cellContent = `<div style="display:flex; align-items:center; justify-content:flex-end; width:100%;"><span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; text-align:right;">${displayVal}</span></div>`;
                     }
 
                     bodyHtml += `<td>${cellContent}</td>`;
