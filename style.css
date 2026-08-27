@@ -316,42 +316,30 @@ td,
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    overflow: hidden;
 }
 
-.sidebar-brand-logo {
+.sidebar-brand-logo-img {
     width: 36px;
     height: 36px;
-    background: #4362CE;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(67, 98, 206, 0.25);
+    object-fit: contain;
     flex-shrink: 0;
 }
 
-.sidebar-brand-text {
-    display: flex;
-    flex-direction: column;
+.sidebar-brand-text-img {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+    transition: opacity 0.2s ease, width 0.2s ease;
+}
+
+body.sidebar-collapsed .sidebar-brand-text-img {
+    display: none !important;
+}
+
+body.sidebar-collapsed .sidebar-brand-wrapper {
     justify-content: center;
-}
-
-.sidebar-brand-text .brand-title {
-    font-size: 1.05rem;
-    font-weight: 800;
-    color: #1E2238;
-    line-height: 1.15;
-    letter-spacing: -0.3px;
-    font-family: 'Inter', sans-serif;
-}
-
-.sidebar-brand-text .brand-subtitle {
-    font-size: 1.05rem;
-    font-weight: 800;
-    color: #1E2238;
-    line-height: 1.15;
-    letter-spacing: -0.3px;
-    font-family: 'Inter', sans-serif;
+    width: 100%;
 }
 
 .sidebar-toggle-btn {

@@ -24,13 +24,171 @@ $customers = get_all_customers();
     }
 
     .main-wrapper {
-        padding-top: 0 !important;
+        padding: 1.25rem 2rem 2rem 2rem !important;
+    }
+
+    /* Topbar styling - Clean Transparent Header matching Figma */
+    .figma-page-topbar {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 0.75rem !important;
+        flex-wrap: nowrap !important;
+        padding: 0.25rem 0 1rem 0 !important;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid #EAECEF !important;
+        border-radius: 0 !important;
+        margin-bottom: 1.25rem !important;
+        box-shadow: none !important;
+    }
+
+    .figma-page-topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+    }
+
+    .figma-select-wrapper {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .figma-select-wrapper select {
+        appearance: none;
+        -webkit-appearance: none;
+        min-width: 170px;
+        padding: 0.45rem 2.2rem 0.45rem 0.85rem;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #1E2238;
+        background: #FFFFFF;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.2s ease;
+    }
+
+    .figma-select-wrapper select:focus {
+        border-color: #4362CE;
+    }
+
+    .figma-select-wrapper .select-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        width: 12px;
+        height: 12px;
+    }
+
+    .figma-page-breadcrumb {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: #64748B;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+    }
+
+    .figma-page-breadcrumb .breadcrumb-dot {
+        margin: 0 3px;
+        opacity: 0.4;
+        font-size: 0.9rem;
+    }
+
+    .figma-page-breadcrumb strong {
+        color: #1E293B;
+        font-weight: 600;
+    }
+
+    .figma-page-topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-figma-primary {
+        background: #4362CE !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1.15rem !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.45rem !important;
+        box-shadow: 0px 4px 10px rgba(67, 98, 206, 0.2) !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-primary:hover {
+        background: #3452BA !important;
+        transform: translateY(-1px);
+        color: #FFFFFF !important;
+    }
+
+    .btn-figma-outline-sm {
+        background: #F1F4F9 !important;
+        color: #363B4F !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1.05rem !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.45rem !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-outline-sm:hover {
+        background: #E2E8F0 !important;
+        color: #0F172A !important;
+    }
+
+    .btn-figma-icon-sm {
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 50% !important;
+        background: #F1F4F9 !important;
+        border: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #475569 !important;
+        cursor: pointer !important;
+        position: relative !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-icon-sm:hover {
+        background: #E2E8F0 !important;
+        color: #0F172A !important;
+    }
+
+    .btn-figma-icon-sm .notif-badge {
+        position: absolute;
+        top: 9px;
+        right: 9px;
+        width: 6px;
+        height: 6px;
+        background: #EE473D;
+        border-radius: 50%;
+        border: 1.5px solid #F1F4F9;
     }
 
     .ba-container {
-        padding: 1.25rem 2rem 2.5rem 2rem;
+        padding: 0;
         width: 100%;
-        max-width: 1440px;
+        max-width: 100%;
         margin: 0 auto;
         box-sizing: border-box;
     }
@@ -139,54 +297,57 @@ $customers = get_all_customers();
         border-color: #CBD5E1;
     }
 
-    /* Bento Card Base */
+    /* Bento Card Base (Figma: 910px Fill x 365px Hug) */
     .ba-card {
         background: #FFFFFF;
         border: 1px solid #EAECEF;
         border-radius: 16px;
-        padding: 1.5rem;
+        padding: 24px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        box-sizing: border-box;
     }
 
     .ba-card-head {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 1.25rem;
+        margin-bottom: 20px;
     }
 
     .ba-card-head h3 {
-        font-size: 1.05rem;
-        font-weight: 800;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 16px;
+        font-weight: 700;
         color: #0F172A;
         margin: 0;
+        line-height: 1.2;
     }
 
     .ba-card-head p {
-        font-size: 0.76rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
         color: #64748B;
-        margin: 3px 0 0 0;
-        font-weight: 500;
+        margin: 4px 0 0 0;
+        font-weight: 400;
     }
 
-    /* Market Overview Mini Sub-cards (Figma Matching) */
+    /* Market Overview Mini Sub-cards (Figma: 169.2px Fill x 264px Hug) */
     .ba-market-grid {
         display: grid;
         grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: 10px;
+        gap: 12px;
     }
 
     .ba-market-subcard {
-        background: rgba(245, 246, 250, 0.5);
+        background: #FFFFFF;
         border: 1px solid #E8EAF2;
-        border-radius: 12px;
-        padding: 16px 12px;
+        border-radius: 14px;
+        padding: 16px 14px 14px 14px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        gap: 20px;
         min-height: 264px;
-        height: 100%;
+        height: 264px;
         box-sizing: border-box;
         transition: all 0.15s ease;
         min-width: 0;
@@ -218,7 +379,8 @@ $customers = get_all_customers();
     }
 
     .ba-subcard-title {
-        font-size: 0.8rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
         color: #1E293B;
         font-weight: 500;
         line-height: 1.2;
@@ -228,15 +390,17 @@ $customers = get_all_customers();
     }
 
     .ba-subcard-val {
-        font-size: 1.15rem;
-        font-weight: 800;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 16px;
+        font-weight: 700;
         color: #0F172A;
         line-height: 1.2;
-        margin-top: 1px;
+        margin-top: 2px;
+        font-variant-numeric: tabular-nums;
     }
 
     .ba-subcard-body {
-        height: 170px;
+        height: 172px;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -245,7 +409,7 @@ $customers = get_all_customers();
     }
 
     .ba-subcard-bars {
-        height: 136px;
+        height: 140px;
         display: flex;
         align-items: flex-end;
         justify-content: center;
@@ -254,10 +418,10 @@ $customers = get_all_customers();
     }
 
     .ba-vbar {
-        width: 20px;
+        width: 22px;
         border-radius: 5px 5px 0 0;
         transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        min-height: 12px;
+        min-height: 14px;
     }
 
     .ba-vbar.main-brand {
@@ -270,21 +434,23 @@ $customers = get_all_customers();
 
     .ba-subcard-foot {
         text-align: center;
-        font-size: 0.85rem;
-        font-weight: 800;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
+        font-weight: 700;
         color: #0F172A;
         padding: 0;
         margin: 0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-variant-numeric: tabular-nums;
     }
 
     .ba-subcard-foot span.vs {
-        font-weight: 500;
+        font-weight: 400;
         color: #64748B;
-        font-size: 0.78rem;
-        margin: 0 3px;
+        font-size: 12px;
+        margin: 0 4px;
     }
 
     /* Funnel Leakage Rows */
@@ -307,23 +473,25 @@ $customers = get_all_customers();
     }
 
     .ba-funnel-name {
-        font-size: 0.88rem;
-        font-weight: 800;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px;
+        font-weight: 700;
         color: #0F172A;
         line-height: 1.2;
     }
 
     .ba-funnel-phase {
-        font-size: 0.72rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px;
         color: #64748B;
-        font-weight: 500;
-        margin-top: 1px;
+        font-weight: 400;
+        margin-top: 3px;
     }
 
     .ba-funnel-bar-wrap {
         flex: 1;
         margin: 0 24px;
-        height: 7px;
+        height: 8px;
         background: #F1F5F9;
         border-radius: 4px;
         overflow: hidden;
@@ -337,42 +505,55 @@ $customers = get_all_customers();
     }
 
     .ba-funnel-bar-fill.warning {
-        background: #EF4444;
+        background: #EE473D;
     }
 
     .ba-funnel-right {
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        gap: 18px;
-        width: 195px;
+        gap: 20px;
+        width: 250px;
         flex-shrink: 0;
     }
 
     .ba-funnel-share {
-        font-size: 0.8rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
         font-weight: 700;
         color: #0F172A;
         text-align: right;
         white-space: nowrap;
+        font-variant-numeric: tabular-nums;
     }
 
+    /* Figma Delta Badge Container (Exact 79.57px x 28px Hug) */
     .ba-funnel-delta-box {
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
-        min-width: 65px;
+        align-items: center;
+        justify-content: center;
+        width: 80px;
+        min-width: 80px;
+        text-align: center;
+        flex-shrink: 0;
     }
 
     .ba-delta-badge {
-        font-size: 0.72rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
         font-weight: 700;
-        padding: 3px 8px;
+        width: 80px;
+        height: 28px;
         border-radius: 6px;
         display: inline-flex;
         align-items: center;
-        gap: 2px;
-        line-height: 1.1;
+        justify-content: center;
+        gap: 4px;
+        line-height: 1;
+        box-sizing: border-box;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
     }
 
     .ba-delta-badge.up {
@@ -386,10 +567,14 @@ $customers = get_all_customers();
     }
 
     .ba-delta-sub {
-        font-size: 0.65rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 11px;
         color: #64748B;
-        margin-top: 1px;
-        font-weight: 500;
+        margin-top: 4px;
+        font-weight: 400;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
     }
 
     /* Right KPI Trend Cards */
@@ -576,6 +761,43 @@ $customers = get_all_customers();
 </style>
 
 <div class="ba-container">
+    <!-- Figma-style Top Bar -->
+    <div class="figma-page-topbar">
+        <div class="figma-page-topbar-left">
+            <div class="figma-select-wrapper">
+                <select id="filter_customer_top" onchange="$('#filter_customer').val($(this).val()).trigger('change');">
+                    <option value="">All Amazon Profiles</option>
+                    <?php
+                    $customers->data_seek(0);
+                    while ($row = $customers->fetch_assoc()): ?>
+                        <option value="<?php echo $row['id']; ?>" <?php echo ($row['id'] == ($_SESSION['customer_id'] ?? 0)) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($row['customer_name']); ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Down Up Arrow.svg" class="select-icon"
+                    alt="Toggle" />
+            </div>
+            <span class="figma-page-breadcrumb">Dashboard <span class="breadcrumb-dot">•</span> <strong>Brand
+                    Analytics</strong></span>
+        </div>
+        <div class="figma-page-topbar-right">
+            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i
+                        class="fas fa-plus"></i> New Upload</a>
+            <?php endif; ?>
+            <button type="button" class="btn-figma-outline-sm"
+                onclick="if(typeof exportCSV==='function'){exportCSV();}else{alert('Exporting CSV...');}"><i
+                    class="fas fa-file-export"></i>
+                Export CSV</button>
+            <button type="button" class="btn-figma-icon-sm" title="Search"><i class="fas fa-search"></i></button>
+            <button type="button" class="btn-figma-icon-sm" title="Notifications">
+                <i class="fas fa-bell"></i>
+                <span class="notif-badge"></span>
+            </button>
+        </div>
+    </div>
+
     <!-- Page Header (Matching Figma) -->
     <div class="ba-page-head">
         <div class="ba-page-title">
@@ -656,9 +878,13 @@ $customers = get_all_customers();
                     <div class="ba-market-subcard">
                         <div class="ba-subcard-head">
                             <div class="ba-subcard-icon">
-                                <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M14.166 14.166L17.5 17.5" stroke="#4362CE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M15.833 9.16699C15.833 5.4851 12.8489 2.50101 9.16702 2.50101C5.48512 2.50101 2.50104 5.4851 2.50104 9.16699C2.50104 12.8489 5.48512 15.833 9.16702 15.833C12.8489 15.833 15.833 12.8489 15.833 9.16699Z" stroke="#4362CE" stroke-width="1.5" stroke-linejoin="round"/>
+                                <svg width="18" height="18" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14.166 14.166L17.5 17.5" stroke="#4362CE" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path
+                                        d="M15.833 9.16699C15.833 5.4851 12.8489 2.50101 9.16702 2.50101C5.48512 2.50101 2.50104 5.4851 2.50104 9.16699C2.50104 12.8489 5.48512 15.833 9.16702 15.833C12.8489 15.833 15.833 12.8489 15.833 9.16699Z"
+                                        stroke="#4362CE" stroke-width="1.5" stroke-linejoin="round" />
                                 </svg>
                             </div>
                             <div>
@@ -682,7 +908,8 @@ $customers = get_all_customers();
                     <div class="ba-market-subcard">
                         <div class="ba-subcard-head">
                             <div class="ba-subcard-icon">
-                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Impressions.svg" alt="Impressions" style="width: 18px; height: 18px;" />
+                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Impressions.svg"
+                                    alt="Impressions" style="width: 18px; height: 18px;" />
                             </div>
                             <div>
                                 <div class="ba-subcard-title">Impressions</div>
@@ -705,7 +932,8 @@ $customers = get_all_customers();
                     <div class="ba-market-subcard">
                         <div class="ba-subcard-head">
                             <div class="ba-subcard-icon">
-                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Clicks.svg" alt="Clicks" style="width: 18px; height: 18px;" />
+                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Clicks.svg" alt="Clicks"
+                                    style="width: 18px; height: 18px;" />
                             </div>
                             <div>
                                 <div class="ba-subcard-title">Clicks</div>
@@ -728,7 +956,8 @@ $customers = get_all_customers();
                     <div class="ba-market-subcard">
                         <div class="ba-subcard-head">
                             <div class="ba-subcard-icon">
-                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Add-to-Carts.svg" alt="Add-to-Carts" style="width: 18px; height: 18px;" />
+                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Add-to-Carts.svg"
+                                    alt="Add-to-Carts" style="width: 18px; height: 18px;" />
                             </div>
                             <div>
                                 <div class="ba-subcard-title">Add-to-Carts</div>
@@ -751,7 +980,8 @@ $customers = get_all_customers();
                     <div class="ba-market-subcard">
                         <div class="ba-subcard-head">
                             <div class="ba-subcard-icon">
-                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Purchases.svg" alt="Purchases" style="width: 18px; height: 18px;" />
+                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Purchases.svg"
+                                    alt="Purchases" style="width: 18px; height: 18px;" />
                             </div>
                             <div>
                                 <div class="ba-subcard-title">Purchases</div>
@@ -880,7 +1110,8 @@ $customers = get_all_customers();
                 <div class="ba-kpi-top">
                     <span class="ba-kpi-label">CTR (Brand)</span>
                     <div class="ba-kpi-icon-box">
-                        <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/CTR (Brand).svg" alt="CTR (Brand)" style="width: 17px; height: 17px;" />
+                        <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/CTR (Brand).svg" alt="CTR (Brand)"
+                            style="width: 17px; height: 17px;" />
                     </div>
                 </div>
                 <div class="ba-kpi-mid">
@@ -897,7 +1128,8 @@ $customers = get_all_customers();
                 <div class="ba-kpi-top">
                     <span class="ba-kpi-label">CTR (Market)</span>
                     <div class="ba-kpi-icon-box">
-                        <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/CTR (Market).svg" alt="CTR (Market)" style="width: 17px; height: 17px;" />
+                        <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/CTR (Market).svg"
+                            alt="CTR (Market)" style="width: 17px; height: 17px;" />
                     </div>
                 </div>
                 <div class="ba-kpi-mid">
@@ -914,7 +1146,8 @@ $customers = get_all_customers();
                 <div class="ba-kpi-top">
                     <span class="ba-kpi-label">CVR (Brand)</span>
                     <div class="ba-kpi-icon-box">
-                        <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Add-to-Carts.svg" alt="CVR (Brand)" style="width: 16px; height: 16px;" />
+                        <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Add-to-Carts.svg"
+                            alt="CVR (Brand)" style="width: 16px; height: 16px;" />
                     </div>
                 </div>
                 <div class="ba-kpi-mid">
@@ -932,7 +1165,8 @@ $customers = get_all_customers();
                     <span class="ba-kpi-label">CVR (Market)</span>
                     <div class="ba-kpi-icon-box">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2.5 5L7 9.5L10 6.5L14 10.5M10.5 10.5H14V7" stroke="#4362CE" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M2.5 5L7 9.5L10 6.5L14 10.5M10.5 10.5H14V7" stroke="#4362CE" stroke-width="1.4"
+                                stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </div>
                 </div>

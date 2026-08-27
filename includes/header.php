@@ -581,16 +581,12 @@ if (!isset($_SESSION['user_id'])) {
     <div class="app-container">
         <!-- Mobile Native App Header -->
         <header class="mobile-app-header">
-            <div class="mobile-app-header-left" onclick="toggleSidebar()" role="button" tabindex="0">
-                <div class="mobile-app-header-logo">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                    </svg>
-                </div>
-                <div class="mobile-app-header-title">
-                    <span class="brand-main">A'One Intelligence</span>
-                    <span class="brand-sub"><?php echo htmlspecialchars($page_title ?? 'Dashboard'); ?></span>
-                </div>
+            <div class="mobile-app-header-left" onclick="toggleSidebar()" role="button" tabindex="0"
+                style="display: flex; align-items: center; gap: 8px;">
+                <img src="<?php echo BASE_URL; ?>assets/images/Frame.png" alt="A'One Logo"
+                    style="width: 30px; height: 30px; object-fit: contain; flex-shrink: 0;" />
+                <img src="<?php echo BASE_URL; ?>assets/images/A%E2%80%99One%20Intelligence.png" alt="A'One Intelligence"
+                    style="height: 24px; width: auto; object-fit: contain;" />
             </div>
             <div class="mobile-app-header-right">
                 <button type="button" class="mobile-header-action-btn" onclick="toggleSidebar()" title="Open Menu">
