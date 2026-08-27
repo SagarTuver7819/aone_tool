@@ -516,32 +516,74 @@ include '../../includes/sidebar.php';
     }
 
     /* 3-Month Comparison Table */
+    .kpi-trend-table-wrap {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
     .kpi-trend-table {
         width: 100%;
-        border-collapse: collapse;
+        min-width: 320px;
+        border-collapse: separate;
+        border-spacing: 0;
         font-size: 0.8rem;
     }
 
-    .kpi-trend-table th {
-        padding: 10px 12px;
+    .kpi-trend-table thead th {
+        padding: 8px 10px;
         font-size: 0.72rem;
         font-weight: 700;
         color: #64748B;
+        border: none !important;
         border-bottom: 1px solid #F1F5F9;
         text-align: right;
+        white-space: nowrap;
+        background: transparent;
     }
 
-    .kpi-trend-table th:first-child {
+    .kpi-trend-table thead th:first-child {
         text-align: left;
+        padding-left: 8px;
+        width: 28%;
     }
 
-    .kpi-trend-table td {
-        padding: 12px;
+    .kpi-trend-table thead th:nth-child(2),
+    .kpi-trend-table thead th:nth-child(3),
+    .kpi-trend-table thead th:nth-child(4) {
+        width: 24%;
+    }
+
+    .kpi-trend-table tbody td {
+        padding: 10px 10px;
+        border: none !important;
         border-bottom: 1px solid #F8FAFC;
         text-align: right;
         font-variant-numeric: tabular-nums;
         font-weight: 600;
+        font-size: 0.8rem;
         color: #0F172A;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+    .kpi-trend-table tbody tr:nth-child(odd) td {
+        background: #F8FAFC;
+    }
+
+    .kpi-trend-table tbody tr:nth-child(odd) td:first-child {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+    }
+
+    .kpi-trend-table tbody tr:nth-child(odd) td:last-child {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    .kpi-trend-table tbody tr:nth-child(even) td {
+        background: transparent;
     }
 
     .kpi-trend-table td:first-child {
@@ -551,6 +593,7 @@ include '../../includes/sidebar.php';
         gap: 8px;
         font-weight: 700;
         color: #475569;
+        padding-left: 8px;
     }
 
     /* Pill Filter Toggle (Figma Pixel-Perfect Pill with Active Arrow) */
@@ -744,10 +787,22 @@ include '../../includes/sidebar.php';
             max-width: 100% !important;
             overflow-x: auto !important;
             -webkit-overflow-scrolling: touch !important;
+            scrollbar-width: none !important;
+        }
+
+        .kpi-trend-table-wrap::-webkit-scrollbar {
+            display: none !important;
         }
 
         .kpi-trend-table {
-            min-width: 440px !important;
+            width: 100% !important;
+            min-width: 340px !important;
+        }
+
+        .kpi-trend-table thead th,
+        .kpi-trend-table tbody td {
+            padding: 8px 6px !important;
+            font-size: 0.75rem !important;
         }
 
         .ad-card canvas {
@@ -874,10 +929,22 @@ include '../../includes/sidebar.php';
             max-width: 100% !important;
             overflow-x: auto !important;
             -webkit-overflow-scrolling: touch !important;
+            scrollbar-width: none !important;
+        }
+
+        .kpi-trend-table-wrap::-webkit-scrollbar {
+            display: none !important;
         }
 
         .kpi-trend-table {
-            min-width: 440px !important;
+            width: 100% !important;
+            min-width: 340px !important;
+        }
+
+        .kpi-trend-table thead th,
+        .kpi-trend-table tbody td {
+            padding: 8px 6px !important;
+            font-size: 0.75rem !important;
         }
     }
 </style>

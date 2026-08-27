@@ -1990,12 +1990,16 @@ body.sidebar-collapsed .header-toggle-btn i {
         bottom: 0;
         left: 0;
         right: 0;
+        width: 100vw !important;
+        max-width: 100vw !important;
         height: 64px;
         background: #ffffff;
         border-top: 1px solid #EAECEF;
         box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
         z-index: 1030;
         padding: 4px 6px env(safe-area-inset-bottom) 6px;
+        box-sizing: border-box !important;
+        margin: 0 !important;
     }
 
     .mobile-bottom-nav-item {
@@ -2059,7 +2063,7 @@ body.sidebar-collapsed .header-toggle-btn i {
 
     /* Extra bottom spacing so nothing gets covered */
     .main-wrapper {
-        padding-bottom: 84px !important;
+        padding-bottom: 90px !important;
     }
 
     /* Mobile Header Menu Button */
