@@ -250,200 +250,244 @@ include '../../includes/sidebar.php';
         background: #FFFFFF;
         border: 1px solid #EAECEF;
         border-radius: 16px;
-        padding: 1.5rem;
+        padding: 24px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-        margin-bottom: 1.5rem;
+        margin-bottom: 24px;
+        box-sizing: border-box;
     }
 
     .ct-bento-head {
-        margin-bottom: 1.25rem;
+        margin-bottom: 20px;
     }
 
     .ct-bento-head h3 {
-        font-family: 'Inter', sans-serif;
-        font-size: 1.05rem;
-        font-weight: 800;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 16px;
+        font-weight: 700;
         color: #0F172A;
         margin: 0;
         letter-spacing: -0.01em;
+        line-height: 1.2;
     }
 
     .ct-bento-head p {
-        font-size: 0.75rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
         color: #64748B;
-        margin: 2px 0 0 0;
-        font-weight: 500;
+        margin: 4px 0 0 0;
+        font-weight: 400;
     }
 
     .ct-columns-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
+        gap: 24px;
     }
 
     .ct-col-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 0.85rem;
+        margin-bottom: 12px;
+        min-height: 28px;
     }
 
     .ct-col-title {
-        font-size: 0.88rem;
-        font-weight: 800;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 15px;
+        font-weight: 700;
         color: #0F172A;
+        letter-spacing: -0.01em;
     }
 
     .ct-badge-roas {
-        background: #EEF2FF;
+        background: #F1F4F9;
         color: #4362CE;
-        font-size: 0.68rem;
-        font-weight: 800;
-        padding: 2px 8px;
-        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 6px;
         letter-spacing: 0.04em;
     }
 
     .ct-badge-budget {
         background: #FEF0EF;
         color: #EE473D;
-        font-size: 0.68rem;
-        font-weight: 800;
-        padding: 2px 8px;
-        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 6px;
         letter-spacing: 0.04em;
     }
 
-    /* List Item Cards */
+    /* List Item Cards (Figma: 585px Fill x 81px Height, 6px gap) */
     .ct-perf-card {
         background: #FFFFFF;
         border: 1px solid #EAECEF;
-        border-radius: 12px;
-        padding: 10px 16px;
-        margin-bottom: 10px;
+        border-radius: 14px;
+        padding: 12px 20px;
+        margin-bottom: 6px;
+        height: 81px;
+        min-height: 81px;
+        box-sizing: border-box;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 16px;
+        gap: 14px;
         transition: all 0.15s ease;
     }
 
     .ct-perf-card:hover {
         border-color: #CBD5E1;
-        background: #FAFAFC;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     }
 
     .ct-perf-left {
         flex: 1;
         min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: left;
     }
 
     .ct-perf-name {
-        font-size: 0.88rem;
-        font-weight: 700;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px;
+        font-weight: 600;
         color: #0F172A;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        line-height: 1.3;
     }
 
     .ct-perf-sub {
-        font-size: 0.75rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px;
         color: #64748B;
-        margin-top: 3px;
-        font-weight: 500;
+        margin-top: 4px;
+        font-weight: 400;
+        line-height: 1;
     }
 
     .ct-perf-right {
         display: flex;
         align-items: center;
-        gap: 18px;
+        gap: 14px;
         flex-shrink: 0;
     }
 
-    /* Figma Roas Badge Box */
+    /* Figma Roas & ACoS Badge Box (Exact 85px Width x 57px Height Hug, centered) */
     .ct-roas-badge-box {
         background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 10px;
-        padding: 5px 14px;
+        border: 1px solid #EAECEF;
+        border-radius: 12px;
+        padding: 6px 8px;
+        width: 85px;
+        min-width: 85px;
+        height: 57px;
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
+        align-items: center;
         justify-content: center;
-        min-width: 76px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        text-align: center;
+        flex-shrink: 0;
     }
 
     .ct-roas-badge-box .label {
-        font-size: 0.75rem;
-        font-weight: 800;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
+        font-weight: 600;
         color: #0F172A;
         line-height: 1.2;
-        margin-bottom: 2px;
+        margin-bottom: 4px;
+        text-align: center;
+        white-space: nowrap;
+        width: 100%;
     }
 
     .ct-roas-badge-box .val.up {
-        font-size: 0.82rem;
-        font-weight: 800;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
+        font-weight: 700;
         color: #029153;
         line-height: 1.2;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 2px;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        width: 100%;
+        text-align: center;
     }
 
     .ct-roas-badge-box .val.down {
-        font-size: 0.82rem;
-        font-weight: 800;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
+        font-weight: 700;
         color: #EE473D;
         line-height: 1.2;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 2px;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        width: 100%;
+        text-align: center;
     }
 
-    /* Spend Box */
+    /* Spend & Sales Metric Box (Exact 100px Width x 40px Height Hug, right-aligned) */
     .ct-spend-box {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        min-width: 65px;
+        justify-content: center;
+        width: 100px;
+        min-width: 100px;
+        height: 40px;
+        text-align: right;
+        flex-shrink: 0;
     }
 
     .ct-spend-box .label {
-        font-size: 0.72rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
         font-weight: 500;
         color: #64748B;
         margin-bottom: 2px;
-        line-height: 1.2;
+        line-height: 1.1;
+        text-align: right;
+        white-space: nowrap;
     }
 
     .ct-spend-box .val {
-        font-family: 'Inter', sans-serif;
-        font-size: 0.98rem;
-        font-weight: 800;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 16px;
+        font-weight: 700;
         color: #0F172A;
         line-height: 1.2;
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+        white-space: nowrap;
     }
 
     /* ==========================================================================
        Responsive Rules for Campaign & Target Performance
        ========================================================================== */
-    @media (max-width: 1440px) {
+    @media (max-width: 1199px) {
         .ct-columns-grid {
             grid-template-columns: 1fr !important;
             gap: 1.25rem !important;
         }
 
         .ct-perf-card {
+            height: auto !important;
+            min-height: 81px !important;
             padding: 10px 14px;
-        }
-    }
-
-    @media (min-width: 1441px) {
-        .ct-perf-name {
-            max-width: 220px;
         }
     }
 
@@ -534,30 +578,151 @@ include '../../includes/sidebar.php';
             padding: 1rem !important;
             border-radius: 14px !important;
             margin-bottom: 1rem !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #match-types-sp-body,
+        #match-types-sb-body {
+            min-width: 440px;
         }
 
         .ct-perf-card {
-            padding: 8px 12px !important;
-            gap: 10px !important;
+            padding: 10px 14px !important;
+            gap: 8px !important;
+            height: auto !important;
+            min-height: 72px !important;
         }
 
         .ct-perf-name {
             font-size: 0.82rem !important;
-            max-width: 140px !important;
+            max-width: 130px !important;
         }
 
         .ct-perf-right {
-            gap: 10px !important;
+            gap: 8px !important;
         }
 
         .ct-roas-badge-box {
-            padding: 4px 8px !important;
-            min-width: 60px !important;
+            padding: 4px 6px !important;
+            width: 72px !important;
+            min-width: 72px !important;
+            height: 50px !important;
         }
 
-        .ct-spend-box {
-            min-width: 50px !important;
+        .ct-roas-badge-box .label {
+            font-size: 11px !important;
+            margin-bottom: 2px !important;
         }
+
+        .ct-roas-badge-box .val.up,
+        .ct-roas-badge-box .val.down {
+            font-size: 11px !important;
+        }
+
+        .ct-bid-card {
+            padding: 10px 14px !important;
+            gap: 8px !important;
+            height: auto !important;
+            min-height: 72px !important;
+        }
+
+        .ct-bid-left {
+            gap: 10px !important;
+        }
+
+        .ct-bid-title {
+            font-size: 0.8rem !important;
+            max-width: 110px !important;
+            white-space: normal !important;
+            line-height: 1.2 !important;
+        }
+
+        .ct-bid-right {
+            gap: 8px !important;
+        }
+
+        .ct-bid-roas {
+            padding: 4px 6px !important;
+            width: 70px !important;
+            min-width: 70px !important;
+            height: 50px !important;
+        }
+
+        .ct-bid-metric {
+            width: 65px !important;
+            min-width: 65px !important;
+            height: 38px !important;
+        }
+
+        .ct-bid-metric .label {
+            font-size: 11px !important;
+        }
+
+        .ct-bid-metric .val {
+            font-size: 12px !important;
+        }
+    }
+
+    /* Bidding Strategy Card Desktop Styles */
+    .ct-bid-card {
+        background: #FFFFFF !important;
+        border: 1px solid #EAECEF !important;
+        border-radius: 14px !important;
+        padding: 12px 20px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 16px !important;
+        margin-bottom: 8px !important;
+        transition: all 0.15s ease !important;
+    }
+
+    .ct-bid-card:hover {
+        border-color: #CBD5E1 !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
+    }
+
+    .ct-bid-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .ct-bid-rank {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .ct-bid-sub {
+        font-size: 11px;
+        color: #64748B;
+        font-weight: 500;
+        line-height: 1;
+    }
+
+    .ct-bid-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #0F172A;
+        margin-top: 3px;
+        line-height: 1.2;
+    }
+
+    .ct-bid-right {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-shrink: 0;
     }
 </style>
 
@@ -1443,26 +1608,26 @@ include '../../includes/sidebar.php';
                     const roasColor = isPositive ? '#10B981' : '#EE473D';
 
                     b_html += `
-                        <div class="ct-perf-card" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 0; transition: all 0.15s ease;">
-                            <div style="display: flex; align-items: center; gap: 16px;">
-                                <span style="width: 28px; height: 28px; border-radius: 50%; ${rankBadgeStyle} display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0;">${idx + 1}</span>
+                        <div class="ct-perf-card ct-bid-card">
+                            <div class="ct-bid-left">
+                                <span class="ct-bid-rank" style="${rankBadgeStyle}">${idx + 1}</span>
                                 <div>
-                                    <div style="font-size: 0.72rem; color: #64748B; font-weight: 500;">Strategy</div>
-                                    <div style="font-size: 0.92rem; font-weight: 700; color: #0F172A; margin-top: 1px;">${b.name}</div>
+                                    <div class="ct-bid-sub">Strategy</div>
+                                    <div class="ct-bid-title">${b.name}</div>
                                 </div>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 36px;">
-                                <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px 16px; min-width: 80px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
-                                    <span style="display: block; font-size: 0.7rem; color: #64748B; font-weight: 600;">Roas</span>
-                                    <span style="display: block; font-size: 0.82rem; font-weight: 700; color: ${roasColor}; font-variant-numeric: tabular-nums;">${roas.toFixed(2)}x ↑</span>
+                            <div class="ct-bid-right">
+                                <div class="ct-roas-badge-box ct-bid-roas">
+                                    <span class="label">Roas</span>
+                                    <span class="val ${isPositive ? 'up' : 'down'}">${roas.toFixed(2)}x ${isPositive ? '↑' : '↓'}</span>
                                 </div>
-                                <div style="min-width: 95px; text-align: right;">
-                                    <span style="display: block; font-size: 0.7rem; color: #64748B; font-weight: 600;">Spend</span>
-                                    <span style="display: block; font-size: 0.95rem; font-weight: 800; color: #0F172A; font-variant-numeric: tabular-nums;">${formatCurrency(spend)}</span>
+                                <div class="ct-spend-box ct-bid-metric">
+                                    <span class="label">Spend</span>
+                                    <span class="val">${formatCurrency(spend)}</span>
                                 </div>
-                                <div style="min-width: 95px; text-align: right;">
-                                    <span style="display: block; font-size: 0.7rem; color: #64748B; font-weight: 600;">Sales</span>
-                                    <span style="display: block; font-size: 0.95rem; font-weight: 800; color: #0F172A; font-variant-numeric: tabular-nums;">${formatCurrency(sales)}</span>
+                                <div class="ct-spend-box ct-bid-metric">
+                                    <span class="label">Sales</span>
+                                    <span class="val">${formatCurrency(sales)}</span>
                                 </div>
                             </div>
                         </div>

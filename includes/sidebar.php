@@ -4,17 +4,11 @@
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <div class="sidebar-brand-wrapper" onclick="toggleSidebar()" role="button" tabindex="0"
-            title="Toggle Sidebar Menu">
-            <div class="sidebar-brand-logo">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.6"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                </svg>
-            </div>
-            <div class="sidebar-brand-text">
-                <span class="brand-title">A'One</span>
-                <span class="brand-subtitle">Intelligence</span>
-            </div>
+            title="Toggle Sidebar Menu" style="cursor: pointer; display: flex; align-items: center; gap: 10px;">
+            <img src="<?php echo BASE_URL; ?>assets/images/Frame.png" alt="A'One Logo" class="sidebar-brand-logo-img"
+                style="width: 36px; height: 36px; object-fit: contain; flex-shrink: 0;" />
+            <img src="<?php echo BASE_URL; ?>assets/images/A%E2%80%99One%20Intelligence.png" alt="A'One Intelligence" class="sidebar-brand-text-img"
+                style="height: 32px; width: auto; object-fit: contain;" />
         </div>
         <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Collapse / Expand Sidebar"
             aria-label="Toggle Sidebar">

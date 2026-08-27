@@ -370,7 +370,7 @@ include '../../includes/sidebar.php';
 
     .overview-hero-grid {
         display: grid;
-        grid-template-columns: 400px repeat(3, 1fr);
+        grid-template-columns: minmax(320px, 400px) repeat(3, minmax(0, 1fr));
         gap: 20px;
         margin-bottom: 20px;
     }
@@ -449,7 +449,8 @@ include '../../includes/sidebar.php';
     }
 
     .ov-card.hero {
-        width: 400px;
+        width: 100%;
+        max-width: 100%;
         background-color: #4362CE !important;
         background-image: url('<?php echo BASE_URL; ?>assets/images/bg-3.png') !important;
         background-repeat: no-repeat !important;
@@ -529,7 +530,7 @@ include '../../includes/sidebar.php';
 
     .overview-row {
         display: grid;
-        grid-template-columns: 400px minmax(0, 1fr);
+        grid-template-columns: minmax(320px, 400px) minmax(0, 1fr);
         gap: 20px;
         align-items: stretch;
     }
@@ -548,7 +549,8 @@ include '../../includes/sidebar.php';
 
     .overview-panel-ad,
     .overview-panel-traffic {
-        width: 400px;
+        width: 100%;
+        max-width: 100%;
         height: 390px;
         min-height: 390px;
         box-sizing: border-box;
@@ -581,13 +583,20 @@ include '../../includes/sidebar.php';
 
     #tab_kpi .trend-table {
         width: 100%;
-        table-layout: fixed;
+        min-width: 560px;
+        table-layout: auto;
         border-collapse: separate;
         border-spacing: 0;
         border: none !important;
         box-shadow: none !important;
         margin: 0 !important;
         background: transparent !important;
+    }
+
+    #tab_kpi .overview-panel-table .table-container {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        width: 100% !important;
     }
 
     #tab_kpi .trend-table th {
@@ -598,34 +607,35 @@ include '../../includes/sidebar.php';
         font-weight: 600 !important;
         text-transform: none !important;
         letter-spacing: 0 !important;
-        padding: 0.65rem 20px !important;
+        padding: 0.65rem 12px !important;
         border: none !important;
         border-bottom: 1px solid #E8EAF2 !important;
         vertical-align: middle !important;
+        white-space: nowrap !important;
     }
 
     #tab_kpi .trend-table th:first-child {
         text-align: left !important;
-        width: 34%;
-        padding-left: 20px !important;
+        width: 25%;
+        padding-left: 16px !important;
     }
 
     #tab_kpi .trend-table th:nth-child(2) {
         text-align: right !important;
-        width: 22%;
-        padding-right: 20px !important;
+        width: 25%;
+        padding-right: 16px !important;
     }
 
     #tab_kpi .trend-table th:nth-child(3) {
         text-align: right !important;
-        width: 22%;
-        padding-right: 20px !important;
+        width: 25%;
+        padding-right: 16px !important;
     }
 
     #tab_kpi .trend-table th:nth-child(4) {
         text-align: right !important;
-        width: 22%;
-        padding-right: 20px !important;
+        width: 25%;
+        padding-right: 16px !important;
     }
 
     #tab_kpi .trend-table tr {
@@ -633,7 +643,7 @@ include '../../includes/sidebar.php';
     }
 
     #tab_kpi .trend-table td {
-        padding: 0 20px !important;
+        padding: 0 12px !important;
         height: 50px;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         font-size: 14px !important;
@@ -642,6 +652,7 @@ include '../../includes/sidebar.php';
         border-bottom: 1px solid #E8EAF2 !important;
         color: #0F172A !important;
         vertical-align: middle !important;
+        white-space: nowrap !important;
     }
 
     #tab_kpi .trend-table td:first-child {
@@ -649,14 +660,22 @@ include '../../includes/sidebar.php';
         color: #1E293B !important;
         font-weight: 500 !important;
         font-size: 14px !important;
-        padding-left: 20px !important;
+        padding-left: 16px !important;
     }
 
-    #tab_kpi .trend-table td:nth-child(2),
-    #tab_kpi .trend-table td:nth-child(3),
+    #tab_kpi .trend-table td:nth-child(2) {
+        text-align: right !important;
+        padding-right: 16px !important;
+    }
+
+    #tab_kpi .trend-table td:nth-child(3) {
+        text-align: right !important;
+        padding-right: 16px !important;
+    }
+
     #tab_kpi .trend-table td:nth-child(4) {
         text-align: right !important;
-        padding-right: 20px !important;
+        padding-right: 16px !important;
     }
 
     /* Alternating Row Colors matching Figma (1: Color, 2: Transparent, 3: Color, 4: Transparent, 5: Color) */
@@ -698,16 +717,17 @@ include '../../includes/sidebar.php';
 
     .overview-metric-grid {
         display: grid;
-        grid-template-columns: repeat(2, 170px);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
-        justify-content: space-between;
+        width: 100%;
     }
 
     .overview-metric-card {
         background: #F8FAFC !important;
         border: 1px solid #EEF2F6 !important;
         border-radius: 14px !important;
-        width: 170px !important;
+        width: 100% !important;
+        max-width: 100% !important;
         height: 144px !important;
         min-height: 144px !important;
         padding: 16px 18px !important;
@@ -927,12 +947,12 @@ include '../../includes/sidebar.php';
     /* Large Desktops & HD Displays (1200px - 1440px) */
     @media (max-width: 1399px) {
         .overview-hero-grid {
-            grid-template-columns: 1.25fr 1fr 1fr 1fr;
-            gap: 0.75rem;
+            grid-template-columns: minmax(280px, 1.25fr) repeat(3, minmax(0, 1fr));
+            gap: 1rem;
         }
 
         .ov-card {
-            padding: 1rem 1.1rem;
+            padding: 1.1rem 1.2rem;
         }
 
         .ov-card .ov-value {
@@ -940,25 +960,60 @@ include '../../includes/sidebar.php';
         }
 
         .overview-row {
-            grid-template-columns: minmax(260px, 35%) minmax(0, 1fr);
-            gap: 0.75rem;
+            grid-template-columns: minmax(300px, 38%) minmax(0, 1fr);
+            gap: 1rem;
         }
     }
 
     /* Tablets Landscape & Medium Desktops (992px - 1199px) */
     @media (max-width: 1199px) {
         .overview-hero-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.85rem;
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 1rem !important;
+            width: 100% !important;
+        }
+
+        .ov-card,
+        .ov-card.hero {
+            width: 100% !important;
+            max-width: 100% !important;
         }
 
         .overview-row {
-            grid-template-columns: 1fr;
-            gap: 0.85rem;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 1rem !important;
+            width: 100% !important;
+        }
+
+        .overview-panel,
+        .overview-panel-ad,
+        .overview-panel-traffic,
+        .overview-panel-chart,
+        .overview-panel-table {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+        }
+
+        .overview-metric-grid {
+            display: grid !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            gap: 12px !important;
+            width: 100% !important;
+        }
+
+        .overview-metric-card {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: 130px !important;
+            min-height: 130px !important;
         }
 
         .overview-chart-wrap {
-            height: 260px;
+            height: 280px;
         }
     }
 
@@ -1074,32 +1129,71 @@ include '../../includes/sidebar.php';
         }
 
         .overview-hero-grid {
-            grid-template-columns: 1fr;
-            gap: 0.65rem;
+            grid-template-columns: 1fr !important;
+            gap: 0.75rem !important;
         }
 
-        .ov-card {
-            min-height: 105px;
-            padding: 0.95rem 1.05rem;
+        .ov-card,
+        .ov-card.hero {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-height: 120px !important;
+            height: auto !important;
+            padding: 1rem 1.15rem !important;
+            box-sizing: border-box !important;
+        }
+
+        .ov-card .ov-top,
+        .ov-card.hero .ov-top {
+            margin-bottom: 8px !important;
+        }
+
+        .ov-card .ov-label,
+        .ov-card.hero .ov-label {
+            font-size: 13px !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
         }
 
         .ov-card .ov-value {
-            font-size: 1.5rem;
-            margin-bottom: 0.35rem;
+            font-size: clamp(20px, 5.5vw, 24px) !important;
+            margin-bottom: 12px !important;
+            line-height: 1.1 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
         }
 
         .ov-card.hero .ov-value {
-            font-size: 1.65rem;
+            font-size: clamp(24px, 6.5vw, 30px) !important;
+            margin-top: 6px !important;
+            margin-bottom: 12px !important;
+            line-height: 1.1 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        .ov-card .cmp-tag,
+        .ov-card.hero .cmp-tag {
+            font-size: 12px !important;
+            padding: 4px 8px !important;
         }
 
         .overview-metric-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 0.5rem !important;
+            width: 100% !important;
         }
 
         .overview-metric-card {
+            width: 100% !important;
+            max-width: 100% !important;
             padding: 0.85rem 0.95rem !important;
             min-height: 90px !important;
+            height: auto !important;
         }
 
         .overview-metric-card .om-value {
@@ -1122,12 +1216,18 @@ include '../../includes/sidebar.php';
             max-width: 100%;
         }
 
-        .overview-panel {
-            width: 100%;
-            max-width: 100%;
-            min-width: 0;
-            padding: 0.85rem;
-            border-radius: 12px;
+        .overview-panel,
+        .overview-panel-ad,
+        .overview-panel-traffic,
+        .overview-panel-chart,
+        .overview-panel-table {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            height: auto !important;
+            min-height: 0 !important;
+            padding: 1rem !important;
+            border-radius: 14px;
         }
 
         .overview-chart-head {
@@ -1141,25 +1241,32 @@ include '../../includes/sidebar.php';
             width: 100% !important;
             max-width: 100% !important;
             display: flex !important;
-            flex-wrap: wrap !important;
-            gap: 4px !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            gap: 6px !important;
             background: #F1F4F9 !important;
-            padding: 4px !important;
+            padding: 4px 6px !important;
             border-radius: 12px !important;
-            overflow: visible !important;
+            scrollbar-width: none !important;
+        }
+
+        #tab_kpi .chart-tabs::-webkit-scrollbar {
+            display: none !important;
         }
 
         #tab_kpi .chart-tab-btn {
-            flex: 1 1 auto !important;
+            flex: 0 0 auto !important;
             text-align: center !important;
-            padding: 5px 8px !important;
-            font-size: 0.72rem !important;
+            padding: 6px 14px !important;
+            font-size: 0.76rem !important;
+            font-weight: 600 !important;
             white-space: nowrap !important;
             border-radius: 8px !important;
         }
 
         #tab_kpi .chart-tab-btn.active {
-            padding: 5px 10px !important;
+            padding: 6px 14px !important;
             box-shadow: 0 2px 6px rgba(67, 98, 206, 0.2) !important;
         }
 
@@ -1176,35 +1283,96 @@ include '../../includes/sidebar.php';
         }
 
         #tab_kpi .table-container {
-            width: 100%;
-            max-width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            display: block;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            display: block !important;
         }
 
         #tab_kpi .trend-table {
-            width: 100%;
-            min-width: 480px;
+            width: 100% !important;
+            min-width: 640px !important;
+            table-layout: auto !important;
+        }
+
+        #tab_kpi .trend-table th,
+        #tab_kpi .trend-table td {
+            white-space: nowrap !important;
+        }
+
+        #tab_kpi .trend-table th:first-child,
+        #tab_kpi .trend-table td:first-child {
+            width: auto !important;
+            min-width: 180px !important;
+        }
+
+        #tab_kpi .trend-table th:nth-child(2),
+        #tab_kpi .trend-table td:nth-child(2),
+        #tab_kpi .trend-table th:nth-child(3),
+        #tab_kpi .trend-table td:nth-child(3),
+        #tab_kpi .trend-table th:nth-child(4),
+        #tab_kpi .trend-table td:nth-child(4) {
+            width: auto !important;
+            min-width: 150px !important;
         }
     }
 
     /* Small Mobile Devices (max-width: 420px) */
     @media (max-width: 420px) {
         .overview-metric-grid {
-            grid-template-columns: 1fr;
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 8px !important;
+            width: 100% !important;
         }
 
-        .overview-topbar-right {
-            grid-template-columns: 1fr;
+        .overview-metric-card {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-height: 110px !important;
+            height: auto !important;
+            padding: 12px 12px !important;
+        }
+
+        .overview-metric-card .om-label {
+            font-size: 12px !important;
         }
 
         .overview-metric-card .om-value {
-            font-size: 1.1rem;
+            font-size: 18px !important;
+            margin: 4px 0 6px 0 !important;
         }
 
-        .ov-card .ov-value {
-            font-size: 1.4rem;
+        .overview-metric-card .cmp-tag {
+            font-size: 11px !important;
+            padding: 3px 6px !important;
+        }
+
+        .overview-topbar-right {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            align-items: center !important;
+            gap: 8px !important;
+            width: 100% !important;
+        }
+
+        .overview-topbar-right .btn-figma-primary,
+        .overview-topbar-right .btn-figma-outline {
+            flex: 1 1 calc(50% - 4px) !important;
+            min-width: 110px !important;
+            height: 38px !important;
+        }
+
+        .overview-topbar-right .btn-figma-icon,
+        .overview-topbar-right .btn-figma-icon-sm {
+            width: 38px !important;
+            height: 38px !important;
+            flex: 0 0 38px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
     }
 
@@ -1241,21 +1409,23 @@ include '../../includes/sidebar.php';
         border-radius: 16px !important;
         box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
         display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
         overflow: hidden !important;
-        height: 154px !important;
+        min-height: 154px !important;
+        height: auto !important;
         box-sizing: border-box !important;
     }
 
     .pl-hero-section {
-        padding: 20px 24px !important;
+        padding: 18px 20px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
-        gap: 0.25rem !important;
+        gap: 0.5rem !important;
         position: relative !important;
         border-right: 1px solid #EAECEF !important;
         box-sizing: border-box !important;
+        min-width: 0 !important;
     }
 
     .pl-hero-section:last-child {
@@ -1264,27 +1434,34 @@ include '../../includes/sidebar.php';
 
     .pl-hero-label {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 16px !important;
+        font-size: clamp(13px, 1.1vw, 16px) !important;
         font-weight: 500 !important;
         color: #1A1A1A !important;
-        line-height: 100% !important;
-        margin-bottom: 20px !important;
+        line-height: 1.2 !important;
+        margin-bottom: 8px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
 
     .pl-hero-value {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 28px !important;
+        font-size: clamp(20px, 1.85vw, 28px) !important;
         font-weight: 600 !important;
         color: #1A1A1A !important;
-        line-height: 100% !important;
-        margin: 0 0 14px 0 !important;
+        line-height: 1.1 !important;
+        margin: 0 0 10px 0 !important;
         font-variant-numeric: tabular-nums;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
 
     .pl-hero-stat-row {
-        display: inline-flex !important;
+        display: flex !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 6px !important;
+        flex-wrap: wrap !important;
     }
 
     .pl-hero-badge {
@@ -1292,21 +1469,24 @@ include '../../includes/sidebar.php';
         align-items: center !important;
         gap: 4px !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 13px !important;
+        font-size: clamp(11px, 0.9vw, 13px) !important;
         font-weight: 600 !important;
-        height: 28px !important;
-        padding: 4px 8px !important;
+        height: 26px !important;
+        padding: 3px 7px !important;
         border-radius: 6px !important;
         width: fit-content !important;
         box-sizing: border-box !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
     }
 
     .pl-hero-stat-text {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 13px !important;
+        font-size: clamp(11px, 0.9vw, 13px) !important;
         font-weight: 500 !important;
         color: #1A1A1A !important;
         line-height: 1 !important;
+        white-space: nowrap !important;
     }
 
     .pl-hero-badge.green {
@@ -1336,7 +1516,22 @@ include '../../includes/sidebar.php';
         max-width: 100%;
     }
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1300px) {
+        .pl-main-layout {
+            grid-template-columns: minmax(0, 1fr) 300px !important;
+            gap: 1rem !important;
+        }
+
+        .pl-right-col {
+            width: 300px !important;
+        }
+
+        .pl-hero-section {
+            padding: 14px 16px !important;
+        }
+    }
+
+    @media (max-width: 1100px) {
         .pl-main-layout {
             grid-template-columns: 1fr !important;
         }
@@ -1358,41 +1553,37 @@ include '../../includes/sidebar.php';
         }
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 768px) {
         .pl-hero-3in1-card {
-            grid-template-columns: repeat(3, 1fr) !important;
-        }
-
-        .pl-hero-section {
-            padding: 0.75rem 0.65rem !important;
-            border-right: 1px solid #f1f5f9 !important;
-            border-bottom: none !important;
-        }
-
-        .pl-hero-section:last-child {
-            border-right: none !important;
-        }
-
-        .pl-hero-label {
-            font-size: 0.68rem !important;
-            white-space: nowrap !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-        }
-
-        .pl-hero-stat-row {
-            gap: 4px !important;
-        }
-
-        .pl-hero-badge {
-            font-size: 0.62rem !important;
-            padding: 2px 5px !important;
-            border-radius: 6px !important;
+            grid-template-columns: 1fr !important;
             height: auto !important;
         }
 
+        .pl-hero-section {
+            border-right: none !important;
+            border-bottom: 1px solid #EAECEF !important;
+            padding: 1rem 1.25rem !important;
+        }
+
+        .pl-hero-section:last-child {
+            border-bottom: none !important;
+        }
+
+        .pl-hero-label {
+            font-size: 14px !important;
+        }
+
+        .pl-hero-value {
+            font-size: 26px !important;
+        }
+
+        .pl-hero-badge {
+            font-size: 12px !important;
+            padding: 4px 8px !important;
+        }
+
         .pl-hero-stat-text {
-            font-size: 0.65rem !important;
+            font-size: 12px !important;
         }
     }
 
@@ -1536,16 +1727,19 @@ include '../../includes/sidebar.php';
     }
 
     .pl-chart-card {
-        height: 285px !important;
+        height: auto !important;
+        min-height: 380px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
         box-sizing: border-box !important;
+        padding-bottom: 8px !important;
     }
 
     .pl-chart-wrapper {
-        padding: 0.25rem 1.4rem 0 !important;
-        height: 185px !important;
+        padding: 0.5rem 1.4rem 1rem 1.4rem !important;
+        height: 260px !important;
+        min-height: 260px !important;
         position: relative !important;
         flex: 1 !important;
     }
@@ -2361,65 +2555,177 @@ include '../../includes/sidebar.php';
     }
 
     /* Product Performance Figma hero */
-    /* Product Performance Figma hero */
     .pp-hero-grid {
         display: grid;
-        grid-template-columns: 500px minmax(0, 1fr);
+        grid-template-columns: minmax(360px, 460px) minmax(0, 1fr);
         gap: 1.25rem;
         margin-bottom: 1.25rem;
         align-items: stretch;
         width: 100%;
     }
 
-    @media (max-width: 1200px) {
+    /* Responsive Breakpoints for Product Performance */
+    @media (max-width: 1400px) {
+        .pp-hero-grid {
+            grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+            gap: 1rem;
+        }
+
+        .pp-donut-body {
+            gap: 1rem !important;
+        }
+
+        .pp-donut-wrap {
+            width: 220px !important;
+            height: 220px !important;
+        }
+
+        .pp-donut-center {
+            width: 120px !important;
+            height: 120px !important;
+        }
+
+        .pp-donut-center p {
+            font-size: 24px !important;
+        }
+
+        .pp-kpi-card {
+            padding: 14px 16px !important;
+        }
+
+        .pp-kpi-value {
+            font-size: 22px !important;
+        }
+    }
+
+    @media (max-width: 1199px) {
         .pp-hero-grid {
             grid-template-columns: 1fr !important;
-            gap: 1rem !important;
+            gap: 1.25rem !important;
         }
 
         .pp-sku-panel,
         .pp-right-col {
             width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+        }
+
+        .pp-donut-card {
             height: auto !important;
             min-height: 0 !important;
         }
 
         .pp-kpi-row {
             grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 16px !important;
         }
     }
 
-    @media (max-width: 768px) {
-        .pp-hero-grid {
-            grid-template-columns: 1fr !important;
-        }
-
+    @media (max-width: 992px) {
         .pp-donut-body {
-            flex-direction: column !important;
-            align-items: center !important;
-            gap: 1rem !important;
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+            justify-items: center !important;
+            padding: 10px 0 !important;
         }
 
         .pp-donut-wrap {
-            width: 160px !important;
-            height: 160px !important;
+            width: 240px !important;
+            height: 240px !important;
+            margin: 0 auto !important;
+        }
+
+        .pp-donut-center {
+            width: 140px !important;
+            height: 140px !important;
         }
 
         .pp-donut-legend {
             width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
+        }
+
+        .pp-kpi-row {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 12px !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .overview-page-head {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+        }
+
+        .overview-page-head .d-flex {
+            width: 100% !important;
+        }
+
+        .figma-date-picker-wrap {
+            flex: 1 !important;
+            width: 100% !important;
+        }
+
+        .pp-sku-panel {
+            padding: 16px !important;
+            height: auto !important;
+            min-height: 0 !important;
+        }
+
+        .pp-sku-row {
+            padding: 10px 12px !important;
+            gap: 10px !important;
+        }
+
+        .pp-sku-units {
+            width: 80px !important;
+            height: 48px !important;
+        }
+
+        .pp-sku-rev strong {
+            font-size: 16px !important;
+        }
+
+        .pp-donut-card {
+            padding: 18px 16px !important;
+        }
+
+        .pp-donut-wrap {
+            width: 200px !important;
+            height: 200px !important;
+        }
+
+        .pp-donut-center {
+            width: 120px !important;
+            height: 120px !important;
+        }
+
+        .pp-donut-center p {
+            font-size: 22px !important;
+        }
+
+        .pp-donut-center span {
+            font-size: 11px !important;
+        }
+
+        .pp-legend-row {
+            height: 46px !important;
+            min-height: 46px !important;
         }
 
         .pp-kpi-row {
             grid-template-columns: 1fr !important;
-            gap: 0.65rem !important;
+            gap: 12px !important;
         }
 
-        .pp-sku-row {
-            padding: 0.65rem 0.25rem !important;
-        }
-
-        .pp-sku-info strong {
-            max-width: 140px !important;
+        .pp-kpi-card {
+            height: auto !important;
+            min-height: 96px !important;
+            padding: 14px 16px !important;
         }
     }
 
@@ -2436,10 +2742,9 @@ include '../../includes/sidebar.php';
         padding: 20px 20px 16px 20px !important;
         display: flex;
         flex-direction: column;
-        width: 500px;
+        width: 100%;
         max-width: 100%;
-        height: 598px;
-        min-height: 598px;
+        min-height: 560px;
         box-sizing: border-box;
     }
 
@@ -2475,12 +2780,12 @@ include '../../includes/sidebar.php';
         flex-direction: row !important;
         align-items: center !important;
         justify-content: space-between !important;
-        padding: 12px 16px !important;
+        padding: 12px 14px !important;
         border: 1px solid #EAECEF !important;
         border-radius: 12px !important;
         background: #ffffff !important;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
-        min-height: 76px !important;
+        min-height: 72px !important;
         box-sizing: border-box !important;
         position: relative;
         transition: all 0.15s ease !important;
@@ -2492,8 +2797,8 @@ include '../../includes/sidebar.php';
     }
 
     .pp-sku-rank {
-        width: 32px !important;
-        height: 32px !important;
+        width: 30px !important;
+        height: 30px !important;
         border-radius: 50% !important;
         display: flex !important;
         align-items: center !important;
@@ -2527,14 +2832,14 @@ include '../../includes/sidebar.php';
     .pp-sku-info {
         min-width: 0 !important;
         flex: 1 !important;
-        margin-left: 12px !important;
-        margin-right: 8px !important;
+        margin-left: 10px !important;
+        margin-right: 6px !important;
         text-align: left !important;
     }
 
     .pp-sku-info strong {
         display: block !important;
-        font-size: 15px !important;
+        font-size: 14px !important;
         font-weight: 600 !important;
         color: #1A1A1A !important;
         white-space: nowrap !important;
@@ -2545,7 +2850,7 @@ include '../../includes/sidebar.php';
 
     .pp-sku-info span {
         display: block !important;
-        font-size: 12px !important;
+        font-size: 11px !important;
         font-weight: 500 !important;
         color: #64748B !important;
         text-transform: none !important;
@@ -2557,14 +2862,14 @@ include '../../includes/sidebar.php';
         border: 1px solid #EAECEF !important;
         border-radius: 10px !important;
         background: #FFFFFF !important;
-        padding: 8px 12px !important;
-        width: 88px !important;
-        height: 52px !important;
+        padding: 6px 10px !important;
+        width: 80px !important;
+        height: 48px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 6px !important;
+        gap: 4px !important;
         flex-shrink: 0 !important;
         text-align: center !important;
         box-sizing: border-box !important;
@@ -2573,7 +2878,7 @@ include '../../includes/sidebar.php';
     .pp-sku-units strong {
         display: block !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 13px !important;
+        font-size: 12px !important;
         font-weight: 600 !important;
         color: #1A1A1A !important;
         line-height: 100% !important;
@@ -2590,7 +2895,7 @@ include '../../includes/sidebar.php';
         gap: 3px !important;
         font-style: normal !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 12px !important;
+        font-size: 11px !important;
         font-weight: 600 !important;
         line-height: 100% !important;
         letter-spacing: 0% !important;
@@ -2613,27 +2918,27 @@ include '../../includes/sidebar.php';
         flex-direction: column !important;
         align-items: flex-end !important;
         justify-content: center !important;
-        min-width: 80px !important;
+        min-width: 75px !important;
         flex-shrink: 0 !important;
-        margin-left: 12px !important;
+        margin-left: 8px !important;
         text-align: right !important;
     }
 
     .pp-sku-rev small {
         display: block !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 12px !important;
+        font-size: 11px !important;
         font-weight: 500 !important;
         color: #64748B !important;
         text-transform: none !important;
-        margin: 0 0 4px 0 !important;
+        margin: 0 0 3px 0 !important;
         line-height: 100% !important;
     }
 
     .pp-sku-rev strong {
         display: block !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 18px !important;
+        font-size: 16px !important;
         font-weight: 700 !important;
         color: #1A1A1A !important;
         line-height: 100% !important;
@@ -2647,13 +2952,12 @@ include '../../includes/sidebar.php';
         gap: 1.25rem;
         min-width: 0;
         width: 100%;
-        height: 598px;
-        min-height: 598px;
+        min-height: 560px;
         box-sizing: border-box;
     }
 
     .pp-donut-card {
-        padding: 24px 30px 24px 30px !important;
+        padding: 20px 24px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
@@ -2695,20 +2999,20 @@ include '../../includes/sidebar.php';
 
     .pp-donut-body {
         display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
+        grid-template-columns: minmax(200px, 1fr) minmax(220px, 1.25fr) !important;
         align-items: center !important;
         justify-items: center !important;
-        gap: 2rem !important;
+        gap: 1.5rem !important;
         width: 100% !important;
         flex: 1 !important;
-        padding: 10px 0 !important;
+        padding: 8px 0 !important;
         box-sizing: border-box !important;
     }
 
     .pp-donut-wrap {
         position: relative !important;
-        width: 280px !important;
-        height: 280px !important;
+        width: min(240px, 100%) !important;
+        height: 240px !important;
         flex-shrink: 0 !important;
         margin: 0 auto !important;
     }
@@ -2723,24 +3027,24 @@ include '../../includes/sidebar.php';
         top: 50% !important;
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
-        width: 190px !important;
-        height: 190px !important;
+        width: 135px !important;
+        height: 135px !important;
         border-radius: 50% !important;
         background: #ffffff !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
         pointer-events: none !important;
         text-align: center !important;
-        z-index: 2 !important;
+        z-index: 10 !important;
     }
 
     .pp-donut-center p {
         margin: 0 !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 32px !important;
+        font-size: 26px !important;
         font-weight: 800 !important;
         color: #1A1A1A !important;
         line-height: 1 !important;
@@ -2749,10 +3053,10 @@ include '../../includes/sidebar.php';
 
     .pp-donut-center span {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         color: #1A1A1A !important;
         font-weight: 500 !important;
-        margin-top: 4px !important;
+        margin-top: 3px !important;
         line-height: 1 !important;
     }
 
@@ -2761,7 +3065,7 @@ include '../../includes/sidebar.php';
         flex-direction: column !important;
         gap: 0 !important;
         width: 100% !important;
-        max-width: 380px !important;
+        min-width: 0 !important;
         margin: 0 auto !important;
     }
 
@@ -2770,11 +3074,13 @@ include '../../includes/sidebar.php';
         align-items: center !important;
         justify-content: space-between !important;
         width: 100% !important;
-        height: 52px !important;
-        min-height: 52px !important;
+        min-width: 0 !important;
+        height: 48px !important;
+        min-height: 48px !important;
         padding: 0 !important;
         border-bottom: 1px solid #F1F3F6 !important;
         box-sizing: border-box !important;
+        gap: 8px !important;
     }
 
     .pp-legend-row:last-child {
@@ -2784,9 +3090,10 @@ include '../../includes/sidebar.php';
     .pp-legend-row .name-wrap {
         display: flex !important;
         align-items: center !important;
-        gap: 10px !important;
+        gap: 8px !important;
         min-width: 0 !important;
         flex: 1 !important;
+        overflow: hidden !important;
     }
 
     .pp-legend-row .dot {
@@ -2798,7 +3105,7 @@ include '../../includes/sidebar.php';
 
     .pp-legend-row .name {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         font-weight: 500 !important;
         color: #475569 !important;
         overflow: hidden !important;
@@ -2808,29 +3115,31 @@ include '../../includes/sidebar.php';
 
     .pp-legend-row .val {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         font-weight: 700 !important;
         color: #1A1A1A !important;
         font-variant-numeric: tabular-nums !important;
         text-align: right !important;
-        margin-left: auto !important;
-        margin-right: 20px !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
     }
 
     .pp-legend-row .pct {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         font-weight: 700 !important;
         color: #1A1A1A !important;
         font-variant-numeric: tabular-nums !important;
-        min-width: 32px !important;
+        min-width: 30px !important;
         text-align: right !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
     }
 
     .pp-kpi-row {
         display: grid !important;
         grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        gap: 20px !important;
+        gap: 16px !important;
         width: 100% !important;
         margin: 0 !important;
         flex-shrink: 0 !important;
@@ -2838,10 +3147,10 @@ include '../../includes/sidebar.php';
     }
 
     .pp-kpi-card {
-        padding: 18px 22px !important;
+        padding: 16px 18px !important;
         position: relative !important;
-        min-height: 126px !important;
-        height: 126px !important;
+        min-height: 114px !important;
+        height: auto !important;
         margin: 0 !important;
         box-sizing: border-box !important;
         display: flex !important;
@@ -2851,15 +3160,16 @@ include '../../includes/sidebar.php';
         border: 1px solid #EAECEF !important;
         border-radius: 16px !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+        min-width: 0 !important;
     }
 
     .pp-kpi-icon {
         position: absolute !important;
-        top: 18px !important;
-        right: 18px !important;
-        width: 38px !important;
-        height: 38px !important;
-        border-radius: 10px !important;
+        top: 14px !important;
+        right: 14px !important;
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 8px !important;
         background: #EEF2FF !important;
         display: flex !important;
         align-items: center !important;
@@ -2868,19 +3178,23 @@ include '../../includes/sidebar.php';
 
     .pp-kpi-label {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         font-weight: 500 !important;
         color: #475569 !important;
         margin: 0 !important;
         line-height: 1 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        padding-right: 36px !important;
     }
 
     .pp-kpi-value {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 26px !important;
+        font-size: 24px !important;
         font-weight: 700 !important;
         color: #1A1A1A !important;
-        margin: 8px 0 16px 0 !important;
+        margin: 6px 0 10px 0 !important;
         line-height: 1 !important;
         font-variant-numeric: tabular-nums !important;
     }
@@ -2888,41 +3202,34 @@ include '../../includes/sidebar.php';
     .pp-kpi-footer {
         display: flex !important;
         align-items: center !important;
-        gap: 7px !important;
-        height: 28px !important;
+        gap: 6px !important;
+        height: auto !important;
+        flex-wrap: wrap !important;
     }
 
     .pp-kpi-badge {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        padding: 6px 10px !important;
-        height: 28px !important;
+        padding: 4px 8px !important;
+        height: 24px !important;
         box-sizing: border-box !important;
         border-radius: 6px !important;
         background: #EEF8F1 !important;
+        border: 1px solid #C4ECD0 !important;
         color: #029153 !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 13px !important;
+        font-size: 12px !important;
         font-weight: 600 !important;
-        line-height: 100% !important;
-        letter-spacing: 0% !important;
         white-space: nowrap !important;
     }
 
     .pp-kpi-subtext {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 13px !important;
-        font-weight: 400 !important;
+        font-size: 12px !important;
         color: #64748B !important;
-        line-height: 100% !important;
+        font-weight: 500 !important;
         white-space: nowrap !important;
-    }
-
-    @media (max-width: 1100px) {
-        .pp-hero-grid {
-            grid-template-columns: 1fr;
-        }
     }
 
     #product_list {
@@ -2931,11 +3238,301 @@ include '../../includes/sidebar.php';
         gap: 0;
     }
 
-    .pp-sku-row.product-item,
-    .product-item.pp-sku-row {
-        display: flex !important;
-        flex-direction: row !important;
-        transform: none !important;
+    /* Product Performance Mobile Responsive Overrides */
+    @media (max-width: 600px) {
+
+        .pp-sku-row,
+        .pp-sku-row.product-item,
+        .product-item.pp-sku-row {
+            display: grid !important;
+            grid-template-columns: 32px 1fr auto !important;
+            grid-template-rows: auto auto !important;
+            align-items: center !important;
+            gap: 6px 10px !important;
+            padding: 12px 14px !important;
+            height: auto !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .pp-sku-rank {
+            grid-column: 1 !important;
+            grid-row: 1 / 3 !important;
+            align-self: center !important;
+            margin: 0 !important;
+        }
+
+        .pp-sku-info {
+            grid-column: 2 !important;
+            grid-row: 1 !important;
+            min-width: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+        }
+
+        .pp-sku-info strong {
+            font-size: 14px !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            display: block !important;
+            max-width: 100% !important;
+            color: #1A1A1A !important;
+        }
+
+        .pp-sku-info span {
+            font-size: 11px !important;
+            display: block !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            color: #64748B !important;
+            margin-top: 2px !important;
+        }
+
+        .pp-sku-units {
+            grid-column: 2 !important;
+            grid-row: 2 !important;
+            width: fit-content !important;
+            height: 26px !important;
+            padding: 3px 8px !important;
+            display: inline-flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 6px !important;
+            margin: 0 !important;
+            justify-self: start !important;
+        }
+
+        .pp-sku-units strong {
+            font-size: 12px !important;
+            line-height: 1 !important;
+        }
+
+        .pp-sku-units em {
+            font-size: 11px !important;
+            line-height: 1 !important;
+        }
+
+        .pp-sku-rev {
+            grid-column: 3 !important;
+            grid-row: 1 / 3 !important;
+            text-align: right !important;
+            align-self: center !important;
+            margin: 0 !important;
+            padding-left: 6px !important;
+            min-width: 0 !important;
+        }
+
+        .pp-sku-rev small {
+            font-size: 11px !important;
+            display: block !important;
+            color: #64748B !important;
+            margin: 0 0 2px 0 !important;
+        }
+
+        .pp-sku-rev strong {
+            font-size: 16px !important;
+            color: #1A1A1A !important;
+        }
+
+        /* Donut Chart & Legend Mobile Stacking */
+        .pp-donut-card {
+            padding: 18px 14px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .pp-donut-body {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 1.25rem !important;
+            width: 100% !important;
+            padding: 10px 0 !important;
+        }
+
+        .pp-donut-wrap {
+            width: 220px !important;
+            height: 220px !important;
+            margin: 0 auto !important;
+            flex-shrink: 0 !important;
+        }
+
+        .pp-donut-center {
+            width: 142px !important;
+            height: 142px !important;
+        }
+
+        .pp-donut-center p {
+            font-size: 24px !important;
+        }
+
+        .pp-donut-legend {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
+            box-sizing: border-box !important;
+        }
+
+        .pp-legend-row {
+            padding: 0 4px !important;
+            height: 48px !important;
+            min-height: 48px !important;
+        }
+
+        .pp-legend-row .name {
+            font-size: 13px !important;
+        }
+
+        .pp-legend-row .val {
+            font-size: 13px !important;
+            margin-right: 12px !important;
+        }
+
+        .pp-legend-row .pct {
+            font-size: 13px !important;
+        }
+
+        /* 3 Bottom KPI Cards - Single Column Stack on Mobile */
+        .pp-kpi-row {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 12px !important;
+            width: 100% !important;
+        }
+
+        .pp-kpi-card {
+            width: 100% !important;
+            height: auto !important;
+            min-height: 112px !important;
+            padding: 18px 20px !important;
+            box-sizing: border-box !important;
+        }
+
+        .pp-kpi-header h4 {
+            font-size: 14px !important;
+        }
+
+        .pp-kpi-value {
+            font-size: 26px !important;
+            margin: 8px 0 14px 0 !important;
+        }
+
+        /* Traffic vs Revenue Correlation Mobile Responsiveness */
+        .pp-correlation-card {
+            padding: 16px 14px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .pp-correlation-head {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+            margin-bottom: 1rem !important;
+            width: 100% !important;
+        }
+
+        .pp-correlation-legend {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 14px !important;
+            width: 100% !important;
+            align-items: center !important;
+        }
+
+        .pp-correlation-chart-wrap {
+            height: 300px !important;
+            min-height: 300px !important;
+            width: 100% !important;
+            position: relative !important;
+        }
+
+        .pp-correlation-insights {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 10px !important;
+            margin-top: 1rem !important;
+            width: 100% !important;
+        }
+
+        /* Monthly Performance by SKU Table Mobile Responsiveness */
+        .pp-table-card-head {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 12px !important;
+            padding: 14px 16px !important;
+        }
+
+        .pp-table-card-actions {
+            width: 100% !important;
+        }
+
+        .pp-table-card-actions>div {
+            width: 100% !important;
+        }
+
+        #product_search_input {
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .pp-table-footer {
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 12px !important;
+            padding: 14px 16px !important;
+            text-align: center !important;
+        }
+
+        #product_perf_showing_text {
+            text-align: center !important;
+            width: 100% !important;
+            font-size: 13px !important;
+            white-space: nowrap !important;
+        }
+
+        #product_perf_pagination {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            align-items: center !important;
+            gap: 6px !important;
+            width: 100% !important;
+        }
+
+        #product_perf_pagination button {
+            min-width: 32px !important;
+            height: 32px !important;
+            padding: 0 6px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 12px !important;
+            border-radius: 6px !important;
+        }
+    }
+
+    .pp-table-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        display: block !important;
+    }
+
+    #product_perf_table {
+        width: 100% !important;
+        min-width: 900px !important;
+    }
+
+    #product_perf_table th,
+    #product_perf_table td {
+        white-space: nowrap !important;
     }
 
     .product-rank {
@@ -3362,7 +3959,7 @@ include '../../includes/sidebar.php';
             padding-top: 1.25rem !important;
         }
     </style>
-    <div class="overview-topbar" style="margin-bottom:0.5rem;">
+    <div class="overview-topbar" style="margin-bottom: 24px;">
         <div class="overview-topbar-left">
             <div class="figma-select-wrapper">
                 <select id="filter_customer" class="filter-customer-select" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
@@ -3433,10 +4030,10 @@ include '../../includes/sidebar.php';
         </div>
     </div>
     <!-- Product Performance Page Head with date -->
-    <div class="overview-page-head" style="margin-bottom:1rem;">
+    <div class="overview-page-head" style="margin-bottom: 25.5px; align-items: center;">
         <div>
             <h2
-                style="font-size:1.65rem; font-weight:800; color:#0f172a; margin:0; font-family:'Inter', sans-serif; letter-spacing:-0.02em;">
+                style="font-size: 22px; font-weight: 600; color: #1A1A1A; margin: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 100%; letter-spacing: 0;">
                 Product Performance</h2>
         </div>
         <div class="d-flex align-items-center gap-2">
@@ -4436,9 +5033,10 @@ include '../../includes/sidebar.php';
     </div>
 
     <!-- Section 5: Traffic vs Revenue Correlation (Figma middle row) -->
-    <section
+    <section class="pp-correlation-card"
         style="padding: 1.5rem; box-sizing: border-box; background: #ffffff; border: 1px solid #EAECEF; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); margin-bottom: 1.25rem;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+        <div class="pp-correlation-head"
+            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
             <div>
                 <h3
                     style="font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0;">
@@ -4446,7 +5044,7 @@ include '../../includes/sidebar.php';
                 <p style="font-size: 0.75rem; color: #64748b; margin: 4px 0 0; font-weight: 500;">Analyzing sessions
                     (bars) against revenue generation (line) per top 10 SKUs.</p>
             </div>
-            <div style="display: flex; gap: 20px; align-items: center;">
+            <div class="pp-correlation-legend" style="display: flex; gap: 20px; align-items: center;">
                 <div style="display: flex; gap: 6px; align-items: center;">
                     <span
                         style="width: 12px; height: 12px; background: #DBE1FF; border-radius: 2px; display: inline-block;"></span>
@@ -4463,10 +5061,12 @@ include '../../includes/sidebar.php';
                 </div>
             </div>
         </div>
-        <div style="height: 320px; width: 100%; position: relative; box-sizing: border-box;">
+        <div class="pp-correlation-chart-wrap"
+            style="height: 320px; width: 100%; position: relative; box-sizing: border-box;">
             <canvas id="productComboChart"></canvas>
         </div>
-        <div style="margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+        <div class="pp-correlation-insights"
+            style="margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
             <div style="padding: 14px 18px; background: #EFF6FF; border: 1px solid #DBEAFE; border-radius: 12px;">
                 <p style="font-weight: 700; font-size: 0.84rem; margin-bottom: 4px; color: #1E40AF;">Strategic
                     Correlation</p>
@@ -4485,14 +5085,14 @@ include '../../includes/sidebar.php';
     </section>
 
     <!-- Section 4: Monthly Performance by SKU (Figma bottom table) -->
-    <section
+    <section class="pp-table-card"
         style="background: #ffffff; border-radius: 16px; border: 1px solid #EAECEF; box-shadow: 0 1px 3px rgba(0,0,0,0.03); overflow: hidden; margin-bottom: 1.5rem;">
-        <div
+        <div class="pp-table-card-head"
             style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding: 16px 24px;">
             <h3 style="font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 800; color: #0f172a; margin: 0;">
                 Monthly Performance by SKU</h3>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="position: relative;">
+            <div class="pp-table-card-actions" style="display: flex; align-items: center; gap: 10px;">
+                <div style="position: relative; flex: 1;">
                     <i class="fas fa-search"
                         style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94A3B8; font-size: 0.75rem; pointer-events: none;"></i>
                     <input id="product_search_input"
@@ -4506,9 +5106,9 @@ include '../../includes/sidebar.php';
                 </button>
             </div>
         </div>
-        <div style="overflow-x: auto;">
+        <div class="pp-table-container" style="overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%;">
             <table id="product_perf_table"
-                style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed;">
+                style="width: 100%; min-width: 900px; border-collapse: collapse; text-align: left;">
                 <thead style="background: transparent; border-bottom: 1px solid #E8EAF2;">
                     <tr>
                         <th
@@ -4542,7 +5142,7 @@ include '../../includes/sidebar.php';
                 </tbody>
             </table>
         </div>
-        <div
+        <div class="pp-table-footer"
             style="display: flex; justify-content: space-between; align-items: center; background: transparent; border-top: 1px solid #F1F5F9; padding: 14px 24px; box-sizing: border-box;">
             <p style="font-size: 0.78rem; color: #64748B; margin: 0; font-weight: 500;" id="product_perf_showing_text">
                 Showing 1 to 10 of 48 entries</p>
@@ -5049,12 +5649,12 @@ include '../../includes/sidebar.php';
                                 pillHtml = `<span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% ${arrowSvg}</span>`;
                             }
                         }
-                        cellContent = `<div style="display:inline-flex; align-items:center; justify-content:flex-end; gap:6px;">
-                            <div style="width:78px; display:flex; justify-content:flex-end; flex-shrink:0;">${pillHtml}</div>
-                            <div style="width:84px; text-align:right; font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; flex-shrink:0;">${displayVal}</div>
+                        cellContent = `<div style="display:flex; align-items:center; justify-content:flex-end; gap:10px; width:100%;">
+                            <div style="min-width:76px; display:inline-flex; justify-content:flex-end;">${pillHtml}</div>
+                            <span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; min-width:65px; text-align:right;">${displayVal}</span>
                         </div>`;
                     } else {
-                        cellContent = `<span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums;">${displayVal}</span>`;
+                        cellContent = `<div style="display:flex; align-items:center; justify-content:flex-end; width:100%;"><span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; text-align:right;">${displayVal}</span></div>`;
                     }
 
                     bodyHtml += `<td>${cellContent}</td>`;
@@ -5406,6 +6006,14 @@ include '../../includes/sidebar.php';
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 10,
+                            bottom: 12,
+                            left: 6,
+                            right: 6
+                        }
+                    },
                     interaction: { mode: 'index', intersect: false },
                     plugins: {
                         legend: { display: false },
@@ -5438,7 +6046,13 @@ include '../../includes/sidebar.php';
                     scales: {
                         x: {
                             grid: { display: false },
-                            ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }
+                            ticks: {
+                                font: { size: 11, weight: '600' },
+                                color: '#64748b',
+                                maxTicksLimit: 8,
+                                maxRotation: 0,
+                                autoSkip: true
+                            }
                         },
                         yBar: {
                             type: 'linear',
@@ -6481,6 +7095,16 @@ include '../../includes/sidebar.php';
                     // 1. Revenue Share by SKU (Doughnut ChartJS)
                     const ctxRev = document.getElementById('productRevenueShareChart').getContext('2d');
                     if (window.productRevenueShareChartInst) window.productRevenueShareChartInst.destroy();
+
+                    if (Chart.Tooltip && Chart.Tooltip.positioners) {
+                        Chart.Tooltip.positioners.cursor = function (items, eventPosition) {
+                            return {
+                                x: eventPosition.x,
+                                y: eventPosition.y - 12
+                            };
+                        };
+                    }
+
                     window.productRevenueShareChartInst = new Chart(ctxRev, {
                         type: 'doughnut',
                         data: {
@@ -6493,23 +7117,25 @@ include '../../includes/sidebar.php';
                             }]
                         },
                         options: {
-                            cutout: '67%',
+                            cutout: '68%',
                             responsive: true,
                             maintainAspectRatio: false,
                             plugins: {
                                 legend: { display: false },
                                 tooltip: {
-                                    backgroundColor: '#ffffff',
-                                    titleColor: '#0f172a',
-                                    bodyColor: '#0f172a',
-                                    borderColor: '#e2e8f0',
+                                    position: 'cursor',
+                                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                    titleColor: '#ffffff',
+                                    bodyColor: '#ffffff',
+                                    borderColor: 'rgba(255, 255, 255, 0.1)',
                                     borderWidth: 1,
                                     padding: 10,
                                     cornerRadius: 8,
                                     displayColors: true,
                                     callbacks: {
                                         label: function (context) {
-                                            return context.label + ': $' + Number(context.parsed).toLocaleString();
+                                            const val = context.raw !== undefined ? context.raw : context.parsed;
+                                            return ' ' + context.label + ': $' + Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                                         }
                                     }
                                 }
@@ -6595,19 +7221,32 @@ include '../../includes/sidebar.php';
                                 }
                             },
                             scales: {
-                                x: { grid: { display: false }, ticks: { font: { weight: '600' } } },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: {
+                                        font: { weight: '600', size: (window.innerWidth < 600 ? 9 : 11) },
+                                        maxRotation: 45,
+                                        minRotation: 30,
+                                        autoSkip: true,
+                                        maxTicksLimit: (window.innerWidth < 600 ? 6 : 12)
+                                    }
+                                },
                                 yVolume: {
                                     type: 'linear',
                                     position: 'left',
-                                    title: { display: true, text: 'Traffic Volume', font: { weight: '700' } },
-                                    grid: { color: '#f1f5f9' }
+                                    title: { display: (window.innerWidth >= 600), text: 'Traffic Volume', font: { weight: '700' } },
+                                    grid: { color: '#f1f5f9' },
+                                    ticks: { font: { size: (window.innerWidth < 600 ? 9 : 11) } }
                                 },
                                 yRevenue: {
                                     type: 'linear',
                                     position: 'right',
-                                    title: { display: true, text: 'Revenue ($)', font: { weight: '700' } },
+                                    title: { display: (window.innerWidth >= 600), text: 'Revenue ($)', font: { weight: '700' } },
                                     grid: { display: false },
-                                    ticks: { callback: v => '$' + formatAbbrev(v) }
+                                    ticks: {
+                                        font: { size: (window.innerWidth < 600 ? 9 : 11) },
+                                        callback: v => '$' + formatAbbrev(v)
+                                    }
                                 },
                                 yPercent: {
                                     type: 'linear',

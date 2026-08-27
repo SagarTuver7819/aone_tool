@@ -23,149 +23,172 @@ include '../../includes/sidebar.php';
     }
 
     .main-wrapper {
-        padding-top: 0 !important;
+        padding: 1.25rem 2rem 2rem 2rem !important;
     }
 
-    .ret-container {
-        padding: 1.25rem 2rem 3rem 2rem;
-        width: 100%;
-        box-sizing: border-box;
+    /* Topbar styling - Clean Transparent Header matching Figma */
+    .figma-page-topbar {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 0.75rem !important;
+        flex-wrap: nowrap !important;
+        padding: 0.25rem 0 1rem 0 !important;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid #EAECEF !important;
+        border-radius: 0 !important;
+        margin-bottom: 1.25rem !important;
+        box-shadow: none !important;
     }
 
-    /* Topbar */
-    .ret-topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 1.25rem;
-        border-bottom: 1px solid #EAECEF;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-
-    .ret-topbar-left {
+    .figma-page-topbar-left {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 0.85rem;
     }
 
-    .ret-profile-select-wrap {
+    .figma-select-wrapper {
         position: relative;
         display: inline-flex;
         align-items: center;
     }
 
-    .ret-profile-select {
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 8px;
-        height: 38px;
-        padding: 0 32px 0 12px;
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: #0F172A;
-        outline: none;
-        cursor: pointer;
-        min-width: 170px;
+    .figma-select-wrapper select {
         appearance: none;
         -webkit-appearance: none;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        min-width: 170px;
+        padding: 0.45rem 2.2rem 0.45rem 0.85rem;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #1E2238;
+        background: #FFFFFF;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.2s ease;
     }
 
-    .ret-profile-select:focus {
+    .figma-select-wrapper select:focus {
         border-color: #4362CE;
     }
 
-    .ret-breadcrumb {
-        font-size: 0.84rem;
-        color: #64748B;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .ret-breadcrumb strong {
-        color: #0F172A;
-        font-weight: 700;
-    }
-
-    .ret-topbar-actions {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .btn-ret-primary {
-        background: #4362CE;
-        color: #FFFFFF !important;
-        font-size: 0.82rem;
-        font-weight: 700;
-        padding: 8px 18px;
-        border-radius: 8px;
-        border: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        text-decoration: none;
-        box-shadow: 0 1px 2px rgba(67, 98, 206, 0.2);
-        transition: all 0.15s ease;
-    }
-
-    .btn-ret-primary:hover {
-        background: #3451B2;
-        color: #FFFFFF !important;
-    }
-
-    .btn-ret-outline {
-        background: #FFFFFF;
-        color: #0F172A;
-        border: 1px solid #E2E8F0;
-        font-size: 0.82rem;
-        font-weight: 600;
-        padding: 8px 16px;
-        border-radius: 8px;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        cursor: pointer;
-        transition: all 0.15s ease;
-    }
-
-    .btn-ret-outline:hover {
-        background: #F8FAFC;
-        border-color: #CBD5E1;
-    }
-
-    .btn-ret-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        color: #64748B;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.15s ease;
-        position: relative;
-    }
-
-    .btn-ret-icon:hover {
-        background: #F8FAFC;
-        color: #0F172A;
-    }
-
-    .btn-ret-icon .dot-badge {
+    .figma-select-wrapper .select-icon {
         position: absolute;
-        top: 8px;
-        right: 8px;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        width: 12px;
+        height: 12px;
+    }
+
+    .figma-page-breadcrumb {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: #64748B;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+    }
+
+    .figma-page-breadcrumb .breadcrumb-dot {
+        margin: 0 3px;
+        opacity: 0.4;
+        font-size: 0.9rem;
+    }
+
+    .figma-page-breadcrumb strong {
+        color: #1E293B;
+        font-weight: 600;
+    }
+
+    .figma-page-topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-figma-primary {
+        background: #4362CE !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1.15rem !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.45rem !important;
+        box-shadow: 0px 4px 10px rgba(67, 98, 206, 0.2) !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-primary:hover {
+        background: #3452BA !important;
+        transform: translateY(-1px);
+        color: #FFFFFF !important;
+    }
+
+    .btn-figma-outline-sm {
+        background: #F1F4F9 !important;
+        color: #363B4F !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1.05rem !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.45rem !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-outline-sm:hover {
+        background: #E2E8F0 !important;
+        color: #0F172A !important;
+    }
+
+    .btn-figma-icon-sm {
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 50% !important;
+        background: #F1F4F9 !important;
+        border: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #475569 !important;
+        cursor: pointer !important;
+        position: relative !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-icon-sm:hover {
+        background: #E2E8F0 !important;
+        color: #0F172A !important;
+    }
+
+    .btn-figma-icon-sm .notif-badge {
+        position: absolute;
+        top: 9px;
+        right: 9px;
         width: 6px;
         height: 6px;
         background: #EE473D;
         border-radius: 50%;
+        border: 1.5px solid #F1F4F9;
+    }
+
+    .ret-container {
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     /* Page Header */
@@ -173,7 +196,7 @@ include '../../includes/sidebar.php';
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
         flex-wrap: wrap;
         gap: 1.25rem;
     }
@@ -254,37 +277,39 @@ include '../../includes/sidebar.php';
     /* Top KPI Layout (6 Cards Left Grid + Reasons Radial Gauge Right) */
     .ret-kpi-layout {
         display: grid;
-        grid-template-columns: 1fr 340px;
-        gap: 1.5rem;
+        grid-template-columns: minmax(0, 1fr) 350px;
+        gap: 20px;
         align-items: stretch;
-        margin-bottom: 1.5rem;
+        margin-bottom: 20px;
     }
 
+    /* Figma: 3 Columns x 2 Rows with exact 20px Gap */
     .ret-kpi-grid-6 {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-        gap: 14px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-rows: repeat(2, minmax(140px, auto));
+        gap: 20px;
     }
 
+    /* Figma KPI Card: 296.67px Fill x 140px Hug, 14px radius, 1px border #E8EAF2, 20px padding */
     .ret-kpi-card {
         background: #FFFFFF;
-        border: 1px solid #EAECEF;
+        border: 1px solid #E8EAF2;
         border-radius: 14px;
-        padding: 14px 16px 12px 16px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        min-height: 140px;
         height: 100%;
-        min-height: 125px;
         box-sizing: border-box;
         transition: all 0.15s ease;
     }
 
     .ret-kpi-card:hover {
         border-color: #CBD5E1;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
     }
 
     .ret-kpi-top {
@@ -294,16 +319,19 @@ include '../../includes/sidebar.php';
     }
 
     .ret-kpi-label {
-        font-size: 0.78rem;
-        font-weight: 600;
-        color: #64748B;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px;
+        font-weight: 500;
+        color: #475569;
+        line-height: 1.2;
     }
 
     .ret-kpi-icon-box {
-        width: 30px;
-        height: 30px;
-        border-radius: 8px;
-        background: #EFF6FF;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: #F8FAFC;
+        border: 1px solid #EFF4FE;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -311,12 +339,14 @@ include '../../includes/sidebar.php';
     }
 
     .ret-kpi-val {
-        font-size: 1.5rem;
-        font-weight: 800;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 24px;
+        font-weight: 700;
         color: #0F172A;
-        line-height: 1.1;
-        margin: 4px 0;
+        line-height: 1.2;
+        margin: 6px 0;
         word-break: break-word;
+        font-variant-numeric: tabular-nums;
     }
 
     .ret-kpi-foot {
@@ -326,14 +356,16 @@ include '../../includes/sidebar.php';
     }
 
     .ret-delta-badge {
-        font-size: 0.72rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px;
         font-weight: 700;
-        padding: 2px 7px;
+        padding: 3px 8px;
         border-radius: 6px;
         display: inline-flex;
         align-items: center;
-        gap: 2px;
-        line-height: 1.1;
+        gap: 3px;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
     }
 
     .ret-delta-badge.up {
@@ -352,61 +384,134 @@ include '../../includes/sidebar.php';
     }
 
     .ret-delta-sub {
-        font-size: 0.7rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px;
         color: #64748B;
         font-weight: 500;
     }
 
-    /* Return Reasons Radial Gauge Card */
+    /* Top KPI Layout (6 Cards Left Grid + Reasons Radial Gauge Right) */
+    .ret-kpi-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 20px;
+        align-items: stretch;
+        margin-bottom: 20px;
+    }
+
+    /* Return Reasons Radial Gauge Card (Figma: 280px x 300px, 14px radius) */
     .ret-reasons-card {
         background: #FFFFFF;
-        border: 1px solid #EAECEF;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        border: 1px solid #E8EAF2;
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        height: 100%;
+        width: 280px;
+        min-width: 280px;
+        height: 300px;
+        min-height: 300px;
         box-sizing: border-box;
+        transition: all 0.15s ease;
+    }
+
+    .ret-reasons-card:hover {
+        border-color: #CBD5E1;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+    }
+
+    .ret-reasons-card h3 {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 16px;
+        font-weight: 700;
+        color: #0F172A;
+        text-align: center;
+        margin: 0;
+        line-height: 1.2;
     }
 
     .ret-gauge-wrap {
         position: relative;
-        height: 170px;
+        width: 100%;
+        height: 160px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 8px 0;
+        margin: 4px 0;
     }
 
     .ret-gauge-center {
         position: absolute;
         text-align: center;
         pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
     .ret-gauge-center .total-val {
-        font-size: 1.8rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 28px;
         font-weight: 800;
         color: #0F172A;
-        line-height: 1;
+        line-height: 1.1;
+        font-variant-numeric: tabular-nums;
     }
 
     .ret-gauge-center .total-lbl {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #94A3B8;
-        margin-top: 4px;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px;
+        font-weight: 500;
+        color: #64748B;
+        margin-top: 2px;
     }
 
     .ret-reasons-legend {
         border-top: 1px solid #F1F5F9;
-        padding-top: 12px;
+        padding-top: 14px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 0.78rem;
+        font-size: 13px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .ret-reasons-legend .legend-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+    }
+
+    .ret-reasons-legend .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        background: #3B82F6;
+        flex-shrink: 0;
+    }
+
+    .ret-reasons-legend .legend-title {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-weight: 500;
+        color: #1E293B;
+        font-size: 13px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .ret-reasons-legend .legend-val {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-weight: 700;
+        color: #0F172A;
+        font-size: 13px;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
     }
 
     /* Trend Toggle */
@@ -436,41 +541,71 @@ include '../../includes/sidebar.php';
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     }
 
-    /* Product Performance Table */
+    /* Product Performance Table (Figma Exact) */
     .ret-table {
         width: 100%;
-        border-collapse: separate;
+        border-collapse: collapse;
         border-spacing: 0;
     }
 
     .ret-table thead th {
-        background: #F8FAFC;
+        background: #FFFFFF;
         color: #64748B;
-        font-size: 0.72rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        padding: 12px 16px;
-        border-bottom: 1px solid #E2E8F0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0;
+        padding: 12px 15px;
+        border-top: none;
+        border-bottom: 1px solid #E8EAF2;
         text-align: left;
+        white-space: nowrap;
+    }
+
+    .ret-table thead th:last-child {
+        text-align: center;
+    }
+
+    /* Figma: 1230px Fill x 62px Hug, padding 14px 15px, bottom border 1px #E8EAF2, #F7F9FE alternating */
+    .ret-table tbody tr:nth-child(odd) td {
+        background-color: #F7F9FE !important;
+    }
+
+    .ret-table tbody tr:nth-child(even) td {
+        background-color: #FFFFFF !important;
+    }
+
+    .ret-table tbody tr {
+        height: 62px;
+        box-sizing: border-box;
     }
 
     .ret-table tbody td {
-        padding: 14px 16px;
-        border-bottom: 1px solid #F1F5F9;
-        font-size: 0.82rem;
+        padding: 14px 15px;
+        height: 62px;
+        box-sizing: border-box;
+        border-top: none;
+        border-bottom: 1px solid #E8EAF2;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
         color: #0F172A;
         vertical-align: middle;
+        transition: background 0.15s ease;
     }
 
     .ret-table tbody tr:hover td {
-        background: #FAFAFC;
+        background-color: #EEF2FD !important;
+    }
+
+    .ret-table tbody tr:last-child td {
+        border-bottom: none;
     }
 
     .ret-prod-cell {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
+        max-width: 460px;
     }
 
     .ret-prod-icon {
@@ -478,7 +613,7 @@ include '../../includes/sidebar.php';
         height: 32px;
         border-radius: 8px;
         background: #F8FAFC;
-        border: 1px solid #E2E8F0;
+        border: 1px solid #E8EAF2;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -486,68 +621,80 @@ include '../../includes/sidebar.php';
     }
 
     .ret-prod-name {
-        font-weight: 700;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-weight: 600;
         color: #0F172A;
-        font-size: 0.82rem;
-        line-height: 1.2;
+        font-size: 13px;
+        line-height: 1.3;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .ret-ratio-bar-wrap {
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        gap: 12px;
-        min-width: 140px;
+        gap: 14px;
+        width: 170px;
     }
 
     .ret-ratio-bar {
-        flex: 1;
-        height: 6px;
+        width: 100px;
+        height: 4px;
         background: #F1F5F9;
-        border-radius: 4px;
+        border-radius: 2px;
         overflow: hidden;
-        min-width: 70px;
+        flex-shrink: 0;
     }
 
     .ret-ratio-fill {
         height: 100%;
         background: #4362CE;
-        border-radius: 4px;
+        border-radius: 2px;
+        transition: width 0.4s ease;
     }
 
     .ret-ratio-pct {
-        font-size: 0.8rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
         font-weight: 700;
         color: #0F172A;
-        min-width: 36px;
+        font-variant-numeric: tabular-nums;
     }
 
     .ret-status-badge {
-        display: inline-block;
-        padding: 3px 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 14px;
         border-radius: 6px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 0.03em;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
         text-transform: uppercase;
-        border: 1px solid;
+        border: 1px solid transparent;
+        line-height: 1;
+        min-width: 80px;
+        box-sizing: border-box;
     }
 
     .ret-status-badge.optimal {
-        color: #059669;
-        border-color: #A7F3D0;
-        background: #ECFDF5;
+        color: #029153;
+        background: #EEF8F1;
+        border-color: #E2F2E7;
     }
 
     .ret-status-badge.watch {
         color: #D97706;
-        border-color: #FDE68A;
         background: #FFFBEB;
+        border-color: #FDE68A;
     }
 
     .ret-status-badge.critical {
-        color: #DC2626;
-        border-color: #FECACA;
-        background: #FEF2F2;
+        color: #EE473D;
+        background: #FEF0EF;
+        border-color: #FDDCDA;
     }
 
     /* Table Foot / Pagination */
@@ -555,72 +702,147 @@ include '../../includes/sidebar.php';
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-top: 1.25rem;
+        padding-top: 16px;
+        border-top: 1px solid #F1F5F9;
+        margin-top: 4px;
         flex-wrap: wrap;
         gap: 1rem;
-        font-size: 0.78rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
         color: #64748B;
-        font-weight: 600;
+        font-weight: 500;
     }
 
     .ret-pagination {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
     }
 
     .ret-page-btn {
-        width: 30px;
-        height: 30px;
+        min-width: 28px;
+        height: 28px;
+        padding: 0 6px;
         border-radius: 6px;
-        border: 1px solid #E2E8F0;
-        background: #FFFFFF;
+        border: none;
+        background: transparent;
         color: #64748B;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.75rem;
-        font-weight: 700;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
+        font-weight: 500;
         cursor: pointer;
         transition: all 0.15s ease;
     }
 
-    .ret-page-btn:hover {
-        background: #F8FAFC;
-        border-color: #CBD5E1;
+    .ret-page-btn:hover:not(:disabled) {
+        background: #F1F5F9;
         color: #0F172A;
     }
 
     .ret-page-btn.active {
-        background: #4362CE;
-        border-color: #4362CE;
-        color: #FFFFFF;
+        background: #F1F5F9;
+        color: #0F172A;
+        font-weight: 700;
     }
 
     /* Responsive */
     @media (max-width: 1200px) {
         .ret-kpi-layout {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr !important;
+            gap: 1.25rem !important;
         }
 
         .ret-kpi-grid-6 {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 14px !important;
         }
     }
 
     @media (max-width: 768px) {
+        .ret-container {
+            padding: 0.75rem 0.75rem 100px 0.75rem !important;
+            width: 100% !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+        }
+
+        .ret-topbar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+        }
+
+        .ret-topbar-left {
+            width: 100% !important;
+        }
+
+        .ret-profile-select-wrap,
+        .ret-profile-select {
+            width: 100% !important;
+            min-width: 0 !important;
+        }
+
+        .ret-breadcrumb {
+            display: none !important;
+        }
+
+        .ret-topbar-actions {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 0.5rem !important;
+            width: 100% !important;
+        }
+
+        .btn-ret-icon {
+            display: none !important;
+        }
+
+        .ret-page-head {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .ret-controls {
+            width: 100% !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.5rem !important;
+        }
+
+        .ret-controls .figma-date-picker-wrap {
+            width: 100% !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        .ret-controls .figma-date-picker-wrap input.flatpickr-range-input {
+            width: 100% !important;
+            font-size: 0.76rem !important;
+        }
+
         .ret-kpi-grid-6 {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+        }
+
+        .ret-kpi-card {
+            min-height: 120px !important;
+            padding: 14px 16px !important;
         }
     }
 </style>
 
 <div class="ret-container">
-    <!-- Topbar -->
-    <div class="ret-topbar">
-        <div class="ret-topbar-left">
-            <div class="ret-profile-select-wrap">
-                <select id="filter_customer" class="ret-profile-select" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
+    <!-- Figma-style Top Bar -->
+    <div class="figma-page-topbar">
+        <div class="figma-page-topbar-left">
+            <div class="figma-select-wrapper">
+                <select id="filter_customer" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
                     <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
                         <option value="">All Amazon Profiles</option>
                     <?php endif; ?>
@@ -632,35 +854,28 @@ include '../../includes/sidebar.php';
                             continue;
                         ?>
                         <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>>
-                        
-                                <?php echo htmlspecialchars($row['customer_name']); ?></option>
+                            <?php echo htmlspecialchars($row['customer_name']); ?>
+                        </option>
                     <?php endwhile; ?>
                 </select>
-                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Down Up Arrow.svg"
-                    style="position: absolute; right: 12px; pointer-events: none; width: 10px; height: 10px;" />
+                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Down Up Arrow.svg" class="select-icon"
+                    alt="Toggle" />
             </div>
-            <div class="ret-breadcrumb">
-                Dashboard • <strong>Return Page</strong>
-            </div>
+            <span class="figma-page-breadcrumb">Dashboard <span class="breadcrumb-dot">•</span> <strong>Return
+                    Page</strong></span>
         </div>
-        <div class="ret-topbar-actions">
-        <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
-                <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-ret-primary">
-                    <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/New Upload.svg"
-                        style="width: 14px; height: 14px; filter: brightness(0) invert(1);" /> New Upload
-                    </a>
+        <div class="figma-page-topbar-right">
+            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i
+                        class="fas fa-plus"></i> New Upload</a>
             <?php endif; ?>
-            <button type="button" class="btn-ret-outline" id="btn_export_csv_top">
-                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Export CSV.svg"
-                    style="width: 14px; height: 14px;" /> Export CSV
-            </button>
-            <button type="button" class="btn-ret-icon" title="Search">
-                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Search.svg" style="width: 16px; height: 16px;" />
-            </button>
-            <button type="button" class="btn-ret-icon" title="Notifications">
-                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Notification.svg"
-                    style="width: 16px; height: 16px;" />
-                <span class="dot-badge"></span>
+            <button type="button" class="btn-figma-outline-sm" id="btn_export_csv_top"><i
+                    class="fas fa-file-export"></i>
+                Export CSV</button>
+            <button type="button" class="btn-figma-icon-sm" title="Search"><i class="fas fa-search"></i></button>
+            <button type="button" class="btn-figma-icon-sm" title="Notifications">
+                <i class="fas fa-bell"></i>
+                <span class="notif-badge"></span>
             </button>
         </div>
     </div>
@@ -674,17 +889,24 @@ include '../../includes/sidebar.php';
         <div class="ret-controls">
             <div class="figma-date-picker-wrap">
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10.6666 1.3335V4.00016M5.33325 1.3335V4.00016" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M8.66667 2.6665H7.33333C4.81917 2.6665 3.5621 2.6665 2.78105 3.44755C2 4.2286 2 5.48568 2 7.99984V9.33317C2 11.8473 2 13.1044 2.78105 13.8854C3.5621 14.6665 4.81917 14.6665 7.33333 14.6665H8.66667C11.1808 14.6665 12.4379 14.6665 13.2189 13.8854C14 13.1044 14 11.8473 14 9.33317V7.99984C14 5.48568 14 4.2286 13.2189 3.44755C12.4379 2.6665 11.1808 2.6665 8.66667 2.6665Z" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M2 6.6665H14" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M10.6666 1.3335V4.00016M5.33325 1.3335V4.00016" stroke="#363B4F" stroke-width="1.4"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M8.66667 2.6665H7.33333C4.81917 2.6665 3.5621 2.6665 2.78105 3.44755C2 4.2286 2 5.48568 2 7.99984V9.33317C2 11.8473 2 13.1044 2.78105 13.8854C3.5621 14.6665 4.81917 14.6665 7.33333 14.6665H8.66667C11.1808 14.6665 12.4379 14.6665 13.2189 13.8854C14 13.1044 14 11.8473 14 9.33317V7.99984C14 5.48568 14 4.2286 13.2189 3.44755C12.4379 2.6665 11.1808 2.6665 8.66667 2.6665Z"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M2 6.6665H14" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round"
+                        stroke-linejoin="round" />
                 </svg>
-                <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_ret" placeholder="Select date range" readonly>
+                <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_ret"
+                    placeholder="Select date range" readonly>
                 <input type="hidden" id="filter_from" value="2026-01-01">
                 <input type="hidden" id="filter_to" value="<?php echo date('Y-m-d'); ?>">
             </div>
             <button type="button" class="btn-figma-refresh" id="apply_filters" title="Refresh">
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10.1115 0.666504L10.5101 1.41169C10.7796 1.91548 10.9143 2.16738 10.8253 2.27526C10.7361 2.38314 10.4427 2.29601 9.85573 2.12176C9.26893 1.94754 8.64593 1.85381 8.00033 1.85381C4.50252 1.85381 1.66699 4.60548 1.66699 7.99987C1.66699 9.11927 1.97541 10.1689 2.51428 11.0729M5.88921 15.3332L5.49057 14.588C5.22105 14.0842 5.08629 13.8323 5.17539 13.7244C5.26451 13.6165 5.55799 13.7037 6.14492 13.8779C6.73173 14.0521 7.35473 14.1459 8.00033 14.1459C11.4981 14.1459 14.3337 11.3942 14.3337 7.99987C14.3337 6.8804 14.0253 5.83082 13.4864 4.92682" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M10.1115 0.666504L10.5101 1.41169C10.7796 1.91548 10.9143 2.16738 10.8253 2.27526C10.7361 2.38314 10.4427 2.29601 9.85573 2.12176C9.26893 1.94754 8.64593 1.85381 8.00033 1.85381C4.50252 1.85381 1.66699 4.60548 1.66699 7.99987C1.66699 9.11927 1.97541 10.1689 2.51428 11.0729M5.88921 15.3332L5.49057 14.588C5.22105 14.0842 5.08629 13.8323 5.17539 13.7244C5.26451 13.6165 5.55799 13.7037 6.14492 13.8779C6.73173 14.0521 7.35473 14.1459 8.00033 14.1459C11.4981 14.1459 14.3337 11.3942 14.3337 7.99987C14.3337 6.8804 14.0253 5.83082 13.4864 4.92682"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </button>
         </div>
@@ -797,8 +1019,8 @@ include '../../includes/sidebar.php';
 
         <!-- Right: Return Reasons Radial Gauge Card -->
         <div class="ret-reasons-card">
-            <div class="ret-card-head" style="margin-bottom: 0;">
-                <h3 style="font-size: 1rem;">Return Reasons</h3>
+            <div class="ret-card-head" style="margin-bottom: 0; justify-content: center;">
+                <h3>Return Reasons</h3>
             </div>
 
             <div class="ret-gauge-wrap">
@@ -810,11 +1032,11 @@ include '../../includes/sidebar.php';
             </div>
 
             <div class="ret-reasons-legend" id="reason_legend">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #3B82F6;"></span>
-                    <span style="font-weight: 700; color: #0F172A;" id="lbl_top_reason">Customer Refund</span>
+                <div class="legend-left">
+                    <span class="legend-dot"></span>
+                    <span class="legend-title" id="lbl_top_reason">Customer Refund</span>
                 </div>
-                <span style="font-weight: 800; color: #0F172A;" id="lbl_top_reason_count">54 (100%)</span>
+                <span class="legend-val" id="lbl_top_reason_count">54 (100%)</span>
             </div>
         </div>
 
@@ -849,12 +1071,17 @@ include '../../includes/sidebar.php';
 
     <!-- PRODUCT PERFORMANCE TABLE -->
     <div class="ret-card">
-        <div class="ret-card-head">
+        <div class="ret-card-head" style="align-items: center; margin-bottom: 1rem;">
             <h3>Product Performance</h3>
-            <button type="button" class="btn-ret-outline" id="export_csv"
-                style="padding: 6px 14px; font-size: 0.76rem;">
-                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Export CSV.svg"
-                    style="width: 13px; height: 13px;" /> Export CSV
+            <button type="button" class="btn-figma-outline" id="export_csv"
+                style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 13px; font-weight: 600; color: #1E293B; padding: 7px 14px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.15s ease;">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 1.5V10.5M8 10.5L5 7.5M8 10.5L11 7.5" stroke="#1E293B" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M2 12V13.5C2 14.0523 2.44772 14.5 3 14.5H13C13.5523 14.5 14 14.0523 14 13.5V12"
+                        stroke="#1E293B" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+                Export CSV
             </button>
         </div>
 
@@ -1106,7 +1333,7 @@ include '../../includes/sidebar.php';
 
             // Build Pagination Buttons
             let pagHtml = `<button type="button" class="ret-page-btn" id="btn_dt_prev" ${currentPage === 1 ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : ''}>&lt;</button>`;
-            
+
             for (let i = 1; i <= totalPages; i++) {
                 if (totalPages > 7) {
                     if (i !== 1 && i !== totalPages && Math.abs(i - currentPage) > 2) {
@@ -1124,13 +1351,13 @@ include '../../includes/sidebar.php';
         }
 
         // Pagination Click Events
-        $(document).on('click', '.ret-page-num', function(e) {
+        $(document).on('click', '.ret-page-num', function (e) {
             e.preventDefault();
             currentPage = parseInt($(this).data('page'));
             renderPaginatedTable();
         });
 
-        $(document).on('click', '#btn_dt_prev', function(e) {
+        $(document).on('click', '#btn_dt_prev', function (e) {
             e.preventDefault();
             if (currentPage > 1) {
                 currentPage--;
@@ -1138,7 +1365,7 @@ include '../../includes/sidebar.php';
             }
         });
 
-        $(document).on('click', '#btn_dt_next', function(e) {
+        $(document).on('click', '#btn_dt_next', function (e) {
             e.preventDefault();
             let totalPages = Math.ceil(allProducts.length / pageSize) || 1;
             if (currentPage < totalPages) {
@@ -1147,7 +1374,7 @@ include '../../includes/sidebar.php';
             }
         });
 
-        $('#dt_page_len').on('change', function() {
+        $('#dt_page_len').on('change', function () {
             pageSize = parseInt($(this).val()) || 10;
             currentPage = 1;
             renderPaginatedTable();
@@ -1205,7 +1432,7 @@ include '../../includes/sidebar.php';
 
                     renderReasonsRingChart(res.reasons, res.kpis ? res.kpis.total_returns : 0);
                     renderTrendChartData(res.trend ? res.trend[trendMode] : null);
-                    
+
                     allProducts = res.products || [];
                     currentPage = 1;
                     renderPaginatedTable();
@@ -1234,7 +1461,7 @@ include '../../includes/sidebar.php';
                 altInput: true,
                 altFormat: "M d, Y",
                 defaultDate: [$('#filter_from').val() || "2026-01-01", $('#filter_to').val() || "<?php echo date('Y-m-d'); ?>"],
-                onChange: function(selectedDates, dateStr, instance) {
+                onChange: function (selectedDates, dateStr, instance) {
                     if (selectedDates.length === 2) {
                         const from = instance.formatDate(selectedDates[0], "Y-m-d");
                         const to = instance.formatDate(selectedDates[1], "Y-m-d");
@@ -1250,7 +1477,7 @@ include '../../includes/sidebar.php';
         $('#filter_customer').on('change', fetchData);
 
         // CSV Export Function
-        $('#export_csv, #btn_export_csv_top').on('click', function(e) {
+        $('#export_csv, #btn_export_csv_top').on('click', function (e) {
             e.preventDefault();
             if (!allProducts || allProducts.length === 0) {
                 alert('No return data to export');
@@ -1268,7 +1495,7 @@ include '../../includes/sidebar.php';
             let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             let link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.setAttribute("download", `returns_report_${new Date().toISOString().slice(0,10)}.csv`);
+            link.setAttribute("download", `returns_report_${new Date().toISOString().slice(0, 10)}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
