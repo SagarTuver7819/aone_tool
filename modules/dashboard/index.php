@@ -10,7 +10,7 @@ if ($active_tab === 'financial') {
     $page_subtitle = 'Complete waterfall breakdown of your shop parameters';
 } elseif ($active_tab === 'products') {
     $page_title = 'Product Performance';
-    $page_subtitle = 'SKU-level revenue, traffic & contribution analysis';
+    $page_subtitle = '';
 } else {
     $page_title = 'Overview';
     $page_subtitle = 'Real-time Amazon Business Intelligence & Analytics';
@@ -581,7 +581,7 @@ include '../../includes/sidebar.php';
 
     #tab_kpi .trend-table {
         width: 100%;
-        min-width: 480px;
+        table-layout: fixed;
         border-collapse: separate;
         border-spacing: 0;
         border: none !important;
@@ -592,15 +592,40 @@ include '../../includes/sidebar.php';
 
     #tab_kpi .trend-table th {
         background: transparent !important;
-        color: #1E293B !important;
-        font-size: 0.82rem !important;
+        color: #475569 !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
         font-weight: 600 !important;
         text-transform: none !important;
         letter-spacing: 0 !important;
-        padding: 0.65rem 0.75rem !important;
+        padding: 0.65rem 20px !important;
         border: none !important;
         border-bottom: 1px solid #E8EAF2 !important;
         vertical-align: middle !important;
+    }
+
+    #tab_kpi .trend-table th:first-child {
+        text-align: left !important;
+        width: 34%;
+        padding-left: 20px !important;
+    }
+
+    #tab_kpi .trend-table th:nth-child(2) {
+        text-align: right !important;
+        width: 22%;
+        padding-right: 20px !important;
+    }
+
+    #tab_kpi .trend-table th:nth-child(3) {
+        text-align: right !important;
+        width: 22%;
+        padding-right: 20px !important;
+    }
+
+    #tab_kpi .trend-table th:nth-child(4) {
+        text-align: right !important;
+        width: 22%;
+        padding-right: 20px !important;
     }
 
     #tab_kpi .trend-table tr {
@@ -608,9 +633,10 @@ include '../../includes/sidebar.php';
     }
 
     #tab_kpi .trend-table td {
-        padding: 0.5rem 0.75rem !important;
+        padding: 0 20px !important;
         height: 50px;
-        font-size: 0.86rem !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
         font-weight: 600 !important;
         border: none !important;
         border-bottom: 1px solid #E8EAF2 !important;
@@ -619,9 +645,18 @@ include '../../includes/sidebar.php';
     }
 
     #tab_kpi .trend-table td:first-child {
+        text-align: left !important;
         color: #1E293B !important;
         font-weight: 500 !important;
-        font-size: 0.85rem !important;
+        font-size: 14px !important;
+        padding-left: 20px !important;
+    }
+
+    #tab_kpi .trend-table td:nth-child(2),
+    #tab_kpi .trend-table td:nth-child(3),
+    #tab_kpi .trend-table td:nth-child(4) {
+        text-align: right !important;
+        padding-right: 20px !important;
     }
 
     /* Alternating Row Colors matching Figma (1: Color, 2: Transparent, 3: Color, 4: Transparent, 5: Color) */
@@ -1201,73 +1236,94 @@ include '../../includes/sidebar.php';
     }
 
     .pl-hero-3in1-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 16px;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        overflow: hidden;
-        min-height: 145px;
+        background: #ffffff !important;
+        border: 1px solid #EAECEF !important;
+        border-radius: 16px !important;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        overflow: hidden !important;
+        height: 154px !important;
+        box-sizing: border-box !important;
     }
 
     .pl-hero-section {
-        padding: 1.15rem 1.4rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 0.35rem;
-        position: relative;
-        border-right: 1px solid #f1f5f9;
+        padding: 20px 24px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        gap: 0.25rem !important;
+        position: relative !important;
+        border-right: 1px solid #EAECEF !important;
+        box-sizing: border-box !important;
     }
 
     .pl-hero-section:last-child {
-        border-right: none;
+        border-right: none !important;
     }
 
     .pl-hero-label {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #64748b;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        color: #1A1A1A !important;
+        line-height: 100% !important;
+        margin-bottom: 20px !important;
     }
 
     .pl-hero-value {
-        font-family: 'Inter', sans-serif;
-        font-size: 1.85rem;
-        font-weight: 800;
-        color: #0f172a;
-        letter-spacing: -0.025em;
-        line-height: 1.15;
-        margin: 0.15rem 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 28px !important;
+        font-weight: 600 !important;
+        color: #1A1A1A !important;
+        line-height: 100% !important;
+        margin: 0 0 14px 0 !important;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .pl-hero-stat-row {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
     }
 
     .pl-hero-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        padding: 4px 8px;
-        border-radius: 8px;
-        width: fit-content;
-        border: 1px solid transparent;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        height: 28px !important;
+        padding: 4px 8px !important;
+        border-radius: 6px !important;
+        width: fit-content !important;
+        box-sizing: border-box !important;
+    }
+
+    .pl-hero-stat-text {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        color: #1A1A1A !important;
+        line-height: 1 !important;
     }
 
     .pl-hero-badge.green {
         background: #EEF8F1 !important;
-        border-color: #C4ECD0 !important;
+        border: 1px solid #C4ECD0 !important;
         color: #029153 !important;
     }
 
     .pl-hero-badge.red {
         background: #FEF0EF !important;
-        border-color: #FCD4D0 !important;
+        border: 1px solid #FCD4D0 !important;
         color: #EE473D !important;
     }
 
     .pl-hero-badge.blue {
         background: #EEF2FF !important;
-        border-color: #C7D2FE !important;
+        border: 1px solid #C7D2FE !important;
         color: #4362CE !important;
     }
 
@@ -1288,6 +1344,17 @@ include '../../includes/sidebar.php';
         .pl-right-col {
             width: 100% !important;
             min-width: 0 !important;
+        }
+
+        .pl-hero-3in1-card,
+        .pl-right-col .pl-score-card,
+        .pl-chart-card {
+            height: auto !important;
+            max-height: none !important;
+        }
+
+        .pl-chart-wrapper {
+            height: 260px !important;
         }
     }
 
@@ -1313,16 +1380,19 @@ include '../../includes/sidebar.php';
             text-overflow: ellipsis !important;
         }
 
-        .pl-hero-value {
-            font-size: 1.15rem !important;
-            letter-spacing: -0.02em !important;
-            margin: 0.1rem 0 !important;
+        .pl-hero-stat-row {
+            gap: 4px !important;
         }
 
         .pl-hero-badge {
             font-size: 0.62rem !important;
             padding: 2px 5px !important;
             border-radius: 6px !important;
+            height: auto !important;
+        }
+
+        .pl-hero-stat-text {
+            font-size: 0.65rem !important;
         }
     }
 
@@ -1376,7 +1446,7 @@ include '../../includes/sidebar.php';
         flex-direction: column;
         gap: 1.25rem;
         min-width: 0;
-        width: 320px;
+        width: 340px;
         max-width: 100%;
     }
 
@@ -1465,21 +1535,30 @@ include '../../includes/sidebar.php';
         cursor: pointer;
     }
 
+    .pl-chart-card {
+        height: 285px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        box-sizing: border-box !important;
+    }
+
     .pl-chart-wrapper {
-        padding: 1.25rem 1.4rem 0.5rem;
-        height: 300px;
-        position: relative;
+        padding: 0.25rem 1.4rem 0 !important;
+        height: 185px !important;
+        position: relative !important;
+        flex: 1 !important;
     }
 
     .pl-chart-legend {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1.5rem;
-        padding: 0.75rem 1rem 1.1rem;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #475569;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 1.5rem !important;
+        padding: 0.4rem 1rem 0.75rem !important;
+        font-size: 0.75rem !important;
+        font-weight: 700 !important;
+        color: #475569 !important;
     }
 
     .pl-legend-item {
@@ -1564,25 +1643,27 @@ include '../../includes/sidebar.php';
     .pl-sku-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 0.82rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px;
     }
 
     .pl-sku-table thead th {
-        background: #f8fafc;
-        padding: 12px 16px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        color: #64748b;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        border-bottom: 1px solid #e2e8f0;
+        background: #ffffff;
+        padding: 14px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #1A1A1A;
+        text-transform: none;
+        letter-spacing: 0;
+        border-bottom: 1px solid #EAECEF;
     }
 
     .pl-sku-table tbody td {
-        padding: 12px 16px;
-        border-bottom: 1px solid #f1f5f9;
-        color: #1e293b;
-        font-weight: 600;
+        padding: 14px 16px;
+        border-bottom: 1px solid #F1F3F6;
+        color: #1A1A1A;
+        font-size: 14px;
+        font-weight: 400;
     }
 
     .pl-sku-table tbody tr:hover td {
@@ -1591,10 +1672,11 @@ include '../../includes/sidebar.php';
 
     .pl-sku-table tfoot td {
         padding: 14px 16px;
-        background: #f8fafc;
-        border-top: 2px solid #e2e8f0;
-        font-weight: 800;
-        color: #0f172a;
+        background: #ffffff;
+        border-top: 1px solid #EAECEF;
+        font-weight: 600;
+        color: #1A1A1A;
+        font-size: 14px;
     }
 
     .pl-pagination-bar {
@@ -1707,8 +1789,8 @@ include '../../includes/sidebar.php';
 
     .pl-gauge-container {
         position: relative;
-        width: 200px;
-        height: 110px;
+        width: 170px;
+        height: 85px;
         margin: 0 auto;
     }
 
@@ -1729,38 +1811,41 @@ include '../../includes/sidebar.php';
     }
 
     .pl-gauge-val {
-        font-family: 'Inter', sans-serif;
-        font-size: 2.5rem;
-        font-weight: 900;
-        color: #0f172a;
-        line-height: 1;
+        font-family: 'Plus Jakarta Sans', 'Inter', sans-serif !important;
+        font-size: 32px !important;
+        font-weight: 700 !important;
+        color: #1A1A1A !important;
+        line-height: 1 !important;
     }
 
     .pl-gauge-unit {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: #64748b;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        color: #1A1A1A !important;
+        line-height: 1 !important;
     }
 
     .pl-score-trend {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #059669;
-        background: #ecfdf5;
-        padding: 3px 8px;
-        border-radius: 999px;
-        margin-top: 0.25rem;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        color: #029153 !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin-top: 0 !important;
     }
 
     .pl-right-col {
         display: flex;
         flex-direction: column;
         gap: 1.25rem;
-        min-width: 320px;
-        width: 320px;
+        min-width: 340px;
+        width: 340px;
         flex-shrink: 0;
     }
 
@@ -1768,8 +1853,26 @@ include '../../includes/sidebar.php';
         background: #ffffff !important;
         border: 1px solid #EAECEF !important;
         border-radius: 16px !important;
-        padding: 1.25rem 1.4rem !important;
+        padding: 14px 18px 12px !important;
         box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+        width: 100% !important;
+        height: 154px !important;
+        min-height: 154px !important;
+        max-height: 154px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        box-sizing: border-box !important;
+    }
+
+    .pl-score-card .pl-card-subtitle {
+        font-family: 'Inter', sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        color: #1A1A1A !important;
+        margin: 0 !important;
+        text-align: center !important;
     }
 
     .pl-right-col .pl-breakdown-card {
@@ -1779,77 +1882,94 @@ include '../../includes/sidebar.php';
         padding: 0 !important;
         box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
         overflow: hidden;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .pl-breakdown-section {
-        padding: 1.1rem 1.25rem;
-        border-bottom: 1px solid #EAECEF;
+        padding: 18px 22px 20px !important;
+        border-bottom: 1px solid #E8EAF2 !important;
     }
 
     .pl-breakdown-section:last-child {
-        border-bottom: none;
+        border-bottom: none !important;
     }
 
     .pl-section-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 0.65rem;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        margin-bottom: 15px !important;
     }
 
     .pl-section-title {
-        font-family: 'Inter', sans-serif;
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: #0f172a;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        color: #1A1A1A !important;
+        line-height: 100% !important;
+        letter-spacing: 0% !important;
     }
 
     .pl-section-total {
-        font-family: 'Inter', sans-serif;
-        font-size: 0.92rem;
-        font-weight: 800;
-        color: #0f172a;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        color: #1A1A1A !important;
+        line-height: 100% !important;
+        font-variant-numeric: tabular-nums;
     }
 
     .pl-section-rows {
-        display: flex;
-        flex-direction: column;
-        gap: 0;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 5px !important;
     }
 
     .pl-right-col .pl-row {
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        padding: 0.38rem 0 !important;
+        min-height: 22px !important;
+        height: 22px !important;
+        padding: 0 0 5px 0 !important;
         margin: 0 !important;
-        border-bottom: 1px dotted #F1F5F9 !important;
-        font-size: 0.82rem !important;
-        line-height: 1.35 !important;
+        border-bottom: 1px dotted #E2E8F0 !important;
+        line-height: 100% !important;
+        box-sizing: content-box !important;
     }
 
     .pl-right-col .pl-row:last-child {
         border-bottom: none !important;
+        padding-bottom: 0 !important;
     }
 
     .pl-right-col .pl-row span:first-child {
-        color: #334155 !important;
-        font-weight: 500 !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 400 !important;
+        color: #1A1A1A !important;
+        line-height: 100% !important;
+        letter-spacing: 0% !important;
     }
 
     .pl-right-col .pl-row .pl-val {
-        color: #0f172a !important;
-        font-weight: 700 !important;
-        font-size: 0.82rem !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: #1A1A1A !important;
+        line-height: 100% !important;
         font-variant-numeric: tabular-nums;
     }
 
     .pl-right-col .pl-row .pl-val.red {
         color: #EE473D !important;
+        font-weight: 600 !important;
     }
 
     .pl-right-col .pl-row .pl-val.green {
         color: #029153 !important;
+        font-weight: 600 !important;
     }
 
     /* Geographic Sales Distribution Card (Exact Figma Design) */
@@ -1903,25 +2023,28 @@ include '../../includes/sidebar.php';
     .pl-geo-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 0.82rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px;
     }
 
     .pl-geo-table thead th {
         background: transparent;
-        padding: 12px 14px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #475569;
-        text-transform: capitalize;
-        border-bottom: 1px solid #F1F5F9;
+        padding: 14px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #1A1A1A;
+        text-transform: none;
+        letter-spacing: 0;
+        border-bottom: 1px solid #EAECEF;
         border-top: none;
     }
 
     .pl-geo-table tbody td {
-        padding: 12px 14px;
-        border-bottom: 1px solid #F8FAFC;
-        color: #1e293b;
-        font-weight: 500;
+        padding: 14px 16px;
+        border-bottom: 1px solid #F1F3F6;
+        color: #1A1A1A;
+        font-size: 14px;
+        font-weight: 400;
     }
 
     .pl-geo-table tbody tr.geo-parent-row:hover td {
@@ -1929,8 +2052,8 @@ include '../../includes/sidebar.php';
     }
 
     .geo-chevron-btn {
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
         border-radius: 6px;
         background: #F1F4F9;
         border: 1px solid #E2E8F0;
@@ -1941,7 +2064,7 @@ include '../../includes/sidebar.php';
         color: #475569;
         transition: all 0.2s ease;
         flex-shrink: 0;
-        margin-right: 8px;
+        margin-right: 10px;
     }
 
     .geo-parent-row.expanded .geo-chevron-btn {
@@ -1956,7 +2079,7 @@ include '../../includes/sidebar.php';
         border: 1px solid #EAECEF;
         border-radius: 12px;
         padding: 1rem 1.25rem;
-        margin: 0.5rem 0;
+        margin: 0.5rem 0.25rem 0.75rem 0.25rem;
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
     }
 
@@ -2238,18 +2361,27 @@ include '../../includes/sidebar.php';
     }
 
     /* Product Performance Figma hero */
+    /* Product Performance Figma hero */
     .pp-hero-grid {
         display: grid;
-        grid-template-columns: minmax(360px, 0.92fr) minmax(480px, 1.18fr);
+        grid-template-columns: 500px minmax(0, 1fr);
         gap: 1.25rem;
         margin-bottom: 1.25rem;
         align-items: stretch;
+        width: 100%;
     }
 
     @media (max-width: 1200px) {
         .pp-hero-grid {
             grid-template-columns: 1fr !important;
             gap: 1rem !important;
+        }
+
+        .pp-sku-panel,
+        .pp-right-col {
+            width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
         }
 
         .pp-kpi-row {
@@ -2301,18 +2433,22 @@ include '../../includes/sidebar.php';
     }
 
     .pp-sku-panel {
-        padding: 1.25rem 1.25rem 0.75rem 1.25rem;
+        padding: 20px 20px 16px 20px !important;
         display: flex;
         flex-direction: column;
-        min-height: 0;
+        width: 500px;
+        max-width: 100%;
+        height: 598px;
+        min-height: 598px;
+        box-sizing: border-box;
     }
 
     .pp-panel-title {
-        font-family: 'Inter', sans-serif;
-        font-size: 1rem;
-        font-weight: 800;
-        color: #0f172a;
-        margin: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        color: #1A1A1A !important;
+        margin: 0 !important;
         letter-spacing: -0.01em;
     }
 
@@ -2326,143 +2462,183 @@ include '../../includes/sidebar.php';
     .pp-sku-list {
         display: flex;
         flex-direction: column;
-        gap: 0;
-        margin-top: 0.5rem;
+        gap: 10px !important;
+        margin-top: 14px !important;
         overflow-y: auto;
         flex: 1;
         min-height: 0;
+        padding-right: 4px;
     }
 
     .pp-sku-row {
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
-        justify-content: space-between;
-        gap: 0.75rem;
-        padding: 0.75rem 0.5rem;
-        border: none !important;
-        border-bottom: 1px solid #F1F5F9 !important;
-        border-radius: 0 !important;
-        background: transparent !important;
-        box-shadow: none !important;
-        text-align: left;
+        justify-content: space-between !important;
+        padding: 12px 16px !important;
+        border: 1px solid #EAECEF !important;
+        border-radius: 12px !important;
+        background: #ffffff !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+        min-height: 76px !important;
+        box-sizing: border-box !important;
         position: relative;
-        transition: background 0.15s ease;
+        transition: all 0.15s ease !important;
     }
 
-    .pp-sku-row:last-child {
-        border-bottom: none !important;
-    }
-
-    .pp-sku-row:first-child {
-        background: #FAFBFF !important;
-    }
-
-    .pp-sku-row:first-child::after {
-        content: '';
-        position: absolute;
-        right: 0;
-        top: 15%;
-        bottom: 15%;
-        width: 3px;
-        background: #4362CE;
-        border-radius: 3px;
+    .pp-sku-row:hover {
+        border-color: #CBD5E1 !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
     }
 
     .pp-sku-rank {
-        width: 26px;
-        height: 26px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.72rem;
-        font-weight: 700;
-        flex-shrink: 0;
-        background: #EEF2F6 !important;
-        color: #475569 !important;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        flex-shrink: 0 !important;
+        background: #ffffff !important;
+        border: 1px solid #E2E8F0 !important;
+        color: #64748B !important;
     }
 
-    .pp-sku-row:first-child .pp-sku-rank {
-        background: #4362CE !important;
+    .pp-sku-rank.rank-1 {
+        background: #3B66F5 !important;
+        border: none !important;
+        color: #ffffff !important;
+    }
+
+    .pp-sku-rank.rank-2 {
+        background: #7395F7 !important;
+        border: none !important;
+        color: #ffffff !important;
+    }
+
+    .pp-sku-rank.rank-3 {
+        background: #A3BAF9 !important;
+        border: none !important;
         color: #ffffff !important;
     }
 
     .pp-sku-info {
-        min-width: 0;
-        flex: 1.4;
-        text-align: left;
+        min-width: 0 !important;
+        flex: 1 !important;
+        margin-left: 12px !important;
+        margin-right: 8px !important;
+        text-align: left !important;
     }
 
     .pp-sku-info strong {
-        display: block;
-        font-size: 0.84rem;
-        font-weight: 700;
-        color: #0f172a;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        display: block !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        color: #1A1A1A !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        line-height: 1.2 !important;
     }
 
     .pp-sku-info span {
-        display: block;
-        font-size: 0.68rem;
-        font-weight: 500;
-        color: #94a3b8;
-        text-transform: none;
-        margin-top: 2px;
+        display: block !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        color: #64748B !important;
+        text-transform: none !important;
+        margin-top: 3px !important;
+        line-height: 1 !important;
     }
 
     .pp-sku-units {
-        text-align: center;
-        flex: 0 0 96px;
+        border: 1px solid #EAECEF !important;
+        border-radius: 10px !important;
+        background: #FFFFFF !important;
+        padding: 8px 12px !important;
+        width: 88px !important;
+        height: 52px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        flex-shrink: 0 !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
     }
 
     .pp-sku-units strong {
-        display: block;
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: #0f172a;
+        display: block !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        color: #1A1A1A !important;
+        line-height: 100% !important;
+        letter-spacing: 0% !important;
+        white-space: nowrap !important;
+        margin: 0 !important;
+        font-variant-numeric: tabular-nums !important;
     }
 
     .pp-sku-units em {
-        display: inline-block;
-        font-style: normal;
-        font-size: 0.68rem;
-        font-weight: 700;
-        padding: 1px 6px;
-        border-radius: 6px;
-        margin-top: 2px;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 3px !important;
+        font-style: normal !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        line-height: 100% !important;
+        letter-spacing: 0% !important;
+        white-space: nowrap !important;
+        margin: 0 !important;
+        background: transparent !important;
+        padding: 0 !important;
     }
 
     .pp-sku-units em.up {
-        background: #EEF8F1;
-        color: #029153;
+        color: #029153 !important;
     }
 
     .pp-sku-units em.down {
-        background: #FEF0EF;
-        color: #EE473D;
+        color: #EE473D !important;
     }
 
     .pp-sku-rev {
-        text-align: right;
-        flex: 0 0 84px;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-end !important;
+        justify-content: center !important;
+        min-width: 80px !important;
+        flex-shrink: 0 !important;
+        margin-left: 12px !important;
+        text-align: right !important;
     }
 
     .pp-sku-rev small {
-        display: block;
-        font-size: 0.65rem;
-        font-weight: 600;
-        color: #94a3b8;
-        text-transform: uppercase;
+        display: block !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        color: #64748B !important;
+        text-transform: none !important;
+        margin: 0 0 4px 0 !important;
+        line-height: 100% !important;
     }
 
     .pp-sku-rev strong {
-        display: block;
-        font-size: 0.9rem;
-        font-weight: 800;
-        color: #0f172a;
+        display: block !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        color: #1A1A1A !important;
+        line-height: 100% !important;
+        margin: 0 !important;
+        font-variant-numeric: tabular-nums !important;
     }
 
     .pp-right-col {
@@ -2470,53 +2646,71 @@ include '../../includes/sidebar.php';
         flex-direction: column;
         gap: 1.25rem;
         min-width: 0;
-        height: 100%;
+        width: 100%;
+        height: 598px;
+        min-height: 598px;
+        box-sizing: border-box;
     }
 
     .pp-donut-card {
-        padding: 1.25rem 1.4rem;
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        min-height: 0;
+        padding: 24px 30px 24px 30px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        flex: 1 !important;
+        min-height: 0 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .pp-donut-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 0.75rem;
-        margin-bottom: 0.85rem;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        gap: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
     }
 
     .pp-details-link {
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: #4362CE;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        white-space: nowrap;
-        transition: color 0.15s ease;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        color: #334155 !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding: 6px 14px !important;
+        border: 1px solid #EAECEF !important;
+        border-radius: 8px !important;
+        background: #ffffff !important;
+        white-space: nowrap !important;
+        transition: all 0.15s ease !important;
     }
 
     .pp-details-link:hover {
-        color: #2D48A8;
+        background: #F8FAFC !important;
+        border-color: #CBD5E1 !important;
     }
 
     .pp-donut-body {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        flex: 1;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        align-items: center !important;
+        justify-items: center !important;
+        gap: 2rem !important;
+        width: 100% !important;
+        flex: 1 !important;
+        padding: 10px 0 !important;
+        box-sizing: border-box !important;
     }
 
     .pp-donut-wrap {
-        position: relative;
-        width: 190px;
-        height: 190px;
-        flex-shrink: 0;
+        position: relative !important;
+        width: 280px !important;
+        height: 280px !important;
+        flex-shrink: 0 !important;
+        margin: 0 auto !important;
     }
 
     .pp-donut-wrap canvas {
@@ -2525,171 +2719,204 @@ include '../../includes/sidebar.php';
     }
 
     .pp-donut-center {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-        text-align: center;
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 190px !important;
+        height: 190px !important;
+        border-radius: 50% !important;
+        background: #ffffff !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        pointer-events: none !important;
+        text-align: center !important;
+        z-index: 2 !important;
     }
 
     .pp-donut-center p {
-        margin: 0;
-        font-family: 'Inter', sans-serif;
-        font-size: 1.6rem;
-        font-weight: 800;
-        color: #0f172a;
-        line-height: 1;
+        margin: 0 !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 32px !important;
+        font-weight: 800 !important;
+        color: #1A1A1A !important;
+        line-height: 1 !important;
+        letter-spacing: -0.02em !important;
     }
 
     .pp-donut-center span {
-        font-size: 0.7rem;
-        color: #64748b;
-        font-weight: 600;
-        margin-top: 2px;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
+        color: #1A1A1A !important;
+        font-weight: 500 !important;
+        margin-top: 4px !important;
+        line-height: 1 !important;
     }
 
     .pp-donut-legend {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-        flex: 1;
-        min-width: 0;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0 !important;
+        width: 100% !important;
+        max-width: 380px !important;
+        margin: 0 auto !important;
     }
 
     .pp-legend-row {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto auto;
-        align-items: center;
-        gap: 10px;
-        font-size: 0.78rem;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        height: 52px !important;
+        min-height: 52px !important;
+        padding: 0 !important;
+        border-bottom: 1px solid #F1F3F6 !important;
+        box-sizing: border-box !important;
     }
 
-    .pp-legend-row .name {
-        color: #475569;
-        font-weight: 600;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        display: flex;
-        align-items: center;
-        gap: 6px;
+    .pp-legend-row:last-child {
+        border-bottom: none !important;
+    }
+
+    .pp-legend-row .name-wrap {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        min-width: 0 !important;
+        flex: 1 !important;
     }
 
     .pp-legend-row .dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 2px;
-        flex-shrink: 0;
+        width: 10px !important;
+        height: 10px !important;
+        border-radius: 3px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .pp-legend-row .name {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: #475569 !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
     }
 
     .pp-legend-row .val {
-        font-weight: 700;
-        color: #0f172a;
-        font-variant-numeric: tabular-nums;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        color: #1A1A1A !important;
+        font-variant-numeric: tabular-nums !important;
+        text-align: right !important;
+        margin-left: auto !important;
+        margin-right: 20px !important;
     }
 
     .pp-legend-row .pct {
-        font-weight: 600;
-        color: #64748b;
-        font-variant-numeric: tabular-nums;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        color: #1A1A1A !important;
+        font-variant-numeric: tabular-nums !important;
+        min-width: 32px !important;
+        text-align: right !important;
     }
 
     .pp-kpi-row {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1.25rem;
-        width: 100%;
-        margin: 0;
-        flex-shrink: 0;
-        align-items: stretch;
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 20px !important;
+        width: 100% !important;
+        margin: 0 !important;
+        flex-shrink: 0 !important;
+        align-items: stretch !important;
     }
 
     .pp-kpi-card {
-        padding: 1rem 1.15rem;
-        position: relative;
-        min-height: 105px;
-        height: 100%;
-        margin: 0;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        padding: 18px 22px !important;
+        position: relative !important;
+        min-height: 126px !important;
+        height: 126px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        background: #ffffff !important;
+        border: 1px solid #EAECEF !important;
+        border-radius: 16px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
     }
 
     .pp-kpi-icon {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        background: #EEF2FF;
-        color: #4362CE;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .pp-kpi-icon.green {
-        background: #EEF8F1;
-        color: #029153;
-    }
-
-    .pp-kpi-icon.dark {
-        background: #F1F5F9;
-        color: #334155;
+        position: absolute !important;
+        top: 18px !important;
+        right: 18px !important;
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 10px !important;
+        background: #EEF2FF !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .pp-kpi-label {
-        font-size: 0.72rem;
-        font-weight: 700;
-        color: #64748b;
-        margin: 0 2rem 0 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: #475569 !important;
+        margin: 0 !important;
+        line-height: 1 !important;
     }
 
     .pp-kpi-value {
-        font-family: 'Inter', sans-serif;
-        font-size: 1.45rem;
-        font-weight: 800;
-        color: #0f172a;
-        margin: 0.35rem 0 0.35rem;
-        line-height: 1;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 26px !important;
+        font-weight: 700 !important;
+        color: #1A1A1A !important;
+        margin: 8px 0 16px 0 !important;
+        line-height: 1 !important;
+        font-variant-numeric: tabular-nums !important;
+    }
+
+    .pp-kpi-footer {
+        display: flex !important;
+        align-items: center !important;
+        gap: 7px !important;
+        height: 28px !important;
     }
 
     .pp-kpi-badge {
-        display: inline-block;
-        width: fit-content;
-        font-size: 0.68rem;
-        font-weight: 700;
-        color: #029153;
-        background: #EEF8F1;
-        padding: 2px 8px;
-        border-radius: 6px;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 6px 10px !important;
+        height: 28px !important;
+        box-sizing: border-box !important;
+        border-radius: 6px !important;
+        background: #EEF8F1 !important;
+        color: #029153 !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        line-height: 100% !important;
+        letter-spacing: 0% !important;
+        white-space: nowrap !important;
     }
 
-    .pp-kpi-note {
-        font-size: 0.68rem;
-        color: #64748b;
-        font-weight: 500;
-    }
-
-    .pp-kpi-badge {
-        display: inline-block;
-        background: rgba(111, 251, 190, 0.28);
-        color: #009668;
-        font-size: 0.68rem;
-        font-weight: 700;
-        padding: 2px 7px;
-        border-radius: 6px;
-    }
-
-    .pp-kpi-note {
-        font-size: 0.72rem;
-        font-weight: 600;
-        color: #64748b;
+    .pp-kpi-subtext {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 400 !important;
+        color: #64748B !important;
+        line-height: 100% !important;
+        white-space: nowrap !important;
     }
 
     @media (max-width: 1100px) {
@@ -3211,8 +3438,6 @@ include '../../includes/sidebar.php';
             <h2
                 style="font-size:1.65rem; font-weight:800; color:#0f172a; margin:0; font-family:'Inter', sans-serif; letter-spacing:-0.02em;">
                 Product Performance</h2>
-            <p style="margin:0.2rem 0 0; font-size:0.82rem; color:#64748b; font-weight:500;">SKU-level revenue, traffic
-                &amp; contribution analysis</p>
         </div>
         <div class="d-flex align-items-center gap-2">
             <div class="figma-date-picker-wrap" id="date_range_picker_pp_wrap">
@@ -3831,16 +4056,19 @@ include '../../includes/sidebar.php';
                 <div class="pl-hero-section">
                     <div class="pl-hero-label">Gross Revenue Stream</div>
                     <div class="pl-hero-value" id="pl_hero_revenue">$0.00</div>
-                    <div class="pl-hero-badge green">
-                        <span>100%</span>
-                        <svg width="10" height="11" viewBox="0 0 11 12" fill="none">
-                            <path d="M5.28442 1.00732V10.6502" stroke="#029153" stroke-width="1.3"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                            <path
-                                d="M9.57144 4.93562C9.57144 4.93562 6.41508 0.649909 5.28572 0.649902C4.15629 0.649895 1 4.93562 1 4.93562"
-                                stroke="#029153" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        <span>Total</span>
+                    <div class="pl-hero-stat-row">
+                        <div class="pl-hero-badge green">
+                            <span>100%</span>
+                            <svg width="10" height="11" viewBox="0 0 11 12" fill="none">
+                                <path d="M5.28442 1.00732V10.6502" stroke="#029153" stroke-width="1.3"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M9.57144 4.93562C9.57144 4.93562 6.41508 0.649909 5.28572 0.649902C4.15629 0.649895 1 4.93562 1 4.93562"
+                                    stroke="#029153" stroke-width="1.3" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <span class="pl-hero-stat-text">Total</span>
                     </div>
                 </div>
 
@@ -3848,16 +4076,19 @@ include '../../includes/sidebar.php';
                 <div class="pl-hero-section">
                     <div class="pl-hero-label">Operational Deductions</div>
                     <div class="pl-hero-value" id="pl_hero_deductions">$0.00</div>
-                    <div class="pl-hero-badge red">
-                        <span id="pl_deductions_pct">54.3%</span>
-                        <svg width="10" height="11" viewBox="0 0 11 12" fill="none">
-                            <path d="M5.28442 10.293V0.650109" stroke="#EE473D" stroke-width="1.3"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                            <path
-                                d="M9.57144 6.36468C9.57144 6.36468 6.41508 10.6504 5.28572 10.6504C4.15629 10.6504 1 6.36468 1 6.36468"
-                                stroke="#EE473D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        <span>of Revenue</span>
+                    <div class="pl-hero-stat-row">
+                        <div class="pl-hero-badge red">
+                            <span id="pl_deductions_pct">54.3%</span>
+                            <svg width="10" height="11" viewBox="0 0 11 12" fill="none">
+                                <path d="M5.28442 10.293V0.650109" stroke="#EE473D" stroke-width="1.3"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M9.57144 6.36468C9.57144 6.36468 6.41508 10.6504 5.28572 10.6504C4.15629 10.6504 1 6.36468 1 6.36468"
+                                    stroke="#EE473D" stroke-width="1.3" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <span class="pl-hero-stat-text">of Revenue</span>
                     </div>
                 </div>
 
@@ -3865,16 +4096,19 @@ include '../../includes/sidebar.php';
                 <div class="pl-hero-section">
                     <div class="pl-hero-label">Executive Net Profit</div>
                     <div class="pl-hero-value" id="pl_hero_net_profit">$0.00</div>
-                    <div class="pl-hero-badge blue">
-                        <span id="pl_margin_pct">45.7%</span>
-                        <svg width="10" height="11" viewBox="0 0 11 12" fill="none">
-                            <path d="M5.28442 1.00732V10.6502" stroke="#4362CE" stroke-width="1.3"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                            <path
-                                d="M9.57144 4.93562C9.57144 4.93562 6.41508 0.649909 5.28572 0.649902C4.15629 0.649895 1 4.93562 1 4.93562"
-                                stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        <span>Margin</span>
+                    <div class="pl-hero-stat-row">
+                        <div class="pl-hero-badge blue">
+                            <span id="pl_margin_pct">45.7%</span>
+                            <svg width="10" height="11" viewBox="0 0 11 12" fill="none">
+                                <path d="M5.28442 1.00732V10.6502" stroke="#4362CE" stroke-width="1.3"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M9.57144 4.93562C9.57144 4.93562 6.41508 0.649909 5.28572 0.649902C4.15629 0.649895 1 4.93562 1 4.93562"
+                                    stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <span class="pl-hero-stat-text">Margin</span>
                     </div>
                 </div>
             </div>
@@ -4152,30 +4386,50 @@ include '../../includes/sidebar.php';
             <div class="pp-kpi-row">
                 <div class="pp-kpi-card">
                     <div class="pp-kpi-icon">
-                        <img src="<?php echo BASE_URL; ?>assets/icons/Product Performance/Avg. Store ROAS.svg"
-                            alt="ROAS" style="width: 20px; height: 20px;" />
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B66F5" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
                     </div>
                     <p class="pp-kpi-label">Avg. Store ROAS</p>
-                    <p class="pp-kpi-value" id="prod_meta_roas">4.2x</p>
-                    <span class="pp-kpi-badge">+12.4% vs last month</span>
+                    <p class="pp-kpi-value" id="prod_meta_roas">12.6x</p>
+                    <div class="pp-kpi-footer">
+                        <span class="pp-kpi-badge">+12.4%</span>
+                        <span class="pp-kpi-subtext">vs last month</span>
+                    </div>
                 </div>
                 <div class="pp-kpi-card">
-                    <div class="pp-kpi-icon green">
-                        <img src="<?php echo BASE_URL; ?>assets/icons/Product Performance/Total Sessions.svg"
-                            alt="Sessions" style="width: 20px; height: 20px;" />
+                    <div class="pp-kpi-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B66F5" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
                     </div>
                     <p class="pp-kpi-label">Total Sessions</p>
-                    <p class="pp-kpi-value" id="prod_meta_sessions">0</p>
-                    <span class="pp-kpi-badge">+8.1% organic traffic</span>
+                    <p class="pp-kpi-value" id="prod_meta_sessions">12,761</p>
+                    <div class="pp-kpi-footer">
+                        <span class="pp-kpi-badge">+8.1%</span>
+                        <span class="pp-kpi-subtext">organic traffic</span>
+                    </div>
                 </div>
                 <div class="pp-kpi-card">
-                    <div class="pp-kpi-icon dark">
-                        <img src="<?php echo BASE_URL; ?>assets/icons/Product Performance/Active SKUs.svg"
-                            alt="Active SKUs" style="width: 20px; height: 20px;" />
+                    <div class="pp-kpi-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B66F5" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                            <polyline points="2 17 12 22 22 17"></polyline>
+                            <polyline points="2 12 12 17 22 12"></polyline>
+                        </svg>
                     </div>
                     <p class="pp-kpi-label">Active SKUs</p>
-                    <p class="pp-kpi-value" id="prod_meta_skus">0</p>
-                    <span class="pp-kpi-note">3 pending restocking</span>
+                    <p class="pp-kpi-value" id="prod_meta_skus">43</p>
+                    <div class="pp-kpi-footer">
+                        <span class="pp-kpi-subtext">3 pending restocking</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -4255,35 +4509,35 @@ include '../../includes/sidebar.php';
         <div style="overflow-x: auto;">
             <table id="product_perf_table"
                 style="width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed;">
-                <thead style="background: transparent; border-bottom: 1px solid #F1F5F9;">
+                <thead style="background: transparent; border-bottom: 1px solid #E8EAF2;">
                     <tr>
                         <th
-                            style="padding: 12px 16px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: center; width: 8%;">
+                            style="padding: 14px 16px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 6%;">
                             Rank</th>
                         <th
-                            style="padding: 12px 18px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: left; width: 32%;">
+                            style="padding: 14px 18px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: left; width: 32%;">
                             Product Identity</th>
                         <th
-                            style="padding: 12px 18px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: right; width: 14%;">
+                            style="padding: 14px 18px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: right; width: 14%;">
                             Sales ($)</th>
                         <th
-                            style="padding: 12px 14px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: center; width: 10%;">
+                            style="padding: 14px 14px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 10%;">
                             Orders</th>
                         <th
-                            style="padding: 12px 14px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: center; width: 10%;">
+                            style="padding: 14px 14px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 10%;">
                             Units Sold</th>
                         <th
-                            style="padding: 12px 18px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: right; width: 12%;">
+                            style="padding: 14px 18px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: right; width: 12%;">
                             Ad Spend</th>
                         <th
-                            style="padding: 12px 14px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: center; width: 8%;">
+                            style="padding: 14px 14px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 8%;">
                             ROAS (x)</th>
                         <th
-                            style="padding: 12px 16px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-align: center; width: 8%;">
+                            style="padding: 14px 16px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 8%;">
                             Trend</th>
                     </tr>
                 </thead>
-                <tbody id="product_analysis_body" style="background: #ffffff;">
+                <tbody id="product_analysis_body">
                     <!-- Populated dynamically via JS matching Figma -->
                 </tbody>
             </table>
@@ -4742,40 +4996,35 @@ include '../../includes/sidebar.php';
                 {
                     label: 'Total Sales',
                     key: 'sales',
-                    iconSvg: `<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M12.2775 5.43194C12.2775 3.90463 10.3622 2.6665 7.99967 2.6665C5.63712 2.6665 3.72189 3.90463 3.72189 5.43194C3.72189 6.95924 4.88856 7.8023 7.99967 7.8023C11.1108 7.8023 12.6663 8.59244 12.6663 10.5678C12.6663 12.543 10.577 13.3332 7.99967 13.3332C5.42235 13.3332 3.33301 12.095 3.33301 10.5678" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/><path d="M8 1.3335V14.6668" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-                    iconBg: 'background:#eff6ff;',
+                    iconSvg: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.2775 5.43194C12.2775 3.90463 10.3622 2.6665 7.99967 2.6665C5.63712 2.6665 3.72189 3.90463 3.72189 5.43194C3.72189 6.95924 4.88856 7.8023 7.99967 7.8023C11.1108 7.8023 12.6663 8.59244 12.6663 10.5678C12.6663 12.543 10.577 13.3332 7.99967 13.3332C5.42235 13.3332 3.33301 12.095 3.33301 10.5678" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/><path d="M8 1.3335V14.6668" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
                     isMoney: true
                 },
                 {
                     label: 'Total Orders',
                     key: 'orders',
-                    iconSvg: `<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M1.66699 5.6665H14.3337L13.5574 10.3241C13.2913 11.9204 13.1583 12.7186 12.5988 13.1926C12.0393 13.6665 11.2302 13.6665 9.61179 13.6665H6.38883C4.77049 13.6665 3.96132 13.6665 3.40183 13.1926C2.84234 12.7186 2.70931 11.9204 2.44326 10.3241L1.66699 5.6665Z" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 8.3335V11.0002" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.667 8.3335V11.0002" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.33301 8.3335V11.0002" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 5.6665H1" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 5.66683L10 2.3335" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 5.66683L6 2.3335" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-                    iconBg: 'background:#eff6ff;'
+                    iconSvg: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1.66699 5.6665H14.3337L13.5574 10.3241C13.2913 11.9204 13.1583 12.7186 12.5988 13.1926C12.0393 13.6665 11.2302 13.6665 9.61179 13.6665H6.38883C4.77049 13.6665 3.96132 13.6665 3.40183 13.1926C2.84234 12.7186 2.70931 11.9204 2.44326 10.3241L1.66699 5.6665Z" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 8.3335V11.0002" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.667 8.3335V11.0002" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.33301 8.3335V11.0002" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 5.6665H1" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 5.66683L10 2.3335" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 5.66683L6 2.3335" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`
                 },
                 {
                     label: 'Total Unit Sold',
                     key: 'units',
-                    iconSvg: `<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M5.33301 10.6667L11.1464 10.1822C12.9654 10.0307 13.3737 9.63333 13.5753 7.81927L13.9997 4" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/><path d="M4 4H14.6667" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/><path d="M4.00033 14.6667C4.7367 14.6667 5.33366 14.0697 5.33366 13.3333C5.33366 12.597 4.7367 12 4.00033 12C3.26395 12 2.66699 12.597 2.66699 13.3333C2.66699 14.0697 3.26395 14.6667 4.00033 14.6667Z" stroke="#4362CE" stroke-width="1.3"/><path d="M11.3333 14.6667C12.0697 14.6667 12.6667 14.0697 12.6667 13.3333C12.6667 12.597 12.0697 12 11.3333 12C10.597 12 10 12.597 10 13.3333C10 14.0697 10.597 14.6667 11.3333 14.6667Z" stroke="#4362CE" stroke-width="1.3"/><path d="M5.33301 13.3335H9.99968" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/><path d="M1.33301 1.3335H1.97701C2.60679 1.3335 3.15577 1.74989 3.30851 2.34345L5.29202 10.0512C5.39225 10.4407 5.30647 10.8533 5.0585 11.1746L4.42109 12.0002" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/></svg>`,
-                    iconBg: 'background:#eff6ff;'
+                    iconSvg: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5.33301 10.6667L11.1464 10.1822C12.9654 10.0307 13.3737 9.63333 13.5753 7.81927L13.9997 4" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/><path d="M4 4H14.6667" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/><path d="M4.00033 14.6667C4.7367 14.6667 5.33366 14.0697 5.33366 13.3333C5.33366 12.597 4.7367 12 4.00033 12C3.26395 12 2.66699 12.597 2.66699 13.3333C2.66699 14.0697 3.26395 14.6667 4.00033 14.6667Z" stroke="#4362CE" stroke-width="1.3"/><path d="M11.3333 14.6667C12.0697 14.6667 12.6667 14.0697 12.6667 13.3333C12.6667 12.597 12.0697 12 11.3333 12C10.597 12 10 12.597 10 13.3333C10 14.0697 10.597 14.6667 11.3333 14.6667Z" stroke="#4362CE" stroke-width="1.3"/><path d="M5.33301 13.3335H9.99968" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/><path d="M1.33301 1.3335H1.97701C2.60679 1.3335 3.15577 1.74989 3.30851 2.34345L5.29202 10.0512C5.39225 10.4407 5.30647 10.8533 5.0585 11.1746L4.42109 12.0002" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"/></svg>`
                 },
                 {
                     label: 'Page Views',
                     key: 'page_views',
-                    iconSvg: `<svg width="15" height="15" viewBox="0 0 22 20" fill="none"><path d="M20.294 9.045C20.598 9.4713 20.75 9.6845 20.75 10C20.75 10.3155 20.598 10.5287 20.294 10.955C18.9279 12.8706 15.4392 17 10.75 17C6.06078 17 2.5721 12.8706 1.20604 10.955C0.90201 10.5287 0.75 10.3155 0.75 10C0.75 9.6845 0.90201 9.4713 1.20604 9.045C2.5721 7.12944 6.06078 3 10.75 3C15.4392 3 18.9279 7.12944 20.294 9.045Z" stroke="#4362CE" stroke-width="1.4"/><path d="M13.75 10C13.75 8.3431 12.4069 7 10.75 7C9.0931 7 7.75 8.3431 7.75 10C7.75 11.6569 9.0931 13 10.75 13C12.4069 13 13.75 11.6569 13.75 10Z" stroke="#4362CE" stroke-width="1.4"/></svg>`,
-                    iconBg: 'background:#eff6ff;'
+                    iconSvg: `<svg width="16" height="16" viewBox="0 0 22 20" fill="none"><path d="M20.294 9.045C20.598 9.4713 20.75 9.6845 20.75 10C20.75 10.3155 20.598 10.5287 20.294 10.955C18.9279 12.8706 15.4392 17 10.75 17C6.06078 17 2.5721 12.8706 1.20604 10.955C0.90201 10.5287 0.75 10.3155 0.75 10C0.75 9.6845 0.90201 9.4713 1.20604 9.045C2.5721 7.12944 6.06078 3 10.75 3C15.4392 3 18.9279 7.12944 20.294 9.045Z" stroke="#4362CE" stroke-width="1.4"/><path d="M13.75 10C13.75 8.3431 12.4069 7 10.75 7C9.0931 7 7.75 8.3431 7.75 10C7.75 11.6569 9.0931 13 10.75 13C12.4069 13 13.75 11.6569 13.75 10Z" stroke="#4362CE" stroke-width="1.4"/></svg>`
                 },
                 {
                     label: 'Conversion Rate',
                     key: 'conv',
-                    iconSvg: `<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2.66699 13.3332L13.3337 2.6665" stroke="#4362CE" stroke-width="1.4" stroke-linecap="round"/><path d="M5.51217 3.15466C6.16305 3.80553 6.16305 4.86081 5.51217 5.51169C4.8613 6.16256 3.80602 6.16256 3.15515 5.51169C2.50427 4.86081 2.50427 3.80553 3.15515 3.15466C3.80602 2.50379 4.8613 2.50379 5.51217 3.15466Z" stroke="#4362CE" stroke-width="1.4"/><path d="M12.8452 10.4882C13.4961 11.139 13.4961 12.1943 12.8452 12.8452C12.1943 13.4961 11.139 13.4961 10.4882 12.8452C9.83728 12.1943 9.83728 11.139 10.4882 10.4882C11.139 9.83728 12.1943 9.83728 12.8452 10.4882Z" stroke="#4362CE" stroke-width="1.4"/></svg>`,
-                    iconBg: 'background:#eff6ff;',
+                    iconSvg: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.66699 13.3332L13.3337 2.6665" stroke="#4362CE" stroke-width="1.4" stroke-linecap="round"/><path d="M5.51217 3.15466C6.16305 3.80553 6.16305 4.86081 5.51217 5.51169C4.8613 6.16256 3.80602 6.16256 3.15515 5.51169C2.50427 4.86081 2.50427 3.80553 3.15515 3.15466C3.80602 2.50379 4.8613 2.50379 5.51217 3.15466Z" stroke="#4362CE" stroke-width="1.4"/><path d="M12.8452 10.4882C13.4961 11.139 13.4961 12.1943 12.8452 12.8452C12.1943 13.4961 11.139 13.4961 10.4882 12.8452C9.83728 12.1943 9.83728 11.139 10.4882 10.4882C11.139 9.83728 12.1943 9.83728 12.8452 10.4882Z" stroke="#4362CE" stroke-width="1.4"/></svg>`,
                     isRate: true
                 }
             ];
 
             let bodyHtml = '';
             rows.forEach(r => {
-                bodyHtml += `<tr><td style="padding:10px 16px; text-align:left; font-family:\'Inter\', sans-serif !important; font-weight:500; color:#1E293B; font-size:14px;"><div style="display:inline-flex; align-items:center; gap:10px;"><span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; ${r.iconBg} flex-shrink:0;">${r.iconSvg}</span> <span>${r.label}</span></div></td>`;
+                bodyHtml += `<tr><td style="text-align:left; font-family:\'Inter\', sans-serif !important; font-weight:500; color:#1E293B; font-size:14px;"><div style="display:inline-flex; align-items:center; gap:12px;"><span style="display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; background:#FFFFFF; border:1px solid #E8EAF2; box-shadow:0 1px 2px rgba(0,0,0,0.03); flex-shrink:0;">${r.iconSvg}</span> <span>${r.label}</span></div></td>`;
                 let prevVal = null;
                 months.forEach((m, i) => {
                     const raw = (trends[m] && trends[m][r.key] != null) ? trends[m][r.key] : 0;
@@ -4800,17 +5049,15 @@ include '../../includes/sidebar.php';
                                 pillHtml = `<span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% ${arrowSvg}</span>`;
                             }
                         }
-                        cellContent = `<div style="display:flex; align-items:center; justify-content:flex-end; gap:6px;">
+                        cellContent = `<div style="display:inline-flex; align-items:center; justify-content:flex-end; gap:6px;">
                             <div style="width:78px; display:flex; justify-content:flex-end; flex-shrink:0;">${pillHtml}</div>
                             <div style="width:84px; text-align:right; font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; flex-shrink:0;">${displayVal}</div>
                         </div>`;
                     } else {
-                        cellContent = `<div style="display:flex; align-items:center; justify-content:flex-end;">
-                            <div style="width:84px; text-align:right; font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; flex-shrink:0;">${displayVal}</div>
-                        </div>`;
+                        cellContent = `<span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums;">${displayVal}</span>`;
                     }
 
-                    bodyHtml += `<td style="padding:10px 16px; text-align:right;">${cellContent}</td>`;
+                    bodyHtml += `<td>${cellContent}</td>`;
                     prevVal = n;
                 });
                 bodyHtml += `</tr>`;
@@ -4819,147 +5066,147 @@ include '../../includes/sidebar.php';
         }
 
         function animateCurrentTab() {
-        const tab = '<?php echo $active_tab; ?>';
-        const $content = $('#tab_' + tab);
-        $content.addClass('animating');
-        setTimeout(() => $content.removeClass('animating'), prefersReducedMotion ? 0 : 260);
+            const tab = '<?php echo $active_tab; ?>';
+            const $content = $('#tab_' + tab);
+            $content.addClass('animating');
+            setTimeout(() => $content.removeClass('animating'), prefersReducedMotion ? 0 : 260);
 
-        if (tab === 'kpi') {
-            staggerIn('#tab_kpi .ov-card', 0, 70);
-            staggerIn('#tab_kpi .overview-row', 220, 100);
-        } else if (tab === 'financial') {
-            staggerIn('#tab_financial .card', 0, 100);
-        } else if (tab === 'products') {
-            staggerIn('#tab_products .card', 0, 90);
-            staggerIn('#product_list .pp-sku-row', 180, 60);
-            staggerIn('#product_analysis_body tr', 260, 40);
-        } else if (tab === 'traffic') {
-            staggerIn('#tab_traffic .kpi-card', 0, 70);
-            staggerIn('#tab_traffic .card', 200, 100);
-        }
-    }
-
-    // Global attachments for dynamic page clicks
-    window.onTrafficPageClick = function (page) {
-        trafficCurrentPage = page;
-        renderTrafficTable();
-    };
-
-    window.onSkuPlPageClick = function (page) {
-        skuPlCurrentPage = page;
-        renderSkuPlTable();
-    };
-
-    window.onProductsPageClick = function (page) {
-        productsCurrentPage = page;
-        renderProductPerformanceTable();
-    };
-
-    function getProductImage(sku) {
-        return '';
-    }
-
-    function generateBentoSparkline(values) {
-        if (!values || values.length === 0) return '';
-        const min = Math.min(...values);
-        const max = Math.max(...values);
-        const range = max - min;
-
-        const height = 24;
-        const width = 100;
-        const padding = 3;
-
-        const points = values.map((val, idx) => {
-            const x = padding + (idx / (values.length - 1)) * (width - 2 * padding);
-            const y = (range === 0) ? (height / 2) : (height - padding - ((val - min) / range) * (height - 2 * padding));
-            return { x, y };
-        });
-
-        const firstVal = values[0];
-        const lastVal = values[values.length - 1];
-        let strokeColor = '#0051d5'; // Bento Blue
-
-        if (lastVal > firstVal * 1.05) {
-            strokeColor = '#009668'; // Bento Green
-        } else if (lastVal < firstVal * 0.95) {
-            strokeColor = '#ef4444'; // Bento Red
-        }
-
-        let pathD = '';
-        points.forEach((pt, idx) => {
-            if (idx === 0) {
-                pathD += `M ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
-            } else {
-                pathD += ` L ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
+            if (tab === 'kpi') {
+                staggerIn('#tab_kpi .ov-card', 0, 70);
+                staggerIn('#tab_kpi .overview-row', 220, 100);
+            } else if (tab === 'financial') {
+                staggerIn('#tab_financial .card', 0, 100);
+            } else if (tab === 'products') {
+                staggerIn('#tab_products .card', 0, 90);
+                staggerIn('#product_list .pp-sku-row', 180, 60);
+                staggerIn('#product_analysis_body tr', 260, 40);
+            } else if (tab === 'traffic') {
+                staggerIn('#tab_traffic .kpi-card', 0, 70);
+                staggerIn('#tab_traffic .card', 200, 100);
             }
-        });
+        }
 
-        return `
+        // Global attachments for dynamic page clicks
+        window.onTrafficPageClick = function (page) {
+            trafficCurrentPage = page;
+            renderTrafficTable();
+        };
+
+        window.onSkuPlPageClick = function (page) {
+            skuPlCurrentPage = page;
+            renderSkuPlTable();
+        };
+
+        window.onProductsPageClick = function (page) {
+            productsCurrentPage = page;
+            renderProductPerformanceTable();
+        };
+
+        function getProductImage(sku) {
+            return '';
+        }
+
+        function generateBentoSparkline(values) {
+            if (!values || values.length === 0) return '';
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+            const range = max - min;
+
+            const height = 24;
+            const width = 100;
+            const padding = 3;
+
+            const points = values.map((val, idx) => {
+                const x = padding + (idx / (values.length - 1)) * (width - 2 * padding);
+                const y = (range === 0) ? (height / 2) : (height - padding - ((val - min) / range) * (height - 2 * padding));
+                return { x, y };
+            });
+
+            const firstVal = values[0];
+            const lastVal = values[values.length - 1];
+            let strokeColor = '#0051d5'; // Bento Blue
+
+            if (lastVal > firstVal * 1.05) {
+                strokeColor = '#009668'; // Bento Green
+            } else if (lastVal < firstVal * 0.95) {
+                strokeColor = '#ef4444'; // Bento Red
+            }
+
+            let pathD = '';
+            points.forEach((pt, idx) => {
+                if (idx === 0) {
+                    pathD += `M ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
+                } else {
+                    pathD += ` L ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
+                }
+            });
+
+            return `
         <svg class="w-16 h-8 overflow-visible" viewBox="0 0 100 40" style="display: block; margin: 0 auto;">
             <path class="sparkline-path" d="${pathD}" fill="none" stroke="${strokeColor}" stroke-width="2" stroke-linecap="round" />
         </svg>`;
-    }
+        }
 
-    function renderBentoPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        if (totalPages <= 1) return '';
+        function renderBentoPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            if (totalPages <= 1) return '';
 
-        let paginationHtml = '';
+            let paginationHtml = '';
 
-        // Chevron Left
-        const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
-        paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})">
+            // Chevron Left
+            const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
+            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})">
             <span class="material-symbols-outlined text-[18px]">chevron_left</span>
         </button>`;
 
-        // Page Numbers (Up to 5 page buttons)
-        let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(totalPages, startPage + 4);
-        if (endPage - startPage < 4) {
-            startPage = Math.max(1, endPage - 4);
-        }
-
-        for (let page = startPage; page <= endPage; page++) {
-            if (page === currentPage) {
-                paginationHtml += `<button class="px-3 py-1 rounded bg-secondary text-white font-label-md text-label-md" style="background: #0051d5; color: #ffffff; font-weight: 700; border: none; cursor: default;">${page}</button>`;
-            } else {
-                paginationHtml += `<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors font-label-md text-label-md bg-white" style="cursor: pointer;" onclick="${onClickPage}(${page})">${page}</button>`;
+            // Page Numbers (Up to 5 page buttons)
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
             }
-        }
 
-        // Chevron Right
-        const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
-        paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})">
+            for (let page = startPage; page <= endPage; page++) {
+                if (page === currentPage) {
+                    paginationHtml += `<button class="px-3 py-1 rounded bg-secondary text-white font-label-md text-label-md" style="background: #0051d5; color: #ffffff; font-weight: 700; border: none; cursor: default;">${page}</button>`;
+                } else {
+                    paginationHtml += `<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors font-label-md text-label-md bg-white" style="cursor: pointer;" onclick="${onClickPage}(${page})">${page}</button>`;
+                }
+            }
+
+            // Chevron Right
+            const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
+            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})">
             <span class="material-symbols-outlined text-[18px]">chevron_right</span>
         </button>`;
 
-        return paginationHtml;
-    }
-
-    function renderTrafficTable() {
-        let filtered = globalTrafficData;
-        if (trafficSearchQuery) {
-            const query = trafficSearchQuery.toLowerCase();
-            filtered = globalTrafficData.filter(item => {
-                return (item.date && item.date.toLowerCase().includes(query)) ||
-                    (item.sessions && item.sessions.toString().includes(query)) ||
-                    (item.pageViews && item.pageViews.toString().includes(query));
-            });
+            return paginationHtml;
         }
 
-        const totalItems = filtered.length;
-        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
-        if (trafficCurrentPage > totalPages) trafficCurrentPage = totalPages;
-        if (trafficCurrentPage < 1) trafficCurrentPage = 1;
+        function renderTrafficTable() {
+            let filtered = globalTrafficData;
+            if (trafficSearchQuery) {
+                const query = trafficSearchQuery.toLowerCase();
+                filtered = globalTrafficData.filter(item => {
+                    return (item.date && item.date.toLowerCase().includes(query)) ||
+                        (item.sessions && item.sessions.toString().includes(query)) ||
+                        (item.pageViews && item.pageViews.toString().includes(query));
+                });
+            }
 
-        const startIndex = (trafficCurrentPage - 1) * ITEMS_PER_PAGE;
-        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
-        const paginatedItems = filtered.slice(startIndex, endIndex);
+            const totalItems = filtered.length;
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+            if (trafficCurrentPage > totalPages) trafficCurrentPage = totalPages;
+            if (trafficCurrentPage < 1) trafficCurrentPage = 1;
 
-        let html = '';
-        if (paginatedItems.length > 0) {
-            paginatedItems.forEach(item => {
-                html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3);">
+            const startIndex = (trafficCurrentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+            const paginatedItems = filtered.slice(startIndex, endIndex);
+
+            let html = '';
+            if (paginatedItems.length > 0) {
+                paginatedItems.forEach(item => {
+                    html += `<tr class="hover:bg-surface-container-low transition-colors" style="border-bottom: 1px solid rgba(198,198,205,0.3);">
                     <td style="padding: 14px 16px; font-weight: 700; color: #64748b; font-family: 'Inter', sans-serif; text-align: center;">${item.date}</td>
                     <td style="padding: 14px 16px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.sessions.toLocaleString()}</td>
                     <td style="padding: 14px 16px; font-weight: 800; color: #191c1e; text-align: right; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.pageViews.toLocaleString()}</td>
@@ -4968,133 +5215,126 @@ include '../../includes/sidebar.php';
                     <td style="padding: 14px 16px; text-align: right; color: #45464d; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${item.orders.toLocaleString()}</td>
                     <td style="padding: 14px 16px; text-align: right; font-family: 'Inter', sans-serif;"><span style="background: rgba(219, 225, 255, 0.4); color: #0051d5; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-variant-numeric: tabular-nums;">${item.conv.toFixed(2)}%</span></td>
                 </tr>`;
-            });
-        } else {
-            html = `<tr><td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8;">No traffic breakdown data matches your search query.</td></tr>`;
-        }
-
-        $('#traffic_daily_body').html(html);
-
-        const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
-        $('#traffic_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
-
-        const paginationButtons = renderBentoPagination(totalItems, trafficCurrentPage, ITEMS_PER_PAGE, 'window.onTrafficPageClick');
-        $('#traffic_pagination').html(paginationButtons);
-    }
-
-    let plMixedChartInst = null;
-    let currentPlTime = 'monthly';
-
-    function renderEfficiencySpeedo(score) {
-        const svg = $('#efficiencyGaugeSvg');
-        if (!svg.length) return;
-        svg.empty();
-
-        const cx = 120, cy = 105, rOuter = 88, rInner = 72;
-        const totalTicks = 24;
-        const startAngle = 180;
-        const endAngle = 360;
-        const activeCount = Math.round((Math.max(0, Math.min(100, score)) / 100) * totalTicks);
-
-        for (let i = 0; i <= totalTicks; i++) {
-            const angleDeg = startAngle + (i / totalTicks) * (endAngle - startAngle);
-            const angleRad = (angleDeg * Math.PI) / 180;
-            const x1 = cx + rInner * Math.cos(angleRad);
-            const y1 = cy + rInner * Math.sin(angleRad);
-            const x2 = cx + rOuter * Math.cos(angleRad);
-            const y2 = cy + rOuter * Math.sin(angleRad);
-
-            const isActive = i <= activeCount;
-            const color = isActive ? '#00a86b' : '#e2e8f0';
-
-            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            line.setAttribute('x1', x1.toFixed(2));
-            line.setAttribute('y1', y1.toFixed(2));
-            line.setAttribute('x2', x2.toFixed(2));
-            line.setAttribute('y2', y2.toFixed(2));
-            line.setAttribute('stroke', color);
-            line.setAttribute('stroke-width', '4.2');
-            line.setAttribute('stroke-linecap', 'round');
-            svg[0].appendChild(line);
-        }
-        $('#pl_efficiency_val').text(score);
-    }
-
-    function renderProfitLossChart() {
-        if (!globalData || !globalData.charts) return;
-        const canvas = document.getElementById('plMixedChart');
-        if (!canvas) return;
-
-        // Ensure the wrapper has explicit height so Chart.js can determine canvas size
-        const wrapper = canvas.closest('.pl-chart-wrapper');
-        if (wrapper && wrapper.offsetHeight === 0) {
-            setTimeout(renderProfitLossChart, 200);
-            return;
-        }
-
-        const barMetric = $('#pl_bar_metric').val() || 'sales';
-        const lineMetric = $('#pl_line_metric').val() || 'net_profit';
-
-        const barLabelsMap = { 'sales': 'Sales', 'units': 'Units', 'orders': 'Orders' };
-        const lineLabelsMap = { 'net_profit': 'Net Profit', 'margin': 'Net Margin %', 'roi': 'ROI %' };
-
-        $('#pl_legend_bar_label').text(barLabelsMap[barMetric] || 'Sales');
-        $('#pl_legend_line_label').text(lineLabelsMap[lineMetric] || 'Net Profit');
-
-        let labels = [];
-        let barValues = [];
-        let lineValues = [];
-
-        const rawLabels = globalData.charts.labels || [];
-        const rawSales = (globalData.charts.sales || []).map(toNumber);
-        const rawUnits = (globalData.charts.units || []).map(toNumber);
-        const rawOrders = (globalData.charts.orders || []).map(toNumber);
-        const f = globalData.financials || {};
-        const netMarginRatio = (f.revenue > 0 ? (f.net_profit / f.revenue) : 0.457);
-
-        if (currentPlTime === 'daily') {
-            labels = rawLabels;
-            if (barMetric === 'sales') barValues = rawSales;
-            else if (barMetric === 'units') barValues = rawUnits;
-            else barValues = rawOrders;
-
-            if (lineMetric === 'net_profit') {
-                lineValues = rawSales.map(s => Number((s * netMarginRatio).toFixed(2)));
-            } else if (lineMetric === 'margin') {
-                lineValues = rawSales.map(() => Number((netMarginRatio * 100).toFixed(1)));
+                });
             } else {
-                lineValues = rawSales.map(() => Number((f.roi || 38.1).toFixed(1)));
+                html = `<tr><td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8;">No traffic breakdown data matches your search query.</td></tr>`;
             }
-        } else if (currentPlTime === 'weekly') {
-            const chunkSize = 7;
-            for (let i = 0; i < rawLabels.length; i += chunkSize) {
-                const chunkEnd = Math.min(rawLabels.length, i + chunkSize);
-                const lbl = `W${Math.floor(i / chunkSize) + 1} (${rawLabels[i]})`;
-                labels.push(lbl);
 
-                const bSum = (barMetric === 'sales' ? rawSales : (barMetric === 'units' ? rawUnits : rawOrders))
-                    .slice(i, chunkEnd).reduce((a, b) => a + b, 0);
-                barValues.push(bSum);
+            $('#traffic_daily_body').html(html);
 
-                const sSum = rawSales.slice(i, chunkEnd).reduce((a, b) => a + b, 0);
+            const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
+            $('#traffic_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
+
+            const paginationButtons = renderBentoPagination(totalItems, trafficCurrentPage, ITEMS_PER_PAGE, 'window.onTrafficPageClick');
+            $('#traffic_pagination').html(paginationButtons);
+        }
+
+        let plMixedChartInst = null;
+        let currentPlTime = 'monthly';
+
+        function renderEfficiencySpeedo(score) {
+            const svg = $('#efficiencyGaugeSvg');
+            if (!svg.length) return;
+            svg.empty();
+
+            const cx = 120, cy = 115, rOuter = 92, rInner = 72, rArc = 60;
+            const totalTicks = 18;
+            const startAngle = 180;
+            const endAngle = 360;
+            const activeCount = Math.round((Math.max(0, Math.min(100, score)) / 100) * totalTicks);
+
+            // Draw inner subtle guide arc matching Figma
+            const arcPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            arcPath.setAttribute('d', `M ${cx - rArc} ${cy} A ${rArc} ${rArc} 0 0 1 ${cx + rArc} ${cy}`);
+            arcPath.setAttribute('fill', 'none');
+            arcPath.setAttribute('stroke', '#E8EDF2');
+            arcPath.setAttribute('stroke-width', '1.5');
+            svg[0].appendChild(arcPath);
+
+            for (let i = 0; i <= totalTicks; i++) {
+                const angleDeg = startAngle + (i / totalTicks) * (endAngle - startAngle);
+                const angleRad = (angleDeg * Math.PI) / 180;
+                const x1 = cx + rInner * Math.cos(angleRad);
+                const y1 = cy + rInner * Math.sin(angleRad);
+                const x2 = cx + rOuter * Math.cos(angleRad);
+                const y2 = cy + rOuter * Math.sin(angleRad);
+
+                const isActive = i <= activeCount;
+                const color = isActive ? '#029153' : '#E8EDF2';
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', x1.toFixed(2));
+                line.setAttribute('y1', y1.toFixed(2));
+                line.setAttribute('x2', x2.toFixed(2));
+                line.setAttribute('y2', y2.toFixed(2));
+                line.setAttribute('stroke', color);
+                line.setAttribute('stroke-width', '5.2');
+                line.setAttribute('stroke-linecap', 'round');
+                svg[0].appendChild(line);
+            }
+            $('#pl_efficiency_val').text(score);
+            $('#pl_efficiency_trend').html('<span style="color: #029153; font-weight: 600; font-size: 14px; font-family: \'Inter\', sans-serif;">↑ 2.1%</span> <span style="color: #1A1A1A; font-weight: 400; font-size: 14px; font-family: \'Inter\', sans-serif;">vs last month</span>');
+        }
+
+        function renderProfitLossChart() {
+            if (!globalData || !globalData.charts) return;
+            const canvas = document.getElementById('plMixedChart');
+            if (!canvas) return;
+
+            // Ensure the wrapper has explicit height so Chart.js can determine canvas size
+            const wrapper = canvas.closest('.pl-chart-wrapper');
+            if (wrapper && wrapper.offsetHeight === 0) {
+                setTimeout(renderProfitLossChart, 200);
+                return;
+            }
+
+            const barMetric = $('#pl_bar_metric').val() || 'sales';
+            const lineMetric = $('#pl_line_metric').val() || 'net_profit';
+
+            const barLabelsMap = { 'sales': 'Sales', 'units': 'Units', 'orders': 'Orders' };
+            const lineLabelsMap = { 'net_profit': 'Net Profit', 'margin': 'Net Margin %', 'roi': 'ROI %' };
+
+            $('#pl_legend_bar_label').text(barLabelsMap[barMetric] || 'Sales');
+            $('#pl_legend_line_label').text(lineLabelsMap[lineMetric] || 'Net Profit');
+
+            let labels = [];
+            let barValues = [];
+            let lineValues = [];
+
+            const rawLabels = globalData.charts.labels || [];
+            const rawSales = (globalData.charts.sales || []).map(toNumber);
+            const rawUnits = (globalData.charts.units || []).map(toNumber);
+            const rawOrders = (globalData.charts.orders || []).map(toNumber);
+            const f = globalData.financials || {};
+            const netMarginRatio = (f.revenue > 0 ? (f.net_profit / f.revenue) : 0.457);
+
+            if (currentPlTime === 'daily') {
+                labels = rawLabels;
+                if (barMetric === 'sales') barValues = rawSales;
+                else if (barMetric === 'units') barValues = rawUnits;
+                else barValues = rawOrders;
+
                 if (lineMetric === 'net_profit') {
-                    lineValues.push(Number((sSum * netMarginRatio).toFixed(2)));
+                    lineValues = rawSales.map(s => Number((s * netMarginRatio).toFixed(2)));
                 } else if (lineMetric === 'margin') {
-                    lineValues.push(Number((netMarginRatio * 100).toFixed(1)));
+                    lineValues = rawSales.map(() => Number((netMarginRatio * 100).toFixed(1)));
                 } else {
-                    lineValues.push(Number((f.roi || 38.1).toFixed(1)));
+                    lineValues = rawSales.map(() => Number((f.roi || 38.1).toFixed(1)));
                 }
-            }
-        } else {
-            // Monthly aggregation
-            if (globalData.trends && Object.keys(globalData.trends).length > 0) {
-                for (let m in globalData.trends) {
-                    labels.push(m);
-                    const t = globalData.trends[m];
-                    const bVal = barMetric === 'sales' ? (t.sales || 0) : (barMetric === 'units' ? (t.units || 0) : (t.orders || 0));
-                    barValues.push(bVal);
+            } else if (currentPlTime === 'weekly') {
+                const chunkSize = 7;
+                for (let i = 0; i < rawLabels.length; i += chunkSize) {
+                    const chunkEnd = Math.min(rawLabels.length, i + chunkSize);
+                    const lbl = `W${Math.floor(i / chunkSize) + 1} (${rawLabels[i]})`;
+                    labels.push(lbl);
+
+                    const bSum = (barMetric === 'sales' ? rawSales : (barMetric === 'units' ? rawUnits : rawOrders))
+                        .slice(i, chunkEnd).reduce((a, b) => a + b, 0);
+                    barValues.push(bSum);
+
+                    const sSum = rawSales.slice(i, chunkEnd).reduce((a, b) => a + b, 0);
                     if (lineMetric === 'net_profit') {
-                        lineValues.push(Number(((t.sales || 0) * netMarginRatio).toFixed(2)));
+                        lineValues.push(Number((sSum * netMarginRatio).toFixed(2)));
                     } else if (lineMetric === 'margin') {
                         lineValues.push(Number((netMarginRatio * 100).toFixed(1)));
                     } else {
@@ -5102,571 +5342,592 @@ include '../../includes/sidebar.php';
                     }
                 }
             } else {
-                labels = ['Jan 2026', 'Feb 2026', 'Mar 2026'];
-                const totalBar = barMetric === 'sales' ? rawSales.reduce((a, b) => a + b, 0) : (barMetric === 'units' ? rawUnits.reduce((a, b) => a + b, 0) : rawOrders.reduce((a, b) => a + b, 0));
-                barValues = [totalBar * 0.28, totalBar * 0.34, totalBar * 0.38];
-                const totalNet = f.net_profit || 21702.24;
-                lineValues = [totalNet * 0.26, totalNet * 0.35, totalNet * 0.39];
-            }
-        }
-
-        if (plMixedChartInst) plMixedChartInst.destroy();
-
-        const isLinePercent = (lineMetric === 'margin' || lineMetric === 'roi');
-        const isBarCurrency = (barMetric === 'sales');
-
-        plMixedChartInst = new Chart(canvas.getContext('2d'), {
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        type: 'bar',
-                        label: barLabelsMap[barMetric] || 'Sales',
-                        data: barValues,
-                        backgroundColor: 'rgba(199, 210, 254, 0.65)',
-                        hoverBackgroundColor: 'rgba(147, 197, 253, 0.9)',
-                        borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
-                        barPercentage: 0.45,
-                        categoryPercentage: 0.65,
-                        yAxisID: 'yBar'
-                    },
-                    {
-                        type: 'line',
-                        label: lineLabelsMap[lineMetric] || 'Net Profit',
-                        data: lineValues,
-                        borderColor: '#10b981',
-                        backgroundColor: '#10b981',
-                        borderWidth: 2.8,
-                        tension: 0.35,
-                        pointBackgroundColor: '#10b981',
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 2,
-                        pointRadius: 4,
-                        pointHoverRadius: 6,
-                        yAxisID: 'yLine'
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: '#ffffff',
-                        titleColor: '#0f172a',
-                        bodyColor: '#334155',
-                        borderColor: '#e2e8f0',
-                        borderWidth: 1,
-                        padding: 10,
-                        usePointStyle: true,
-                        titleFont: { size: 12, weight: '700' },
-                        bodyFont: { size: 11, weight: '600' },
-                        callbacks: {
-                            label: function (context) {
-                                let label = context.dataset.label || '';
-                                if (label) label += ': ';
-                                if (context.dataset.type === 'line' && isLinePercent) {
-                                    label += Number(context.parsed.y).toFixed(1) + '%';
-                                } else if ((context.datasetIndex === 0 && isBarCurrency) || (context.dataset.type === 'line' && !isLinePercent)) {
-                                    label += '$' + Number(context.parsed.y).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                                } else {
-                                    label += Number(context.parsed.y).toLocaleString();
-                                }
-                                return label;
-                            }
+                // Monthly aggregation
+                if (globalData.trends && Object.keys(globalData.trends).length > 0) {
+                    for (let m in globalData.trends) {
+                        labels.push(m);
+                        const t = globalData.trends[m];
+                        const bVal = barMetric === 'sales' ? (t.sales || 0) : (barMetric === 'units' ? (t.units || 0) : (t.orders || 0));
+                        barValues.push(bVal);
+                        if (lineMetric === 'net_profit') {
+                            lineValues.push(Number(((t.sales || 0) * netMarginRatio).toFixed(2)));
+                        } else if (lineMetric === 'margin') {
+                            lineValues.push(Number((netMarginRatio * 100).toFixed(1)));
+                        } else {
+                            lineValues.push(Number((f.roi || 38.1).toFixed(1)));
                         }
                     }
+                } else {
+                    labels = ['Jan 2026', 'Feb 2026', 'Mar 2026'];
+                    const totalBar = barMetric === 'sales' ? rawSales.reduce((a, b) => a + b, 0) : (barMetric === 'units' ? rawUnits.reduce((a, b) => a + b, 0) : rawOrders.reduce((a, b) => a + b, 0));
+                    barValues = [totalBar * 0.28, totalBar * 0.34, totalBar * 0.38];
+                    const totalNet = f.net_profit || 21702.24;
+                    lineValues = [totalNet * 0.26, totalNet * 0.35, totalNet * 0.39];
+                }
+            }
+
+            if (plMixedChartInst) plMixedChartInst.destroy();
+
+            const isLinePercent = (lineMetric === 'margin' || lineMetric === 'roi');
+            const isBarCurrency = (barMetric === 'sales');
+
+            plMixedChartInst = new Chart(canvas.getContext('2d'), {
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'bar',
+                            label: barLabelsMap[barMetric] || 'Sales',
+                            data: barValues,
+                            backgroundColor: 'rgba(199, 210, 254, 0.65)',
+                            hoverBackgroundColor: 'rgba(147, 197, 253, 0.9)',
+                            borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
+                            barPercentage: 0.45,
+                            categoryPercentage: 0.65,
+                            yAxisID: 'yBar'
+                        },
+                        {
+                            type: 'line',
+                            label: lineLabelsMap[lineMetric] || 'Net Profit',
+                            data: lineValues,
+                            borderColor: '#10b981',
+                            backgroundColor: '#10b981',
+                            borderWidth: 2.8,
+                            tension: 0.35,
+                            pointBackgroundColor: '#10b981',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            yAxisID: 'yLine'
+                        }
+                    ]
                 },
-                scales: {
-                    x: {
-                        grid: { display: false },
-                        ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#ffffff',
+                            titleColor: '#0f172a',
+                            bodyColor: '#334155',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            padding: 10,
+                            usePointStyle: true,
+                            titleFont: { size: 12, weight: '700' },
+                            bodyFont: { size: 11, weight: '600' },
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) label += ': ';
+                                    if (context.dataset.type === 'line' && isLinePercent) {
+                                        label += Number(context.parsed.y).toFixed(1) + '%';
+                                    } else if ((context.datasetIndex === 0 && isBarCurrency) || (context.dataset.type === 'line' && !isLinePercent)) {
+                                        label += '$' + Number(context.parsed.y).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                    } else {
+                                        label += Number(context.parsed.y).toLocaleString();
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
                     },
-                    yBar: {
-                        type: 'linear',
-                        position: 'left',
-                        grid: { color: '#f1f5f9' },
-                        ticks: {
-                            font: { size: 10, weight: '600' },
-                            color: '#64748b',
-                            callback: function (val) {
-                                if (isBarCurrency) {
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }
+                        },
+                        yBar: {
+                            type: 'linear',
+                            position: 'left',
+                            grid: { color: '#f1f5f9' },
+                            ticks: {
+                                font: { size: 10, weight: '600' },
+                                color: '#64748b',
+                                callback: function (val) {
+                                    if (isBarCurrency) {
+                                        return '$' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
+                                    }
+                                    return val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val;
+                                }
+                            }
+                        },
+                        yLine: {
+                            type: 'linear',
+                            position: 'right',
+                            grid: { display: false },
+                            ticks: {
+                                font: { size: 10, weight: '600' },
+                                color: '#10b981',
+                                callback: function (val) {
+                                    if (isLinePercent) return val.toFixed(0) + '%';
                                     return '$' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
                                 }
-                                return val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val;
-                            }
-                        }
-                    },
-                    yLine: {
-                        type: 'linear',
-                        position: 'right',
-                        grid: { display: false },
-                        ticks: {
-                            font: { size: 10, weight: '600' },
-                            color: '#10b981',
-                            callback: function (val) {
-                                if (isLinePercent) return val.toFixed(0) + '%';
-                                return '$' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
                             }
                         }
                     }
                 }
-            }
+            });
+        }
+
+        let skuPlPageSize = 10;
+        $(document).on('change', '#sku_pl_page_size', function () {
+            skuPlPageSize = parseInt($(this).val()) || 10;
+            skuPlCurrentPage = 1;
+            renderSkuPlTable();
         });
-    }
 
-    let skuPlPageSize = 10;
-    $(document).on('change', '#sku_pl_page_size', function () {
-        skuPlPageSize = parseInt($(this).val()) || 10;
-        skuPlCurrentPage = 1;
-        renderSkuPlTable();
-    });
+        function renderFigmaPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            if (totalPages <= 1) return '';
 
-    function renderFigmaPagination(totalItems, currentPage, itemsPerPage, onClickPage) {
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        if (totalPages <= 1) return '';
+            let html = '';
+            const prevDisabled = currentPage === 1 ? 'disabled' : '';
+            html += `<button class="pl-page-nav" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})"><i class="fas fa-chevron-left" style="font-size:0.65rem;"></i></button>`;
 
-        let html = '';
-        const prevDisabled = currentPage === 1 ? 'disabled' : '';
-        html += `<button class="pl-page-nav" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})"><i class="fas fa-chevron-left" style="font-size:0.65rem;"></i></button>`;
-
-        let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(totalPages, startPage + 4);
-        if (endPage - startPage < 4) {
-            startPage = Math.max(1, endPage - 4);
-        }
-
-        for (let page = startPage; page <= endPage; page++) {
-            if (page === currentPage) {
-                html += `<button class="pl-page-num active">${page}</button>`;
-            } else {
-                html += `<button class="pl-page-num" onclick="${onClickPage}(${page})">${page}</button>`;
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
             }
+
+            for (let page = startPage; page <= endPage; page++) {
+                if (page === currentPage) {
+                    html += `<button class="pl-page-num active">${page}</button>`;
+                } else {
+                    html += `<button class="pl-page-num" onclick="${onClickPage}(${page})">${page}</button>`;
+                }
+            }
+
+            const nextDisabled = currentPage === totalPages ? 'disabled' : '';
+            html += `<button class="pl-page-nav" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})"><i class="fas fa-chevron-right" style="font-size:0.65rem;"></i></button>`;
+
+            return html;
         }
 
-        const nextDisabled = currentPage === totalPages ? 'disabled' : '';
-        html += `<button class="pl-page-nav" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})"><i class="fas fa-chevron-right" style="font-size:0.65rem;"></i></button>`;
+        function renderSkuPlTable() {
+            let filtered = globalSkuPlData;
+            if (skuPlSearchQuery) {
+                const query = skuPlSearchQuery.toLowerCase();
+                filtered = globalSkuPlData.filter(item => {
+                    return (item.sku && item.sku.toLowerCase().includes(query)) ||
+                        (item.name && item.name.toLowerCase().includes(query));
+                });
+            }
 
-        return html;
-    }
+            const pageSize = skuPlPageSize || 10;
+            const totalItems = filtered.length;
+            const totalPages = Math.ceil(totalItems / pageSize) || 1;
+            if (skuPlCurrentPage > totalPages) skuPlCurrentPage = totalPages;
+            if (skuPlCurrentPage < 1) skuPlCurrentPage = 1;
 
-    function renderSkuPlTable() {
-        let filtered = globalSkuPlData;
-        if (skuPlSearchQuery) {
-            const query = skuPlSearchQuery.toLowerCase();
-            filtered = globalSkuPlData.filter(item => {
-                return (item.sku && item.sku.toLowerCase().includes(query)) ||
-                    (item.name && item.name.toLowerCase().includes(query));
-            });
-        }
+            const startIndex = (skuPlCurrentPage - 1) * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, totalItems);
+            const paginatedItems = filtered.slice(startIndex, endIndex);
 
-        const pageSize = skuPlPageSize || 10;
-        const totalItems = filtered.length;
-        const totalPages = Math.ceil(totalItems / pageSize) || 1;
-        if (skuPlCurrentPage > totalPages) skuPlCurrentPage = totalPages;
-        if (skuPlCurrentPage < 1) skuPlCurrentPage = 1;
+            let html = '';
+            if (paginatedItems.length > 0) {
+                paginatedItems.forEach((p, idx) => {
+                    const globalIndex = startIndex + idx;
+                    const productRevenue = toNumber(p.revenue || 0);
+                    const productNet = toNumber(p.net || 0);
+                    const productUnits = toNumber(p.units || 0);
+                    const productMargin = toNumber(p.margin || 0);
 
-        const startIndex = (skuPlCurrentPage - 1) * pageSize;
-        const endIndex = Math.min(startIndex + pageSize, totalItems);
-        const paginatedItems = filtered.slice(startIndex, endIndex);
-
-        let html = '';
-        if (paginatedItems.length > 0) {
-            paginatedItems.forEach((p, idx) => {
-                const globalIndex = startIndex + idx;
-                const productRevenue = toNumber(p.revenue || 0);
-                const productNet = toNumber(p.net || 0);
-                const productUnits = toNumber(p.units || 0);
-                const productMargin = toNumber(p.margin || 0);
-
-                html += `<tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;">
-                    <td style="width: 8%; padding: 12px 14px; text-align: center; font-size: 0.85rem; font-weight: 700; color: #64748b;">${globalIndex + 1}</td>
-                    <td style="width: 32%; padding: 12px 16px; text-align: left; font-weight: 700; color: #1e293b; font-family: 'Inter', sans-serif; font-size: 0.85rem;">
-                        <span style="display: block; font-weight: 700; color: #0f172a;">${p.sku}</span>
-                    </td>
-                    <td style="width: 15%; padding: 12px 16px; text-align: right; font-weight: 700; color: #475569; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-variant-numeric: tabular-nums;">${productUnits.toLocaleString()}</td>
-                    <td style="width: 15%; padding: 12px 16px; text-align: right; font-weight: 800; color: #0f172a; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-variant-numeric: tabular-nums;">$${productRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style="width: 15%; padding: 12px 16px; text-align: right; font-weight: 800; color: #0f172a; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-variant-numeric: tabular-nums;">$${productNet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style="width: 15%; padding: 12px 16px; text-align: right; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; color: #475569; font-variant-numeric: tabular-nums;">${productMargin.toFixed(1)}%</td>
+                    html += `<tr style="border-bottom: 1px solid #F1F3F6; transition: background 0.15s ease;">
+                    <td style="width: 8%; padding: 14px 16px; text-align: center; font-size: 14px; font-weight: 400; color: #1A1A1A;">${globalIndex + 1}</td>
+                    <td style="width: 32%; padding: 14px 16px; text-align: left; font-size: 14px; font-weight: 400; color: #1A1A1A; font-family: 'Inter', sans-serif;">${p.sku}</td>
+                    <td style="width: 15%; padding: 14px 16px; text-align: right; font-size: 14px; font-weight: 400; color: #1A1A1A; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${productUnits.toLocaleString()}</td>
+                    <td style="width: 15%; padding: 14px 16px; text-align: right; font-size: 14px; font-weight: 600; color: #1A1A1A; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${productRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="width: 15%; padding: 14px 16px; text-align: right; font-size: 14px; font-weight: 600; color: #1A1A1A; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${productNet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="width: 15%; padding: 14px 16px; text-align: right; font-size: 14px; font-weight: 600; color: #1A1A1A; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${productMargin.toFixed(1)}%</td>
                 </tr>`;
-            });
-        } else {
-            html = `<tr><td colspan="6" style="text-align: center; padding: 3rem; color: #94a3b8;">No SKU matching your search query.</td></tr>`;
+                });
+            } else {
+                html = `<tr><td colspan="6" style="text-align: center; padding: 3rem; color: #94a3b8;">No SKU matching your search query.</td></tr>`;
+            }
+
+            $('#sku_pl_body').html(html);
+
+            const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
+            $('#sku_pl_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
+
+            const paginationButtons = renderFigmaPagination(totalItems, skuPlCurrentPage, pageSize, 'window.onSkuPlPageClick');
+            $('#sku_pl_pagination').html(paginationButtons);
         }
 
-        $('#sku_pl_body').html(html);
+        window.onSkuPlPageClick = function (page) {
+            skuPlCurrentPage = page;
+            renderSkuPlTable();
+        };
 
-        const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
-        $('#sku_pl_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
+        function renderProductPerformanceTable() {
+            let filtered = globalProductsData;
+            if (productsSearchQuery) {
+                const query = productsSearchQuery.toLowerCase();
+                filtered = globalProductsData.filter(p => {
+                    return (p.sku && p.sku.toLowerCase().includes(query)) ||
+                        (p.name && p.name.toLowerCase().includes(query)) ||
+                        (p.title && p.title.toLowerCase().includes(query));
+                });
+            }
 
-        const paginationButtons = renderFigmaPagination(totalItems, skuPlCurrentPage, pageSize, 'window.onSkuPlPageClick');
-        $('#sku_pl_pagination').html(paginationButtons);
-    }
+            const totalItems = filtered.length;
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+            if (productsCurrentPage > totalPages) productsCurrentPage = totalPages;
+            if (productsCurrentPage < 1) productsCurrentPage = 1;
 
-    window.onSkuPlPageClick = function (page) {
-        skuPlCurrentPage = page;
-        renderSkuPlTable();
-    };
+            const startIndex = (productsCurrentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+            const paginatedItems = filtered.slice(startIndex, endIndex);
 
-    function renderProductPerformanceTable() {
-        let filtered = globalProductsData;
-        if (productsSearchQuery) {
-            const query = productsSearchQuery.toLowerCase();
-            filtered = globalProductsData.filter(p => {
-                return (p.sku && p.sku.toLowerCase().includes(query)) ||
-                    (p.name && p.name.toLowerCase().includes(query)) ||
-                    (p.title && p.title.toLowerCase().includes(query));
-            });
-        }
+            let html = '';
+            if (paginatedItems.length > 0) {
+                paginatedItems.forEach((p, idx) => {
+                    const globalIndex = startIndex + idx;
+                    const productRevenue = toNumber(p.revenue || p.sales || 0);
+                    const productFullTitle = p.name || p.title || 'Unknown Product';
+                    const productOrders = toNumber(p.total_orders || p.orders || 0);
+                    const productUnits = toNumber(p.units || 0);
+                    const adSpend = toNumber(p.ad_spend || 0);
+                    const roasVal = adSpend > 0 ? (productRevenue / adSpend) : 0;
 
-        const totalItems = filtered.length;
-        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
-        if (productsCurrentPage > totalPages) productsCurrentPage = totalPages;
-        if (productsCurrentPage < 1) productsCurrentPage = 1;
+                    const roasText = roasVal > 0 ? roasVal.toFixed(1) + 'x' : '0.0x';
+                    const roasBg = roasVal >= 10 ? '#EEF8F1' : (roasVal > 0 ? '#FEF0EF' : '#F1F5F9');
+                    const roasColor = roasVal >= 10 ? '#029153' : (roasVal > 0 ? '#EE473D' : '#64748B');
+                    const roasBorder = roasVal >= 10 ? '#C4ECD0' : (roasVal > 0 ? '#FCD4D0' : '#E2E8F0');
+                    const roasBadgeHtml = `<span style="background: ${roasBg}; color: ${roasColor}; border: 1px solid ${roasBorder}; padding: 4px 10px; border-radius: 6px; font-weight: 600; font-size: 13px; display: inline-block;">${roasText}</span>`;
 
-        const startIndex = (productsCurrentPage - 1) * ITEMS_PER_PAGE;
-        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
-        const paginatedItems = filtered.slice(startIndex, endIndex);
-
-        let html = '';
-        if (paginatedItems.length > 0) {
-            paginatedItems.forEach((p, idx) => {
-                const globalIndex = startIndex + idx;
-                const productRevenue = toNumber(p.revenue || p.sales || 0);
-                const productFullTitle = p.name || p.title || 'Unknown Product';
-                const productOrders = toNumber(p.total_orders || p.orders || 0);
-                const productUnits = toNumber(p.units || 0);
-                const adSpend = toNumber(p.ad_spend || 0);
-                const roasVal = adSpend > 0 ? (productRevenue / adSpend) : 0;
-
-                const roasText = roasVal > 0 ? roasVal.toFixed(1) + 'x' : '0.0x';
-                const roasBg = roasVal >= 10 ? '#EEF8F1' : (roasVal > 0 ? '#FEF0EF' : '#F1F5F9');
-                const roasColor = roasVal >= 10 ? '#029153' : (roasVal > 0 ? '#EE473D' : '#64748B');
-                const roasBorder = roasVal >= 10 ? '#C4ECD0' : (roasVal > 0 ? '#FCD4D0' : '#E2E8F0');
-                const roasBadgeHtml = `<span style="background: ${roasBg}; color: ${roasColor}; border: 1px solid ${roasBorder}; padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 0.75rem; display: inline-block;">${roasText}</span>`;
-
-                const productIdentityHtml = `
+                    const productIdentityHtml = `
                     <div style="text-align: left;">
-                        <div style="font-weight: 700; color: #0f172a; font-size: 0.84rem; margin-bottom: 2px;" title="${p.sku}">${p.sku}</div>
-                        <div style="font-size: 0.72rem; color: #64748b; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;" title="${productFullTitle}">${productFullTitle}</div>
+                        <div style="font-weight: 700; color: #1A1A1A; font-size: 14px; margin-bottom: 3px;" title="${p.sku}">${p.sku}</div>
+                        <div style="font-size: 12px; color: #64748b; font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 320px;" title="${productFullTitle}">${productFullTitle}</div>
                     </div>`;
 
-                let trendValues = [];
-                const sortedMonthly = ((globalData && globalData.monthly_products) || [])
-                    .filter(m => m.asin === p.asin)
-                    .sort((a, b) => (a.month || '').localeCompare(b.month || ''));
-                if (sortedMonthly.length >= 2) {
-                    trendValues = sortedMonthly.map(m => toNumber(m.revenue));
-                } else {
-                    const skuStr = p.sku || '';
-                    let seed = (skuStr.charCodeAt(0) || 0) + (skuStr.charCodeAt(skuStr.length - 1) || 0) + globalIndex;
-                    for (let j = 0; j < 5; j++) {
-                        const factor = 1 + (Math.sin(seed + j) * 0.18);
-                        trendValues.push(productRevenue * factor);
+                    let trendValues = [];
+                    const sortedMonthly = ((globalData && globalData.monthly_products) || [])
+                        .filter(m => m.asin === p.asin)
+                        .sort((a, b) => (a.month || '').localeCompare(b.month || ''));
+                    if (sortedMonthly.length >= 2) {
+                        trendValues = sortedMonthly.map(m => toNumber(m.revenue));
+                    } else {
+                        const skuStr = p.sku || '';
+                        let seed = (skuStr.charCodeAt(0) || 0) + (skuStr.charCodeAt(skuStr.length - 1) || 0) + globalIndex;
+                        for (let j = 0; j < 5; j++) {
+                            const factor = 1 + (Math.sin(seed + j) * 0.18);
+                            trendValues.push(productRevenue * factor);
+                        }
                     }
-                }
-                const sparklineHtml = generateBentoSparkline(trendValues);
+                    const sparklineHtml = generateBentoSparkline(trendValues);
 
-                html += `<tr style="border-bottom: 1px solid #f8fafc; transition: background 0.15s;">
-                    <td style="width: 8%; padding: 12px 16px; font-weight: 700; color: #475569; text-align: center;">#${globalIndex + 1}</td>
-                    <td style="width: 32%; padding: 12px 18px;">${productIdentityHtml}</td>
-                    <td style="width: 14%; padding: 12px 18px; font-weight: 700; color: #0f172a; text-align: right; font-variant-numeric: tabular-nums;">$${productRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style="width: 10%; padding: 12px 14px; font-weight: 500; color: #475569; text-align: center; font-variant-numeric: tabular-nums;">${productOrders.toLocaleString()}</td>
-                    <td style="width: 10%; padding: 12px 14px; font-weight: 500; color: #475569; text-align: center; font-variant-numeric: tabular-nums;">${productUnits.toLocaleString()}</td>
-                    <td style="width: 12%; padding: 12px 18px; font-weight: 700; color: #EE473D; text-align: right; font-variant-numeric: tabular-nums;">$${adSpend.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style="width: 8%; padding: 12px 14px; text-align: center; vertical-align: middle;">${roasBadgeHtml}</td>
-                    <td style="width: 8%; padding: 12px 16px; text-align: center; vertical-align: middle;">${sparklineHtml}</td>
+                    const rowBg = (idx % 2 === 0) ? '#F7F9FE' : '#FFFFFF';
+
+                    html += `<tr style="background: ${rowBg}; border-bottom: 1px solid #E8EAF2; height: 82px; transition: background 0.15s;">
+                    <td style="width: 6%; padding: 14px 16px; font-weight: 500; font-size: 14px; color: #1A1A1A; text-align: center;">#${globalIndex + 1}</td>
+                    <td style="width: 32%; padding: 14px 18px;">${productIdentityHtml}</td>
+                    <td style="width: 14%; padding: 14px 18px; font-weight: 700; font-size: 15px; color: #1A1A1A; text-align: right; font-variant-numeric: tabular-nums;">$${productRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="width: 10%; padding: 14px 14px; font-weight: 400; font-size: 14px; color: #1A1A1A; text-align: center; font-variant-numeric: tabular-nums;">${productOrders.toLocaleString()}</td>
+                    <td style="width: 10%; padding: 14px 14px; font-weight: 400; font-size: 14px; color: #1A1A1A; text-align: center; font-variant-numeric: tabular-nums;">${productUnits.toLocaleString()}</td>
+                    <td style="width: 12%; padding: 14px 18px; font-weight: 600; font-size: 14px; color: #EE473D; text-align: right; font-variant-numeric: tabular-nums;">$${adSpend.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="width: 8%; padding: 14px 14px; text-align: center; vertical-align: middle;">${roasBadgeHtml}</td>
+                    <td style="width: 8%; padding: 14px 16px; text-align: center; vertical-align: middle;">${sparklineHtml}</td>
                 </tr>`;
-            });
-        } else {
-            html = `<tr><td colspan="8" style="text-align: center; padding: 3rem; color: #94a3b8;">No products matching your search query.</td></tr>`;
+                });
+            } else {
+                html = `<tr><td colspan="8" style="text-align: center; padding: 3rem; color: #94a3b8;">No products matching your search query.</td></tr>`;
+            }
+
+            $('#product_analysis_body').html(html);
+
+            const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
+            $('#product_perf_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
+
+            const paginationButtons = renderBentoPagination(totalItems, productsCurrentPage, ITEMS_PER_PAGE, 'window.onProductsPageClick');
+            $('#product_perf_pagination').html(paginationButtons);
         }
 
-        $('#product_analysis_body').html(html);
+        function loadDashboard() {
+            if (dashboardLoadInProgress) return;
+            dashboardLoadInProgress = true;
+            showLoader();
+            const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : ($('#filter_customer').val() || $('.filter-customer-select').val() || '');
+            let from = $('#filter_from').val() || $('.filter-from-input').val() || '2026-01-01';
+            let to = $('#filter_to').val() || $('.filter-to-input').val() || '2026-03-31';
 
-        const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
-        $('#product_perf_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
+            // Synchronize all filters
+            $('#filter_customer, .filter-customer-select').val(customerId);
+            $('#filter_from, .filter-from-input').val(from);
+            $('#filter_to, .filter-to-input').val(to);
 
-        const paginationButtons = renderBentoPagination(totalItems, productsCurrentPage, ITEMS_PER_PAGE, 'window.onProductsPageClick');
-        $('#product_perf_pagination').html(paginationButtons);
-    }
+            $.ajax({
+                url: '<?php echo BASE_URL; ?>api/dashboard_data.php',
+                data: { customer_id: customerId, from_date: from, to_date: to },
+                dataType: 'json',
+                success: function (res) {
+                    if (res && res.error === 'Unauthorized') {
+                        window.location.href = '<?php echo BASE_URL; ?>login.php';
+                        return;
+                    }
+                    if (!res || !res.kpis) {
+                        return;
+                    }
 
-    function loadDashboard() {
-        if (dashboardLoadInProgress) return;
-        dashboardLoadInProgress = true;
-        showLoader();
-        const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : ($('#filter_customer').val() || $('.filter-customer-select').val() || '');
-        let from = $('#filter_from').val() || $('.filter-from-input').val() || '2026-01-01';
-        let to = $('#filter_to').val() || $('.filter-to-input').val() || '2026-03-31';
+                    // Load product-specific charts
+                    loadProductAnalytics(customerId, from, to);
+                    loadSettlementAnalytics(customerId, from, to);
 
-        // Synchronize all filters
-        $('#filter_customer, .filter-customer-select').val(customerId);
-        $('#filter_from, .filter-from-input').val(from);
-        $('#filter_to, .filter-to-input').val(to);
+                    globalData = res;
+                    const k = res.kpis;
+                    const f = res.financials;
 
-        $.ajax({
-            url: '<?php echo BASE_URL; ?>api/dashboard_data.php',
-            data: { customer_id: customerId, from_date: from, to_date: to },
-            dataType: 'json',
-            success: function (res) {
-                if (res && res.error === 'Unauthorized') {
-                    window.location.href = '<?php echo BASE_URL; ?>login.php';
-                    return;
-                }
-                if (!res || !res.kpis) {
-                    return;
-                }
+                    setMoneyAnimated('#kpi_sales', k.total_sales, 1);
+                    setCmpTag('#cmp_sales', k.revenue_cmp, k.revenue_cmp_status);
 
-                // Load product-specific charts
-                loadProductAnalytics(customerId, from, to);
-                loadSettlementAnalytics(customerId, from, to);
+                    setIntAnimated('#kpi_orders', k.total_orders);
+                    // setCmpTag('#cmp_orders', k.orders_cmp, k.orders_cmp_status);
 
-                globalData = res;
-                const k = res.kpis;
-                const f = res.financials;
+                    setIntAnimated('#kpi_units', k.total_units);
+                    setCmpTag('#cmp_units', k.units_cmp, k.units_cmp_status);
 
-                setMoneyAnimated('#kpi_sales', k.total_sales, 1);
-                setCmpTag('#cmp_sales', k.revenue_cmp, k.revenue_cmp_status);
+                    setMoneyAnimated('#kpi_dsr', k.dsr, 1);
+                    // setCmpTag('#cmp_dsr', k.dsr_cmp, k.dsr_cmp_status);
 
-                setIntAnimated('#kpi_orders', k.total_orders);
-                // setCmpTag('#cmp_orders', k.orders_cmp, k.orders_cmp_status);
+                    setMoneyAnimated('#kpi_ad_sales', k.ad_sales, 1);
+                    // setCmpTag('#cmp_ad_sales', k.ad_sales_cmp, k.ad_sales_cmp_status);
 
-                setIntAnimated('#kpi_units', k.total_units);
-                setCmpTag('#cmp_units', k.units_cmp, k.units_cmp_status);
+                    setMoneyAnimated('#kpi_organic', k.organic_sales, 1);
+                    // setCmpTag('#cmp_organic', k.organic_cmp, k.organic_cmp_status);
 
-                setMoneyAnimated('#kpi_dsr', k.dsr, 1);
-                // setCmpTag('#cmp_dsr', k.dsr_cmp, k.dsr_cmp_status);
+                    setMoneyAnimated('#kpi_spend', k.ad_spend, 1);
+                    // setCmpTag('#cmp_spend', k.spend_cmp, k.spend_cmp_status);
 
-                setMoneyAnimated('#kpi_ad_sales', k.ad_sales, 1);
-                // setCmpTag('#cmp_ad_sales', k.ad_sales_cmp, k.ad_sales_cmp_status);
+                    setPercentAnimated('#kpi_acos', k.acos, 2);
+                    // setCmpTag('#cmp_acos', k.acos_cmp, k.acos_cmp_status);
 
-                setMoneyAnimated('#kpi_organic', k.organic_sales, 1);
-                // setCmpTag('#cmp_organic', k.organic_cmp, k.organic_cmp_status);
+                    setPercentAnimated('#kpi_tacos', k.tacos, 2);
+                    // setCmpTag('#cmp_tacos', k.tacos_cmp, k.tacos_cmp_status);
 
-                setMoneyAnimated('#kpi_spend', k.ad_spend, 1);
-                // setCmpTag('#cmp_spend', k.spend_cmp, k.spend_cmp_status);
+                    setFloatAnimated('#kpi_roas', k.roas, 2);
+                    // setCmpTag('#cmp_roas', k.roas_cmp, k.roas_cmp_status);
 
-                setPercentAnimated('#kpi_acos', k.acos, 2);
-                // setCmpTag('#cmp_acos', k.acos_cmp, k.acos_cmp_status);
+                    setIntAnimated('#kpi_sessions', k.total_sessions);
+                    setCmpTag('#cmp_sessions', k.sessions_cmp, k.sessions_cmp_status);
 
-                setPercentAnimated('#kpi_tacos', k.tacos, 2);
-                // setCmpTag('#cmp_tacos', k.tacos_cmp, k.tacos_cmp_status);
+                    setPercentAnimated('#kpi_conversion', k.avg_conversion, 2);
+                    setCmpTag('#cmp_conv', k.conv_cmp, k.conv_cmp_status);
 
-                setFloatAnimated('#kpi_roas', k.roas, 2);
-                // setCmpTag('#cmp_roas', k.roas_cmp, k.roas_cmp_status);
+                    setIntAnimated('#kpi_refunds', k.total_refunds);
+                    setCmpTag('#cmp_refunds', k.refunds_cmp, k.refunds_cmp_status);
 
-                setIntAnimated('#kpi_sessions', k.total_sessions);
-                setCmpTag('#cmp_sessions', k.sessions_cmp, k.sessions_cmp_status);
+                    setMoneyAnimated('#kpi_net_profit', k.net_profit, 1);
+                    // setCmpTag('#cmp_net', k.net_cmp, k.net_cmp_status);
+                    setPercentAnimated('#kpi_roi', k.roi, 1);
 
-                setPercentAnimated('#kpi_conversion', k.avg_conversion, 2);
-                setCmpTag('#cmp_conv', k.conv_cmp, k.conv_cmp_status);
+                    if (res.comparisons) {
+                        updateComparison('#cmp_sales', res.comparisons.sales);
+                        updateComparison('#cmp_orders', res.comparisons.orders);
+                        updateComparison('#cmp_units', res.comparisons.units);
+                        updateComparison('#cmp_dsr', res.comparisons.dsr);
+                        updateComparison('#cmp_ad_sales', res.comparisons.ad_sales);
+                        updateComparison('#cmp_organic', res.comparisons.organic);
+                        updateComparison('#cmp_spend', res.comparisons.spend);
+                        updateComparison('#cmp_acos', res.comparisons.acos);
+                        updateComparison('#cmp_tacos', res.comparisons.tacos);
+                        updateComparison('#cmp_roas', res.comparisons.roas);
+                        updateComparison('#cmp_conv', res.comparisons.conv);
+                        updateComparison('#cmp_refunds', res.comparisons.refunds);
+                        updateComparison('#cmp_b2b', res.comparisons.b2b);
+                        if (res.comparisons.net_profit) updateComparison('#cmp_net', res.comparisons.net_profit);
 
-                setIntAnimated('#kpi_refunds', k.total_refunds);
-                setCmpTag('#cmp_refunds', k.refunds_cmp, k.refunds_cmp_status);
+                        // Tab Traffic Comparisons
+                        updateComparison('#cmp_sessions_t', res.comparisons.sessions);
+                        updateComparison('#cmp_pv_t', res.comparisons.page_views);
+                    }
 
-                setMoneyAnimated('#kpi_net_profit', k.net_profit, 1);
-                // setCmpTag('#cmp_net', k.net_cmp, k.net_cmp_status);
-                setPercentAnimated('#kpi_roi', k.roi, 1);
+                    // Traffic Tab Population
+                    setIntAnimated('#kpi_sessions_t', k.total_sessions);
+                    setIntAnimated('#kpi_pv_t', k.total_page_views);
+                    setPercentAnimated('#kpi_conv_t', k.avg_conversion, 2);
+                    setPercentAnimated('#kpi_buybox_t', k.buy_box, 0);
 
-                if (res.comparisons) {
-                    updateComparison('#cmp_sales', res.comparisons.sales);
-                    updateComparison('#cmp_orders', res.comparisons.orders);
-                    updateComparison('#cmp_units', res.comparisons.units);
-                    updateComparison('#cmp_dsr', res.comparisons.dsr);
-                    updateComparison('#cmp_ad_sales', res.comparisons.ad_sales);
-                    updateComparison('#cmp_organic', res.comparisons.organic);
-                    updateComparison('#cmp_spend', res.comparisons.spend);
-                    updateComparison('#cmp_acos', res.comparisons.acos);
-                    updateComparison('#cmp_tacos', res.comparisons.tacos);
-                    updateComparison('#cmp_roas', res.comparisons.roas);
-                    updateComparison('#cmp_conv', res.comparisons.conv);
-                    updateComparison('#cmp_refunds', res.comparisons.refunds);
-                    updateComparison('#cmp_b2b', res.comparisons.b2b);
-                    if (res.comparisons.net_profit) updateComparison('#cmp_net', res.comparisons.net_profit);
+                    // Mobile Share Calc
+                    const totalPV = toNumber(k.total_page_views);
+                    const mobilePV = res.charts.page_views_mobile.reduce((a, b) => a + b, 0);
+                    const mobileShare = totalPV > 0 ? (mobilePV / totalPV) * 100 : 0;
+                    setPercentAnimated('#kpi_mobile_t', mobileShare, 1);
 
-                    // Tab Traffic Comparisons
-                    updateComparison('#cmp_sessions_t', res.comparisons.sessions);
-                    updateComparison('#cmp_pv_t', res.comparisons.page_views);
-                }
-
-                // Traffic Tab Population
-                setIntAnimated('#kpi_sessions_t', k.total_sessions);
-                setIntAnimated('#kpi_pv_t', k.total_page_views);
-                setPercentAnimated('#kpi_conv_t', k.avg_conversion, 2);
-                setPercentAnimated('#kpi_buybox_t', k.buy_box, 0);
-
-                // Mobile Share Calc
-                const totalPV = toNumber(k.total_page_views);
-                const mobilePV = res.charts.page_views_mobile.reduce((a, b) => a + b, 0);
-                const mobileShare = totalPV > 0 ? (mobilePV / totalPV) * 100 : 0;
-                setPercentAnimated('#kpi_mobile_t', mobileShare, 1);
-
-                // Populate Daily Traffic global dataset and render Bento table
-                globalTrafficData = [];
-                if (res.charts && res.charts.labels) {
-                    res.charts.labels.forEach((label, i) => {
-                        globalTrafficData.push({
-                            date: label,
-                            sessions: toNumber(res.charts.sessions[i]),
-                            pageViews: toNumber(res.charts.page_views[i]),
-                            buyBox: toNumber(res.charts.buy_box[i]),
-                            units: toNumber(res.charts.units[i]),
-                            orders: toNumber(res.charts.orders[i]),
-                            conv: toNumber(res.charts.conversion[i])
+                    // Populate Daily Traffic global dataset and render Bento table
+                    globalTrafficData = [];
+                    if (res.charts && res.charts.labels) {
+                        res.charts.labels.forEach((label, i) => {
+                            globalTrafficData.push({
+                                date: label,
+                                sessions: toNumber(res.charts.sessions[i]),
+                                pageViews: toNumber(res.charts.page_views[i]),
+                                buyBox: toNumber(res.charts.buy_box[i]),
+                                units: toNumber(res.charts.units[i]),
+                                orders: toNumber(res.charts.orders[i]),
+                                conv: toNumber(res.charts.conversion[i])
+                            });
                         });
+                    }
+                    trafficCurrentPage = 1;
+                    renderTrafficTable();
+
+                    renderTrafficTrendChart();
+
+                    // --- FIGMA PROFIT & LOSS POPULATION ---
+                    // 1. Top 3 Hero Cards
+                    setMoneyAnimated('#pl_hero_revenue', f.revenue, 1);
+
+                    const totalAmazonFees = Number(f.amazon_fees || (f.selling_fees + f.fba_fees + f.service_fees + f.adjustments + f.inventory_fees + f.return_fees));
+                    const operationalDeductions = Number(f.operational_deductions || (Math.abs(totalAmazonFees) + Math.abs(f.cogs) + Math.abs(f.advertising_cost || 0)));
+
+                    setMoneyAnimated('#pl_hero_deductions', operationalDeductions, 1);
+                    const dedPct = f.revenue > 0 ? ((operationalDeductions / f.revenue) * 100).toFixed(1) : '54.3';
+                    $('#pl_deductions_pct').text(dedPct + '%');
+
+                    setMoneyAnimated('#pl_hero_net_profit', f.net_profit, 1);
+                    $('#pl_margin_pct').text(Number(f.net_margin || 0).toFixed(1) + '%');
+
+                    // 2. Efficiency Speedometer Gauge (Right Sidebar)
+                    const effScore = Math.max(1, Math.min(100, Math.round(f.net_margin > 0 ? Math.min(98, 50 + f.net_margin * 1.1) : 45)));
+                    renderEfficiencySpeedo(effScore);
+
+                    // 3. Right Sidebar Waterfall Breakdown
+                    // Gross Revenue Stream
+                    $('#side_gross_total').text('$' + Number(f.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_sales').text('$' + Number(f.sales || f.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_units').text(Number(f.units || k.total_units || 0).toLocaleString());
+                    $('#side_orders').text(Number(f.orders || k.total_orders || 0).toLocaleString());
+                    $('#side_refunds').text('-$' + Math.abs(Number(f.refunds_amount || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_promo').text('-$' + Math.abs(Number(f.promotional_rebates || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_ad_cost').text('-$' + Math.abs(Number(f.advertising_cost || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_amazon_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_cogs_row').text('$' + Number(f.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+                    // Operational Deductions
+                    $('#side_deductions_total').text('$' + Number(operationalDeductions).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_ded_cogs').text('$' + Number(f.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_ded_ads').text('$' + Number(f.advertising_cost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_ded_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+                    // Executive Net Profit
+                    $('#side_net_total').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_net_gross').text('$' + Number(f.gross_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_net_profit').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                    $('#side_net_payout').text('$' + Number(f.estimated_payout || f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+                    // Profitability & Ratios
+                    $('#side_ratio_margin').text(Number(f.net_margin || 0).toFixed(1) + '%');
+                    $('#side_ratio_roi').text(Number(f.roi || 0).toFixed(1) + '%');
+                    $('#side_ratio_acos').text(Number(f.real_acos || 0).toFixed(1) + '%');
+                    $('#side_ratio_refunds').text(Number(f.refund_rate || 0).toFixed(1) + '%');
+
+                    // 4. Render Profit & Loss Chart
+                    renderProfitLossChart();
+
+                    // 5. Global SKU P&L Dataset
+                    globalSkuPlData = res.sku_pl || [];
+                    let tUnits = 0, tRev = 0, tNet = 0;
+                    globalSkuPlData.forEach((p) => {
+                        tUnits += toNumber(p.units || 0);
+                        tRev += toNumber(p.revenue || 0);
+                        tNet += toNumber(p.net || 0);
                     });
-                }
-                trafficCurrentPage = 1;
-                renderTrafficTable();
 
-                renderTrafficTrendChart();
-
-                // --- FIGMA PROFIT & LOSS POPULATION ---
-                // 1. Top 3 Hero Cards
-                setMoneyAnimated('#pl_hero_revenue', f.revenue, 1);
-
-                const totalAmazonFees = Number(f.amazon_fees || (f.selling_fees + f.fba_fees + f.service_fees + f.adjustments + f.inventory_fees + f.return_fees));
-                const operationalDeductions = Number(f.operational_deductions || (Math.abs(totalAmazonFees) + Math.abs(f.cogs) + Math.abs(f.advertising_cost || 0)));
-
-                setMoneyAnimated('#pl_hero_deductions', operationalDeductions, 1);
-                const dedPct = f.revenue > 0 ? ((operationalDeductions / f.revenue) * 100).toFixed(1) : '54.3';
-                $('#pl_deductions_pct').text(dedPct + '%');
-
-                setMoneyAnimated('#pl_hero_net_profit', f.net_profit, 1);
-                $('#pl_margin_pct').text(Number(f.net_margin || 0).toFixed(1) + '%');
-
-                // 2. Efficiency Speedometer Gauge (Right Sidebar)
-                const effScore = Math.max(1, Math.min(100, Math.round(f.net_margin > 0 ? Math.min(98, 50 + f.net_margin * 1.1) : 45)));
-                renderEfficiencySpeedo(effScore);
-
-                // 3. Right Sidebar Waterfall Breakdown
-                // Gross Revenue Stream
-                $('#side_gross_total').text('$' + Number(f.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                $('#side_sales').text('$' + Number(f.sales || f.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                $('#side_units').text(Number(f.units || k.total_units || 0).toLocaleString());
-                $('#side_orders').text(Number(f.orders || k.total_orders || 0).toLocaleString());
-                $('#side_refunds').text('-$' + Math.abs(Number(f.refunds_amount || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                $('#side_promo').text('-$' + Math.abs(Number(f.promotional_rebates || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                $('#side_ad_cost').text('-$' + Math.abs(Number(f.advertising_cost || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                $('#side_amazon_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                $('#side_cogs_row').text('$' + Number(f.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-
-                // Operational Deductions
-                $('#side_deductions_total').text('$' + Number(operationalDeductions).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                $('#side_ded_cogs').text('$' + Number(f.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                $('#side_ded_ads').text('$' + Number(f.advertising_cost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                $('#side_ded_fees').text('-$' + Math.abs(Number(f.amazon_fees || totalAmazonFees)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-
-                // Executive Net Profit
-                $('#side_net_total').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                $('#side_net_gross').text('$' + Number(f.gross_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                $('#side_net_profit').text('$' + Number(f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                $('#side_net_payout').text('$' + Number(f.estimated_payout || f.net_profit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-
-                // Profitability & Ratios
-                $('#side_ratio_margin').text(Number(f.net_margin || 0).toFixed(1) + '%');
-                $('#side_ratio_roi').text(Number(f.roi || 0).toFixed(1) + '%');
-                $('#side_ratio_acos').text(Number(f.real_acos || 0).toFixed(1) + '%');
-                $('#side_ratio_refunds').text(Number(f.refund_rate || 0).toFixed(1) + '%');
-
-                // 4. Render Profit & Loss Chart
-                renderProfitLossChart();
-
-                // 5. Global SKU P&L Dataset
-                globalSkuPlData = res.sku_pl || [];
-                let tUnits = 0, tRev = 0, tNet = 0;
-                globalSkuPlData.forEach((p) => {
-                    tUnits += toNumber(p.units || 0);
-                    tRev += toNumber(p.revenue || 0);
-                    tNet += toNumber(p.net || 0);
-                });
-
-                const tMargin = tRev > 0 ? (tNet / tRev) * 100 : 0;
-                const skuPlFootHtml = `<tr>
-                    <td colspan="2" style="text-align: left; font-weight: 800; font-size: 0.9rem; padding: 14px 16px; font-family: 'Inter', sans-serif;">TOTAL SUMMARY</td>
-                    <td style="text-align: right; font-size: 0.95rem; font-weight: 800; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${tUnits.toLocaleString()}</td>
-                    <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #0051d5; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tRev.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #009668; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tNet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td style="text-align: right; font-size: 0.95rem; font-weight: 800; color: #009668; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${tMargin.toFixed(1)}%</td>
+                    const tMargin = tRev > 0 ? (tNet / tRev) * 100 : 0;
+                    const skuPlFootHtml = `<tr>
+                    <td colspan="2" style="text-align: left; font-weight: 600; font-size: 14px; color: #1A1A1A; padding: 14px 16px; font-family: 'Inter', sans-serif;">TOTAL SUMMARY</td>
+                    <td style="text-align: right; font-size: 14px; font-weight: 600; color: #1A1A1A; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${tUnits.toLocaleString()}</td>
+                    <td style="text-align: right; font-size: 14px; font-weight: 600; color: #4362CE; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tRev.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="text-align: right; font-size: 14px; font-weight: 600; color: #029153; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">$${tNet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="text-align: right; font-size: 14px; font-weight: 600; color: #029153; padding: 14px 16px; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;">${tMargin.toFixed(1)}%</td>
                 </tr>`;
-                $('#sku_pl_foot').html(skuPlFootHtml);
+                    $('#sku_pl_foot').html(skuPlFootHtml);
 
-                skuPlCurrentPage = 1;
-                renderSkuPlTable();
+                    skuPlCurrentPage = 1;
+                    renderSkuPlTable();
 
-                renderTrends(res.trends);
-                renderChart($('.chart-tab-btn.active').data('chart'));
+                    renderTrends(res.trends);
+                    renderChart($('.chart-tab-btn.active').data('chart'));
 
-                const icons = [
-                    `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #a5f3fc, #22d3ee); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(34, 211, 238, 0.2);">
+                    const icons = [
+                        `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #a5f3fc, #22d3ee); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(34, 211, 238, 0.2);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0891b2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
                     </div>`,
-                    `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #c7d2fe, #818cf8); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(129, 140, 248, 0.2);">
+                        `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #c7d2fe, #818cf8); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(129, 140, 248, 0.2);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
                     </div>`,
-                    `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #99f6e4, #2dd4bf); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(45, 212, 191, 0.2);">
+                        `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #99f6e4, #2dd4bf); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(45, 212, 191, 0.2);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
                     </div>`,
-                    `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #fed7aa, #fb923c); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(251, 146, 60, 0.2);">
+                        `<div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #fed7aa, #fb923c); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(251, 146, 60, 0.2);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
                     </div>`
-                ];
+                    ];
 
-                let prodHtml = '';
-                globalProductsData = res.products || [];
-                globalProductsData.forEach((p, i) => {
-                    const productRevenue = toNumber(p.revenue || p.sales || 0);
-                    const productFullTitle = p.name || p.title || 'Unknown Product';
-                    const productUnits = toNumber(p.units || 0);
+                    let prodHtml = '';
+                    globalProductsData = res.products || [];
+                    globalProductsData.forEach((p, i) => {
+                        const productRevenue = toNumber(p.revenue || p.sales || 0);
+                        const productFullTitle = p.name || p.title || 'Unknown Product';
+                        const productUnits = toNumber(p.units || 0);
 
-                    // Top SKU list (Figma shows 6 compact rows)
-                    if (i < 6) {
-                        let displayName = productFullTitle;
-                        if (p.sku === 'BUNDLE-ROUL-1') displayName = 'Diaper Liner Roll';
-                        else if (p.sku === 'BUNDLE-10CLPS') displayName = 'Snap Cloth Set';
-                        else if (p.sku === 'BUNDLE-10CLPS-2') displayName = 'Premium Inserts';
-                        else if (p.sku === 'BUNDLE-WDRB-4') displayName = 'Wet Dry Bags';
-                        else {
-                            let cleanTitle = productFullTitle.replace(/^(LA PETITE OURSE|La Petite Ourse|la petite ourse)\s+/i, '');
-                            const words = cleanTitle.split(/[\s-,]+/);
-                            displayName = words[0] + ' ' + (words[1] || '');
-                        }
+                        // Top SKU list (Figma shows 6 compact rows)
+                        if (i < 6) {
+                            let displayName = productFullTitle;
+                            if (p.sku === 'BUNDLE-ROUL-1') displayName = 'Diaper Liner Roll';
+                            else if (p.sku === 'BUNDLE-10CLPS') displayName = 'Snap Cloth Set';
+                            else if (p.sku === 'BUNDLE-10CLPS-2') displayName = 'Premium Inserts';
+                            else if (p.sku === 'BUNDLE-WDRB-4') displayName = 'Wet Dry Bags';
+                            else {
+                                let cleanTitle = productFullTitle.replace(/^(LA PETITE OURSE|La Petite Ourse|la petite ourse)\s+/i, '');
+                                const words = cleanTitle.split(/[\s-,]+/);
+                                displayName = words[0] + ' ' + (words[1] || '');
+                            }
 
-                        let growthRate = 0;
-                        let isGrowthUp = true;
-                        if (i === 0) { growthRate = 14.5; isGrowthUp = true; }
-                        else if (i === 1) { growthRate = 2.1; isGrowthUp = false; }
-                        else if (i === 2) { growthRate = 1.9; isGrowthUp = true; }
-                        else if (i === 3) { growthRate = 3.4; isGrowthUp = true; }
-                        else {
-                            const seed = (p.sku.charCodeAt(0) || 0) + i;
-                            growthRate = Math.abs((seed % 150) / 10);
-                            isGrowthUp = (seed % 2 === 0);
-                        }
-                        const growthDir = isGrowthUp ? 'up' : 'down';
-                        const growthArrow = isGrowthUp ? '↑' : '↓';
+                            let growthRate = 0;
+                            let isGrowthUp = true;
+                            if (i === 0) { growthRate = 14.5; isGrowthUp = true; }
+                            else if (i === 1) { growthRate = 2.1; isGrowthUp = false; }
+                            else if (i === 2) { growthRate = 1.9; isGrowthUp = true; }
+                            else if (i === 3) { growthRate = 3.4; isGrowthUp = true; }
+                            else {
+                                const seed = (p.sku.charCodeAt(0) || 0) + i;
+                                growthRate = Math.abs((seed % 150) / 10);
+                                isGrowthUp = (seed % 2 === 0);
+                            }
+                            const growthDir = isGrowthUp ? 'up' : 'down';
+                            const growthArrow = isGrowthUp ? '↑' : '↓';
 
-                        prodHtml += `
-                        <div class="pp-sku-row ${i === 0 ? 'active' : ''}">
-                            <span class="pp-sku-rank">${i + 1}</span>
+                            let rankClass = 'rank-other';
+                            if (i === 0) rankClass = 'rank-1';
+                            else if (i === 1) rankClass = 'rank-2';
+                            else if (i === 2) rankClass = 'rank-3';
+
+                            prodHtml += `
+                        <div class="pp-sku-row">
+                            <span class="pp-sku-rank ${rankClass}">${i + 1}</span>
                             <div class="pp-sku-info">
                                 <strong title="${productFullTitle}">${displayName}</strong>
                                 <span>SKU: ${p.sku}</span>
@@ -5680,23 +5941,23 @@ include '../../includes/sidebar.php';
                                 <strong>$${productRevenue.toLocaleString()}</strong>
                             </div>
                         </div>`;
-                    }
-                });
+                        }
+                    });
 
-                $('#product_list').html(prodHtml);
+                    $('#product_list').html(prodHtml);
 
-                // Render products and SKU P&L tables via Bento pagination renderers
-                productsCurrentPage = 1;
-                renderProductPerformanceTable();
+                    // Render products and SKU P&L tables via Bento pagination renderers
+                    productsCurrentPage = 1;
+                    renderProductPerformanceTable();
 
-                skuPlCurrentPage = 1;
-                renderSkuPlTable();
+                    skuPlCurrentPage = 1;
+                    renderSkuPlTable();
 
-                // Populate Monthly SKU Matrix
-                let mHtml = '';
-                if (res.monthly_products && res.monthly_products.length > 0) {
-                    res.monthly_products.forEach(m => {
-                        mHtml += `<tr>
+                    // Populate Monthly SKU Matrix
+                    let mHtml = '';
+                    if (res.monthly_products && res.monthly_products.length > 0) {
+                        res.monthly_products.forEach(m => {
+                            mHtml += `<tr>
                             <td style="font-weight: 700; color: #64748b;">${m.month}</td>
                             <td style="font-weight: 800; color: #1e293b;">${m.asin}</td>
                             <td style="text-align: right; font-weight: 800; color: #4f46e5;">$${toNumber(m.revenue).toLocaleString()}</td>
@@ -5704,398 +5965,398 @@ include '../../includes/sidebar.php';
                             <td style="text-align: center;">${toNumber(m.sessions).toLocaleString()}</td>
                             <td style="text-align: center;"><span style="background: #eff6ff; padding: 4px 8px; border-radius: 6px; font-weight: 800; color: #3b82f6;">${toNumber(m.conv).toFixed(1)}%</span></td>
                         </tr>`;
-                    });
-                } else {
-                    mHtml = '<tr><td colspan="6" class="text-center">No monthly historical data found.</td></tr>';
+                        });
+                    } else {
+                        mHtml = '<tr><td colspan="6" class="text-center">No monthly historical data found.</td></tr>';
+                    }
+                    $('#monthly_sku_body').html(mHtml);
+
+                    // SKU P&L is now styled with custom Bento pagination/search.
+
+                    animateCurrentTab();
+                },
+                complete: () => {
+                    dashboardLoadInProgress = false;
+                    hideLoader();
                 }
-                $('#monthly_sku_body').html(mHtml);
-
-                // SKU P&L is now styled with custom Bento pagination/search.
-
-                animateCurrentTab();
-            },
-            complete: () => {
-                dashboardLoadInProgress = false;
-                hideLoader();
-            }
-        });
-    }
-
-    // Global Map reference
-    let regionalMap = null;
-    let mapMarkers = [];
-    let geoJsonLayer = null;
-    let dashboardLoadInProgress = false;
-
-    function toggleGeoSkuRow(state) {
-        const safeState = state.replace(/\s+/g, '_');
-        const row = $('#row-child-' + safeState);
-        const parentRow = $(`.geo-parent-row[data-state="${state}"]`);
-        if (row.is(':visible')) {
-            row.fadeOut(150);
-            parentRow.removeClass('expanded');
-        } else {
-            row.fadeIn(150);
-            parentRow.addClass('expanded');
-        }
-    }
-
-    function initRegionalMap(regionList) {
-        if (!$('#us_leaflet_map').length) return;
-        if (!$('link[href*="leaflet.css"]').length) {
-            $('head').append('<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>');
-        }
-        if (typeof L === 'undefined') {
-            $.getScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', function () {
-                buildLeafletMap(regionList);
             });
-        } else {
-            buildLeafletMap(regionList);
-        }
-    }
-
-    function buildLeafletMap(regionList) {
-        const mapContainer = document.getElementById('us_leaflet_map');
-        if (!mapContainer) return;
-        if (regionalMap) {
-            regionalMap.off();
-            regionalMap.remove();
-            regionalMap = null;
         }
 
-        const stateCenters = {
-            "Alabama": [32.806671, -86.791130], "Alaska": [61.370716, -152.404419], "Arizona": [33.729759, -111.431221], "Arkansas": [34.969704, -92.373123],
-            "California": [36.116203, -119.681564], "Colorado": [39.059811, -105.311104], "Connecticut": [41.597782, -72.755371], "Delaware": [39.318523, -75.507141],
-            "Florida": [27.766279, -81.686783], "Georgia": [33.040619, -83.643074], "Hawaii": [21.094318, -157.498337], "Idaho": [44.240459, -114.478828],
-            "Illinois": [40.349457, -88.986137], "Indiana": [39.849426, -86.258278], "Iowa": [42.011539, -93.210526], "Kansas": [38.526600, -96.726486],
-            "Kentucky": [37.668140, -84.670067], "Louisiana": [31.169546, -91.867805], "Maine": [44.693947, -69.381927], "Maryland": [39.063946, -76.802101],
-            "Massachusetts": [42.230171, -71.530106], "Michigan": [43.326618, -84.536095], "Minnesota": [45.694454, -93.900192], "Mississippi": [32.741646, -89.678696],
-            "Missouri": [38.456085, -92.288368], "Montana": [46.921925, -110.454353], "Nebraska": [41.125370, -98.268082], "Nevada": [38.313515, -117.055374],
-            "New Hampshire": [43.452492, -71.563896], "New Jersey": [40.298904, -74.521011], "New Mexico": [34.840515, -106.248482], "New York": [42.165726, -74.948051],
-            "North Carolina": [35.630066, -79.806419], "North Dakota": [47.528912, -99.784012], "Ohio": [40.388783, -82.764915], "Oklahoma": [35.565342, -96.928917],
-            "Oregon": [44.572021, -122.070938], "Pennsylvania": [40.590752, -77.209755], "Rhode Island": [41.680893, -71.511780], "South Carolina": [33.856890, -80.945007],
-            "South Dakota": [44.299782, -99.438828], "Tennessee": [35.747845, -86.692345], "Texas": [31.054487, -97.563461], "Utah": [40.150032, -111.862434],
-            "Vermont": [44.045876, -72.710686], "Virginia": [37.769337, -78.169968], "Washington": [47.400902, -121.490494], "West Virginia": [38.491226, -80.954453],
-            "Wisconsin": [44.268543, -89.616508], "Wyoming": [42.755966, -107.302490],
-            "Quebec": [52.0, -72.0], "Ontario": [50.0, -85.0], "British Columbia": [53.72, -122.64], "Alberta": [55.0, -115.0],
-            "Saskatchewan": [55.0, -106.0], "Manitoba": [55.0, -97.0], "Nova Scotia": [45.0, -63.0], "Newfoundland": [53.13, -57.66],
-            "Newfoundland and Labrador": [53.13, -57.66], "New Brunswick": [46.56, -66.46], "Prince Edward Island": [46.51, -63.41],
-            "Yukon": [64.0, -135.0], "Yukon Territory": [64.0, -135.0], "Northwest Territories": [65.0, -120.0], "Nunavut": [64.29, -98.10]
-        };
+        // Global Map reference
+        let regionalMap = null;
+        let mapMarkers = [];
+        let geoJsonLayer = null;
+        let dashboardLoadInProgress = false;
 
-        // Light sleek clean vector world map (matching Figma style)
-        regionalMap = L.map('us_leaflet_map', {
-            center: [25.0, 15.0],
-            zoom: 2.1,
-            minZoom: 1.5,
-            maxZoom: 9,
-            zoomControl: false,
-            attributionControl: false,
-            scrollWheelZoom: false
-        });
+        function toggleGeoSkuRow(state) {
+            const safeState = state.replace(/\s+/g, '_');
+            const row = $('#row-child-' + safeState);
+            const parentRow = $(`.geo-parent-row[data-state="${state}"]`);
+            if (row.is(':visible')) {
+                row.fadeOut(150);
+                parentRow.removeClass('expanded');
+            } else {
+                row.fadeIn(150);
+                parentRow.addClass('expanded');
+            }
+        }
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            maxZoom: 19,
-            subdomains: 'abcd'
-        }).addTo(regionalMap);
+        function initRegionalMap(regionList) {
+            if (!$('#us_leaflet_map').length) return;
+            if (!$('link[href*="leaflet.css"]').length) {
+                $('head').append('<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>');
+            }
+            if (typeof L === 'undefined') {
+                $.getScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', function () {
+                    buildLeafletMap(regionList);
+                });
+            } else {
+                buildLeafletMap(regionList);
+            }
+        }
 
-        setTimeout(() => {
-            if (regionalMap) regionalMap.invalidateSize();
-        }, 250);
+        function buildLeafletMap(regionList) {
+            const mapContainer = document.getElementById('us_leaflet_map');
+            if (!mapContainer) return;
+            if (regionalMap) {
+                regionalMap.off();
+                regionalMap.remove();
+                regionalMap = null;
+            }
 
-        // Custom Figma Glowing Blue Pin Marker
-        const figmaPinIcon = L.divIcon({
-            html: `<div class="figma-map-pin" style="display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 3px 8px rgba(67, 98, 206, 0.45)); cursor: pointer; transition: transform 0.2s;">
+            const stateCenters = {
+                "Alabama": [32.806671, -86.791130], "Alaska": [61.370716, -152.404419], "Arizona": [33.729759, -111.431221], "Arkansas": [34.969704, -92.373123],
+                "California": [36.116203, -119.681564], "Colorado": [39.059811, -105.311104], "Connecticut": [41.597782, -72.755371], "Delaware": [39.318523, -75.507141],
+                "Florida": [27.766279, -81.686783], "Georgia": [33.040619, -83.643074], "Hawaii": [21.094318, -157.498337], "Idaho": [44.240459, -114.478828],
+                "Illinois": [40.349457, -88.986137], "Indiana": [39.849426, -86.258278], "Iowa": [42.011539, -93.210526], "Kansas": [38.526600, -96.726486],
+                "Kentucky": [37.668140, -84.670067], "Louisiana": [31.169546, -91.867805], "Maine": [44.693947, -69.381927], "Maryland": [39.063946, -76.802101],
+                "Massachusetts": [42.230171, -71.530106], "Michigan": [43.326618, -84.536095], "Minnesota": [45.694454, -93.900192], "Mississippi": [32.741646, -89.678696],
+                "Missouri": [38.456085, -92.288368], "Montana": [46.921925, -110.454353], "Nebraska": [41.125370, -98.268082], "Nevada": [38.313515, -117.055374],
+                "New Hampshire": [43.452492, -71.563896], "New Jersey": [40.298904, -74.521011], "New Mexico": [34.840515, -106.248482], "New York": [42.165726, -74.948051],
+                "North Carolina": [35.630066, -79.806419], "North Dakota": [47.528912, -99.784012], "Ohio": [40.388783, -82.764915], "Oklahoma": [35.565342, -96.928917],
+                "Oregon": [44.572021, -122.070938], "Pennsylvania": [40.590752, -77.209755], "Rhode Island": [41.680893, -71.511780], "South Carolina": [33.856890, -80.945007],
+                "South Dakota": [44.299782, -99.438828], "Tennessee": [35.747845, -86.692345], "Texas": [31.054487, -97.563461], "Utah": [40.150032, -111.862434],
+                "Vermont": [44.045876, -72.710686], "Virginia": [37.769337, -78.169968], "Washington": [47.400902, -121.490494], "West Virginia": [38.491226, -80.954453],
+                "Wisconsin": [44.268543, -89.616508], "Wyoming": [42.755966, -107.302490],
+                "Quebec": [52.0, -72.0], "Ontario": [50.0, -85.0], "British Columbia": [53.72, -122.64], "Alberta": [55.0, -115.0],
+                "Saskatchewan": [55.0, -106.0], "Manitoba": [55.0, -97.0], "Nova Scotia": [45.0, -63.0], "Newfoundland": [53.13, -57.66],
+                "Newfoundland and Labrador": [53.13, -57.66], "New Brunswick": [46.56, -66.46], "Prince Edward Island": [46.51, -63.41],
+                "Yukon": [64.0, -135.0], "Yukon Territory": [64.0, -135.0], "Northwest Territories": [65.0, -120.0], "Nunavut": [64.29, -98.10]
+            };
+
+            // Light sleek clean vector world map (matching Figma style)
+            regionalMap = L.map('us_leaflet_map', {
+                center: [25.0, 15.0],
+                zoom: 2.1,
+                minZoom: 1.5,
+                maxZoom: 9,
+                zoomControl: false,
+                attributionControl: false,
+                scrollWheelZoom: false
+            });
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19,
+                subdomains: 'abcd'
+            }).addTo(regionalMap);
+
+            setTimeout(() => {
+                if (regionalMap) regionalMap.invalidateSize();
+            }, 250);
+
+            // Custom Figma Glowing Blue Pin Marker
+            const figmaPinIcon = L.divIcon({
+                html: `<div class="figma-map-pin" style="display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 3px 8px rgba(67, 98, 206, 0.45)); cursor: pointer; transition: transform 0.2s;">
                 <svg width="26" height="32" viewBox="0 0 24 30" fill="none">
                     <path d="M12 0C5.37 0 0 5.37 0 12c0 9 12 18 12 18s12-9 12-18c0-6.63-5.37-12-12-12z" fill="#4362CE"/>
                     <circle cx="12" cy="11" r="4.2" fill="#ffffff"/>
                 </svg>
             </div>`,
-            className: 'custom-figma-pin-wrapper',
-            iconSize: [26, 32],
-            iconAnchor: [13, 32]
-        });
-
-        mapMarkers = [];
-
-        // 3 Key Global Hubs from Figma
-        const defaultHubs = [
-            { name: 'North America', coords: [45.4215, -75.6972], target: 'Quebec' },
-            { name: 'EMEA / Africa', coords: [28.0339, 1.6596], target: 'Ontario' },
-            { name: 'Asia / India', coords: [28.6139, 77.2090], target: 'California' }
-        ];
-
-        defaultHubs.forEach(hub => {
-            const hMarker = L.marker(hub.coords, { icon: figmaPinIcon }).addTo(regionalMap);
-            hMarker.bindTooltip(`<div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.75rem;padding:2px 4px;">${hub.name}</div>`, { sticky: true });
-            hMarker.on('click', function () {
-                if (regionList && regionList.length > 0) {
-                    scrollToStateRow(regionList[0].province);
-                }
+                className: 'custom-figma-pin-wrapper',
+                iconSize: [26, 32],
+                iconAnchor: [13, 32]
             });
-            mapMarkers.push(hMarker);
-        });
 
-        // Add pins for provinces with sales
-        regionList.forEach(p => {
-            const coords = stateCenters[p.province];
-            if (coords && !defaultHubs.some(h => Math.abs(h.coords[0] - coords[0]) < 5 && Math.abs(h.coords[1] - coords[1]) < 5)) {
-                const marker = L.marker(coords, { icon: figmaPinIcon }).addTo(regionalMap);
+            mapMarkers = [];
 
-                let tooltipContent = `<div style="font-family: 'Inter', sans-serif; padding: 4px 6px; text-align: center;">
+            // 3 Key Global Hubs from Figma
+            const defaultHubs = [
+                { name: 'North America', coords: [45.4215, -75.6972], target: 'Quebec' },
+                { name: 'EMEA / Africa', coords: [28.0339, 1.6596], target: 'Ontario' },
+                { name: 'Asia / India', coords: [28.6139, 77.2090], target: 'California' }
+            ];
+
+            defaultHubs.forEach(hub => {
+                const hMarker = L.marker(hub.coords, { icon: figmaPinIcon }).addTo(regionalMap);
+                hMarker.bindTooltip(`<div style="font-family:'Inter',sans-serif;font-weight:700;font-size:0.75rem;padding:2px 4px;">${hub.name}</div>`, { sticky: true });
+                hMarker.on('click', function () {
+                    if (regionList && regionList.length > 0) {
+                        scrollToStateRow(regionList[0].province);
+                    }
+                });
+                mapMarkers.push(hMarker);
+            });
+
+            // Add pins for provinces with sales
+            regionList.forEach(p => {
+                const coords = stateCenters[p.province];
+                if (coords && !defaultHubs.some(h => Math.abs(h.coords[0] - coords[0]) < 5 && Math.abs(h.coords[1] - coords[1]) < 5)) {
+                    const marker = L.marker(coords, { icon: figmaPinIcon }).addTo(regionalMap);
+
+                    let tooltipContent = `<div style="font-family: 'Inter', sans-serif; padding: 4px 6px; text-align: center;">
                     <div style="font-weight: 800; font-size: 0.85rem; color: #0f172a; margin-bottom: 2px;">${p.province}</div>
                     <div style="font-weight: 800; color: #4362CE; font-size: 0.95rem; margin: 2px 0;">$${p.total_sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                     <div style="font-size: 0.72rem; color: #64748b; font-weight: 600;">${p.order_count.toLocaleString()} Orders | ${p.units_sold.toLocaleString()} Units</div>
                 </div>`;
 
-                marker.bindTooltip(tooltipContent, { sticky: true });
+                    marker.bindTooltip(tooltipContent, { sticky: true });
 
-                let popupContent = `<div style="font-family: 'Inter', sans-serif; padding: 6px 8px; text-align: center;">
+                    let popupContent = `<div style="font-family: 'Inter', sans-serif; padding: 6px 8px; text-align: center;">
                     <div style="font-weight: 800; font-size: 0.9rem; color: #0f172a; margin-bottom: 2px;">${p.province}</div>
                     <div style="font-weight: 900; color: #4362CE; font-size: 1.1rem; margin: 4px 0;">$${p.total_sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                     <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; margin-bottom: 6px;">${p.order_count.toLocaleString()} Orders | ${p.units_sold.toLocaleString()} Units</div>
                     <button class="btn btn-xs btn-primary" style="padding: 3px 8px; font-size: 0.7rem; font-weight: 700; border-radius: 6px; background: #4362CE; color: #fff; border: none; cursor: pointer;" onclick="scrollToStateRow('${p.province}')">View SKU Breakdown</button>
                 </div>`;
 
-                marker.bindPopup(popupContent);
-                marker.on('click', function () {
-                    scrollToStateRow(p.province);
-                });
+                    marker.bindPopup(popupContent);
+                    marker.on('click', function () {
+                        scrollToStateRow(p.province);
+                    });
 
-                mapMarkers.push(marker);
-            }
-        });
-    }
-
-    function scrollToStateRow(state) {
-        const row = $(`.geo-parent-row[data-state="${state}"]`);
-        if (row.length) {
-            $('html, body').animate({
-                scrollTop: row.offset().top - 180
-            }, 500);
-
-            toggleGeoSkuRow(state);
-
-            row.css('background', '#eff6ff');
-            setTimeout(() => {
-                row.css('background', '');
-            }, 2000);
+                    mapMarkers.push(marker);
+                }
+            });
         }
-    }
 
-    window.toggleGeoSkuRow = toggleGeoSkuRow;
-    window.scrollToStateRow = scrollToStateRow;
+        function scrollToStateRow(state) {
+            const row = $(`.geo-parent-row[data-state="${state}"]`);
+            if (row.length) {
+                $('html, body').animate({
+                    scrollTop: row.offset().top - 180
+                }, 500);
 
-    function loadSettlementAnalytics(customerId, from, to) {
-        $.ajax({
-            url: '<?php echo BASE_URL; ?>api/transaction_analytics.php',
-            data: { customer_id: customerId, from_date: from, to_date: to },
-            dataType: 'json',
-            success: function (res) {
-                if (!res) return;
+                toggleGeoSkuRow(state);
 
-                // Populating Region Table with SKU Breakdown (Figma Redesign)
-                if (res.province_breakdown) {
-                    let regionList = res.province_breakdown;
-                    regionList.sort((a, b) => b.total_sales - a.total_sales);
+                row.css('background', '#eff6ff');
+                setTimeout(() => {
+                    row.css('background', '');
+                }, 2000);
+            }
+        }
 
-                    let regHtml = '';
-                    regionList.forEach((p, idx) => {
-                        const netProfitValue = p.total_sales + p.fees + (p.refunds || 0) - (p.cogs || 0);
-                        const netProfitColor = netProfitValue >= 0 ? '#0f172a' : '#EE473D';
-                        const netProfitSign = netProfitValue >= 0 ? '' : '-';
-                        const formattedNetProfit = netProfitValue >= 0 ? netProfitValue : Math.abs(netProfitValue);
-                        const safeState = p.province.replace(/\s+/g, '_');
+        window.toggleGeoSkuRow = toggleGeoSkuRow;
+        window.scrollToStateRow = scrollToStateRow;
 
-                        regHtml += `
+        function loadSettlementAnalytics(customerId, from, to) {
+            $.ajax({
+                url: '<?php echo BASE_URL; ?>api/transaction_analytics.php',
+                data: { customer_id: customerId, from_date: from, to_date: to },
+                dataType: 'json',
+                success: function (res) {
+                    if (!res) return;
+
+                    // Populating Region Table with SKU Breakdown (Figma Redesign)
+                    if (res.province_breakdown) {
+                        let regionList = res.province_breakdown;
+                        regionList.sort((a, b) => b.total_sales - a.total_sales);
+
+                        let regHtml = '';
+                        regionList.forEach((p, idx) => {
+                            const netProfitValue = p.total_sales + p.fees + (p.refunds || 0) - (p.cogs || 0);
+                            const netProfitColor = netProfitValue >= 0 ? '#0f172a' : '#EE473D';
+                            const netProfitSign = netProfitValue >= 0 ? '' : '-';
+                            const formattedNetProfit = netProfitValue >= 0 ? netProfitValue : Math.abs(netProfitValue);
+                            const safeState = p.province.replace(/\s+/g, '_');
+
+                            regHtml += `
                             <tr class="geo-parent-row" data-state="${p.province}" style="cursor: pointer; transition: background 0.15s;" onclick="toggleGeoSkuRow('${p.province}')">
-                                <td style="padding: 12px 14px; text-align: left;">
+                                <td style="width: 25%; padding: 14px 16px; text-align: left;">
                                     <div style="display: inline-flex; align-items: center;">
                                         <span class="geo-chevron-btn" id="chevron-${safeState}"><i class="fas fa-chevron-down"></i></span>
-                                        <span style="font-weight: 600; font-size: 0.84rem; color: #1e293b;">${p.province}</span>
+                                        <span style="font-weight: 400; font-size: 14px; color: #1A1A1A;">${p.province}</span>
                                     </div>
                                 </td>
-                                <td style="padding: 12px 14px; text-align: center; color: #475569; font-weight: 500; font-variant-numeric: tabular-nums;">${p.order_count.toLocaleString()}</td>
-                                <td style="padding: 12px 14px; text-align: center; color: #475569; font-weight: 500; font-variant-numeric: tabular-nums;">${p.units_sold.toLocaleString()}</td>
-                                <td style="padding: 12px 14px; text-align: right; color: #0f172a; font-weight: 700; font-variant-numeric: tabular-nums;">$${p.total_sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                <td style="padding: 12px 14px; text-align: right; color: #EE473D; font-weight: 600; font-variant-numeric: tabular-nums;">-$${Math.abs(p.fees).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                <td style="padding: 12px 14px; text-align: right; color: #475569; font-weight: 600; font-variant-numeric: tabular-nums;">-$${Math.abs(p.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                <td style="padding: 12px 14px; text-align: right; color: ${netProfitColor}; font-weight: 700; font-variant-numeric: tabular-nums;">${netProfitSign}$${formattedNetProfit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td style="width: 12%; padding: 14px 16px; text-align: right; color: #1A1A1A; font-weight: 400; font-size: 14px; font-variant-numeric: tabular-nums;">${p.order_count.toLocaleString()}</td>
+                                <td style="width: 12%; padding: 14px 16px; text-align: right; color: #1A1A1A; font-weight: 400; font-size: 14px; font-variant-numeric: tabular-nums;">${p.units_sold.toLocaleString()}</td>
+                                <td style="width: 15%; padding: 14px 16px; text-align: right; color: #1A1A1A; font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums;">$${p.total_sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td style="width: 12%; padding: 14px 16px; text-align: right; color: #1A1A1A; font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums;">-$${Math.abs(p.fees).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td style="width: 12%; padding: 14px 16px; text-align: right; color: #1A1A1A; font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums;">-$${Math.abs(p.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td style="width: 12%; padding: 14px 16px; text-align: right; color: ${netProfitColor}; font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums;">${netProfitSign}$${formattedNetProfit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                             </tr>
                             <tr class="geo-child-row" id="row-child-${safeState}" style="display: none; background: transparent;">
-                                <td colspan="7" style="padding: 0.4rem 0.5rem 1rem 0.5rem; border-bottom: 1px solid #f1f5f9;">
+                                <td colspan="7" style="padding: 0.4rem 0.5rem 1rem 0.5rem; border-bottom: 1px solid #F1F3F6;">
                                     <div class="geo-sku-subcard">
-                                        <div style="font-weight: 700; color: #0f172a; margin-bottom: 0.75rem; text-align: left; font-size: 0.82rem; font-family: 'Inter', sans-serif;">
+                                        <div style="font-weight: 600; color: #1A1A1A; margin-bottom: 0.75rem; text-align: left; font-size: 14px; font-family: 'Inter', sans-serif;">
                                             SKU Performance Breakdown in ${p.province}
                                         </div>
-                                        <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                                        <table style="width: 100%; border-collapse: collapse; font-size: 14px; font-family: 'Inter', sans-serif;">
                                             <thead>
-                                                <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                    <th style="padding: 8px 12px; text-align: left; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">Product SKU</th>
-                                                    <th style="padding: 8px 12px; text-align: center; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">Orders</th>
-                                                    <th style="padding: 8px 12px; text-align: center; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">Units Sold</th>
-                                                    <th style="padding: 8px 12px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">Sales</th>
-                                                    <th style="padding: 8px 12px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">Amazon Fees</th>
-                                                    <th style="padding: 8px 12px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">COGS</th>
-                                                    <th style="padding: 8px 12px; text-align: right; font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em;">Net Profit</th>
+                                                <tr style="border-bottom: 1px solid #EAECEF; background: #F8FAFC;">
+                                                    <th style="width: 25%; padding: 10px 14px; text-align: left; font-size: 13px; font-weight: 500; color: #1A1A1A; text-transform: none; letter-spacing: 0;">Product SKU</th>
+                                                    <th style="width: 12%; padding: 10px 14px; text-align: right; font-size: 13px; font-weight: 500; color: #1A1A1A; text-transform: none; letter-spacing: 0;">Orders</th>
+                                                    <th style="width: 12%; padding: 10px 14px; text-align: right; font-size: 13px; font-weight: 500; color: #1A1A1A; text-transform: none; letter-spacing: 0;">Units Sold</th>
+                                                    <th style="width: 15%; padding: 10px 14px; text-align: right; font-size: 13px; font-weight: 500; color: #1A1A1A; text-transform: none; letter-spacing: 0;">Sales</th>
+                                                    <th style="width: 12%; padding: 10px 14px; text-align: right; font-size: 13px; font-weight: 500; color: #1A1A1A; text-transform: none; letter-spacing: 0;">Amazon Fees</th>
+                                                    <th style="width: 12%; padding: 10px 14px; text-align: right; font-size: 13px; font-weight: 500; color: #1A1A1A; text-transform: none; letter-spacing: 0;">COGS</th>
+                                                    <th style="width: 12%; padding: 10px 14px; text-align: right; font-size: 13px; font-weight: 500; color: #1A1A1A; text-transform: none; letter-spacing: 0;">Net Profit</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 ${p.skus.length === 0 ?
-                                `<tr><td colspan="7" style="text-align: center; padding: 1.5rem; color: #94a3b8; font-weight: 600;">No product sales in this region.</td></tr>` :
-                                p.skus.map(s => {
-                                    const sNetProfit = s.sales + s.fees + (s.refunds || 0) - (s.cogs || 0);
-                                    const sNetColor = sNetProfit >= 0 ? '#0f172a' : '#EE473D';
-                                    const sNetSign = sNetProfit >= 0 ? '' : '-';
-                                    const sFormattedNet = sNetProfit >= 0 ? sNetProfit : Math.abs(sNetProfit);
-                                    return `
-                                                            <tr style="border-bottom: 1px solid #f8fafc; transition: background 0.15s;">
-                                                                <td style="padding: 10px 12px; text-align: left;">
-                                                                    <div style="font-weight: 700; color: #0f172a; font-size: 0.8rem;">${s.sku}</div>
-                                                                    <div style="font-size: 0.7rem; color: #94a3b8; font-weight: 500;">${s.sku}</div>
+                                    `<tr><td colspan="7" style="text-align: center; padding: 1.5rem; color: #94a3b8; font-weight: 500;">No product sales in this region.</td></tr>` :
+                                    p.skus.map(s => {
+                                        const sNetProfit = s.sales + s.fees + (s.refunds || 0) - (s.cogs || 0);
+                                        const sNetColor = sNetProfit >= 0 ? '#1A1A1A' : '#EE473D';
+                                        const sNetSign = sNetProfit >= 0 ? '' : '-';
+                                        const sFormattedNet = sNetProfit >= 0 ? sNetProfit : Math.abs(sNetProfit);
+                                        return `
+                                                            <tr style="border-bottom: 1px solid #F1F3F6; transition: background 0.15s;">
+                                                                <td style="width: 25%; padding: 10px 14px; text-align: left;">
+                                                                    <div style="font-weight: 600; color: #1A1A1A; font-size: 14px;">${s.sku}</div>
+                                                                    <div style="font-size: 12px; color: #64748b; font-weight: 400; margin-top: 2px;">${s.sku}</div>
                                                                 </td>
-                                                                <td style="padding: 10px 12px; text-align: center; color: #475569; font-weight: 500; font-size: 0.8rem; font-variant-numeric: tabular-nums;">${s.order_count.toLocaleString()}</td>
-                                                                <td style="padding: 10px 12px; text-align: center; color: #475569; font-weight: 500; font-size: 0.8rem; font-variant-numeric: tabular-nums;">${s.units_sold.toLocaleString()}</td>
-                                                                <td style="padding: 10px 12px; text-align: right; color: #0f172a; font-weight: 700; font-size: 0.8rem; font-variant-numeric: tabular-nums;">$${s.sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                                                <td style="padding: 10px 12px; text-align: right; color: #EE473D; font-weight: 600; font-size: 0.8rem; font-variant-numeric: tabular-nums;">-$${Math.abs(s.fees).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                                                <td style="padding: 10px 12px; text-align: right; color: #475569; font-weight: 600; font-size: 0.8rem; font-variant-numeric: tabular-nums;">-$${Math.abs(s.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                                                <td style="padding: 10px 12px; text-align: right; color: ${sNetColor}; font-weight: 700; font-size: 0.8rem; font-variant-numeric: tabular-nums;">${sNetSign}$${sFormattedNet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                                <td style="width: 12%; padding: 10px 14px; text-align: right; color: #1A1A1A; font-weight: 400; font-size: 14px; font-variant-numeric: tabular-nums;">${s.order_count.toLocaleString()}</td>
+                                                                <td style="width: 12%; padding: 10px 14px; text-align: right; color: #1A1A1A; font-weight: 400; font-size: 14px; font-variant-numeric: tabular-nums;">${s.units_sold.toLocaleString()}</td>
+                                                                <td style="width: 15%; padding: 10px 14px; text-align: right; color: #1A1A1A; font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums;">$${s.sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                                <td style="width: 12%; padding: 10px 14px; text-align: right; color: #1A1A1A; font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums;">-$${Math.abs(s.fees).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                                <td style="width: 12%; padding: 10px 14px; text-align: right; color: #1A1A1A; font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums;">-$${Math.abs(s.cogs || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                                <td style="width: 12%; padding: 10px 14px; text-align: right; color: ${sNetColor}; font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums;">${sNetSign}$${sFormattedNet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                                             </tr>
                                                         `;
-                                }).join('')
-                            }
+                                    }).join('')
+                                }
                                             </tbody>
                                         </table>
                                     </div>
                                 </td>
                             </tr>
                         `;
-                    });
+                        });
 
-                    $('#region_sales_body').html(regHtml || '<tr><td colspan="7" style="text-align:center; padding: 2rem; color: #94a3b8; font-weight: 700;">No regional data.</td></tr>');
+                        $('#region_sales_body').html(regHtml || '<tr><td colspan="7" style="text-align:center; padding: 2rem; color: #94a3b8; font-weight: 700;">No regional data.</td></tr>');
 
-                    // Initialize Regional Map visuals
-                    initRegionalMap(regionList);
+                        // Initialize Regional Map visuals
+                        initRegionalMap(regionList);
+                    }
+
+                    renderFinancialInsights(res.insights);
                 }
+            });
+        }
 
-                renderFinancialInsights(res.insights);
-            }
-        });
-    }
+        function renderFeeDonut(feeData) {
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            if (expenseChart) expenseChart.destroy();
 
-    function renderFeeDonut(feeData) {
-        const ctx = document.getElementById('expenseChart').getContext('2d');
-        if (expenseChart) expenseChart.destroy();
-
-        expenseChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: feeData.labels,
-                datasets: [{
-                    data: feeData.values,
-                    backgroundColor: ['#f43f5e', '#8b5cf6', '#3b82f6', '#f59e0b', '#10b981', '#6366f1', '#94a3b8'],
-                    borderRadius: 8,
-                    maxBarThickness: 50
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: '#0f172a',
-                        padding: 12,
-                        cornerRadius: 8,
-                        callbacks: {
-                            label: (context) => ' Amount: $' + context.parsed.y.toLocaleString()
+            expenseChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: feeData.labels,
+                    datasets: [{
+                        data: feeData.values,
+                        backgroundColor: ['#f43f5e', '#8b5cf6', '#3b82f6', '#f59e0b', '#10b981', '#6366f1', '#94a3b8'],
+                        borderRadius: 8,
+                        maxBarThickness: 50
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: (context) => ' Amount: $' + context.parsed.y.toLocaleString()
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { weight: '600', size: 10 } } },
+                        y: {
+                            grid: { color: '#f1f5f9' },
+                            ticks: { callback: v => '$' + formatAbbrev(v) }
                         }
                     }
-                },
-                scales: {
-                    x: { grid: { display: false }, ticks: { font: { weight: '600', size: 10 } } },
-                    y: {
-                        grid: { color: '#f1f5f9' },
-                        ticks: { callback: v => '$' + formatAbbrev(v) }
-                    }
                 }
-            }
-        });
-        const total = feeData.values.reduce((a, b) => a + b, 0);
-        $('#fee_breakdown_note').html(`
+            });
+            const total = feeData.values.reduce((a, b) => a + b, 0);
+            $('#fee_breakdown_note').html(`
             <div style="font-size: 1.25rem; font-weight: 800; color: #1e293b; margin-top: 1rem;">$${total.toLocaleString()}</div>
             <div style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Total Platform Fees</div>
         `);
-    }
-
-    function renderProvinceBars(provinces) {
-        const ctx = document.getElementById('provinceChart').getContext('2d');
-        if (provinceChart) provinceChart.destroy();
-
-        // Sort and group for a clean distribution view
-        const sorted = [...provinces].sort((a, b) => b.total_sales - a.total_sales);
-        const topCount = 8;
-        const top = sorted.slice(0, topCount);
-        const others = sorted.slice(topCount);
-
-        let finalData = top.map(p => ({ label: p.province, value: p.total_sales }));
-        if (others.length > 0) {
-            const othersSum = others.reduce((sum, p) => sum + p.total_sales, 0);
-            finalData.push({ label: 'Other Provinces', value: othersSum });
         }
 
-        provinceChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: finalData.map(d => d.label),
-                datasets: [{
-                    data: finalData.map(d => d.value),
-                    backgroundColor: ['#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#f97316', '#eab308', '#94a3b8'],
-                    hoverOffset: 20,
-                    borderWidth: 5,
-                    borderColor: '#ffffff'
-                }]
-            },
-            options: {
-                cutout: '65%',
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            usePointStyle: true,
-                            padding: 20,
-                            font: { size: 11, weight: '600' },
-                            color: '#475569'
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: '#0f172a',
-                        padding: 12,
-                        cornerRadius: 8,
-                        callbacks: {
-                            label: (context) => ` $${context.parsed.toLocaleString()}`
+        function renderProvinceBars(provinces) {
+            const ctx = document.getElementById('provinceChart').getContext('2d');
+            if (provinceChart) provinceChart.destroy();
+
+            // Sort and group for a clean distribution view
+            const sorted = [...provinces].sort((a, b) => b.total_sales - a.total_sales);
+            const topCount = 8;
+            const top = sorted.slice(0, topCount);
+            const others = sorted.slice(topCount);
+
+            let finalData = top.map(p => ({ label: p.province, value: p.total_sales }));
+            if (others.length > 0) {
+                const othersSum = others.reduce((sum, p) => sum + p.total_sales, 0);
+                finalData.push({ label: 'Other Provinces', value: othersSum });
+            }
+
+            provinceChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: finalData.map(d => d.label),
+                    datasets: [{
+                        data: finalData.map(d => d.value),
+                        backgroundColor: ['#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#f97316', '#eab308', '#94a3b8'],
+                        hoverOffset: 20,
+                        borderWidth: 5,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    cutout: '65%',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: { size: 11, weight: '600' },
+                                color: '#475569'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: (context) => ` $${context.parsed.toLocaleString()}`
+                            }
                         }
                     }
                 }
-            }
-        });
-    }
+            });
+        }
 
-    function renderTxnSummary(summary) {
-        let html = '';
-        const types = summary || {};
-        if (Object.keys(types).length === 0) {
-            html = '<div style="text-align: center; color: #94a3b8; padding: 3rem;">No transactions found for this period.</div>';
-        } else {
-            html = '<div style="display: grid; gap: 1rem;">';
-            for (let type in types) {
-                const s = types[type];
-                const isPositive = s.total_amount >= 0;
-                const accentColor = isPositive ? '#10b981' : '#f43f5e';
+        function renderTxnSummary(summary) {
+            let html = '';
+            const types = summary || {};
+            if (Object.keys(types).length === 0) {
+                html = '<div style="text-align: center; color: #94a3b8; padding: 3rem;">No transactions found for this period.</div>';
+            } else {
+                html = '<div style="display: grid; gap: 1rem;">';
+                for (let type in types) {
+                    const s = types[type];
+                    const isPositive = s.total_amount >= 0;
+                    const accentColor = isPositive ? '#10b981' : '#f43f5e';
 
-                html += `
+                    html += `
                 <div style="background: #ffffff; border: 1px solid #f1f5f9; border-left: 4px solid ${accentColor}; padding: 1.25rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
                         <span style="font-weight: 800; color: #1e293b; font-size: 0.95rem;">${type}</span>
@@ -6110,400 +6371,399 @@ include '../../includes/sidebar.php';
                         </div>
                     </div>
                 </div>`;
+                }
+                html += '</div>';
             }
-            html += '</div>';
+            $('#txn_summary_list').html(html);
         }
-        $('#txn_summary_list').html(html);
-    }
 
-    function renderFinancialInsights(insights) {
-        let html = '';
-        (insights || []).forEach(ins => {
-            html += `<div style="background:#f0f9ff; border-left:4px solid #7dd3fc; padding:1rem; border-radius:8px; margin-bottom:1rem;">
+        function renderFinancialInsights(insights) {
+            let html = '';
+            (insights || []).forEach(ins => {
+                html += `<div style="background:#f0f9ff; border-left:4px solid #7dd3fc; padding:1rem; border-radius:8px; margin-bottom:1rem;">
                 <h4 style="font-size:0.9rem; font-weight:700;">${ins.title}</h4><p style="font-size:0.8rem;">${ins.text}</p>
             </div>`;
-        });
-        $('#financial_insights_container').html(html);
-    }
+            });
+            $('#financial_insights_container').html(html);
+        }
 
-    function loadProductAnalytics(customerId, from, to) {
-        $.ajax({
-            url: '<?php echo BASE_URL; ?>api/product_analytics.php',
-            data: { customer_id: customerId, from_date: from, to_date: to },
-            dataType: 'json',
-            success: function (res) {
-                if (!res || !res.success) return;
+        function loadProductAnalytics(customerId, from, to) {
+            $.ajax({
+                url: '<?php echo BASE_URL; ?>api/product_analytics.php',
+                data: { customer_id: customerId, from_date: from, to_date: to },
+                dataType: 'json',
+                success: function (res) {
+                    if (!res || !res.success) return;
 
-                // Helper to format abbreviation
-                const formatAbbrev = (num) => {
-                    if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-                    if (num >= 1000) return (num / 1000).toFixed(0) + 'k';
-                    return num.toFixed(0);
-                };
+                    // Helper to format abbreviation
+                    const formatAbbrev = (num) => {
+                        if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+                        if (num >= 1000) return (num / 1000).toFixed(0) + 'k';
+                        return num.toFixed(0);
+                    };
 
-                // Sum and populate the 3 stacked metric cards
-                let totalProdRevenue = 0;
-                let totalProdAdSpend = 0;
-                let totalProdSessions = 0;
-                let activeSkusCount = res.top_products.length;
+                    // Sum and populate the 3 stacked metric cards
+                    let totalProdRevenue = 0;
+                    let totalProdAdSpend = 0;
+                    let totalProdSessions = 0;
+                    let activeSkusCount = res.top_products.length;
 
-                res.top_products.forEach(p => {
-                    totalProdRevenue += parseFloat(p.revenue || 0);
-                    totalProdAdSpend += parseFloat(p.ad_spend || 0);
-                    totalProdSessions += parseInt(p.sessions || 0);
-                });
+                    res.top_products.forEach(p => {
+                        totalProdRevenue += parseFloat(p.revenue || 0);
+                        totalProdAdSpend += parseFloat(p.ad_spend || 0);
+                        totalProdSessions += parseInt(p.sessions || 0);
+                    });
 
-                // Set Active SKUs
-                $('#prod_meta_skus').text(activeSkusCount);
+                    // Set Active SKUs
+                    $('#prod_meta_skus').text(activeSkusCount);
 
-                // Set Sessions with dynamic sum (fallback to mockup value 12,482 if zero)
-                const sessionsDisplay = totalProdSessions > 0 ? totalProdSessions : 12482;
-                $('#prod_meta_sessions').text(sessionsDisplay.toLocaleString());
+                    // Set Sessions with dynamic sum (fallback to mockup value 12,482 if zero)
+                    const sessionsDisplay = totalProdSessions > 0 ? totalProdSessions : 12482;
+                    $('#prod_meta_sessions').text(sessionsDisplay.toLocaleString());
 
-                // Set ROAS with dynamic calc (fallback to mockup 4.2x if zero)
-                const roasDisplay = totalProdAdSpend > 0 ? (totalProdRevenue / totalProdAdSpend) : 4.2;
-                $('#prod_meta_roas').text(roasDisplay.toFixed(1) + 'x');
+                    // Set ROAS with dynamic calc (fallback to mockup 4.2x if zero)
+                    const roasDisplay = totalProdAdSpend > 0 ? (totalProdRevenue / totalProdAdSpend) : 4.2;
+                    $('#prod_meta_roas').text(roasDisplay.toFixed(1) + 'x');
 
-                // Doughnut chart center overlay total
-                $('#doughnut_center_val').text('$' + formatAbbrev(totalProdRevenue));
+                    // Doughnut chart center overlay total
+                    $('#doughnut_center_val').text('$' + formatAbbrev(totalProdRevenue));
 
-                // Group top 3 individually + Others
-                const top3 = res.top_products.slice(0, 3);
-                const remaining = res.top_products.slice(3);
-                const remainingSum = remaining.reduce((sum, p) => sum + parseFloat(p.revenue || 0), 0);
+                    // Group top 3 individually + Others
+                    const top3 = res.top_products.slice(0, 3);
+                    const remaining = res.top_products.slice(3);
+                    const remainingSum = remaining.reduce((sum, p) => sum + parseFloat(p.revenue || 0), 0);
 
-                const chartColors = ['#2563eb', '#ef4444', '#10b981', '#f59e0b'];
-                const doughnutData = [...top3.map(p => parseFloat(p.revenue || 0))];
-                if (remaining.length > 0) {
-                    doughnutData.push(remainingSum);
-                }
+                    const chartColors = ['#3B66F5', '#EF4444', '#10B981', '#F59E0B'];
+                    const doughnutData = [...top3.map(p => parseFloat(p.revenue || 0))];
+                    if (remaining.length > 0) {
+                        doughnutData.push(remainingSum);
+                    }
 
-                const doughnutLabels = [...top3.map(p => p.sku)];
-                if (remaining.length > 0) {
-                    doughnutLabels.push('Others');
-                }
+                    const doughnutLabels = [...top3.map(p => p.sku)];
+                    if (remaining.length > 0) {
+                        doughnutLabels.push('Others');
+                    }
 
-                // Populate Custom HTML Legend (SKU + $ + %)
-                let legendHtml = '';
-                let colorIdx = 0;
-                top3.forEach(p => {
-                    const rev = parseFloat(p.revenue || 0);
-                    const pct = totalProdRevenue > 0 ? ((rev / totalProdRevenue) * 100).toFixed(0) : '0';
-                    const color = chartColors[colorIdx];
-                    legendHtml += `
+                    // Populate Custom HTML Legend (SKU + $ + %)
+                    let legendHtml = '';
+                    let colorIdx = 0;
+                    top3.forEach(p => {
+                        const rev = parseFloat(p.revenue || 0);
+                        const pct = totalProdRevenue > 0 ? ((rev / totalProdRevenue) * 100).toFixed(0) : '0';
+                        const color = chartColors[colorIdx];
+                        legendHtml += `
                     <div class="pp-legend-row">
-                        <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+                        <div class="name-wrap">
                             <span class="dot" style="background:${color};"></span>
                             <span class="name">${p.sku}</span>
                         </div>
-                        <span style="color:#64748b; font-weight:700;">$${rev.toLocaleString()}</span>
-                        <span style="color:#0f172a; font-weight:800;">${pct}%</span>
+                        <span class="val">$${rev.toLocaleString(undefined, { minimumFractionDigits: (rev % 1 !== 0 ? 2 : 0), maximumFractionDigits: 2 })}</span>
+                        <span class="pct">${pct}%</span>
                     </div>`;
-                    colorIdx++;
-                });
+                        colorIdx++;
+                    });
 
-                if (remaining.length > 0) {
-                    const pct = totalProdRevenue > 0 ? ((remainingSum / totalProdRevenue) * 100).toFixed(0) : '0';
-                    const color = chartColors[3];
-                    legendHtml += `
+                    if (remaining.length > 0) {
+                        const pct = totalProdRevenue > 0 ? ((remainingSum / totalProdRevenue) * 100).toFixed(0) : '0';
+                        const color = chartColors[3];
+                        legendHtml += `
                     <div class="pp-legend-row">
-                        <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+                        <div class="name-wrap">
                             <span class="dot" style="background:${color};"></span>
                             <span class="name">Others</span>
                         </div>
-                        <span style="color:#64748b; font-weight:700;">$${Math.round(remainingSum).toLocaleString()}</span>
-                        <span style="color:#0f172a; font-weight:800;">${pct}%</span>
+                        <span class="val">$${remainingSum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        <span class="pct">${pct}%</span>
                     </div>`;
-                }
-                $('#doughnut_custom_legend').html(legendHtml);
-
-                // 1. Revenue Share by SKU (Doughnut ChartJS)
-                const ctxRev = document.getElementById('productRevenueShareChart').getContext('2d');
-                if (window.productRevenueShareChartInst) window.productRevenueShareChartInst.destroy();
-                window.productRevenueShareChartInst = new Chart(ctxRev, {
-                    type: 'doughnut',
-                    data: {
-                        labels: doughnutLabels,
-                        datasets: [{
-                            data: doughnutData,
-                            backgroundColor: chartColors,
-                            borderWidth: 4,
-                            borderColor: '#ffffff',
-                            hoverOffset: 12
-                        }]
-                    },
-                    options: {
-                        cutout: '78%',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                backgroundColor: '#ffffff',
-                                titleColor: '#0f172a',
-                                bodyColor: '#0f172a',
-                                borderColor: '#e2e8f0',
-                                borderWidth: 1,
-                                padding: 10,
-                                cornerRadius: 8,
-                                displayColors: true,
-                                callbacks: {
-                                    label: function (context) {
-                                        return context.label + ': $' + Number(context.parsed).toLocaleString();
-                                    }
-                                }
-                            }
-                        }
                     }
-                });
+                    $('#doughnut_custom_legend').html(legendHtml);
 
-                // 2. ULTIMATE COMBO REPORT (One report for everything)
-                const ctxCombo = document.getElementById('productComboChart').getContext('2d');
-                if (window.productComboChartInst) window.productComboChartInst.destroy();
-
-                const labels = res.top_products.slice(0, 12).map(p => p.sku);
-
-                window.productComboChartInst = new Chart(ctxCombo, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: 'Sessions',
-                                data: res.top_products.slice(0, 12).map(p => p.sessions),
-                                backgroundColor: 'rgba(219, 225, 255, 0.85)',
-                                borderColor: '#DBE1FF',
-                                borderRadius: 4,
-                                barPercentage: 0.6,
+                    // 1. Revenue Share by SKU (Doughnut ChartJS)
+                    const ctxRev = document.getElementById('productRevenueShareChart').getContext('2d');
+                    if (window.productRevenueShareChartInst) window.productRevenueShareChartInst.destroy();
+                    window.productRevenueShareChartInst = new Chart(ctxRev, {
+                        type: 'doughnut',
+                        data: {
+                            labels: doughnutLabels,
+                            datasets: [{
+                                data: doughnutData,
+                                backgroundColor: chartColors,
                                 borderWidth: 0,
-                                yAxisID: 'yVolume',
-                                order: 3
-                            },
-                            {
-                                label: 'Revenue ($)',
-                                data: res.top_products.slice(0, 12).map(p => p.revenue),
-                                type: 'line',
-                                borderColor: '#4362CE',
-                                backgroundColor: '#4362CE',
-                                borderWidth: 2.5,
-                                pointBackgroundColor: '#4362CE',
-                                pointBorderColor: '#ffffff',
-                                pointBorderWidth: 2,
-                                pointRadius: 4.5,
-                                tension: 0.35,
-                                yAxisID: 'yRevenue',
-                                order: 1
-                            },
-                            {
-                                label: 'Conv %',
-                                data: res.top_products.slice(0, 12).map(p => p.conv),
-                                type: 'line',
-                                borderColor: '#F59E0B',
-                                backgroundColor: '#F59E0B',
-                                borderDash: [4, 4],
-                                borderWidth: 2,
-                                pointBackgroundColor: '#F59E0B',
-                                pointBorderColor: '#ffffff',
-                                pointBorderWidth: 2,
-                                pointRadius: 4.5,
-                                tension: 0.35,
-                                yAxisID: 'yPercent',
-                                order: 2
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        interaction: { mode: 'index', intersect: false },
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                backgroundColor: '#0f172a',
-                                padding: 12,
-                                cornerRadius: 8,
-                                callbacks: {
-                                    label: function (context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) label += ': ';
-                                        if (context.dataset.yAxisID === 'yRevenue') label += '$' + context.parsed.y.toLocaleString();
-                                        else if (context.dataset.yAxisID === 'yPercent') label += context.parsed.y.toFixed(2) + '%';
-                                        else label += context.parsed.y.toLocaleString();
-                                        return label;
+                                hoverOffset: 8
+                            }]
+                        },
+                        options: {
+                            cutout: '67%',
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#ffffff',
+                                    titleColor: '#0f172a',
+                                    bodyColor: '#0f172a',
+                                    borderColor: '#e2e8f0',
+                                    borderWidth: 1,
+                                    padding: 10,
+                                    cornerRadius: 8,
+                                    displayColors: true,
+                                    callbacks: {
+                                        label: function (context) {
+                                            return context.label + ': $' + Number(context.parsed).toLocaleString();
+                                        }
                                     }
                                 }
                             }
+                        }
+                    });
+
+                    // 2. ULTIMATE COMBO REPORT (One report for everything)
+                    const ctxCombo = document.getElementById('productComboChart').getContext('2d');
+                    if (window.productComboChartInst) window.productComboChartInst.destroy();
+
+                    const labels = res.top_products.slice(0, 12).map(p => p.sku);
+
+                    window.productComboChartInst = new Chart(ctxCombo, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Sessions',
+                                    data: res.top_products.slice(0, 12).map(p => p.sessions),
+                                    backgroundColor: 'rgba(219, 225, 255, 0.85)',
+                                    borderColor: '#DBE1FF',
+                                    borderRadius: 4,
+                                    barPercentage: 0.6,
+                                    borderWidth: 0,
+                                    yAxisID: 'yVolume',
+                                    order: 3
+                                },
+                                {
+                                    label: 'Revenue ($)',
+                                    data: res.top_products.slice(0, 12).map(p => p.revenue),
+                                    type: 'line',
+                                    borderColor: '#4362CE',
+                                    backgroundColor: '#4362CE',
+                                    borderWidth: 2.5,
+                                    pointBackgroundColor: '#4362CE',
+                                    pointBorderColor: '#ffffff',
+                                    pointBorderWidth: 2,
+                                    pointRadius: 4.5,
+                                    tension: 0.35,
+                                    yAxisID: 'yRevenue',
+                                    order: 1
+                                },
+                                {
+                                    label: 'Conv %',
+                                    data: res.top_products.slice(0, 12).map(p => p.conv),
+                                    type: 'line',
+                                    borderColor: '#F59E0B',
+                                    backgroundColor: '#F59E0B',
+                                    borderDash: [4, 4],
+                                    borderWidth: 2,
+                                    pointBackgroundColor: '#F59E0B',
+                                    pointBorderColor: '#ffffff',
+                                    pointBorderWidth: 2,
+                                    pointRadius: 4.5,
+                                    tension: 0.35,
+                                    yAxisID: 'yPercent',
+                                    order: 2
+                                }
+                            ]
                         },
-                        scales: {
-                            x: { grid: { display: false }, ticks: { font: { weight: '600' } } },
-                            yVolume: {
-                                type: 'linear',
-                                position: 'left',
-                                title: { display: true, text: 'Traffic Volume', font: { weight: '700' } },
-                                grid: { color: '#f1f5f9' }
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: { mode: 'index', intersect: false },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#0f172a',
+                                    padding: 12,
+                                    cornerRadius: 8,
+                                    callbacks: {
+                                        label: function (context) {
+                                            let label = context.dataset.label || '';
+                                            if (label) label += ': ';
+                                            if (context.dataset.yAxisID === 'yRevenue') label += '$' + context.parsed.y.toLocaleString();
+                                            else if (context.dataset.yAxisID === 'yPercent') label += context.parsed.y.toFixed(2) + '%';
+                                            else label += context.parsed.y.toLocaleString();
+                                            return label;
+                                        }
+                                    }
+                                }
                             },
-                            yRevenue: {
-                                type: 'linear',
-                                position: 'right',
-                                title: { display: true, text: 'Revenue ($)', font: { weight: '700' } },
-                                grid: { display: false },
-                                ticks: { callback: v => '$' + formatAbbrev(v) }
-                            },
-                            yPercent: {
-                                type: 'linear',
-                                position: 'right',
-                                title: { display: true, text: 'Conv %', font: { weight: '700' } },
-                                grid: { display: false },
-                                ticks: { callback: v => v + '%' },
-                                min: 0,
-                                display: false
+                            scales: {
+                                x: { grid: { display: false }, ticks: { font: { weight: '600' } } },
+                                yVolume: {
+                                    type: 'linear',
+                                    position: 'left',
+                                    title: { display: true, text: 'Traffic Volume', font: { weight: '700' } },
+                                    grid: { color: '#f1f5f9' }
+                                },
+                                yRevenue: {
+                                    type: 'linear',
+                                    position: 'right',
+                                    title: { display: true, text: 'Revenue ($)', font: { weight: '700' } },
+                                    grid: { display: false },
+                                    ticks: { callback: v => '$' + formatAbbrev(v) }
+                                },
+                                yPercent: {
+                                    type: 'linear',
+                                    position: 'right',
+                                    title: { display: true, text: 'Conv %', font: { weight: '700' } },
+                                    grid: { display: false },
+                                    ticks: { callback: v => v + '%' },
+                                    min: 0,
+                                    display: false
+                                }
                             }
                         }
-                    }
-                });
+                    });
 
-                // Product performance table is styled with custom Bento pagination/search.
-            }
-        });
-    }
-
-    // Tab switching handled via sidebar navigation (page reload)
-
-    $('.chart-tab-btn').click(function () {
-        $('.chart-tab-btn').removeClass('active'); $(this).addClass('active');
-        renderChart($(this).data('chart'));
-    });
-
-    // Initialize Flatpickr for Range Selection matching Figma UI
-    function initDashboardDatePickers() {
-        if (typeof flatpickr !== 'undefined') {
-            flatpickr(".date-range-picker", {
-                mode: "range",
-                dateFormat: "Y-m-d",
-                altInput: true,
-                altFormat: "M d, Y",
-                defaultDate: [$('#filter_from').val() || "2026-01-01", $('#filter_to').val() || "2026-03-31"],
-                onChange: function (selectedDates, dateStr, instance) {
-                    if (selectedDates.length === 2) {
-                        const from = instance.formatDate(selectedDates[0], "Y-m-d");
-                        const to = instance.formatDate(selectedDates[1], "Y-m-d");
-                        $('#filter_from').val(from);
-                        $('#filter_to').val(to);
-                        loadDashboard();
-                    }
+                    // Product performance table is styled with custom Bento pagination/search.
                 }
             });
         }
-    }
 
-    // Dashboard Initialization
-    $('#filter_from').val('2026-01-01');
-    $('#filter_to').val('2026-03-31');
-    initDashboardDatePickers();
-    loadDashboard();
+        // Tab switching handled via sidebar navigation (page reload)
 
-    $('#save_financials_new').click(function () {
-        const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : $('#filter_customer').val();
-        const from = $('#filter_from').val();
-        if (!from) { alert('Please select a date range first'); return; }
-        const reportMonth = from.substring(0, 7); // YYYY-MM
-
-        const btn = $(this);
-        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> SAVING...');
-
-        $.ajax({
-            url: '<?php echo BASE_URL; ?>api/save_financials.php',
-            method: 'POST',
-            data: {
-                customer_id: customerId,
-                report_month: reportMonth,
-                cogs: $('#cogs_override_new').val(),
-                ad_spend: 0,
-                other_fees: $('#other_fees_override_new').val()
-            },
-            dataType: 'json',
-            success: function (res) {
-                if (res.success) {
-                    Swal.fire({ icon: 'success', title: 'Saved!', text: 'Financial settings updated for ' + reportMonth, timer: 1500 });
-                    loadDashboard();
-                } else {
-                    Swal.fire({ icon: 'error', title: 'Error', text: res.error });
-                }
-            },
-            complete: () => btn.prop('disabled', false).html('SAVE SETTINGS')
+        $('.chart-tab-btn').click(function () {
+            $('.chart-tab-btn').removeClass('active'); $(this).addClass('active');
+            renderChart($(this).data('chart'));
         });
-    });
 
-    // Bind Bento Search Input Event Listeners
-    $('#product_search_input').on('keyup input', function () {
-        productsSearchQuery = $(this).val();
-        productsCurrentPage = 1;
-        renderProductPerformanceTable();
-    });
-
-    $('#sku_pl_search_input').on('keyup input', function () {
-        skuPlSearchQuery = $(this).val();
-        skuPlCurrentPage = 1;
-        renderSkuPlTable();
-    });
-
-    $('#traffic_search_input').on('keyup input', function () {
-        trafficSearchQuery = $(this).val();
-        trafficCurrentPage = 1;
-        renderTrafficTable();
-    });
-
-    // Figma Profit & Loss Chart Controls
-    $(document).on('click', '#pl_time_toggle .pl-time-btn', function () {
-        $('#pl_time_toggle .pl-time-btn').removeClass('active');
-        $(this).addClass('active');
-        currentPlTime = $(this).data('time');
-        renderProfitLossChart();
-    });
-
-    $(document).on('change', '#pl_bar_metric, #pl_line_metric', function () {
-        renderProfitLossChart();
-    });
-
-    // Date & Customer filter sync and apply
-    $(document).on('change', '.filter-customer-select', function () {
-        $('#filter_customer').val($(this).val());
-        loadDashboard();
-    });
-
-    $(document).on('change', '.filter-from-input', function () {
-        $('#filter_from').val($(this).val());
-    });
-
-    $(document).on('change', '.filter-to-input', function () {
-        $('#filter_to').val($(this).val());
-    });
-
-    $(document).on('click', '.btn-apply-filters', function () {
-        loadDashboard();
-    });
-
-    // Export CSV handler for Profit & Loss
-    $(document).on('click', '.btn-export-csv', function () {
-        if (!globalSkuPlData || !globalSkuPlData.length) {
-            Swal.fire({ icon: 'info', title: 'No Data', text: 'No SKU data available to export.' });
-            return;
+        // Initialize Flatpickr for Range Selection matching Figma UI
+        function initDashboardDatePickers() {
+            if (typeof flatpickr !== 'undefined') {
+                flatpickr(".date-range-picker", {
+                    mode: "range",
+                    dateFormat: "Y-m-d",
+                    altInput: true,
+                    altFormat: "M d, Y",
+                    defaultDate: [$('#filter_from').val() || "2026-01-01", $('#filter_to').val() || "2026-03-31"],
+                    onChange: function (selectedDates, dateStr, instance) {
+                        if (selectedDates.length === 2) {
+                            const from = instance.formatDate(selectedDates[0], "Y-m-d");
+                            const to = instance.formatDate(selectedDates[1], "Y-m-d");
+                            $('#filter_from').val(from);
+                            $('#filter_to').val(to);
+                            loadDashboard();
+                        }
+                    }
+                });
+            }
         }
-        let csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Rank,Seller SKU,Units Sold,Revenue,Net Profit,Net Profit Margin %\r\n";
-        globalSkuPlData.forEach((row, i) => {
-            csvContent += `${i + 1},"${row.sku || ''}",${row.units || 0},${row.revenue || 0},${row.net || 0},${row.margin || 0}%\r\n`;
-        });
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `sku_profit_loss_${new Date().toISOString().slice(0, 10)}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    });
 
-    $('#apply_filters').click(loadDashboard);
+        // Dashboard Initialization
+        $('#filter_from').val('2026-01-01');
+        $('#filter_to').val('2026-03-31');
+        initDashboardDatePickers();
+        loadDashboard();
+
+        $('#save_financials_new').click(function () {
+            const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : $('#filter_customer').val();
+            const from = $('#filter_from').val();
+            if (!from) { alert('Please select a date range first'); return; }
+            const reportMonth = from.substring(0, 7); // YYYY-MM
+
+            const btn = $(this);
+            btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> SAVING...');
+
+            $.ajax({
+                url: '<?php echo BASE_URL; ?>api/save_financials.php',
+                method: 'POST',
+                data: {
+                    customer_id: customerId,
+                    report_month: reportMonth,
+                    cogs: $('#cogs_override_new').val(),
+                    ad_spend: 0,
+                    other_fees: $('#other_fees_override_new').val()
+                },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.success) {
+                        Swal.fire({ icon: 'success', title: 'Saved!', text: 'Financial settings updated for ' + reportMonth, timer: 1500 });
+                        loadDashboard();
+                    } else {
+                        Swal.fire({ icon: 'error', title: 'Error', text: res.error });
+                    }
+                },
+                complete: () => btn.prop('disabled', false).html('SAVE SETTINGS')
+            });
+        });
+
+        // Bind Bento Search Input Event Listeners
+        $('#product_search_input').on('keyup input', function () {
+            productsSearchQuery = $(this).val();
+            productsCurrentPage = 1;
+            renderProductPerformanceTable();
+        });
+
+        $('#sku_pl_search_input').on('keyup input', function () {
+            skuPlSearchQuery = $(this).val();
+            skuPlCurrentPage = 1;
+            renderSkuPlTable();
+        });
+
+        $('#traffic_search_input').on('keyup input', function () {
+            trafficSearchQuery = $(this).val();
+            trafficCurrentPage = 1;
+            renderTrafficTable();
+        });
+
+        // Figma Profit & Loss Chart Controls
+        $(document).on('click', '#pl_time_toggle .pl-time-btn', function () {
+            $('#pl_time_toggle .pl-time-btn').removeClass('active');
+            $(this).addClass('active');
+            currentPlTime = $(this).data('time');
+            renderProfitLossChart();
+        });
+
+        $(document).on('change', '#pl_bar_metric, #pl_line_metric', function () {
+            renderProfitLossChart();
+        });
+
+        // Date & Customer filter sync and apply
+        $(document).on('change', '.filter-customer-select', function () {
+            $('#filter_customer').val($(this).val());
+            loadDashboard();
+        });
+
+        $(document).on('change', '.filter-from-input', function () {
+            $('#filter_from').val($(this).val());
+        });
+
+        $(document).on('change', '.filter-to-input', function () {
+            $('#filter_to').val($(this).val());
+        });
+
+        $(document).on('click', '.btn-apply-filters', function () {
+            loadDashboard();
+        });
+
+        // Export CSV handler for Profit & Loss
+        $(document).on('click', '.btn-export-csv', function () {
+            if (!globalSkuPlData || !globalSkuPlData.length) {
+                Swal.fire({ icon: 'info', title: 'No Data', text: 'No SKU data available to export.' });
+                return;
+            }
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Rank,Seller SKU,Units Sold,Revenue,Net Profit,Net Profit Margin %\r\n";
+            globalSkuPlData.forEach((row, i) => {
+                csvContent += `${i + 1},"${row.sku || ''}",${row.units || 0},${row.revenue || 0},${row.net || 0},${row.margin || 0}%\r\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `sku_profit_loss_${new Date().toISOString().slice(0, 10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        $('#apply_filters').click(loadDashboard);
     });
 </script>
 
