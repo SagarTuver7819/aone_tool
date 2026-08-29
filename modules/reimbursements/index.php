@@ -24,153 +24,197 @@ include '../../includes/sidebar.php';
     }
 
     .main-wrapper {
-        padding-top: 0 !important;
+        padding: 1.25rem 2rem 2rem 2rem !important;
         overflow-x: hidden;
     }
 
-    .reimb-container {
-        padding: 1.25rem 2rem 3rem 2rem;
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-        overflow-x: hidden;
+    /* Topbar styling - Clean Transparent Header matching Figma */
+    .figma-page-topbar {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 0.75rem !important;
+        flex-wrap: nowrap !important;
+        padding: 0.25rem 0 1rem 0 !important;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid #EAECEF !important;
+        border-radius: 0 !important;
+        margin-bottom: 1.25rem !important;
+        box-shadow: none !important;
     }
 
-    /* Topbar */
-    .reimb-topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 1.25rem;
-        border-bottom: 1px solid #EAECEF;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-        gap: 1rem;
-        width: 100%;
-    }
-
-    .reimb-topbar-left {
+    .figma-page-topbar-left {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 0.85rem;
     }
 
-    .reimb-profile-select-wrap {
+    .figma-select-wrapper {
         position: relative;
         display: inline-flex;
         align-items: center;
     }
 
-    .reimb-profile-select {
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 8px;
-        height: 38px;
-        padding: 0 32px 0 12px;
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: #0F172A;
-        outline: none;
-        cursor: pointer;
-        min-width: 170px;
+    .figma-select-wrapper select {
         appearance: none;
         -webkit-appearance: none;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        min-width: 170px;
+        padding: 0.45rem 2.2rem 0.45rem 0.85rem;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #1E2238;
+        background: #FFFFFF;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.2s ease;
     }
 
-    .reimb-profile-select:focus {
+    .figma-select-wrapper select:focus {
         border-color: #4362CE;
     }
 
-    .reimb-breadcrumb {
-        font-size: 0.84rem;
-        color: #64748B;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+    .figma-select-wrapper .select-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        width: 12px;
+        height: 12px;
     }
 
-    .reimb-breadcrumb strong {
-        color: #0F172A;
-        font-weight: 700;
-    }
-
-    .reimb-topbar-actions {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .btn-reimb-primary {
-        background: #4362CE;
-        color: #FFFFFF !important;
+    .figma-page-breadcrumb {
         font-size: 0.82rem;
-        font-weight: 700;
-        padding: 8px 18px;
-        border-radius: 8px;
-        border: none;
+        font-weight: 500;
+        color: #64748B;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        text-decoration: none;
-        box-shadow: 0 1px 2px rgba(67, 98, 206, 0.2);
-        transition: all 0.15s ease;
+        gap: 0.45rem;
     }
 
-    .btn-reimb-primary:hover {
-        background: #3451B2;
+    .figma-page-breadcrumb .breadcrumb-dot {
+        margin: 0 3px;
+        opacity: 0.4;
+        font-size: 0.9rem;
+    }
+
+    .figma-page-breadcrumb strong {
+        color: #1E293B;
+        font-weight: 600;
+    }
+
+    .figma-page-topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-figma-primary {
+        background: #4362CE !important;
         color: #FFFFFF !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1.15rem !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.45rem !important;
+        box-shadow: 0px 4px 10px rgba(67, 98, 206, 0.2) !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-primary:hover {
+        background: #3452BA !important;
+        transform: translateY(-1px);
+        color: #FFFFFF !important;
+    }
+
+    .btn-figma-outline-sm {
+        background: #F1F4F9 !important;
+        color: #363B4F !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1.05rem !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.45rem !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-outline-sm:hover {
+        background: #E2E8F0 !important;
+        color: #0F172A !important;
     }
 
     .btn-reimb-outline {
-        background: #FFFFFF;
-        color: #0F172A;
-        border: 1px solid #E2E8F0;
-        font-size: 0.82rem;
-        font-weight: 600;
-        padding: 8px 16px;
-        border-radius: 8px;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        cursor: pointer;
-        transition: all 0.15s ease;
+        background: #F8FAFC !important;
+        color: #363B4F !important;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 8px !important;
+        padding: 0.45rem 0.95rem !important;
+        font-size: 0.8rem !important;
+        font-weight: 600 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.45rem !important;
+        cursor: pointer !important;
+        transition: all 0.15s ease !important;
+        line-height: 1.2 !important;
     }
 
     .btn-reimb-outline:hover {
-        background: #F8FAFC;
-        border-color: #CBD5E1;
+        background: #F1F5F9 !important;
+        border-color: #CBD5E1 !important;
+        color: #0F172A !important;
     }
 
-    .btn-reimb-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        color: #64748B;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.15s ease;
-        position: relative;
+    .btn-figma-icon-sm {
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 50% !important;
+        background: #F1F4F9 !important;
+        border: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #475569 !important;
+        cursor: pointer !important;
+        position: relative !important;
+        transition: all 0.2s ease !important;
     }
 
-    .btn-reimb-icon:hover {
-        background: #F8FAFC;
-        color: #0F172A;
+    .btn-figma-icon-sm:hover {
+        background: #E2E8F0 !important;
+        color: #0F172A !important;
     }
 
-    .btn-reimb-icon .dot-badge {
+    .btn-figma-icon-sm .notif-badge {
         position: absolute;
-        top: 8px;
-        right: 8px;
+        top: 9px;
+        right: 9px;
         width: 6px;
         height: 6px;
         background: #EE473D;
         border-radius: 50%;
+        border: 1.5px solid #F1F4F9;
+    }
+
+    .reimb-container {
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
     }
 
     /* Page Header */
@@ -178,7 +222,7 @@ include '../../includes/sidebar.php';
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
         flex-wrap: wrap;
         gap: 1.25rem;
         width: 100%;
@@ -204,33 +248,6 @@ include '../../includes/sidebar.php';
         align-items: center;
         gap: 10px;
         flex-wrap: wrap;
-    }
-
-    .reimb-date-picker {
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 8px;
-        height: 38px;
-        padding: 0 12px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #0F172A;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-    }
-
-    .reimb-date-picker input[type="date"] {
-        border: none;
-        outline: none;
-        font-size: 0.78rem;
-        font-weight: 600;
-        color: #0F172A;
-        background: transparent;
-        font-family: inherit;
-        width: 105px;
-        cursor: pointer;
     }
 
     /* Bento Base Card */
@@ -267,57 +284,61 @@ include '../../includes/sidebar.php';
         font-weight: 500;
     }
 
-    /* MAIN TOP SECTION (Left 4 KPI Cards + Right 2 Cards) */
+    /* MAIN TOP SECTION (Left 4 KPI Cards: 310px Fill + Right Trend & AI Insights) */
     .reimb-top-grid {
         display: grid;
-        grid-template-columns: 280px minmax(0, 1fr);
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
+        grid-template-columns: 310px minmax(0, 1fr);
+        gap: 20px;
+        margin-bottom: 20px;
         align-items: stretch;
         width: 100%;
         min-width: 0;
     }
 
-    /* Left 4 Stacked KPI Cards */
+    /* Left 4 Stacked KPI Cards: each 310px Fill x 149px Fill */
     .reimb-kpi-col {
-        display: grid;
-        grid-template-rows: repeat(4, 1fr);
-        gap: 14px;
-        height: 100%;
-        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 310px;
+        min-width: 310px;
+        flex-shrink: 0;
     }
 
     .reimb-kpi-card {
         background: #FFFFFF;
-        border: 1px solid #EAECEF;
-        border-radius: 16px;
-        padding: 14px 18px 12px 18px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        border: 1px solid #E8EAF2;
+        border-radius: 14px;
+        padding: 18px 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        min-height: 149px;
+        height: 149px;
         box-sizing: border-box;
         transition: all 0.15s ease;
         position: relative;
         overflow: hidden;
-        min-width: 0;
+        width: 100%;
     }
 
     .reimb-kpi-card:hover {
         border-color: #CBD5E1;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
     }
 
-    /* Top Highlight Blue Card */
+    /* Top Highlight Blue Card (Figma: 310px Fill x 149px Fill) */
     .reimb-kpi-card.hero-blue {
-        background-color: #4362CE !important;
+        background: #4362CE !important;
         background-image: url('<?php echo BASE_URL; ?>assets/images/bg-3.png') !important;
         background-repeat: no-repeat !important;
         background-position: right center !important;
         background-size: auto 100% !important;
-        border: none;
+        border: 1px solid #4362CE !important;
+        border-radius: 14px !important;
         color: #FFFFFF !important;
-        box-shadow: 0 8px 24px rgba(67, 98, 206, 0.25);
+        box-shadow: 0 8px 20px rgba(67, 98, 206, 0.22);
     }
 
     .reimb-kpi-card.hero-blue .grid-decor {
@@ -325,20 +346,29 @@ include '../../includes/sidebar.php';
     }
 
     .reimb-kpi-card.hero-blue .reimb-kpi-label {
-        color: rgba(255, 255, 255, 0.85);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 14px;
+        font-weight: 500;
     }
 
     .reimb-kpi-card.hero-blue .reimb-kpi-val {
         color: #FFFFFF;
+        font-size: 26px;
+        font-weight: 700;
     }
 
     .reimb-kpi-card.hero-blue .reimb-delta-badge {
         background: rgba(255, 255, 255, 0.2);
         color: #FFFFFF;
+        border-radius: 6px;
+        padding: 3px 8px;
+        font-size: 12px;
+        font-weight: 700;
     }
 
     .reimb-kpi-card.hero-blue .reimb-delta-sub {
-        color: rgba(255, 255, 255, 0.8);
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 12px;
     }
 
     .reimb-kpi-top {
@@ -348,16 +378,18 @@ include '../../includes/sidebar.php';
     }
 
     .reimb-kpi-label {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #64748B;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px;
+        font-weight: 500;
+        color: #475569;
     }
 
     .reimb-kpi-icon-box {
-        width: 30px;
-        height: 30px;
-        border-radius: 8px;
-        background: #EFF6FF;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: #F8FAFC;
+        border: 1px solid #EFF4FE;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -365,11 +397,13 @@ include '../../includes/sidebar.php';
     }
 
     .reimb-kpi-val {
-        font-size: 1.6rem;
-        font-weight: 800;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 26px;
+        font-weight: 700;
         color: #0F172A;
-        line-height: 1.1;
+        line-height: 1.2;
         margin: 4px 0;
+        font-variant-numeric: tabular-nums;
     }
 
     .reimb-kpi-foot {
@@ -379,14 +413,16 @@ include '../../includes/sidebar.php';
     }
 
     .reimb-delta-badge {
-        font-size: 0.72rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px;
         font-weight: 700;
-        padding: 2px 8px;
+        padding: 3px 8px;
         border-radius: 6px;
         display: inline-flex;
         align-items: center;
-        gap: 4px;
-        line-height: 1.1;
+        gap: 3px;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
     }
 
     .reimb-delta-badge.up {
@@ -405,18 +441,36 @@ include '../../includes/sidebar.php';
     }
 
     .reimb-delta-sub {
-        font-size: 0.7rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px;
         color: #64748B;
         font-weight: 500;
     }
 
-    /* Right Stacked 2 Cards */
+    /* Right Stacked 2 Cards: Trend + AI Insights */
     .reimb-right-col {
         display: flex;
         flex-direction: column;
-        gap: 1.5rem;
+        gap: 20px;
         min-width: 0;
         width: 100%;
+        flex: 1;
+    }
+
+    /* Trend Card (Figma: 900px Fill x 382px, 20px padding) */
+    .reimb-trend-card {
+        background: #FFFFFF;
+        border: 1px solid #E8EAF2;
+        border-radius: 14px;
+        padding: 24px 28px 20px 28px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        box-sizing: border-box;
+        width: 100%;
+        min-width: 0;
+        height: 382px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     /* Trend Toggle */
@@ -431,10 +485,11 @@ include '../../includes/sidebar.php';
     .reimb-trend-btn {
         border: none;
         background: transparent;
-        padding: 4px 12px;
+        padding: 5px 14px;
         border-radius: 6px;
-        font-size: 0.75rem;
-        font-weight: 700;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px;
+        font-weight: 600;
         color: #64748B;
         cursor: pointer;
         transition: all 0.15s ease;
@@ -444,12 +499,13 @@ include '../../includes/sidebar.php';
         background: #FFFFFF;
         color: #0F172A;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        font-weight: 700;
     }
 
-    /* AI Recovery Insights Panel */
+    /* AI Recovery Insights Panel (Figma: 900px Fill x 254px Hug, 14px radius, 30px padding, 30px gap) */
     .reimb-ai-panel {
-        background: #041245 url('<?php echo BASE_URL; ?>bg.jpg') no-repeat center center / cover;
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: #041245 url('<?php echo BASE_URL; ?>assets/images/bg.jpg') no-repeat center center / cover !important;
+        border: 1px solid rgba(67, 98, 206, 0.25);
         border-radius: 14px;
         padding: 30px;
         color: #FFFFFF;
@@ -458,13 +514,15 @@ include '../../includes/sidebar.php';
         display: flex;
         align-items: center;
         gap: 30px;
-        box-shadow: 0 10px 30px rgba(4, 18, 69, 0.35);
+        box-shadow: 0 8px 24px rgba(4, 18, 69, 0.25);
         min-width: 0;
+        box-sizing: border-box;
+        width: 100%;
     }
 
     .reimb-ai-orb {
-        width: 84px;
-        height: 84px;
+        width: 90px;
+        height: 90px;
         flex-shrink: 0;
         position: relative;
         display: flex;
@@ -477,7 +535,7 @@ include '../../includes/sidebar.php';
         width: 100%;
         height: 100%;
         object-fit: contain;
-        filter: drop-shadow(0 0 16px rgba(120, 80, 255, 0.45));
+        filter: drop-shadow(0 0 20px rgba(120, 80, 255, 0.5));
     }
 
     .reimb-ai-content {
@@ -495,27 +553,31 @@ include '../../includes/sidebar.php';
     }
 
     .reimb-ai-head h4 {
-        font-size: 1.25rem;
-        font-weight: 800;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 18px;
+        font-weight: 700;
         color: #FFFFFF;
         margin: 0;
-        letter-spacing: -0.01em;
+        line-height: 1.2;
     }
 
     .badge-high-priority {
         background: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.22);
         color: #FFFFFF;
-        font-size: 0.72rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 11px;
         font-weight: 600;
         padding: 3px 10px;
         border-radius: 6px;
+        line-height: 1.2;
     }
 
     .reimb-ai-desc {
-        font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.85);
-        margin: 0 0 14px 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.88);
+        margin: 0 0 12px 0;
         line-height: 1.5;
     }
 
@@ -523,8 +585,9 @@ include '../../includes/sidebar.php';
         display: flex;
         flex-direction: column;
         gap: 8px;
-        font-size: 0.82rem;
-        color: rgba(255, 255, 255, 0.9);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.92);
         margin-bottom: 18px;
     }
 
@@ -540,7 +603,8 @@ include '../../includes/sidebar.php';
         border: none;
         border-radius: 8px;
         padding: 9px 18px;
-        font-size: 0.82rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
         font-weight: 700;
         display: inline-flex;
         align-items: center;
@@ -557,24 +621,34 @@ include '../../includes/sidebar.php';
         box-shadow: 0 4px 14px rgba(245, 158, 11, 0.45);
     }
 
-    /* MIDDLE 2 CARDS (Reason Analysis & Recovery Funnel) */
+    /* MIDDLE 2 CARDS (Reason Analysis: 740 Fill x 335.74 Hug & Recovery Funnel: 470 x 335.74 Fill) */
     .reimb-bottom-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: 740fr 470fr;
+        gap: 20px;
         align-items: stretch;
         margin-bottom: 1.5rem;
         width: 100%;
         min-width: 0;
     }
 
+    .reimb-bottom-grid .reimb-card {
+        min-height: 335.74px;
+        height: 100%;
+        margin-bottom: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
     /* Reason Analysis Doughnut & Table Layout */
     .reimb-reasons-wrap {
         display: grid;
-        grid-template-columns: 180px minmax(0, 1fr);
-        gap: 20px;
+        grid-template-columns: 200px minmax(0, 1fr);
+        gap: 24px;
         align-items: center;
         min-width: 0;
+        flex: 1;
     }
 
     .reimb-donut-box {
@@ -614,12 +688,13 @@ include '../../includes/sidebar.php';
     }
 
     .reimb-reason-row {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr auto 54px;
+        gap: 12px;
         align-items: center;
-        justify-content: space-between;
         font-size: 0.78rem;
         font-weight: 700;
-        padding-bottom: 6px;
+        padding-bottom: 8px;
         border-bottom: 1px solid #F8FAFC;
     }
 
@@ -654,13 +729,13 @@ include '../../includes/sidebar.php';
         color: #0F172A;
         font-weight: 800;
         white-space: nowrap;
-        margin-left: 8px;
+        text-align: right;
     }
 
     .reimb-reason-pct {
         color: #64748B;
-        min-width: 45px;
         text-align: right;
+        font-weight: 600;
     }
 
     /* Recovery Funnel List */
@@ -691,10 +766,11 @@ include '../../includes/sidebar.php';
     }
 
     .reimb-funnel-icon {
-        width: 24px;
-        height: 24px;
-        border-radius: 6px;
-        background: #EFF6FF;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -857,8 +933,16 @@ include '../../includes/sidebar.php';
         vertical-align: middle;
     }
 
+    .reimb-table tbody tr:nth-child(odd) td {
+        background: #F7F9FE !important;
+    }
+
+    .reimb-table tbody tr:nth-child(even) td {
+        background: #FFFFFF !important;
+    }
+
     .reimb-table tbody tr:hover td {
-        background: #FAFAFC;
+        background: #EDF2FC !important;
     }
 
     .reimb-prod-cell {
@@ -1012,44 +1096,114 @@ include '../../includes/sidebar.php';
 
         .reimb-top-grid,
         .reimb-bottom-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr !important;
+            gap: 1.25rem !important;
         }
 
         .reimb-kpi-col {
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: auto;
+            width: 100% !important;
+            min-width: 0 !important;
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 14px !important;
         }
 
         .reimb-metric-blocks-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, 1fr) !important;
         }
     }
 
     @media (max-width: 768px) {
         .reimb-container {
-            padding: 1rem;
+            padding: 0.75rem 0.75rem 100px 0.75rem !important;
+            width: 100% !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+        }
+
+        .figma-page-topbar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+        }
+
+        .figma-page-topbar-left {
+            width: 100% !important;
+        }
+
+        .figma-select-wrapper,
+        .figma-select-wrapper select {
+            width: 100% !important;
+            min-width: 0 !important;
+        }
+
+        .figma-page-breadcrumb {
+            display: none !important;
+        }
+
+        .figma-page-topbar-right {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 0.5rem !important;
+            width: 100% !important;
+        }
+
+        .btn-figma-icon-sm {
+            display: none !important;
+        }
+
+        .reimb-page-head {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .reimb-controls {
+            width: 100% !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.5rem !important;
+        }
+
+        .reimb-controls .figma-date-picker-wrap {
+            width: 100% !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        .reimb-controls .figma-date-picker-wrap input.flatpickr-range-input {
+            width: 100% !important;
+            font-size: 0.76rem !important;
         }
 
         .reimb-kpi-col {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+        }
+
+        .reimb-kpi-card {
+            min-height: 120px !important;
+            height: auto !important;
+            padding: 14px 16px !important;
         }
 
         .reimb-metric-blocks-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr !important;
         }
 
         .reimb-reasons-wrap {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr !important;
         }
     }
 </style>
 
 <div class="reimb-container">
-    <!-- Topbar -->
-    <div class="reimb-topbar">
-        <div class="reimb-topbar-left">
-            <div class="reimb-profile-select-wrap">
-                <select id="filter_customer" class="reimb-profile-select" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
+    <!-- Figma-style Top Bar -->
+    <div class="figma-page-topbar">
+        <div class="figma-page-topbar-left">
+            <div class="figma-select-wrapper">
+                <select id="filter_customer" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
                     <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
                         <option value="">All Amazon Profiles</option>
                     <?php endif; ?>
@@ -1065,31 +1219,24 @@ include '../../includes/sidebar.php';
                         </option>
                     <?php endwhile; ?>
                 </select>
-                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Down Up Arrow.svg"
-                    style="position: absolute; right: 12px; pointer-events: none; width: 10px; height: 10px;" />
+                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Down Up Arrow.svg" class="select-icon"
+                    alt="Toggle" />
             </div>
-            <div class="reimb-breadcrumb">
-                Dashboard • <strong>Reimbursement Center</strong>
-            </div>
+            <span class="figma-page-breadcrumb">Dashboard <span class="breadcrumb-dot">•</span> <strong>Reimbursement
+                    Center</strong></span>
         </div>
-        <div class="reimb-topbar-actions">
+        <div class="figma-page-topbar-right">
             <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
-                <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-reimb-primary">
-                    <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/New Upload.svg"
-                        style="width: 14px; height: 14px; filter: brightness(0) invert(1);" /> New Upload
-                </a>
+                <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i
+                        class="fas fa-plus"></i> New Upload</a>
             <?php endif; ?>
-            <button type="button" class="btn-reimb-outline" id="btn_export_csv_top">
-                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Export CSV.svg"
-                    style="width: 14px; height: 14px;" /> Export CSV
-            </button>
-            <button type="button" class="btn-reimb-icon" title="Search">
-                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Search.svg" style="width: 16px; height: 16px;" />
-            </button>
-            <button type="button" class="btn-reimb-icon" title="Notifications">
-                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Notification.svg"
-                    style="width: 16px; height: 16px;" />
-                <span class="dot-badge"></span>
+            <button type="button" class="btn-figma-outline-sm" id="btn_export_csv_top"><i
+                    class="fas fa-file-export"></i>
+                Export CSV</button>
+            <button type="button" class="btn-figma-icon-sm" title="Search"><i class="fas fa-search"></i></button>
+            <button type="button" class="btn-figma-icon-sm" title="Notifications">
+                <i class="fas fa-bell"></i>
+                <span class="notif-badge"></span>
             </button>
         </div>
     </div>
@@ -1208,8 +1355,8 @@ include '../../includes/sidebar.php';
         <!-- Right: 2 Stacked Cards (Trend Chart & AI Insights) -->
         <div class="reimb-right-col">
 
-            <!-- Card 1: Reimbursement Value Trend -->
-            <div class="reimb-card">
+            <!-- Card 1: Reimbursement Value Trend (Figma: 900px Fill x 382px Hug) -->
+            <div class="reimb-trend-card">
                 <div class="reimb-card-head">
                     <div>
                         <h3>Reimbursement Value Trend</h3>
@@ -1221,7 +1368,7 @@ include '../../includes/sidebar.php';
                     </div>
                 </div>
 
-                <div style="height: 190px; width: 100%; position: relative; min-width: 0;">
+                <div style="height: 250px; width: 100%; position: relative; min-width: 0; flex: 1;">
                     <canvas id="trendChart"></canvas>
                 </div>
 
@@ -1235,8 +1382,7 @@ include '../../includes/sidebar.php';
             <!-- Card 2: AI Recovery Insights Panel -->
             <div class="reimb-ai-panel">
                 <div class="reimb-ai-orb">
-                    <img src="<?php echo BASE_URL; ?>Frame 427322845.png" alt="AI Recovery Insights"
-                        onerror="this.src='<?php echo BASE_URL; ?>assets/images/ai-orb.png';" />
+                    <img src="<?php echo BASE_URL; ?>assets/images/ai-orb.png" alt="AI Recovery Insights" />
                 </div>
                 <div class="reimb-ai-content">
                     <div class="reimb-ai-head">
@@ -1301,10 +1447,10 @@ include '../../includes/sidebar.php';
                 <div class="reimb-reasons-list" id="reasons_legend">
                     <div class="reimb-reason-row">
                         <div class="reimb-reason-left">
-                            <span class="reimb-reason-dot" style="background: #3B82F6;"></span>
+                            <span class="reimb-reason-dot" style="background: #4362CE;"></span>
                             <span>Customer Return</span>
                         </div>
-                        <span class="reimb-reason-amount">$435.41(71.3%)</span>
+                        <span class="reimb-reason-amount">$435.41</span>
                         <span class="reimb-reason-pct">71.3%</span>
                     </div>
                     <div class="reimb-reason-row">
@@ -1312,23 +1458,23 @@ include '../../includes/sidebar.php';
                             <span class="reimb-reason-dot" style="background: #F59E0B;"></span>
                             <span>Damaged:Warehouse</span>
                         </div>
-                        <span class="reimb-reason-amount">$133.00(21.8%)</span>
+                        <span class="reimb-reason-amount">$133.00</span>
                         <span class="reimb-reason-pct">21.8%</span>
                     </div>
                     <div class="reimb-reason-row">
                         <div class="reimb-reason-left">
-                            <span class="reimb-reason-dot" style="background: #EF4444;"></span>
+                            <span class="reimb-reason-dot" style="background: #EE473D;"></span>
                             <span>Lost:Warehouse</span>
                         </div>
-                        <span class="reimb-reason-amount">$24.89(4.1%)</span>
+                        <span class="reimb-reason-amount">$24.89</span>
                         <span class="reimb-reason-pct">4.1%</span>
                     </div>
                     <div class="reimb-reason-row">
                         <div class="reimb-reason-left">
-                            <span class="reimb-reason-dot" style="background: #10B981;"></span>
+                            <span class="reimb-reason-dot" style="background: #029153;"></span>
                             <span>General Adjustment</span>
                         </div>
-                        <span class="reimb-reason-amount">$17.08(2.8%)</span>
+                        <span class="reimb-reason-amount">$17.08</span>
                         <span class="reimb-reason-pct">2.8%</span>
                     </div>
                 </div>
@@ -1347,8 +1493,8 @@ include '../../includes/sidebar.php';
                     <div class="reimb-funnel-top">
                         <div class="reimb-funnel-title-wrap">
                             <div class="reimb-funnel-icon">
-                                <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Financial Leakage.svg"
-                                    style="width: 14px; height: 14px;" />
+                                <img src="<?php echo BASE_URL; ?>assets/icons/Return Page/Sellable.svg"
+                                    style="width: 15px; height: 15px;" />
                             </div>
                             <span class="reimb-funnel-name">Inventory Loss Detected</span>
                         </div>
@@ -1365,7 +1511,7 @@ include '../../includes/sidebar.php';
                         <div class="reimb-funnel-title-wrap">
                             <div class="reimb-funnel-icon">
                                 <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Claim Submitted.svg"
-                                    style="width: 14px; height: 14px;" />
+                                    style="width: 15px; height: 15px;" />
                             </div>
                             <span class="reimb-funnel-name">Claim Submitted</span>
                         </div>
@@ -1382,7 +1528,7 @@ include '../../includes/sidebar.php';
                         <div class="reimb-funnel-title-wrap">
                             <div class="reimb-funnel-icon">
                                 <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Check.svg"
-                                    style="width: 14px; height: 14px;" />
+                                    style="width: 16px; height: 16px;" />
                             </div>
                             <span class="reimb-funnel-name">Approved</span>
                         </div>
@@ -1399,7 +1545,7 @@ include '../../includes/sidebar.php';
                         <div class="reimb-funnel-title-wrap">
                             <div class="reimb-funnel-icon">
                                 <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Cash Recovered.svg"
-                                    style="width: 14px; height: 14px;" />
+                                    style="width: 15px; height: 15px;" />
                             </div>
                             <span class="reimb-funnel-name">Cash Recovered</span>
                         </div>
@@ -1422,10 +1568,9 @@ include '../../includes/sidebar.php';
                 <h3>Product Recovery Leaderboard</h3>
                 <p>Top SKUs by total reimbursement value this period</p>
             </div>
-            <button type="button" class="btn-reimb-outline" id="export_leaderboard"
-                style="padding: 6px 14px; font-size: 0.76rem;">
+            <button type="button" class="btn-reimb-outline" id="export_leaderboard">
                 <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Export CSV.svg"
-                    style="width: 13px; height: 13px;" /> Export
+                    style="width: 14px; height: 14px;" /> Export
             </button>
         </div>
 
@@ -1552,10 +1697,9 @@ include '../../includes/sidebar.php';
                         style="position: absolute; left: 10px; width: 14px; height: 14px; pointer-events: none;" />
                     <input type="text" id="tracker_search" class="reimb-search-input" placeholder="Search SKUs...">
                 </div>
-                <button type="button" class="btn-reimb-outline" id="export_cases"
-                    style="padding: 6px 14px; font-size: 0.76rem;">
+                <button type="button" class="btn-reimb-outline" id="export_cases">
                     <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Export CSV.svg"
-                        style="width: 13px; height: 13px;" /> Export CSV
+                        style="width: 14px; height: 14px;" /> Export CSV
                 </button>
             </div>
         </div>
@@ -1700,14 +1844,29 @@ include '../../includes/sidebar.php';
             let total = totalVal || 610.38;
             $('#reasons_total_val').text(formatCurrency(total));
 
+            const colorMap = {
+                'Customer Return': '#4362CE',
+                'Customer Returns': '#4362CE',
+                'Damaged:Warehouse': '#F59E0B',
+                'Warehouse Damaged': '#F59E0B',
+                'Lost:Warehouse': '#EE473D',
+                'Warehouse Lost': '#EE473D',
+                'General Adjustment': '#029153'
+            };
+
             let defaultReasons = [
-                { label: 'Customer Return', amount: 435.41, pct: 71.3, color: '#3B82F6' },
+                { label: 'Customer Return', amount: 435.41, pct: 71.3, color: '#4362CE' },
                 { label: 'Damaged:Warehouse', amount: 133.00, pct: 21.8, color: '#F59E0B' },
-                { label: 'Lost:Warehouse', amount: 24.89, pct: 4.1, color: '#EF4444' },
-                { label: 'General Adjustment', amount: 17.08, pct: 2.8, color: '#10B981' }
+                { label: 'Lost:Warehouse', amount: 24.89, pct: 4.1, color: '#EE473D' },
+                { label: 'General Adjustment', amount: 17.08, pct: 2.8, color: '#029153' }
             ];
 
             let list = (reasons && reasons.length > 0) ? reasons : defaultReasons;
+            list.forEach(r => {
+                if (colorMap[r.label]) {
+                    r.color = colorMap[r.label];
+                }
+            });
 
             reasonsChart = new Chart(el.getContext('2d'), {
                 type: 'doughnut',
@@ -1745,10 +1904,10 @@ include '../../includes/sidebar.php';
                 legendHtml += `
             <div class="reimb-reason-row">
                 <div class="reimb-reason-left">
-                    <span class="reimb-reason-dot" style="background: ${r.color || '#3B82F6'};"></span>
+                    <span class="reimb-reason-dot" style="background: ${r.color || '#4362CE'};"></span>
                     <span>${r.label}</span>
                 </div>
-                <span class="reimb-reason-amount">${formatCurrency(r.amount)}(${r.pct}%)</span>
+                <span class="reimb-reason-amount">${formatCurrency(r.amount)}</span>
                 <span class="reimb-reason-pct">${r.pct}%</span>
             </div>`;
             });
