@@ -799,20 +799,31 @@ include '../../includes/sidebar.php';
         color: #EE473D !important;
     }
 
-    .trend-growth-pill,
-    .trend-growth-pill.up,
-    .trend-growth-pill.down {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        padding: 0 !important;
+    .trend-growth-pill {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        height: 24px !important;
+        min-width: 68px !important;
+        padding: 2px 8px !important;
+        border-radius: 6px !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
     }
 
     .trend-growth-pill.up {
+        background: #EEF8F1 !important;
+        border: 1px solid #C4ECD0 !important;
         color: #029153 !important;
     }
 
     .trend-growth-pill.down {
+        background: #FEF0EF !important;
+        border: 1px solid #FCD4D0 !important;
         color: #EE473D !important;
     }
 
@@ -1860,14 +1871,23 @@ include '../../includes/sidebar.php';
         font-weight: 400;
     }
 
+    .pl-sku-table tbody tr:nth-child(odd) td {
+        background: #F7F9FE !important;
+    }
+
+    .pl-sku-table tbody tr:nth-child(even) td {
+        background: #FFFFFF !important;
+    }
+
     .pl-sku-table tbody tr:hover td {
-        background: #f8fafc;
+        background: #EDF2FC !important;
     }
 
     .pl-sku-table tfoot td {
         padding: 14px 16px;
-        background: #ffffff;
+        background: #F7F9FE !important;
         border-top: 1px solid #EAECEF;
+        border-bottom: 1px solid #EAECEF;
         font-weight: 600;
         color: #1A1A1A;
         font-size: 14px;
@@ -2241,8 +2261,30 @@ include '../../includes/sidebar.php';
         font-weight: 400;
     }
 
-    .pl-geo-table tbody tr.geo-parent-row:hover td {
-        background: #F8FAFC;
+    .pl-geo-table tbody tr.geo-parent-row:nth-child(4n+1) td {
+        background: #F7F9FE !important;
+    }
+
+    .pl-geo-table tbody tr.geo-parent-row:nth-child(4n+3) td {
+        background: #FFFFFF !important;
+    }
+
+    .pl-geo-table tbody tr.geo-parent-row:hover td,
+    .pl-geo-table tbody tr.geo-parent-row.expanded td {
+        background: #EDF2FC !important;
+    }
+
+    .geo-sku-subcard table thead tr th {
+        background: #F7F9FE !important;
+        border-bottom: 1px solid #EAECEF !important;
+    }
+
+    .geo-sku-subcard table tbody tr td {
+        background: #FFFFFF !important;
+    }
+
+    .geo-sku-subcard table tbody tr:hover td {
+        background: #F8FAFC !important;
     }
 
     .geo-chevron-btn {
@@ -3533,6 +3575,19 @@ include '../../includes/sidebar.php';
     #product_perf_table th,
     #product_perf_table td {
         white-space: nowrap !important;
+    }
+
+    #product_perf_table thead th {
+        text-transform: none !important;
+        letter-spacing: normal !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        color: #1A1A1A !important;
+        background: transparent !important;
+        font-family: 'Inter', sans-serif !important;
+        border-bottom: 1px solid #E8EAF2 !important;
+        padding-top: 14px !important;
+        padding-bottom: 14px !important;
     }
 
     .product-rank {
@@ -5044,26 +5099,27 @@ include '../../includes/sidebar.php';
                 <p style="font-size: 0.75rem; color: #64748b; margin: 4px 0 0; font-weight: 500;">Analyzing sessions
                     (bars) against revenue generation (line) per top 10 SKUs.</p>
             </div>
-            <div class="pp-correlation-legend" style="display: flex; gap: 20px; align-items: center;">
-                <div style="display: flex; gap: 6px; align-items: center;">
-                    <span
-                        style="width: 12px; height: 12px; background: #DBE1FF; border-radius: 2px; display: inline-block;"></span>
-                    <span style="font-size: 0.75rem; color: #475569; font-weight: 600;">Sessions</span>
-                </div>
-                <div style="display: flex; gap: 6px; align-items: center;">
-                    <span
-                        style="width: 16px; height: 2.5px; background: #4362CE; border-radius: 2px; display: inline-block;"></span>
-                    <span style="font-size: 0.75rem; color: #475569; font-weight: 600;">Revenue ($)</span>
-                </div>
-                <div style="display: flex; gap: 6px; align-items: center;">
-                    <span style="width: 16px; border-top: 2px dashed #F59E0B; display: inline-block;"></span>
-                    <span style="font-size: 0.75rem; color: #475569; font-weight: 600;">Conv %</span>
-                </div>
-            </div>
         </div>
         <div class="pp-correlation-chart-wrap"
             style="height: 320px; width: 100%; position: relative; box-sizing: border-box;">
             <canvas id="productComboChart"></canvas>
+        </div>
+        <div class="pp-correlation-legend"
+            style="display: flex; gap: 24px; align-items: center; justify-content: center; margin-top: 14px; margin-bottom: 6px;">
+            <div style="display: flex; gap: 6px; align-items: center;">
+                <span
+                    style="width: 12px; height: 12px; background: #4362CE; border-radius: 3px; display: inline-block;"></span>
+                <span style="font-size: 0.78rem; color: #475569; font-weight: 600;">Sessions</span>
+            </div>
+            <div style="display: flex; gap: 6px; align-items: center;">
+                <span
+                    style="width: 18px; height: 2.5px; background: #4362CE; border-radius: 2px; display: inline-block;"></span>
+                <span style="font-size: 0.78rem; color: #475569; font-weight: 600;">Revenue ($)</span>
+            </div>
+            <div style="display: flex; gap: 6px; align-items: center;">
+                <span style="width: 18px; border-top: 2px dashed #F59E0B; display: inline-block;"></span>
+                <span style="font-size: 0.78rem; color: #475569; font-weight: 600;">Conv %</span>
+            </div>
         </div>
         <div class="pp-correlation-insights"
             style="margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
@@ -5112,28 +5168,28 @@ include '../../includes/sidebar.php';
                 <thead style="background: transparent; border-bottom: 1px solid #E8EAF2;">
                     <tr>
                         <th
-                            style="padding: 14px 16px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 6%;">
+                            style="padding: 14px 16px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 6%; text-transform: none !important; letter-spacing: normal !important;">
                             Rank</th>
                         <th
-                            style="padding: 14px 18px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: left; width: 32%;">
+                            style="padding: 14px 18px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: left; width: 32%; text-transform: none !important; letter-spacing: normal !important;">
                             Product Identity</th>
                         <th
-                            style="padding: 14px 18px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: right; width: 14%;">
+                            style="padding: 14px 18px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: right; width: 14%; text-transform: none !important; letter-spacing: normal !important;">
                             Sales ($)</th>
                         <th
-                            style="padding: 14px 14px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 10%;">
+                            style="padding: 14px 14px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 10%; text-transform: none !important; letter-spacing: normal !important;">
                             Orders</th>
                         <th
-                            style="padding: 14px 14px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 10%;">
+                            style="padding: 14px 14px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 10%; text-transform: none !important; letter-spacing: normal !important;">
                             Units Sold</th>
                         <th
-                            style="padding: 14px 18px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: right; width: 12%;">
+                            style="padding: 14px 18px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: right; width: 12%; text-transform: none !important; letter-spacing: normal !important;">
                             Ad Spend</th>
                         <th
-                            style="padding: 14px 14px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 8%;">
+                            style="padding: 14px 14px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 8%; text-transform: none !important; letter-spacing: normal !important;">
                             ROAS (x)</th>
                         <th
-                            style="padding: 14px 16px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 8%;">
+                            style="padding: 14px 16px; font-size: 13px; font-weight: 500; color: #1A1A1A; text-align: center; width: 8%; text-transform: none !important; letter-spacing: normal !important;">
                             Trend</th>
                     </tr>
                 </thead>
@@ -5649,15 +5705,15 @@ include '../../includes/sidebar.php';
                                 pillHtml = `<span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% ${arrowSvg}</span>`;
                             }
                         }
-                        cellContent = `<div style="display:flex; align-items:center; justify-content:flex-end; gap:10px; width:100%;">
-                            <div style="min-width:76px; display:inline-flex; justify-content:flex-end;">${pillHtml}</div>
+                        cellContent = `<div style="display:inline-flex; align-items:center; justify-content:flex-end; gap:8px; width:100%;">
+                            <div style="width:72px; display:inline-flex; justify-content:flex-end; flex-shrink:0;">${pillHtml}</div>
                             <span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; min-width:65px; text-align:right;">${displayVal}</span>
                         </div>`;
                     } else {
-                        cellContent = `<div style="display:flex; align-items:center; justify-content:flex-end; width:100%;"><span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; text-align:right;">${displayVal}</span></div>`;
+                        cellContent = `<div style="display:inline-flex; align-items:center; justify-content:flex-end; width:100%;"><span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; min-width:65px; text-align:right;">${displayVal}</span></div>`;
                     }
 
-                    bodyHtml += `<td>${cellContent}</td>`;
+                    bodyHtml += `<td style="text-align:right; padding:12px 16px;">${cellContent}</td>`;
                     prevVal = n;
                 });
                 bodyHtml += `</tr>`;
@@ -7147,7 +7203,30 @@ include '../../includes/sidebar.php';
                     const ctxCombo = document.getElementById('productComboChart').getContext('2d');
                     if (window.productComboChartInst) window.productComboChartInst.destroy();
 
-                    const labels = res.top_products.slice(0, 12).map(p => p.sku);
+                    const topItems = (res.top_products || []).slice(0, 12);
+                    const labels = topItems.map(p => p.sku || p.asin || 'SKU');
+
+                    // Custom Tooltip Helper matching Image 1
+                    const getOrCreateComboTooltip = (chart) => {
+                        let tooltipEl = chart.canvas.parentNode.querySelector('.chartjs-combo-custom-tooltip');
+                        if (!tooltipEl) {
+                            tooltipEl = document.createElement('div');
+                            tooltipEl.className = 'chartjs-combo-custom-tooltip';
+                            tooltipEl.style.background = '#ffffff';
+                            tooltipEl.style.borderRadius = '10px';
+                            tooltipEl.style.border = '1px solid #E2E8F0';
+                            tooltipEl.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04)';
+                            tooltipEl.style.padding = '12px 16px';
+                            tooltipEl.style.pointerEvents = 'none';
+                            tooltipEl.style.position = 'absolute';
+                            tooltipEl.style.transition = 'all .1s ease';
+                            tooltipEl.style.zIndex = '100';
+                            tooltipEl.style.minWidth = '180px';
+                            tooltipEl.style.fontFamily = "'Inter', sans-serif";
+                            chart.canvas.parentNode.appendChild(tooltipEl);
+                        }
+                        return tooltipEl;
+                    };
 
                     window.productComboChartInst = new Chart(ctxCombo, {
                         type: 'bar',
@@ -7156,18 +7235,31 @@ include '../../includes/sidebar.php';
                             datasets: [
                                 {
                                     label: 'Sessions',
-                                    data: res.top_products.slice(0, 12).map(p => p.sessions),
+                                    data: topItems.map(p => Number(p.sessions || 0)),
                                     backgroundColor: 'rgba(219, 225, 255, 0.85)',
-                                    borderColor: '#DBE1FF',
+                                    borderColor: '#C7D2FE',
                                     borderRadius: 4,
-                                    barPercentage: 0.6,
-                                    borderWidth: 0,
+                                    barPercentage: 0.8,
+                                    categoryPercentage: 0.65,
+                                    borderWidth: 1,
                                     yAxisID: 'yVolume',
                                     order: 3
                                 },
                                 {
+                                    label: 'Page Views',
+                                    data: topItems.map(p => Number(p.page_views || 0)),
+                                    backgroundColor: 'rgba(209, 250, 229, 0.65)',
+                                    borderColor: 'rgba(110, 231, 183, 0.9)',
+                                    borderRadius: 4,
+                                    barPercentage: 0.8,
+                                    categoryPercentage: 0.65,
+                                    borderWidth: 1,
+                                    yAxisID: 'yVolume',
+                                    order: 4
+                                },
+                                {
                                     label: 'Revenue ($)',
-                                    data: res.top_products.slice(0, 12).map(p => p.revenue),
+                                    data: topItems.map(p => Number(p.revenue || 0)),
                                     type: 'line',
                                     borderColor: '#4362CE',
                                     backgroundColor: '#4362CE',
@@ -7176,13 +7268,14 @@ include '../../includes/sidebar.php';
                                     pointBorderColor: '#ffffff',
                                     pointBorderWidth: 2,
                                     pointRadius: 4.5,
+                                    pointHoverRadius: 6.5,
                                     tension: 0.35,
                                     yAxisID: 'yRevenue',
                                     order: 1
                                 },
                                 {
                                     label: 'Conv %',
-                                    data: res.top_products.slice(0, 12).map(p => p.conv),
+                                    data: topItems.map(p => Number(p.conv || 0)),
                                     type: 'line',
                                     borderColor: '#F59E0B',
                                     backgroundColor: '#F59E0B',
@@ -7192,6 +7285,7 @@ include '../../includes/sidebar.php';
                                     pointBorderColor: '#ffffff',
                                     pointBorderWidth: 2,
                                     pointRadius: 4.5,
+                                    pointHoverRadius: 6.5,
                                     tension: 0.35,
                                     yAxisID: 'yPercent',
                                     order: 2
@@ -7205,18 +7299,83 @@ include '../../includes/sidebar.php';
                             plugins: {
                                 legend: { display: false },
                                 tooltip: {
-                                    backgroundColor: '#0f172a',
-                                    padding: 12,
-                                    cornerRadius: 8,
-                                    callbacks: {
-                                        label: function (context) {
-                                            let label = context.dataset.label || '';
-                                            if (label) label += ': ';
-                                            if (context.dataset.yAxisID === 'yRevenue') label += '$' + context.parsed.y.toLocaleString();
-                                            else if (context.dataset.yAxisID === 'yPercent') label += context.parsed.y.toFixed(2) + '%';
-                                            else label += context.parsed.y.toLocaleString();
-                                            return label;
+                                    enabled: false,
+                                    external: function (context) {
+                                        const { chart, tooltip } = context;
+                                        const tooltipEl = getOrCreateComboTooltip(chart);
+
+                                        if (tooltip.opacity === 0) {
+                                            tooltipEl.style.opacity = '0';
+                                            return;
                                         }
+
+                                        if (tooltip.dataPoints && tooltip.dataPoints.length > 0) {
+                                            const dataIndex = tooltip.dataPoints[0].dataIndex;
+                                            const product = topItems[dataIndex] || {};
+                                            const skuTitle = product.sku || labels[dataIndex] || 'SKU';
+                                            const rev = Number(product.revenue || 0);
+                                            const conv = Number(product.conv || 0);
+                                            const sessions = Number(product.sessions || 0);
+                                            const pageViews = Number(product.page_views || 0);
+
+                                            tooltipEl.innerHTML = `
+                                                <div style="font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 8px; letter-spacing: 0.2px;">${skuTitle}</div>
+                                                <div style="display: flex; flex-direction: column; gap: 5px; font-size: 11.5px;">
+                                                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+                                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                                            <span style="width: 10px; height: 10px; border-radius: 2px; background: #3B82F6; display: inline-block;"></span>
+                                                            <span style="color: #475569; font-weight: 500;">Revenue($) :</span>
+                                                        </div>
+                                                        <span style="color: #2563EB; font-weight: 700;">$${rev.toLocaleString()}</span>
+                                                    </div>
+                                                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+                                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                                            <span style="width: 10px; height: 10px; border-radius: 2px; background: #F59E0B; display: inline-block;"></span>
+                                                            <span style="color: #475569; font-weight: 500;">Conv % :</span>
+                                                        </div>
+                                                        <span style="color: #2563EB; font-weight: 700;">${conv.toFixed(2)}%</span>
+                                                    </div>
+                                                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+                                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                                            <span style="width: 10px; height: 10px; border-radius: 2px; background: #C7D2FE; display: inline-block;"></span>
+                                                            <span style="color: #475569; font-weight: 500;">Sessions :</span>
+                                                        </div>
+                                                        <span style="color: #2563EB; font-weight: 700;">${sessions.toLocaleString()}</span>
+                                                    </div>
+                                                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+                                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                                            <span style="width: 10px; height: 10px; border-radius: 2px; background: #A7F3D0; display: inline-block;"></span>
+                                                            <span style="color: #475569; font-weight: 500;">Page Views :</span>
+                                                        </div>
+                                                        <span style="color: #2563EB; font-weight: 700;">${pageViews.toLocaleString()}</span>
+                                                    </div>
+                                                </div>
+                                            `;
+                                        }
+
+                                        const width = tooltipEl.offsetWidth || 180;
+                                        const height = tooltipEl.offsetHeight || 130;
+                                        let left = tooltip.caretX;
+                                        let top = tooltip.caretY - 12;
+                                        let transformX = '-50%';
+                                        let transformY = '-100%';
+
+                                        if (left - width / 2 < 10) {
+                                            transformX = '0%';
+                                            left = Math.max(10, left - 15);
+                                        } else if (left + width / 2 > chart.width - 10) {
+                                            transformX = '-100%';
+                                            left = Math.min(chart.width - 10, left + 15);
+                                        }
+
+                                        if (top - height < 10) {
+                                            transformY = '15px';
+                                        }
+
+                                        tooltipEl.style.transform = `translate(${transformX}, ${transformY})`;
+                                        tooltipEl.style.left = left + 'px';
+                                        tooltipEl.style.top = top + 'px';
+                                        tooltipEl.style.opacity = '1';
                                     }
                                 }
                             },
@@ -7234,28 +7393,26 @@ include '../../includes/sidebar.php';
                                 yVolume: {
                                     type: 'linear',
                                     position: 'left',
-                                    title: { display: (window.innerWidth >= 600), text: 'Traffic Volume', font: { weight: '700' } },
                                     grid: { color: '#f1f5f9' },
-                                    ticks: { font: { size: (window.innerWidth < 600 ? 9 : 11) } }
+                                    ticks: {
+                                        font: { size: (window.innerWidth < 600 ? 9 : 11) },
+                                        callback: v => v.toLocaleString()
+                                    },
+                                    beginAtZero: true
                                 },
                                 yRevenue: {
                                     type: 'linear',
                                     position: 'right',
-                                    title: { display: (window.innerWidth >= 600), text: 'Revenue ($)', font: { weight: '700' } },
                                     grid: { display: false },
-                                    ticks: {
-                                        font: { size: (window.innerWidth < 600 ? 9 : 11) },
-                                        callback: v => '$' + formatAbbrev(v)
-                                    }
+                                    display: false,
+                                    beginAtZero: true
                                 },
                                 yPercent: {
                                     type: 'linear',
                                     position: 'right',
-                                    title: { display: true, text: 'Conv %', font: { weight: '700' } },
                                     grid: { display: false },
-                                    ticks: { callback: v => v + '%' },
-                                    min: 0,
-                                    display: false
+                                    display: false,
+                                    min: 0
                                 }
                             }
                         }

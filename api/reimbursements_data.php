@@ -178,16 +178,28 @@ try {
         return $b['amount'] <=> $a['amount'];
     });
 
-    $reasons_chart = [];
-    $palette = ['#4d8eff', '#d0bcff', '#ffb2b7', '#10b981', '#f97316', '#94a3b8'];
+    // Reason Analysis
+    $reason_color_map = [
+        'Customer Return' => '#4362CE',
+        'Customer Returns' => '#4362CE',
+        'Damaged:Warehouse' => '#F59E0B',
+        'Warehouse Damaged' => '#F59E0B',
+        'Lost:Warehouse' => '#EE473D',
+        'Warehouse Lost' => '#EE473D',
+        'General Adjustment' => '#029153',
+        'Disposal' => '#8B5CF6',
+        'Missing from Inbound' => '#EC4899',
+    ];
+    $palette = ['#4362CE', '#F59E0B', '#EE473D', '#029153', '#8B5CF6', '#EC4899', '#64748B'];
     $idx = 0;
     foreach ($reasons_map as $r_name => $vals) {
         $pct = $curr_reimb_amount > 0 ? round(($vals['amount'] / $curr_reimb_amount) * 100, 1) : 0;
+        $color = $reason_color_map[$r_name] ?? ($palette[$idx % count($palette)]);
         $reasons_chart[] = [
             'label' => $r_name,
             'amount' => $vals['amount'],
             'pct' => $pct,
-            'color' => $palette[$idx % count($palette)]
+            'color' => $color
         ];
         $idx++;
     }

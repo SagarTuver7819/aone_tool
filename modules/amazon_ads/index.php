@@ -271,13 +271,14 @@ include '../../includes/sidebar.php';
     .ad-kpi-icon {
         width: 32px;
         height: 32px;
-        border-radius: 50%;
-        background: #EEF2FF;
+        border-radius: 8px;
+        background: #F0F4FE;
+        border: 1px solid #E0E7FE;
         color: #4362CE;
-        display: flex;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.85rem;
+        flex-shrink: 0;
     }
 
     .ad-kpi-value {
@@ -330,7 +331,7 @@ include '../../includes/sidebar.php';
     /* Main 2-Column Grid */
     .ad-main-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 350px;
+        grid-template-columns: minmax(0, 1fr) 390px;
         gap: 20px;
         align-items: start;
     }
@@ -346,8 +347,8 @@ include '../../includes/sidebar.php';
         display: flex;
         flex-direction: column;
         gap: 20px;
-        width: 350px;
-        min-width: 350px;
+        width: 390px;
+        min-width: 390px;
     }
 
     .ad-section-head {
@@ -519,51 +520,53 @@ include '../../includes/sidebar.php';
     .kpi-trend-table-wrap {
         width: 100%;
         max-width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow: hidden;
     }
 
     .kpi-trend-table {
         width: 100%;
-        min-width: 320px;
-        border-collapse: separate;
-        border-spacing: 0;
-        font-size: 0.8rem;
+        border-collapse: collapse;
+        table-layout: fixed;
+        background: #FFFFFF;
     }
 
     .kpi-trend-table thead th {
-        padding: 8px 10px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        color: #64748B;
+        padding: 12px 6px;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: #1E293B;
         border: none !important;
-        border-bottom: 1px solid #F1F5F9;
+        border-bottom: 1px solid #EAECEF !important;
         text-align: right;
         white-space: nowrap;
-        background: transparent;
+        background: #FFFFFF;
+        text-transform: none !important;
+        letter-spacing: normal !important;
     }
 
     .kpi-trend-table thead th:first-child {
         text-align: left;
-        padding-left: 8px;
-        width: 28%;
+        width: 25%;
     }
 
     .kpi-trend-table thead th:nth-child(2),
     .kpi-trend-table thead th:nth-child(3),
     .kpi-trend-table thead th:nth-child(4) {
-        width: 24%;
+        width: 25%;
+    }
+
+    .kpi-trend-table tbody tr {
+        border: none;
     }
 
     .kpi-trend-table tbody td {
-        padding: 10px 10px;
+        padding: 12px 6px;
         border: none !important;
-        border-bottom: 1px solid #F8FAFC;
         text-align: right;
         font-variant-numeric: tabular-nums;
-        font-weight: 600;
-        font-size: 0.8rem;
-        color: #0F172A;
+        font-weight: 500;
+        font-size: 12.5px;
+        color: #1E293B;
         white-space: nowrap;
         vertical-align: middle;
     }
@@ -583,17 +586,47 @@ include '../../includes/sidebar.php';
     }
 
     .kpi-trend-table tbody tr:nth-child(even) td {
-        background: transparent;
+        background: transparent !important;
+        background-color: transparent !important;
     }
 
-    .kpi-trend-table td:first-child {
+    .kpi-trend-table tbody td:first-child {
         text-align: left;
-        display: flex;
+    }
+
+    .kpi-metric-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #EEF2FF;
+        border: 1px solid #E0E7FE;
+        color: #4362CE;
+        display: inline-flex;
         align-items: center;
-        gap: 8px;
-        font-weight: 700;
-        color: #475569;
-        padding-left: 8px;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .kpi-trend-table .ad-kpi-badge {
+        padding: 4px 8px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 11.5px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .kpi-trend-table .ad-kpi-badge.up {
+        background: #EEF8F1;
+        color: #029153;
+        border: 1px solid rgba(2, 145, 83, 0.12);
+    }
+
+    .kpi-trend-table .ad-kpi-badge.down {
+        background: #FEF0EF;
+        color: #EE473D;
+        border: 1px solid rgba(238, 71, 61, 0.12);
     }
 
     /* Pill Filter Toggle (Figma Pixel-Perfect Pill with Active Arrow) */
@@ -1022,7 +1055,13 @@ include '../../includes/sidebar.php';
             <div class="ad-kpi-header">
                 <span class="ad-kpi-title">Total Sales</span>
                 <div class="ad-kpi-icon">
-                    <i class="fas fa-dollar-sign"></i>
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12.2775 5.43194C12.2775 3.90463 10.3622 2.6665 7.99967 2.6665C5.63712 2.6665 3.72189 3.90463 3.72189 5.43194C3.72189 6.95924 4.88856 7.8023 7.99967 7.8023C11.1108 7.8023 12.6663 8.59244 12.6663 10.5678C12.6663 12.543 10.577 13.3332 7.99967 13.3332C5.42235 13.3332 3.33301 12.095 3.33301 10.5678"
+                            stroke="#4362CE" stroke-width="1.35" stroke-linecap="round" />
+                        <path d="M8 1.3335V14.6668" stroke="#4362CE" stroke-width="1.35" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
                 </div>
             </div>
             <div class="ad-kpi-value" id="sales-value">$0.00</div>
@@ -1045,7 +1084,12 @@ include '../../includes/sidebar.php';
             <div class="ad-kpi-header">
                 <span class="ad-kpi-title">Total Spend</span>
                 <div class="ad-kpi-icon">
-                    <i class="fas fa-leaf"></i>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4362CE" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z">
+                        </path>
+                        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+                    </svg>
                 </div>
             </div>
             <div class="ad-kpi-value" id="spend-value">$0.00</div>
@@ -1068,7 +1112,11 @@ include '../../includes/sidebar.php';
             <div class="ad-kpi-header">
                 <span class="ad-kpi-title">Tacos</span>
                 <div class="ad-kpi-icon">
-                    <i class="fas fa-bullhorn"></i>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4362CE" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m3 11 18-5v12L3 13v-2z"></path>
+                        <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path>
+                    </svg>
                 </div>
             </div>
             <div class="ad-kpi-value" id="tacos-value">0.00%</div>
@@ -1091,7 +1139,14 @@ include '../../includes/sidebar.php';
             <div class="ad-kpi-header">
                 <span class="ad-kpi-title">Roas</span>
                 <div class="ad-kpi-icon">
-                    <i class="fas fa-calendar-alt"></i>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4362CE" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                        <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"></path>
+                    </svg>
                 </div>
             </div>
             <div class="ad-kpi-value" id="roas-value">0.00x</div>
@@ -1125,6 +1180,19 @@ include '../../includes/sidebar.php';
                 <div style="height: 295px; position: relative; width: 100%;">
                     <canvas id="trendChart"></canvas>
                 </div>
+                <div class="trend-chart-bottom-legend"
+                    style="display: flex; justify-content: center; align-items: center; gap: 24px; margin-top: 14px; margin-bottom: 4px;">
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <span
+                            style="width: 12px; height: 12px; background: #10B981; border-radius: 3px; display: inline-block;"></span>
+                        <span style="font-size: 0.78rem; color: #475569; font-weight: 600;">Total Ad Spend ($)</span>
+                    </div>
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <span
+                            style="width: 12px; height: 12px; background: #4362CE; border-radius: 3px; display: inline-block;"></span>
+                        <span style="font-size: 0.78rem; color: #475569; font-weight: 600;">Total Sales ($)</span>
+                    </div>
+                </div>
             </div>
 
             <!-- 2. Sales / Ad Spend / ROAS Bar Chart Card -->
@@ -1152,6 +1220,24 @@ include '../../includes/sidebar.php';
                 </div>
                 <div style="height: 295px; position: relative; width: 100%;">
                     <canvas id="salesSpendRoasBarChart"></canvas>
+                </div>
+                <div class="bar-chart-bottom-legend"
+                    style="display: flex; justify-content: center; align-items: center; gap: 24px; margin-top: 14px; margin-bottom: 4px;">
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <span
+                            style="width: 12px; height: 12px; background: #F59E0B; border-radius: 3px; display: inline-block;"></span>
+                        <span style="font-size: 0.78rem; color: #475569; font-weight: 600;">Ad Spend ($)</span>
+                    </div>
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <span
+                            style="width: 12px; height: 12px; background: #4362CE; border-radius: 3px; display: inline-block;"></span>
+                        <span style="font-size: 0.78rem; color: #475569; font-weight: 600;">Total Sales ($)</span>
+                    </div>
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <span
+                            style="width: 12px; height: 12px; background: #10B981; border-radius: 3px; display: inline-block;"></span>
+                        <span style="font-size: 0.78rem; color: #475569; font-weight: 600;">Roas (x)</span>
+                    </div>
                 </div>
             </div>
 
@@ -1320,8 +1406,7 @@ include '../../includes/sidebar.php';
                         <p class="ad-card-sub">Cleaned and integrated table</p>
                     </div>
                 </div>
-                <div class="kpi-trend-table-wrap"
-                    style="overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%;">
+                <div class="kpi-trend-table-wrap">
                     <table class="kpi-trend-table">
                         <thead>
                             <tr>
@@ -1334,32 +1419,55 @@ include '../../includes/sidebar.php';
                         <tbody id="kpi-3month-body">
                             <tr>
                                 <td>
-                                    <span
-                                        style="width: 22px; height: 22px; border-radius: 6px; background: #EEF2FF; color: #4362CE; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem;"><i
-                                            class="fas fa-dollar-sign"></i></span>
-                                    <span>Sales</span>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span class="kpi-metric-icon">
+                                            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12.2775 5.43194C12.2775 3.90463 10.3622 2.6665 7.99967 2.6665C5.63712 2.6665 3.72189 3.90463 3.72189 5.43194C3.72189 6.95924 4.88856 7.8023 7.99967 7.8023C11.1108 7.8023 12.6663 8.59244 12.6663 10.5678C12.6663 12.543 10.577 13.3332 7.99967 13.3332C5.42235 13.3332 3.33301 12.095 3.33301 10.5678"
+                                                    stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" />
+                                                <path d="M8 1.3335V14.6668" stroke="#4362CE" stroke-width="1.3"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </span>
+                                        <span style="font-weight: 500; font-size: 13px; color: #1E293B;">Sales</span>
+                                    </div>
                                 </td>
                                 <td id="kpi3-sales-1">$10,930.27</td>
                                 <td id="kpi3-sales-2">$2,725.80</td>
-                                <td id="kpi3-sales-3">$6,930.27</td>
+                                <td id="kpi3-sales-3">$10,930.27</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <span
-                                        style="width: 22px; height: 22px; border-radius: 6px; background: #EEF2FF; color: #4362CE; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem;"><i
-                                            class="fas fa-leaf"></i></span>
-                                    <span>Spend</span>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span class="kpi-metric-icon">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4362CE"
+                                                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                                <path
+                                                    d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z">
+                                                </path>
+                                                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+                                            </svg>
+                                        </span>
+                                        <span style="font-weight: 500; font-size: 13px; color: #1E293B;">Spend</span>
+                                    </div>
                                 </td>
                                 <td id="kpi3-spend-1">$10,930.27</td>
                                 <td id="kpi3-spend-2">$2,725.80</td>
-                                <td id="kpi3-spend-3">$6,930.27</td>
+                                <td id="kpi3-spend-3">$10,930.27</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <span
-                                        style="width: 22px; height: 22px; border-radius: 6px; background: #EEF2FF; color: #4362CE; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem;"><i
-                                            class="fas fa-bullhorn"></i></span>
-                                    <span>Acos</span>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span class="kpi-metric-icon">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4362CE"
+                                                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="m3 11 18-5v12L3 13v-2z"></path>
+                                                <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path>
+                                            </svg>
+                                        </span>
+                                        <span style="font-weight: 500; font-size: 13px; color: #1E293B;">Acos</span>
+                                    </div>
                                 </td>
                                 <td><span class="ad-kpi-badge up">3.3% ↑</span></td>
                                 <td><span class="ad-kpi-badge up">3.3% ↑</span></td>
@@ -1367,10 +1475,16 @@ include '../../includes/sidebar.php';
                             </tr>
                             <tr>
                                 <td>
-                                    <span
-                                        style="width: 22px; height: 22px; border-radius: 6px; background: #EEF2FF; color: #4362CE; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem;"><i
-                                            class="fas fa-chart-line"></i></span>
-                                    <span>Roas</span>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span class="kpi-metric-icon">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4362CE"
+                                                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                                <polyline points="16 7 22 7 22 13"></polyline>
+                                            </svg>
+                                        </span>
+                                        <span style="font-weight: 500; font-size: 13px; color: #1E293B;">Roas</span>
+                                    </div>
                                 </td>
                                 <td><span class="ad-kpi-badge down">0.00% ↓</span></td>
                                 <td><span class="ad-kpi-badge up">0.51x ↑</span></td>
@@ -1695,6 +1809,28 @@ include '../../includes/sidebar.php';
                     salesGrad.addColorStop(0, 'rgba(67, 98, 206, 0.15)');
                     salesGrad.addColorStop(1, 'rgba(67, 98, 206, 0.0)');
 
+                    // Tooltip Helper for trendChart
+                    const getOrCreateTrendTooltip = (chart) => {
+                        let tooltipEl = chart.canvas.parentNode.querySelector('.chartjs-trend-custom-tooltip');
+                        if (!tooltipEl) {
+                            tooltipEl = document.createElement('div');
+                            tooltipEl.className = 'chartjs-trend-custom-tooltip';
+                            tooltipEl.style.background = '#ffffff';
+                            tooltipEl.style.borderRadius = '10px';
+                            tooltipEl.style.border = '1px solid #E2E8F0';
+                            tooltipEl.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04)';
+                            tooltipEl.style.padding = '12px 16px';
+                            tooltipEl.style.pointerEvents = 'none';
+                            tooltipEl.style.position = 'absolute';
+                            tooltipEl.style.transition = 'all .1s ease';
+                            tooltipEl.style.zIndex = '100';
+                            tooltipEl.style.minWidth = '180px';
+                            tooltipEl.style.fontFamily = "'Inter', sans-serif";
+                            chart.canvas.parentNode.appendChild(tooltipEl);
+                        }
+                        return tooltipEl;
+                    };
+
                     trendChart = new Chart(ctx, {
                         type: 'line',
                         data: {
@@ -1736,32 +1872,69 @@ include '../../includes/sidebar.php';
                                 mode: 'index'
                             },
                             plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    align: 'center',
-                                    labels: {
-                                        boxWidth: 10,
-                                        boxHeight: 10,
-                                        usePointStyle: false,
-                                        padding: 16,
-                                        font: {
-                                            family: 'Inter',
-                                            weight: '600',
-                                            size: 12
-                                        },
-                                        color: '#64748B'
-                                    }
-                                },
+                                legend: { display: false },
                                 tooltip: {
-                                    padding: 12,
-                                    backgroundColor: '#0F172A',
-                                    cornerRadius: 8,
-                                    titleFont: { family: 'Inter', weight: '700' },
-                                    bodyFont: { family: 'Inter' },
-                                    callbacks: {
-                                        label: function (context) {
-                                            return context.dataset.label + ': ' + formatCurrency(context.raw);
+                                    enabled: false,
+                                    external: function (context) {
+                                        const { chart, tooltip } = context;
+                                        const tooltipEl = getOrCreateTrendTooltip(chart);
+
+                                        if (tooltip.opacity === 0) {
+                                            tooltipEl.style.opacity = '0';
+                                            return;
                                         }
+
+                                        if (tooltip.dataPoints && tooltip.dataPoints.length > 0) {
+                                            const dataIndex = tooltip.dataPoints[0].dataIndex;
+                                            const label = data.daily_trend.labels[dataIndex] || '';
+                                            const spend = Number(data.daily_trend.spend[dataIndex] || 0);
+                                            const sales = Number(data.daily_trend.sales[dataIndex] || 0);
+                                            const skuTitle = (data.daily_trend.skus && data.daily_trend.skus[dataIndex]) ? data.daily_trend.skus[dataIndex] : (label || 'Metric Details');
+
+                                            tooltipEl.innerHTML = `
+                                                <div style="font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 8px; letter-spacing: 0.2px;">${skuTitle}</div>
+                                                <div style="display: flex; flex-direction: column; gap: 5px; font-size: 11.5px;">
+                                                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+                                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                                            <span style="width: 10px; height: 10px; border-radius: 2px; background: #10B981; display: inline-block;"></span>
+                                                            <span style="color: #475569; font-weight: 500;">Total Ad Spend ($) :</span>
+                                                        </div>
+                                                        <span style="color: #2563EB; font-weight: 700;">$${spend.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                                    </div>
+                                                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+                                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                                            <span style="width: 10px; height: 10px; border-radius: 2px; background: #4362CE; display: inline-block;"></span>
+                                                            <span style="color: #475569; font-weight: 500;">Total Sales ($) :</span>
+                                                        </div>
+                                                        <span style="color: #2563EB; font-weight: 700;">$${sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                                    </div>
+                                                </div>
+                                            `;
+                                        }
+
+                                        const width = tooltipEl.offsetWidth || 180;
+                                        const height = tooltipEl.offsetHeight || 90;
+                                        let left = tooltip.caretX;
+                                        let top = tooltip.caretY - 12;
+                                        let transformX = '-50%';
+                                        let transformY = '-100%';
+
+                                        if (left - width / 2 < 10) {
+                                            transformX = '0%';
+                                            left = Math.max(10, left - 15);
+                                        } else if (left + width / 2 > chart.width - 10) {
+                                            transformX = '-100%';
+                                            left = Math.min(chart.width - 10, left + 15);
+                                        }
+
+                                        if (top - height < 10) {
+                                            transformY = '15px';
+                                        }
+
+                                        tooltipEl.style.transform = `translate(${transformX}, ${transformY})`;
+                                        tooltipEl.style.left = left + 'px';
+                                        tooltipEl.style.top = top + 'px';
+                                        tooltipEl.style.opacity = '1';
                                     }
                                 }
                             },
@@ -2521,6 +2694,28 @@ include '../../includes/sidebar.php';
                 };
             }
 
+            // Tooltip Helper matching Image 3
+            const getOrCreateBarTooltip = (chart) => {
+                let tooltipEl = chart.canvas.parentNode.querySelector('.chartjs-bar-custom-tooltip');
+                if (!tooltipEl) {
+                    tooltipEl = document.createElement('div');
+                    tooltipEl.className = 'chartjs-bar-custom-tooltip';
+                    tooltipEl.style.background = '#ffffff';
+                    tooltipEl.style.borderRadius = '10px';
+                    tooltipEl.style.border = '1px solid #E2E8F0';
+                    tooltipEl.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04)';
+                    tooltipEl.style.padding = '12px 16px';
+                    tooltipEl.style.pointerEvents = 'none';
+                    tooltipEl.style.position = 'absolute';
+                    tooltipEl.style.transition = 'all .1s ease';
+                    tooltipEl.style.zIndex = '100';
+                    tooltipEl.style.minWidth = '180px';
+                    tooltipEl.style.fontFamily = "'Inter', sans-serif";
+                    chart.canvas.parentNode.appendChild(tooltipEl);
+                }
+                return tooltipEl;
+            };
+
             barChart = new Chart(barCtx, {
                 data: {
                     labels: dailyTrendData.labels,
@@ -2534,31 +2729,78 @@ include '../../includes/sidebar.php';
                         intersect: false
                     },
                     plugins: {
-                        legend: {
-                            position: 'bottom',
-                            align: 'center',
-                            labels: {
-                                boxWidth: 10,
-                                boxHeight: 10,
-                                usePointStyle: false,
-                                padding: 16,
-                                font: { family: 'Inter', weight: '600', size: 12 },
-                                color: '#64748B'
-                            }
-                        },
+                        legend: { display: false },
                         tooltip: {
-                            padding: 12,
-                            backgroundColor: '#0F172A',
-                            cornerRadius: 8,
-                            titleFont: { family: 'Inter', weight: '700' },
-                            bodyFont: { family: 'Inter' },
-                            callbacks: {
-                                label: function (context) {
-                                    if (context.dataset.label.includes('Roas') || context.dataset.label.includes('ROAS')) {
-                                        return ' ' + context.dataset.label + ': ' + parseFloat(context.raw).toFixed(2) + 'x';
-                                    }
-                                    return ' ' + context.dataset.label + ': ' + formatCurrency(context.raw);
+                            enabled: false,
+                            external: function (context) {
+                                const { chart, tooltip } = context;
+                                const tooltipEl = getOrCreateBarTooltip(chart);
+
+                                if (tooltip.opacity === 0) {
+                                    tooltipEl.style.opacity = '0';
+                                    return;
                                 }
+
+                                if (tooltip.dataPoints && tooltip.dataPoints.length > 0) {
+                                    const dataIndex = tooltip.dataPoints[0].dataIndex;
+                                    const label = dailyTrendData.labels[dataIndex] || '';
+                                    const spend = Number(dailyTrendData.spend[dataIndex] || 0);
+                                    const sales = Number(dailyTrendData.sales[dataIndex] || 0);
+                                    const roas = spend > 0 ? (sales / spend) : 0;
+
+                                    const skuTitle = (dailyTrendData.skus && dailyTrendData.skus[dataIndex]) ? dailyTrendData.skus[dataIndex] : (label || 'Metric Details');
+
+                                    tooltipEl.innerHTML = `
+                                        <div style="font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 8px; letter-spacing: 0.2px;">${skuTitle}</div>
+                                        <div style="display: flex; flex-direction: column; gap: 5px; font-size: 11.5px;">
+                                            <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+                                                <div style="display: flex; align-items: center; gap: 6px;">
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #F59E0B; display: inline-block;"></span>
+                                                    <span style="color: #475569; font-weight: 500;">Ad Spend ($) :</span>
+                                                </div>
+                                                <span style="color: #2563EB; font-weight: 700;">$${spend.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+                                                <div style="display: flex; align-items: center; gap: 6px;">
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #4362CE; display: inline-block;"></span>
+                                                    <span style="color: #475569; font-weight: 500;">Total Sales ($) :</span>
+                                                </div>
+                                                <span style="color: #2563EB; font-weight: 700;">$${sales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+                                                <div style="display: flex; align-items: center; gap: 6px;">
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #10B981; display: inline-block;"></span>
+                                                    <span style="color: #475569; font-weight: 500;">Roas (x) :</span>
+                                                </div>
+                                                <span style="color: #2563EB; font-weight: 700;">${roas.toFixed(2)}x</span>
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+
+                                const width = tooltipEl.offsetWidth || 180;
+                                const height = tooltipEl.offsetHeight || 110;
+                                let left = tooltip.caretX;
+                                let top = tooltip.caretY - 12;
+                                let transformX = '-50%';
+                                let transformY = '-100%';
+
+                                if (left - width / 2 < 10) {
+                                    transformX = '0%';
+                                    left = Math.max(10, left - 15);
+                                } else if (left + width / 2 > chart.width - 10) {
+                                    transformX = '-100%';
+                                    left = Math.min(chart.width - 10, left + 15);
+                                }
+
+                                if (top - height < 10) {
+                                    transformY = '15px';
+                                }
+
+                                tooltipEl.style.transform = `translate(${transformX}, ${transformY})`;
+                                tooltipEl.style.left = left + 'px';
+                                tooltipEl.style.top = top + 'px';
+                                tooltipEl.style.opacity = '1';
                             }
                         }
                     },
@@ -2603,8 +2845,8 @@ include '../../includes/sidebar.php';
         $('#refresh_ads').click(loadAdData);
         $('#filter_customer').change(loadAdData);
 
-        // Heatmap custom premium tooltip hover handler
-        const heatmapTooltip = $('<div id="heatmap-tooltip" style="position: absolute; display: none; background: #0f172a; color: #ffffff; padding: 10px 14px; border-radius: 8px; font-family: \'Inter\', sans-serif; font-size: 0.8rem; z-index: 9999; box-shadow: 0 4px 15px rgba(0,0,0,0.15); pointer-events: none; line-height: 1.4; border: 1px solid rgba(255,255,255,0.1);"></div>').appendTo('body');
+        // Heatmap custom premium tooltip hover handler (Image 2 White Card style)
+        const heatmapTooltip = $('<div id="heatmap-tooltip" style="position: absolute; display: none; background: #ffffff; color: #1E293B; padding: 12px 16px; border-radius: 10px; font-family: \'Inter\', sans-serif; font-size: 0.8rem; z-index: 9999; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.04); pointer-events: none; line-height: 1.4; border: 1px solid #E2E8F0; min-width: 175px;"></div>').appendTo('body');
 
         $(document).on('mouseenter', '.heatmap-cell', function (e) {
             const day = $(this).data('day');
@@ -2613,14 +2855,16 @@ include '../../includes/sidebar.php';
             const sales = $(this).data('sales');
 
             const content = `
-            <div style="font-weight: 800; margin-bottom: 4px; color: #94a3b8;">Day: ${day} - Hour: ${hour}</div>
-            <div style="display: flex; justify-content: space-between; gap: 15px;">
-                <span>Est. Spend:</span>
-                <span style="font-weight: 700; color: #cbd5e1;">${spend}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; gap: 15px;">
-                <span>Est. Sales:</span>
-                <span style="font-weight: 700; color: #60a5fa;">${sales}</span>
+            <div style="font-size: 11.5px; font-weight: 500; color: #64748B; margin-bottom: 6px;">Day : ${day} - Hour : ${hour}</div>
+            <div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+                    <span style="font-weight: 700; color: #1E293B;">Est. Spend :</span>
+                    <span style="font-weight: 700; color: #2563EB;">${spend}</span>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+                    <span style="font-weight: 700; color: #1E293B;">Est. Sales :</span>
+                    <span style="font-weight: 700; color: #2563EB;">${sales}</span>
+                </div>
             </div>
         `;
 
