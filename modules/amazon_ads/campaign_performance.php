@@ -325,7 +325,7 @@ include '../../includes/sidebar.php';
         background: #FFFFFF;
         border: 1px solid #EAECEF;
         border-radius: 14px;
-        padding: 12px 20px;
+        padding: 12px 18px;
         margin-bottom: 6px;
         height: 81px;
         min-height: 81px;
@@ -333,7 +333,7 @@ include '../../includes/sidebar.php';
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 14px;
+        gap: 10px;
         transition: all 0.15s ease;
     }
 
@@ -374,7 +374,7 @@ include '../../includes/sidebar.php';
     .ct-perf-right {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 10px;
         flex-shrink: 0;
     }
 
@@ -409,38 +409,43 @@ include '../../includes/sidebar.php';
     }
 
     .ct-roas-badge-box .val.up {
+
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 13px;
-        font-weight: 700;
-        color: #029153;
-        line-height: 1.2;
+        font-size: 12px;
+        font-weight: 600;
+        color: #029B13;
+        line-height: 100%;
+
+        letter-spacing: 0;
         display: inline-flex;
-        align-items: end;
-        justify-content: end;
+        align-items: center;
+        justify-content: flex-end;
         gap: 2px;
         font-variant-numeric: tabular-nums;
         white-space: nowrap;
         width: 100%;
-        text-align: center;
+
+        text-align: right;
     }
 
     .ct-roas-badge-box .val.down {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 13px;
-        font-weight: 700;
+        font-size: 12px;
+        font-weight: 600;
         color: #EE473D;
-        line-height: 1.2;
+        line-height: 100%;
+        letter-spacing: 0;
         display: inline-flex;
-        align-items: end;
-        justify-content: end;
+        align-items: center;
+        justify-content: flex-end;
         gap: 2px;
         font-variant-numeric: tabular-nums;
         white-space: nowrap;
+
         width: 100%;
-        text-align: center;
+        text-align: right;
     }
 
-    /* Spend & Sales Metric Box (Exact 100px Width x 40px Height Hug, right-aligned) */
     .ct-spend-box {
         display: flex;
         flex-direction: column;
@@ -475,9 +480,6 @@ include '../../includes/sidebar.php';
         white-space: nowrap;
     }
 
-    /* ==========================================================================
-       Responsive Rules for Campaign & Target Performance
-       ========================================================================== */
     @media (max-width: 1199px) {
         .ct-columns-grid {
             grid-template-columns: 1fr !important;
@@ -664,7 +666,6 @@ include '../../includes/sidebar.php';
         }
     }
 
-    /* Bidding Strategy Card Desktop Styles */
     .ct-bid-card {
         background: #FFFFFF !important;
         border: 1px solid #EAECEF !important;

@@ -2909,8 +2909,8 @@ include '../../includes/sidebar.php';
         height: 48px !important;
         display: flex !important;
         flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
+        align-items: end !important;
+        justify-content: end !important;
         gap: 4px !important;
         flex-shrink: 0 !important;
         text-align: center !important;
@@ -3080,7 +3080,7 @@ include '../../includes/sidebar.php';
         justify-content: center !important;
         pointer-events: none !important;
         text-align: center !important;
-        z-index: 10 !important;
+        z-index: 1 !important;
     }
 
     .pp-donut-center p {
@@ -5123,19 +5123,65 @@ include '../../includes/sidebar.php';
         </div>
         <div class="pp-correlation-insights"
             style="margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
-            <div style="padding: 14px 18px; background: #EFF6FF; border: 1px solid #DBEAFE; border-radius: 12px;">
-                <p style="font-weight: 700; font-size: 0.84rem; margin-bottom: 4px; color: #1E40AF;">Strategic
-                    Correlation</p>
-                <p style="font-size: 0.78rem; color: #475569; margin: 0; line-height: 1.45;">Analyze the relationship
-                    between traffic (bars) and financial outcomes (lines). High traffic with low revenue indicates
-                    listing optimization is needed.</p>
+            <!-- Strategic Correlation Card -->
+            <div style="
+                padding: 18px 20px;
+                background: #F5F6FA;
+                border: 1px solid #DBEAFE;
+                border-radius: 12px;
+                box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                transition: box-shadow 0.2s ease;
+            ">
+                <p style="
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    font-weight: 700;
+                    font-size: 0.875rem;
+                    margin: 0;
+                    color: #2563EB;
+                    letter-spacing: 0;
+                ">Strategic Correlation</p>
+                <p style="
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    font-size: 0.8rem;
+                    color: #64748B;
+                    margin: 0;
+                    line-height: 1.55;
+                    font-weight: 400;
+                ">Analyze the relationship between traffic (bars) and financial outcomes (lines). High traffic with low
+                    revenue indicates listing optimization is needed.</p>
             </div>
-            <div style="padding: 14px 18px; background: #F0FDF4; border: 1px solid #DCFCE7; border-radius: 12px;">
-                <p style="font-weight: 700; font-size: 0.84rem; margin-bottom: 4px; color: #15803D;">Actionable Insight
-                </p>
-                <p style="font-size: 0.78rem; color: #475569; margin: 0; line-height: 1.45;">Prioritize products where
-                    the green dashed line (Conv %) is trending upwards, as these are your most efficient growth
-                    opportunities.</p>
+            <!-- Actionable Insight Card -->
+            <div style="
+                padding: 18px 20px;
+                background: #F5F6FA;
+                border: 1px solid #DCFCE7;
+                border-radius: 12px;
+                box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                transition: box-shadow 0.2s ease;
+            ">
+                <p style="
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    font-weight: 700;
+                    font-size: 0.875rem;
+                    margin: 0;
+                    color: #16A34A;
+                    letter-spacing: 0;
+                ">Actionable Insight</p>
+                <p style="
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    font-size: 0.8rem;
+                    color: #64748B;
+                    margin: 0;
+                    line-height: 1.55;
+                    font-weight: 400;
+                ">Prioritize products where the green dashed line (Conv %) is trending upwards, as these are your most
+                    efficient growth opportunities.</p>
             </div>
         </div>
     </section>
@@ -5699,14 +5745,12 @@ include '../../includes/sidebar.php';
                             if (Math.abs(pct) >= 0.1) {
                                 const isUp = pct > 0;
                                 const cls = isUp ? 'up' : 'down';
-                                const arrowSvg = isUp
-                                    ? `<svg width="10" height="11" viewBox="0 0 11 12" fill="none" style="vertical-align:middle; margin-left:3px;"><path d="M5.28442 1.00732V10.6502" stroke="#029153" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.57144 4.93562C9.57144 4.93562 6.41508 0.649909 5.28572 0.649902C4.15629 0.649895 1 4.93562 1 4.93562" stroke="#029153" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`
-                                    : `<svg width="10" height="11" viewBox="0 0 11 12" fill="none" style="vertical-align:middle; margin-left:3px;"><path d="M5.28442 10.293V0.650109" stroke="#EE473D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.57144 6.36468C9.57144 6.36468 6.41508 10.6504 5.28572 10.6504C4.15629 10.6504 1 6.36468 1 6.36468" stroke="#EE473D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-                                pillHtml = `<span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% ${arrowSvg}</span>`;
+                                const arrow = isUp ? '↑' : '↓';
+                                pillHtml = `<span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% ${arrow}</span>`;
                             }
                         }
                         cellContent = `<div style="display:inline-flex; align-items:center; justify-content:flex-end; gap:8px; width:100%;">
-                            <div style="width:72px; display:inline-flex; justify-content:flex-end; flex-shrink:0;">${pillHtml}</div>
+                            <div style="min-width:76px; display:inline-flex; justify-content:flex-end; flex-shrink:0;">${pillHtml}</div>
                             <span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; min-width:65px; text-align:right;">${displayVal}</span>
                         </div>`;
                     } else {
@@ -5810,9 +5854,9 @@ include '../../includes/sidebar.php';
             let paginationHtml = '';
 
             // Chevron Left
-            const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
-            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})">
-            <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+            const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.35; cursor: not-allowed;"' : 'style="cursor: pointer;"';
+            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})" style="width: 32px; height: 32px; border: 1px solid #E2E8F0; border-radius: 6px; background: #ffffff; color: #475569; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s;">
+            <i class="fas fa-chevron-left" style="font-size: 11px;"></i>
         </button>`;
 
             // Page Numbers (Up to 5 page buttons)
@@ -5824,16 +5868,16 @@ include '../../includes/sidebar.php';
 
             for (let page = startPage; page <= endPage; page++) {
                 if (page === currentPage) {
-                    paginationHtml += `<button class="px-3 py-1 rounded bg-secondary text-white font-label-md text-label-md" style="background: #0051d5; color: #ffffff; font-weight: 700; border: none; cursor: default;">${page}</button>`;
+                    paginationHtml += `<button class="px-3 py-1 rounded font-label-md text-label-md" style="min-width: 32px; height: 32px; background: #F1F5F9; color: #0F172A; font-weight: 800; border: 1px solid #CBD5E1; border-radius: 6px; cursor: default; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; padding: 0 8px;">${page}</button>`;
                 } else {
-                    paginationHtml += `<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors font-label-md text-label-md bg-white" style="cursor: pointer;" onclick="${onClickPage}(${page})">${page}</button>`;
+                    paginationHtml += `<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors font-label-md text-label-md bg-white" style="min-width: 32px; height: 32px; cursor: pointer; border: 1px solid #E2E8F0; border-radius: 6px; background: #ffffff; color: #475569; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; padding: 0 8px; transition: all 0.15s;" onclick="${onClickPage}(${page})">${page}</button>`;
                 }
             }
 
             // Chevron Right
-            const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
-            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})">
-            <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+            const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.35; cursor: not-allowed;"' : 'style="cursor: pointer;"';
+            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})" style="width: 32px; height: 32px; border: 1px solid #E2E8F0; border-radius: 6px; background: #ffffff; color: #475569; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s;">
+            <i class="fas fa-chevron-right" style="font-size: 11px;"></i>
         </button>`;
 
             return paginationHtml;
@@ -7152,14 +7196,26 @@ include '../../includes/sidebar.php';
                     const ctxRev = document.getElementById('productRevenueShareChart').getContext('2d');
                     if (window.productRevenueShareChartInst) window.productRevenueShareChartInst.destroy();
 
-                    if (Chart.Tooltip && Chart.Tooltip.positioners) {
-                        Chart.Tooltip.positioners.cursor = function (items, eventPosition) {
-                            return {
-                                x: eventPosition.x,
-                                y: eventPosition.y - 12
-                            };
-                        };
-                    }
+                    const getOrCreateDonutTooltip = (chart) => {
+                        let tooltipEl = chart.canvas.parentNode.querySelector('.chartjs-donut-custom-tooltip');
+                        if (!tooltipEl) {
+                            tooltipEl = document.createElement('div');
+                            tooltipEl.className = 'chartjs-donut-custom-tooltip';
+                            tooltipEl.style.background = '#ffffff';
+                            tooltipEl.style.borderRadius = '8px';
+                            tooltipEl.style.border = '1px solid #E2E8F0';
+                            tooltipEl.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.04)';
+                            tooltipEl.style.padding = '8px 12px';
+                            tooltipEl.style.pointerEvents = 'none';
+                            tooltipEl.style.position = 'absolute';
+                            tooltipEl.style.transition = 'all .1s ease';
+                            tooltipEl.style.zIndex = '9999';
+                            tooltipEl.style.whiteSpace = 'nowrap';
+                            tooltipEl.style.fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+                            chart.canvas.parentNode.appendChild(tooltipEl);
+                        }
+                        return tooltipEl;
+                    };
 
                     window.productRevenueShareChartInst = new Chart(ctxRev, {
                         type: 'doughnut',
@@ -7179,19 +7235,35 @@ include '../../includes/sidebar.php';
                             plugins: {
                                 legend: { display: false },
                                 tooltip: {
-                                    position: 'cursor',
-                                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                                    titleColor: '#ffffff',
-                                    bodyColor: '#ffffff',
-                                    borderColor: 'rgba(255, 255, 255, 0.1)',
-                                    borderWidth: 1,
-                                    padding: 10,
-                                    cornerRadius: 8,
-                                    displayColors: true,
-                                    callbacks: {
-                                        label: function (context) {
-                                            const val = context.raw !== undefined ? context.raw : context.parsed;
-                                            return ' ' + context.label + ': $' + Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                    enabled: false,
+                                    external: function (context) {
+                                        const { chart, tooltip } = context;
+                                        const tooltipEl = getOrCreateDonutTooltip(chart);
+
+                                        if (tooltip.opacity === 0) {
+                                            tooltipEl.style.opacity = '0';
+                                            return;
+                                        }
+
+                                        if (tooltip.dataPoints && tooltip.dataPoints.length > 0) {
+                                            const dataIndex = tooltip.dataPoints[0].dataIndex;
+                                            const label = chart.data.labels[dataIndex] || '';
+                                            const val = chart.data.datasets[0].data[dataIndex] || 0;
+                                            const color = (chart.data.datasets[0].backgroundColor && chart.data.datasets[0].backgroundColor[dataIndex]) || '#3B82F6';
+
+                                            tooltipEl.innerHTML = `
+                                                <div style="font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 5px; letter-spacing: 0.2px; text-transform: uppercase;">${label}</div>
+                                                <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #1E293B;">
+                                                    <span style="width: 8px; height: 8px; border-radius: 2.5px; background: ${color}; display: inline-block; flex-shrink: 0;"></span>
+                                                    <span>${label} : <span style="color: #3B66F5; font-weight: 700;">$${Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</span></span>
+                                                </div>
+                                                <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 8px; height: 8px; background: #ffffff; border-right: 1px solid #E2E8F0; border-bottom: 1px solid #E2E8F0;"></div>
+                                            `;
+
+                                            tooltipEl.style.opacity = '1';
+                                            tooltipEl.style.left = tooltip.caretX + 'px';
+                                            tooltipEl.style.top = tooltip.caretY + 'px';
+                                            tooltipEl.style.transform = 'translate(-50%, -100%) translateY(-10px)';
                                         }
                                     }
                                 }
