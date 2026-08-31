@@ -994,30 +994,50 @@ include '../../includes/sidebar.php';
                 <thead style="background: #FFFFFF; border-bottom: 1px solid #E2E8F0;">
                     <tr>
                         <th
-                            style="padding: 12px 14px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: center; width: 6%;">
+                            style="padding: 14px 16px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: center; width: 6%;">
                             Rank</th>
                         <th
-                            style="padding: 12px 14px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: left; width: 34%;">
+                            style="padding: 14px 16px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: left; width: 34%;">
                             Campaign & Ad Group</th>
                         <th
-                            style="padding: 12px 14px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: left; width: 14%;">
+                            style="padding: 14px 16px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: left; width: 14%;">
                             Spend</th>
                         <th
-                            style="padding: 12px 14px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: left; width: 14%;">
+                            style="padding: 14px 16px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: left; width: 14%;">
                             Sales</th>
                         <th
-                            style="padding: 12px 14px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: left; width: 11%;">
+                            style="padding: 14px 16px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: left; width: 11%;">
                             ACoS</th>
                         <th
-                            style="padding: 12px 14px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: left; width: 11%;">
+                            style="padding: 14px 16px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: left; width: 11%;">
                             ROAS</th>
                         <th
-                            style="padding: 12px 14px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: center; width: 10%;">
+                            style="padding: 14px 16px; font-size: 0.72rem; font-weight: 700; color: #64748B; text-transform: uppercase; text-align: center; width: 10%;">
                             Bid Action</th>
                     </tr>
                 </thead>
                 <tbody id="campaign_body" style="background:#FFFFFF;"></tbody>
             </table>
+        </div>
+
+        <!-- Figma Footer Pagination Bar -->
+        <div class="ct-pagination-bar"
+            style="display: flex; justify-content: space-between; align-items: center; background: transparent; border-top: 1px solid #F1F5F9; padding: 16px 20px; box-sizing: border-box; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="display: inline-flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 0.78rem; color: #64748B; font-weight: 500;">Show</span>
+                    <select id="campaign_page_size"
+                        style="padding: 4px 8px; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 0.78rem; font-weight: 600; color: #334155; background: #FFF; outline: none; cursor: pointer;">
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                    <span style="font-size: 0.78rem; color: #64748B; font-weight: 500;">Entries</span>
+                </div>
+                <p id="campaign_showing_text" style="margin: 0; font-size: 0.78rem; color: #64748B; font-weight: 500;">
+                    Showing 1 to 10 of 0 entries</p>
+            </div>
+            <div id="campaign_pagination" style="display: flex; align-items: center; gap: 6px;"></div>
         </div>
     </div>
 
@@ -1429,8 +1449,151 @@ include '../../includes/sidebar.php';
                 populatePlacementCards('#sp-placements-body', placementsSp, false);
                 populatePlacementCards('#sb-placements-body', placementsSb, true);
 
-                // Campaigns Table
-                let html = '';
+                let campaignsList = [];
+                let campaignCurrentPage = 1;
+                let campaignPageSize = 10;
+                let campaignSearchQuery = '';
+
+                function renderCampaignsTable() {
+                    let filtered = campaignsList;
+                    if (campaignSearchQuery) {
+                        const q = campaignSearchQuery.toLowerCase();
+                        filtered = campaignsList.filter(c => {
+                            return (c.campaign_name && c.campaign_name.toLowerCase().includes(q)) ||
+                                (c.ad_group_name && c.ad_group_name.toLowerCase().includes(q));
+                        });
+                    }
+
+                    const totalItems = filtered.length;
+                    const totalPages = Math.ceil(totalItems / campaignPageSize) || 1;
+                    if (campaignCurrentPage > totalPages) campaignCurrentPage = totalPages;
+                    if (campaignCurrentPage < 1) campaignCurrentPage = 1;
+
+                    const startIndex = (campaignCurrentPage - 1) * campaignPageSize;
+                    const endIndex = Math.min(startIndex + campaignPageSize, totalItems);
+                    const paginatedItems = filtered.slice(startIndex, endIndex);
+
+                    let html = '';
+                    if (paginatedItems.length > 0) {
+                        paginatedItems.forEach((c, idx) => {
+                            const globalIndex = startIndex + idx;
+                            const acosVal = parseFloat(c.sales > 0 ? (c.spend / c.sales * 100) : 0);
+                            const roasVal = parseFloat(c.spend > 0 ? (c.sales / c.spend) : 0);
+                            const spend = parseFloat(c.spend || 0);
+                            const sales = parseFloat(c.sales || 0);
+
+                            let bidAction = 'SCALE UP';
+                            let bidStyle = 'background: #EEF8F1; color: #029153; border: 1px solid #C3EEDA;';
+
+                            if (sales > 0) {
+                                if (acosVal < 15) { bidAction = 'SCALE UP'; bidStyle = 'background: #EEF8F1; color: #029153; border: 1px solid #C3EEDA;'; }
+                                else if (acosVal < 25) { bidAction = 'MAINTAIN'; bidStyle = 'background: #EFF6FF; color: #3B82F6; border: 1px solid #BFDBFE;'; }
+                                else if (acosVal < 35) { bidAction = 'OPTIMIZE'; bidStyle = 'background: #FFF7ED; color: #F59E0B; border: 1px solid #FDE68A;'; }
+                                else { bidAction = 'REDUCE BID'; bidStyle = 'background: #FEF0EF; color: #EE473D; border: 1px solid #FCDAD7;'; }
+                            } else if (spend > 10) {
+                                bidAction = 'REDUCE BID';
+                                bidStyle = 'background: #FEF0EF; color: #EE473D; border: 1px solid #FCDAD7;';
+                            } else {
+                                bidAction = 'MAINTAIN';
+                                bidStyle = 'background: #EFF6FF; color: #3B82F6; border: 1px solid #BFDBFE;';
+                            }
+
+                            let rankBadgeHtml = '';
+                            if (globalIndex === 0) {
+                                rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: #3B82F6; color: #FFFFFF; border-radius: 50%; font-size: 11px; font-weight: 700; box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);">1</span>`;
+                            } else if (globalIndex === 1) {
+                                rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: #60A5FA; color: #FFFFFF; border-radius: 50%; font-size: 11px; font-weight: 700; box-shadow: 0 2px 4px rgba(96, 165, 250, 0.25);">2</span>`;
+                            } else if (globalIndex === 2) {
+                                rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: #93C5FD; color: #FFFFFF; border-radius: 50%; font-size: 11px; font-weight: 700; box-shadow: 0 2px 4px rgba(147, 197, 253, 0.25);">3</span>`;
+                            } else {
+                                rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: #FFFFFF; border: 1.5px solid #E2E8F0; color: #64748B; border-radius: 50%; font-size: 11px; font-weight: 700;">${globalIndex + 1}</span>`;
+                            }
+
+                            // 1st row: #F7F9FE, 2nd row: #FFFFFF, 3rd row: #F7F9FE, 4th row: #FFFFFF...
+                            const isOdd = (idx % 2 === 0);
+                            const rowBg = isOdd ? '#F7F9FE' : '#FFFFFF';
+
+                            html += `
+                                <tr style="background-color: ${rowBg} !important; border-bottom: 1px solid #E8EAF2; height: 68px;">
+                                    <td style="background-color: ${rowBg} !important; padding: 12px 14px; text-align: center; vertical-align: middle;">
+                                        ${rankBadgeHtml}
+                                    </td>
+                                    <td style="background-color: ${rowBg} !important; padding: 12px 14px; text-align: left; vertical-align: middle;">
+                                        <div style="font-weight: 700; color: #0F172A; font-size: 0.85rem; line-height: 1.3;" title="${c.campaign_name}">${c.campaign_name}</div>
+                                        <div style="font-size: 0.72rem; color: #64748B; margin-top: 2px;" title="${c.ad_group_name || 'N/A'}">
+                                            <i class="fas fa-layer-group" style="font-size: 0.65rem; color: #94A3B8; margin-right: 4px;"></i> ${c.ad_group_name || 'N/A'}
+                                        </div>
+                                    </td>
+                                    <td style="background-color: ${rowBg} !important; padding: 12px 14px; font-weight: 700; color: #0F172A; text-align: left; vertical-align: middle; font-variant-numeric: tabular-nums;">${formatCurrency(spend)}</td>
+                                    <td style="background-color: ${rowBg} !important; padding: 12px 14px; font-weight: 700; color: #0F172A; text-align: left; vertical-align: middle; font-variant-numeric: tabular-nums;">${formatCurrency(sales)}</td>
+                                    <td style="background-color: ${rowBg} !important; padding: 12px 14px; font-weight: 700; color: #0F172A; text-align: left; vertical-align: middle; font-variant-numeric: tabular-nums;">${acosVal.toFixed(2)}%</td>
+                                    <td style="background-color: ${rowBg} !important; padding: 12px 14px; font-weight: 700; color: #0F172A; text-align: left; vertical-align: middle; font-variant-numeric: tabular-nums;">${roasVal.toFixed(2)}x</td>
+                                    <td style="background-color: ${rowBg} !important; padding: 12px 14px; text-align: center; vertical-align: middle;">
+                                        <span style="${bidStyle} font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 6px; letter-spacing: 0.03em; display: inline-block;">${bidAction}</span>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    } else {
+                        html = `<tr><td colspan="7" class="text-center" style="padding: 3rem; color: #94a3b8; font-weight: 600;">No targeting data found for the selected criteria.</td></tr>`;
+                    }
+
+                    $('#campaign_body').html(html);
+
+                    const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
+                    $('#campaign_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
+
+                    renderCampaignPagination(totalItems, campaignCurrentPage, campaignPageSize);
+                }
+
+                function renderCampaignPagination(totalItems, currentPage, itemsPerPage) {
+                    const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+                    if (totalPages <= 1) {
+                        $('#campaign_pagination').html('');
+                        return;
+                    }
+
+                    let pagHtml = '';
+                    const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.35; cursor: not-allowed;"' : 'style="cursor: pointer;"';
+                    pagHtml += `<button type="button" class="ct-page-btn" ${prevDisabled} onclick="window.onCampaignPageClick(${currentPage - 1})"><i class="fas fa-chevron-left" style="font-size: 11px;"></i></button>`;
+
+                    let startPage = Math.max(1, currentPage - 2);
+                    let endPage = Math.min(totalPages, startPage + 4);
+                    if (endPage - startPage < 4) {
+                        startPage = Math.max(1, endPage - 4);
+                    }
+
+                    for (let page = startPage; page <= endPage; page++) {
+                        if (page === currentPage) {
+                            pagHtml += `<button type="button" class="ct-page-btn active">${page}</button>`;
+                        } else {
+                            pagHtml += `<button type="button" class="ct-page-btn" onclick="window.onCampaignPageClick(${page})">${page}</button>`;
+                        }
+                    }
+
+                    const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.35; cursor: not-allowed;"' : 'style="cursor: pointer;"';
+                    pagHtml += `<button type="button" class="ct-page-btn" ${nextDisabled} onclick="window.onCampaignPageClick(${currentPage + 1})"><i class="fas fa-chevron-right" style="font-size: 11px;"></i></button>`;
+
+                    $('#campaign_pagination').html(pagHtml);
+                }
+
+                window.onCampaignPageClick = function (page) {
+                    campaignCurrentPage = page;
+                    renderCampaignsTable();
+                };
+
+                $('#campaign_page_size').off('change').on('change', function () {
+                    campaignPageSize = parseInt($(this).val()) || 10;
+                    campaignCurrentPage = 1;
+                    renderCampaignsTable();
+                });
+
+                $('#campaign_search_input').off('keyup').on('keyup', function () {
+                    campaignSearchQuery = this.value;
+                    campaignCurrentPage = 1;
+                    renderCampaignsTable();
+                });
+
                 const rawCampaigns = data.campaigns || [];
                 const activeCampaigns = rawCampaigns
                     .filter(c => parseFloat(c.spend || 0) > 0 || parseInt(c.clicks || 0) > 0 || parseFloat(c.sales || 0) > 0)
@@ -1458,76 +1621,10 @@ include '../../includes/sidebar.php';
                         }
                         return map;
                     }, new Map());
-                const campaigns = Array.from(activeCampaigns.values()).sort((a, b) => parseFloat(b.spend || 0) - parseFloat(a.spend || 0));
-                if (campaigns.length > 0) {
-                    campaigns.forEach((c, idx) => {
-                        const acosVal = parseFloat(c.sales > 0 ? (c.spend / c.sales * 100) : 0);
-                        const roasVal = parseFloat(c.spend > 0 ? (c.sales / c.spend) : 0);
-                        const spend = parseFloat(c.spend || 0);
-                        const sales = parseFloat(c.sales || 0);
 
-                        let bidAction = 'SCALE UP';
-                        let bidStyle = 'background: #EEF8F1; color: #029153; border: 1px solid #C3EEDA;';
-
-                        if (sales > 0) {
-                            if (acosVal < 15) { bidAction = 'SCALE UP'; bidStyle = 'background: #EEF8F1; color: #029153; border: 1px solid #C3EEDA;'; }
-                            else if (acosVal < 25) { bidAction = 'MAINTAIN'; bidStyle = 'background: #EFF6FF; color: #3B82F6; border: 1px solid #BFDBFE;'; }
-                            else if (acosVal < 35) { bidAction = 'OPTIMIZE'; bidStyle = 'background: #FFF7ED; color: #F59E0B; border: 1px solid #FDE68A;'; }
-                            else { bidAction = 'REDUCE BID'; bidStyle = 'background: #FEF0EF; color: #EE473D; border: 1px solid #FCDAD7;'; }
-                        } else if (spend > 10) {
-                            bidAction = 'REDUCE BID';
-                            bidStyle = 'background: #FEF0EF; color: #EE473D; border: 1px solid #FCDAD7;';
-                        } else {
-                            bidAction = 'MAINTAIN';
-                            bidStyle = 'background: #EFF6FF; color: #3B82F6; border: 1px solid #BFDBFE;';
-                        }
-
-                        let rankBadgeHtml = '';
-                        if (idx === 0) {
-                            rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #3B82F6; color: #FFFFFF; border-radius: 50%; font-size: 11px; font-weight: 700;">1</span>`;
-                        } else if (idx === 1) {
-                            rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #60A5FA; color: #FFFFFF; border-radius: 50%; font-size: 11px; font-weight: 700;">2</span>`;
-                        } else if (idx === 2) {
-                            rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #93C5FD; color: #FFFFFF; border-radius: 50%; font-size: 11px; font-weight: 700;">3</span>`;
-                        } else {
-                            rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #FFFFFF; border: 1.5px solid #E2E8F0; color: #64748B; border-radius: 50%; font-size: 11px; font-weight: 700;">${idx + 1}</span>`;
-                        }
-
-                        html += `
-                            <tr style="border-bottom: 1px solid #F1F5F9; background: #FFFFFF; transition: background 0.15s ease;">
-                                <td style="padding: 12px 14px; text-align: center; vertical-align: middle;">
-                                    ${rankBadgeHtml}
-                                </td>
-                                <td style="padding: 12px 14px; text-align: left; vertical-align: middle;">
-                                    <div style="font-weight: 700; color: #0F172A; font-size: 0.85rem; line-height: 1.3;" title="${c.campaign_name}">${c.campaign_name}</div>
-                                    <div style="font-size: 0.72rem; color: #64748B; margin-top: 2px;" title="${c.ad_group_name || 'N/A'}">
-                                        <i class="fas fa-layer-group" style="font-size: 0.65rem; color: #94A3B8; margin-right: 4px;"></i> ${c.ad_group_name || 'N/A'}
-                                    </div>
-                                </td>
-                                <td style="padding: 12px 14px; font-weight: 700; color: #0F172A; text-align: left; vertical-align: middle; font-variant-numeric: tabular-nums;">${formatCurrency(spend)}</td>
-                                <td style="padding: 12px 14px; font-weight: 700; color: #0F172A; text-align: left; vertical-align: middle; font-variant-numeric: tabular-nums;">${formatCurrency(sales)}</td>
-                                <td style="padding: 12px 14px; font-weight: 700; color: #0F172A; text-align: left; vertical-align: middle; font-variant-numeric: tabular-nums;">${acosVal.toFixed(2)}%</td>
-                                <td style="padding: 12px 14px; font-weight: 700; color: #0F172A; text-align: left; vertical-align: middle; font-variant-numeric: tabular-nums;">${roasVal.toFixed(2)}x</td>
-                                <td style="padding: 12px 14px; text-align: center; vertical-align: middle;">
-                                    <span style="${bidStyle} font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 6px; letter-spacing: 0.03em; display: inline-block;">${bidAction}</span>
-                                </td>
-                            </tr>
-                        `;
-                    });
-                }
-                $('#campaign_body').html(html || '<tr><td colspan="7" class="text-center" style="padding: 3rem; color: #94a3b8; font-weight: 600;">No targeting data found for the selected criteria.</td></tr>');
-
-                if ($.fn.DataTable.isDataTable('#campaignTable')) {
-                    $('#campaignTable').DataTable().destroy();
-                }
-                const table = $('#campaignTable').DataTable({
-                    dom: 'rtip',
-                    order: [[2, 'desc']],
-                    pageLength: 10
-                });
-                $('#campaign_search_input').off('keyup').on('keyup', function () {
-                    table.search(this.value).draw();
-                });
+                campaignsList = Array.from(activeCampaigns.values()).sort((a, b) => parseFloat(b.spend || 0) - parseFloat(a.spend || 0));
+                campaignCurrentPage = 1;
+                renderCampaignsTable();
 
                 // Placements
                 let p_html = '';
@@ -1802,45 +1899,41 @@ include '../../includes/sidebar.php';
         gap: 4px !important;
     }
 
-    /* Style datatable pagination buttons */
-    .dataTables_wrapper .dataTables_paginate .paginate_button {
-        padding: 5px 10px !important;
-        margin: 0 !important;
-        border-radius: 6px !important;
-        border: 1px solid #E2E8F0 !important;
-        background: #FFFFFF !important;
-        color: #64748B !important;
-        font-weight: 600 !important;
-        cursor: pointer !important;
-        font-size: 0.78rem !important;
-        transition: all 0.15s ease !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        min-width: 28px !important;
-        height: 28px !important;
+    /* Custom Figma / Bento Pagination Button Styling */
+    .ct-page-btn {
+        min-width: 32px;
+        height: 32px;
+        padding: 0 8px;
+        border: 1px solid #E2E8F0;
+        border-radius: 6px;
+        background: #FFFFFF;
+        color: #475569;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.15s ease;
     }
 
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-        background: #4362CE !important;
-        color: #FFFFFF !important;
-        border-color: #4362CE !important;
+    .ct-page-btn:hover:not(:disabled) {
+        background: #F8FAFC;
+        border-color: #CBD5E1;
+        color: #0F172A;
     }
 
-    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-        background: #F8FAFC !important;
+    .ct-page-btn.active {
+        background: #F1F5F9 !important;
         color: #0F172A !important;
-        border-color: #CBD5E1 !important;
+        font-weight: 800 !important;
+        border: 1px solid #CBD5E1 !important;
+        cursor: default;
     }
 
-    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
-    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
-        opacity: 0.4 !important;
-        cursor: not-allowed !important;
-        background: #FFFFFF !important;
-        color: #94A3B8 !important;
-        border-color: #E2E8F0 !important;
+    .ct-page-btn:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
     }
 </style>
 

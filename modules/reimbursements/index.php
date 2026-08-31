@@ -410,41 +410,56 @@ include '../../includes/sidebar.php';
         display: flex;
         align-items: center;
         gap: 6px;
+        margin-top: 2px;
     }
 
     .reimb-delta-badge {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 12px;
-        font-weight: 700;
-        padding: 3px 8px;
-        border-radius: 6px;
-        display: inline-flex;
-        align-items: center;
-        gap: 3px;
-        line-height: 1;
-        font-variant-numeric: tabular-nums;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        height: 20px !important;
+        padding: 0 8px !important;
+        border-radius: 6px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        line-height: 20px !important;
+        box-sizing: border-box !important;
+        font-variant-numeric: tabular-nums !important;
+        letter-spacing: -0.01em !important;
     }
 
     .reimb-delta-badge.up {
-        background: #EEF8F1;
-        color: #029153;
+        background: #EEF8F1 !important;
+        color: #029153 !important;
     }
 
     .reimb-delta-badge.down {
-        background: #FEF0EF;
-        color: #EE473D;
+        background: #FEF0EF !important;
+        color: #EE473D !important;
     }
 
     .reimb-delta-badge.warning {
-        background: #FEF0EF;
-        color: #EE473D;
+        background: #FEF0EF !important;
+        color: #EE473D !important;
+    }
+
+    .reimb-delta-badge.neutral {
+        background: #F1F5F9 !important;
+        color: #64748B !important;
+    }
+
+    .reimb-delta-badge svg {
+        flex-shrink: 0;
     }
 
     .reimb-delta-sub {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         font-size: 12px;
-        color: #64748B;
+        color: #1E293B;
         font-weight: 500;
+        letter-spacing: -0.01em;
     }
 
     /* Right Stacked 2 Cards: Trend + AI Insights */
@@ -502,22 +517,36 @@ include '../../includes/sidebar.php';
         font-weight: 700;
     }
 
-    /* AI Recovery Insights Panel (Figma: 900px Fill x 254px Hug, 14px radius, 30px padding, 30px gap) */
+    /* AI Recovery Insights Panel (Figma: Width Fill 900px x Height Hug 254px, 14px radius, 30px padding, 30px gap) */
     .reimb-ai-panel {
-        background: #041245 url('<?php echo BASE_URL; ?>assets/images/bg.jpg') no-repeat center center / cover !important;
+        background: linear-gradient(135deg, #041245 0%, #12309A 100%) !important;
         border: 1px solid rgba(67, 98, 206, 0.25);
         border-radius: 14px;
-        padding: 30px;
+        padding: 30px !important;
         color: #FFFFFF;
         position: relative;
         overflow: hidden;
         display: flex;
         align-items: center;
-        gap: 30px;
+        gap: 30px !important;
         box-shadow: 0 8px 24px rgba(4, 18, 69, 0.25);
         min-width: 0;
+        min-height: 254px;
         box-sizing: border-box;
         width: 100%;
+    }
+
+    .reimb-ai-panel::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url('<?php echo BASE_URL; ?>assets/images/bg.jpg');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        opacity: 0.5;
+        pointer-events: none;
+        z-index: 0;
     }
 
     .reimb-ai-orb {
@@ -641,11 +670,11 @@ include '../../includes/sidebar.php';
         justify-content: space-between;
     }
 
-    /* Reason Analysis Doughnut & Table Layout */
+    /* Reason Analysis Doughnut & Table Layout (Figma: Donut Box 223px x 223.74px) */
     .reimb-reasons-wrap {
         display: grid;
-        grid-template-columns: 200px minmax(0, 1fr);
-        gap: 24px;
+        grid-template-columns: 224px minmax(0, 1fr);
+        gap: 28px;
         align-items: center;
         min-width: 0;
         flex: 1;
@@ -653,31 +682,49 @@ include '../../includes/sidebar.php';
 
     .reimb-donut-box {
         position: relative;
-        height: 170px;
+        width: 224px;
+        height: 224px;
         display: flex;
         align-items: center;
         justify-content: center;
         min-width: 0;
+        margin: 0 auto;
+    }
+
+    .reimb-donut-box canvas {
+        position: relative;
+        z-index: 2 !important;
     }
 
     .reimb-donut-center {
         position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
         text-align: center;
         pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 1 !important;
     }
 
     .reimb-donut-center .val {
-        font-size: 1.25rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 22px;
         font-weight: 800;
         color: #0F172A;
-        line-height: 1;
+        line-height: 1.1;
+        font-variant-numeric: tabular-nums;
     }
 
     .reimb-donut-center .lbl {
-        font-size: 0.68rem;
-        color: #94A3B8;
-        font-weight: 600;
-        margin-top: 3px;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px;
+        color: #64748B;
+        font-weight: 500;
+        margin-top: 2px;
     }
 
     .reimb-reasons-list {
@@ -909,26 +956,26 @@ include '../../includes/sidebar.php';
     /* TABLES STYLING */
     .reimb-table {
         width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
+        border-collapse: collapse;
     }
 
     .reimb-table thead th {
-        background: #F8FAFC;
+        background: #FFFFFF !important;
         color: #64748B;
-        font-size: 0.72rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.04em;
-        padding: 12px 16px;
-        border-bottom: 1px solid #E2E8F0;
+        padding: 14px 16px;
+        border-bottom: 1px solid #E8EAF2;
         text-align: left;
     }
 
     .reimb-table tbody td {
         padding: 14px 16px;
-        border-bottom: 1px solid #F1F5F9;
-        font-size: 0.82rem;
+        border-bottom: 1px solid #E8EAF2;
+        font-size: 13px;
         color: #0F172A;
         vertical-align: middle;
     }
@@ -948,33 +995,36 @@ include '../../includes/sidebar.php';
     .reimb-prod-cell {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
     }
 
     .reimb-prod-icon {
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
         border-radius: 8px;
-        background: #F8FAFC;
+        background: #FFFFFF;
         border: 1px solid #E2E8F0;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
     }
 
     .reimb-prod-name {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         font-weight: 700;
         color: #0F172A;
-        font-size: 0.82rem;
-        line-height: 1.2;
+        font-size: 13px;
+        line-height: 1.25;
     }
 
     .reimb-prod-sku {
-        font-size: 0.7rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px;
         color: #64748B;
         font-weight: 500;
-        margin-top: 2px;
+        margin-top: 3px;
     }
 
     .reimb-ratio-bar-wrap {
@@ -995,15 +1045,18 @@ include '../../includes/sidebar.php';
 
     .reimb-ratio-fill {
         height: 100%;
-        background: #3B82F6;
+        background: #4362CE;
         border-radius: 4px;
     }
 
     .reimb-ratio-pct {
-        font-size: 0.8rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
         font-weight: 700;
         color: #0F172A;
         min-width: 36px;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
     }
 
     .reimb-status-badge {
@@ -1280,12 +1333,8 @@ include '../../includes/sidebar.php';
         <div class="reimb-kpi-col">
 
             <!-- Card 1: Total Reimbursement (Hero Blue) -->
+            <!-- Card 1: Total Reimbursement -->
             <div class="reimb-kpi-card hero-blue">
-                <div class="grid-decor">
-                    <span></span><span></span><span></span>
-                    <span></span><span></span><span></span>
-                    <span></span><span></span><span></span>
-                </div>
                 <div class="reimb-kpi-top">
                     <span class="reimb-kpi-label">Total Reimbursement</span>
                     <div style="opacity: 0.9;">
@@ -1295,8 +1344,13 @@ include '../../includes/sidebar.php';
                 </div>
                 <div class="reimb-kpi-val" id="kpi_total_reimbursement">$610.38</div>
                 <div class="reimb-kpi-foot">
-                    <span class="reimb-delta-badge up" id="cmp_total_reimb">+100% &uarr;</span>
-                    <span class="reimb-delta-sub">vs LW</span>
+                    <span class="reimb-delta-badge up" id="cmp_total_reimb"
+                        style="background: rgba(255, 255, 255, 0.2) !important; color: #FFFFFF !important;">+100% <svg
+                            width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 8.5V1.5M5 1.5L8 4.5M5 1.5L2 4.5" stroke="#FFFFFF" stroke-width="1.4"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg></span>
+                    <span class="reimb-delta-sub" style="color: rgba(255, 255, 255, 0.85);">vs LW</span>
                 </div>
             </div>
 
@@ -1311,8 +1365,14 @@ include '../../includes/sidebar.php';
                 </div>
                 <div class="reimb-kpi-val" id="kpi_units_recovered">31</div>
                 <div class="reimb-kpi-foot">
-                    <span class="reimb-delta-badge up" id="cmp_units_recovered">+100% &uarr;</span>
-                    <span class="reimb-delta-sub">vs LW</span>
+                    <span class="reimb-delta-badge up" id="cmp_units_recovered">+100% <svg width="10" height="10"
+                            viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 8.5V1.5M5 1.5L8 4.5M5 1.5L2 4.5" stroke="#029153" stroke-width="1.4"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg></span>
+                    <span class="ret-delta-sub"
+                        style="font-family: 'Inter', sans-serif; font-size: 12px; color: #1E293B; font-weight: 500;">vs
+                        LW</span>
                 </div>
             </div>
 
@@ -1328,7 +1388,10 @@ include '../../includes/sidebar.php';
                 <div class="reimb-kpi-val" id="kpi_recovery_rate">36.5%</div>
                 <div class="reimb-kpi-foot">
                     <span class="reimb-delta-badge up" id="kpi_rate_badge">
-                        <i class="fas fa-check" style="font-size: 0.65rem;"></i> Optimized efficiency
+                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2.5 6L5 8.5L9.5 3.5" stroke="#029153" stroke-width="1.6" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg> Optimized efficiency
                     </span>
                 </div>
             </div>
@@ -1345,7 +1408,11 @@ include '../../includes/sidebar.php';
                 <div class="reimb-kpi-val" id="kpi_pending_claims">$452.86</div>
                 <div class="reimb-kpi-foot">
                     <span class="reimb-delta-badge warning" id="kpi_pending_badge">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 0.65rem;"></i> Pending claims check
+                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 1.5L10.5 9.5H1.5L6 1.5Z" stroke="#EE473D" stroke-width="1.3"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M6 4.5V6.5M6 8H6.01" stroke="#EE473D" stroke-width="1.4" stroke-linecap="round" />
+                        </svg> Pending claims check
                     </span>
                 </div>
             </div>
@@ -1527,8 +1594,15 @@ include '../../includes/sidebar.php';
                     <div class="reimb-funnel-top">
                         <div class="reimb-funnel-title-wrap">
                             <div class="reimb-funnel-icon">
-                                <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Check.svg"
-                                    style="width: 16px; height: 16px;" />
+                                <svg width="15" height="15" viewBox="0 0 16 16" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M8 1.5C8 1.5 13.5 2.5 13.5 7C13.5 11.5 8 14.5 8 14.5C8 14.5 2.5 11.5 2.5 7C2.5 2.5 8 1.5 8 1.5Z"
+                                        stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M5.75 7.5L7.25 9L10.25 6" stroke="#4362CE" stroke-width="1.3"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
                             </div>
                             <span class="reimb-funnel-name">Approved</span>
                         </div>
@@ -1875,24 +1949,44 @@ include '../../includes/sidebar.php';
                     datasets: [{
                         data: list.map(r => r.amount || r.count || 1),
                         backgroundColor: list.map(r => r.color || '#3B82F6'),
-                        borderWidth: 0,
-                        hoverOffset: 4
+                        borderWidth: 2,
+                        borderColor: '#FFFFFF',
+                        hoverOffset: 6
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '72%',
+                    cutout: '70%',
+                    layout: {
+                        padding: 8
+                    },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
                             backgroundColor: '#FFFFFF',
                             titleColor: '#0F172A',
-                            bodyColor: '#0F172A',
+                            titleFont: { family: 'Inter', size: 11, weight: '700' },
+                            bodyColor: '#334155',
+                            bodyFont: { family: 'Inter', size: 11, weight: '600' },
                             borderColor: '#E2E8F0',
                             borderWidth: 1,
+                            padding: 8,
+                            boxPadding: 4,
+                            usePointStyle: true,
+                            displayColors: true,
+                            cornerRadius: 6,
+                            shadowOffsetX: 0,
+                            shadowOffsetY: 4,
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.08)',
                             callbacks: {
-                                label: (ctx) => ` ${ctx.label}: ${formatCurrency(list[ctx.dataIndex].amount)} (${list[ctx.dataIndex].pct}%)`
+                                title: (items) => items[0].label,
+                                label: (ctx) => [
+                                    `${ctx.label} :`,
+                                    `${formatCurrency(list[ctx.dataIndex].amount)} (${list[ctx.dataIndex].pct}%)`
+                                ],
+                                labelTextColor: (ctx) => list[ctx.dataIndex].color || '#4362CE'
                             }
                         }
                     }
@@ -1947,7 +2041,8 @@ include '../../includes/sidebar.php';
             }
 
             let html = '';
-            leaderboard.forEach(p => {
+            leaderboard.forEach((p, idx) => {
+                let skuSubtitle = p.sku ? (p.sku.startsWith('A1') ? p.sku : `SKU: ${p.sku}${p.asin ? ' | ASIN: ' + p.asin : ''}`) : '';
                 html += `<tr>
                 <td>
                     <div class="reimb-prod-cell">
@@ -1956,12 +2051,12 @@ include '../../includes/sidebar.php';
                         </div>
                         <div>
                             <div class="reimb-prod-name">${p.title || p.sku}</div>
-                            <div class="reimb-prod-sku">SKU: ${p.sku}${p.asin ? ' | ASIN: ' + p.asin : ''}</div>
+                            <div class="reimb-prod-sku">${skuSubtitle}</div>
                         </div>
                     </div>
                 </td>
-                <td style="font-weight: 700; color: #0F172A;">${p.units_recovered}</td>
-                <td style="font-weight: 800; color: #0F172A;">${formatCurrency(p.total_value)}</td>
+                <td style="font-weight: 700; color: #0F172A; font-size: 13px;">${p.units_recovered}</td>
+                <td style="font-weight: 800; color: #0F172A; font-size: 13px;">${formatCurrency(p.total_value)}</td>
                 <td>
                     <div class="reimb-ratio-bar-wrap">
                         <div class="reimb-ratio-bar">
