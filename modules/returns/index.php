@@ -775,42 +775,60 @@ include '../../includes/sidebar.php';
     }
 
     @media (max-width: 768px) {
+        .main-wrapper {
+            padding: 0.75rem 0.75rem 90px 0.75rem !important;
+        }
+
         .ret-container {
-            padding: 0.75rem 0.75rem 100px 0.75rem !important;
+            padding: 0 !important;
             width: 100% !important;
-            max-width: 100vw !important;
+            max-width: 100% !important;
             overflow-x: hidden !important;
         }
 
-        .ret-topbar {
+        .figma-page-topbar {
             flex-direction: column !important;
             align-items: stretch !important;
-            gap: 0.75rem !important;
+            gap: 10px !important;
+            padding-bottom: 0.75rem !important;
         }
 
-        .ret-topbar-left {
+        .figma-page-topbar-left {
             width: 100% !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 8px !important;
         }
 
-        .ret-profile-select-wrap,
-        .ret-profile-select {
+        .figma-select-wrapper,
+        .figma-select-wrapper select {
             width: 100% !important;
             min-width: 0 !important;
+            box-sizing: border-box !important;
         }
 
-        .ret-breadcrumb {
+        .figma-page-breadcrumb {
             display: none !important;
         }
 
-        .ret-topbar-actions {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 0.5rem !important;
+        .figma-page-topbar-right {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
             width: 100% !important;
         }
 
-        .btn-ret-icon {
-            display: none !important;
+        .figma-page-topbar-right .btn-figma-primary,
+        .figma-page-topbar-right .btn-figma-outline-sm {
+            flex: 1 !important;
+            justify-content: center !important;
+            text-align: center !important;
+            padding: 0.5rem 0.6rem !important;
+            font-size: 0.78rem !important;
+        }
+
+        .figma-page-topbar-right .btn-figma-icon-sm {
+            flex-shrink: 0 !important;
         }
 
         .ret-page-head {

@@ -62,133 +62,176 @@ include '../../includes/sidebar.php';
     }
 
     .main-wrapper {
-        padding-top: 0 !important;
+        padding: 1.25rem 2rem 2rem 2rem !important;
+        overflow-x: hidden;
     }
 
     .cm-container {
-        padding: 1.25rem 2rem 3rem 2rem;
+        padding: 0;
         width: 100%;
         max-width: 100%;
         margin: 0;
         box-sizing: border-box;
+        overflow-x: hidden;
     }
 
-    /* Topbar */
-    .cm-topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 1.25rem;
-        border-bottom: 1px solid #EAECEF;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-        gap: 1rem;
+    /* Topbar styling - Clean Transparent Header matching Figma */
+    .figma-page-topbar {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 0.75rem !important;
+        flex-wrap: nowrap !important;
+        padding: 0.25rem 0 1rem 0 !important;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid #EAECEF !important;
+        border-radius: 0 !important;
+        margin-bottom: 1.25rem !important;
+        box-shadow: none !important;
         width: 100%;
     }
 
-    .cm-topbar-left {
+    .figma-page-topbar-left {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 0.85rem;
     }
 
-    .cm-profile-select-wrap {
+    .figma-select-wrapper {
         position: relative;
         display: inline-flex;
         align-items: center;
     }
 
-    .cm-profile-select {
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 8px;
-        height: 38px;
-        padding: 0 32px 0 12px;
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: #0F172A;
-        outline: none;
-        cursor: pointer;
-        min-width: 170px;
+    .figma-select-wrapper select {
         appearance: none;
         -webkit-appearance: none;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-    }
-
-    .cm-breadcrumb {
-        font-size: 0.84rem;
-        color: #64748B;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .cm-topbar-right {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .btn-cm-primary {
-        background: #4362CE;
-        color: #FFFFFF !important;
-        font-size: 0.82rem;
-        font-weight: 700;
-        padding: 8px 18px;
-        border-radius: 8px;
-        border: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        text-decoration: none;
-        box-shadow: 0 1px 2px rgba(67, 98, 206, 0.2);
-        transition: all 0.15s ease;
-    }
-
-    .btn-cm-primary:hover {
-        background: #3451B2;
-        color: #FFFFFF !important;
-    }
-
-    .btn-cm-outline {
-        background: #FFFFFF;
-        color: #0F172A;
+        min-width: 170px;
+        padding: 0.45rem 2.2rem 0.45rem 0.85rem;
         border: 1px solid #E2E8F0;
+        border-radius: 8px;
         font-size: 0.82rem;
         font-weight: 600;
-        padding: 8px 16px;
-        border-radius: 8px;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        cursor: pointer;
-        transition: all 0.15s ease;
-        text-decoration: none;
-    }
-
-    .btn-cm-outline:hover {
-        background: #F8FAFC;
-        border-color: #CBD5E1;
-    }
-
-    .btn-cm-icon-box {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
+        color: #1E2238;
         background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: #64748B;
         cursor: pointer;
-        transition: all 0.15s ease;
+        outline: none;
+        transition: border-color 0.2s ease;
     }
 
-    .btn-cm-icon-box:hover {
-        background: #F8FAFC;
-        color: #0F172A;
+    .figma-select-wrapper select:focus {
+        border-color: #4362CE;
+    }
+
+    .figma-select-wrapper .select-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        width: 12px;
+        height: 12px;
+    }
+
+    .figma-page-breadcrumb {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: #64748B;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+    }
+
+    .figma-page-breadcrumb .breadcrumb-dot {
+        margin: 0 3px;
+        opacity: 0.4;
+        font-size: 0.9rem;
+    }
+
+    .figma-page-breadcrumb strong {
+        color: #1E293B;
+        font-weight: 600;
+    }
+
+    .figma-page-topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-figma-primary {
+        background: #4362CE !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1.15rem !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.45rem !important;
+        box-shadow: 0px 4px 10px rgba(67, 98, 206, 0.2) !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-primary:hover {
+        background: #3452BA !important;
+        transform: translateY(-1px);
+        color: #FFFFFF !important;
+    }
+
+    .btn-figma-outline-sm {
+        background: #F1F4F9 !important;
+        color: #363B4F !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1.05rem !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.45rem !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-outline-sm:hover {
+        background: #E2E8F0 !important;
+        color: #0F172A !important;
+    }
+
+    .btn-figma-icon-sm {
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 50% !important;
+        background: #F1F4F9 !important;
+        border: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #475569 !important;
+        cursor: pointer !important;
+        position: relative !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-icon-sm:hover {
+        background: #E2E8F0 !important;
+        color: #0F172A !important;
+    }
+
+    .btn-figma-icon-sm .notif-badge {
+        position: absolute;
+        top: 9px;
+        right: 9px;
+        width: 6px;
+        height: 6px;
+        background: #EE473D;
+        border-radius: 50%;
+        border: 1.5px solid #F1F4F9;
     }
 
     /* Page Header */
@@ -196,9 +239,10 @@ include '../../includes/sidebar.php';
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
         flex-wrap: wrap;
         gap: 1.25rem;
+        width: 100%;
     }
 
     .cm-page-title h2 {
@@ -280,10 +324,9 @@ include '../../includes/sidebar.php';
         background: #FFFFFF;
         border-bottom: 1px solid #EAECEF;
         padding: 16px 20px;
-        font-size: 0.78rem;
-        font-weight: 700;
+        font-size: 0.8rem;
+        font-weight: 600;
         color: #475569;
-        letter-spacing: 0.02em;
         white-space: nowrap;
     }
 
@@ -303,20 +346,20 @@ include '../../includes/sidebar.php';
     }
 
     .cm-ref-id {
-        font-weight: 600;
+        font-weight: 500;
         color: #64748B;
         font-size: 0.84rem;
     }
 
     .cm-seller-name {
-        font-weight: 600;
+        font-weight: 400;
         color: #0F172A;
         font-size: 0.85rem;
     }
 
     .cm-company-name {
-        font-weight: 500;
-        color: #0F172A;
+        font-weight: 400;
+        color: #475569;
         font-size: 0.85rem;
     }
 
@@ -466,18 +509,6 @@ include '../../includes/sidebar.php';
 
     /* Responsive */
     @media (max-width: 1024px) {
-        .cm-topbar {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 1rem;
-        }
-
-        .cm-topbar-left,
-        .cm-topbar-right {
-            width: 100%;
-            justify-content: space-between;
-        }
-
         .cm-page-head {
             flex-direction: column;
             align-items: flex-start;
@@ -486,11 +517,60 @@ include '../../includes/sidebar.php';
     }
 
     @media (max-width: 768px) {
+        .main-wrapper {
+            padding: 0.75rem 0.75rem 90px 0.75rem !important;
+        }
+
         .cm-container {
-            padding: 0.75rem 0.75rem 100px 0.75rem !important;
+            padding: 0 !important;
             width: 100% !important;
-            max-width: 100vw !important;
+            max-width: 100% !important;
             overflow-x: hidden !important;
+        }
+
+        .figma-page-topbar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 10px !important;
+            padding-bottom: 0.75rem !important;
+        }
+
+        .figma-page-topbar-left {
+            width: 100% !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 8px !important;
+        }
+
+        .figma-select-wrapper,
+        .figma-select-wrapper select {
+            width: 100% !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        .figma-page-breadcrumb {
+            display: none !important;
+        }
+
+        .figma-page-topbar-right {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            width: 100% !important;
+        }
+
+        .figma-page-topbar-right .btn-figma-primary,
+        .figma-page-topbar-right .btn-figma-outline-sm {
+            flex: 1 !important;
+            justify-content: center !important;
+            text-align: center !important;
+            padding: 0.5rem 0.6rem !important;
+            font-size: 0.78rem !important;
+        }
+
+        .figma-page-topbar-right .btn-figma-icon-sm {
+            flex-shrink: 0 !important;
         }
 
         .cm-table-foot {
@@ -503,47 +583,37 @@ include '../../includes/sidebar.php';
 
 <div class="cm-container">
 
-    <!-- Global Topbar (Figma Matching) -->
-    <div class="cm-topbar">
-        <div class="cm-topbar-left">
-            <div class="cm-profile-select-wrap">
-                <select class="cm-profile-select">
+    <!-- Figma-style Top Bar -->
+    <div class="figma-page-topbar">
+        <div class="figma-page-topbar-left">
+            <div class="figma-select-wrapper">
+                <select onchange="window.location.href='index.php?customer_id='+this.value">
                     <option value="">All Amazon Profiles</option>
                     <?php if ($all_customers):
+                        $all_customers->data_seek(0);
                         while ($c = $all_customers->fetch_assoc()): ?>
                             <option value="<?php echo $c['id']; ?>">
                                 <?php echo htmlspecialchars($c['customer_name']); ?>
                             </option>
                         <?php endwhile; endif; ?>
                 </select>
-                <i class="fas fa-chevron-down"
-                    style="position: absolute; right: 12px; pointer-events: none; font-size: 0.7rem; color: #64748B;"></i>
+                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Down Up Arrow.svg" class="select-icon"
+                    alt="Toggle" />
             </div>
-            <div class="cm-breadcrumb">
-                <span>Dashboard</span>
-                <i class="fas fa-circle" style="font-size: 0.25rem; color: #CBD5E1;"></i>
-                <span>Profit &amp; Loss Analysis</span>
-            </div>
+            <span class="figma-page-breadcrumb">Dashboard <span class="breadcrumb-dot">•</span> <strong>Client
+                    Management</strong></span>
         </div>
-
-        <div class="cm-topbar-right">
-            <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-cm-primary">
+        <div class="figma-page-topbar-right">
+            <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary">
                 <i class="fas fa-plus"></i> New Upload
             </a>
-            <button type="button" class="btn-cm-outline" onclick="exportCustomerCSV()">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 1.5V10.5M8 10.5L5 7.5M8 10.5L11 7.5" stroke="#0F172A" stroke-width="1.4"
-                        stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M2 12V13.5C2 14.0523 2.44772 14.5 3 14.5H13C13.5523 14.5 14 14.0523 14 13.5V12"
-                        stroke="#0F172A" stroke-width="1.4" stroke-linecap="round" />
-                </svg>
-                Export CSV
+            <button type="button" class="btn-figma-outline-sm" onclick="exportCustomerCSV()">
+                <i class="fas fa-file-export"></i> Export CSV
             </button>
-            <button type="button" class="btn-cm-icon-box" title="Search">
-                <i class="fas fa-search" style="font-size: 0.85rem;"></i>
-            </button>
-            <button type="button" class="btn-cm-icon-box" title="Notifications">
-                <i class="fas fa-bell" style="font-size: 0.85rem;"></i>
+            <button type="button" class="btn-figma-icon-sm" title="Search"><i class="fas fa-search"></i></button>
+            <button type="button" class="btn-figma-icon-sm" title="Notifications">
+                <i class="fas fa-bell"></i>
+                <span class="notif-badge"></span>
             </button>
         </div>
     </div>

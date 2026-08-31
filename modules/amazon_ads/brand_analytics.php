@@ -887,20 +887,75 @@ $customers = get_all_customers();
         }
     }
 
-    /* Small mobile: 480px */
+    /* Small mobile: 480px and max-width 768px */
+    @media (max-width: 768px) {
+        .ba-card-head {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+        }
+
+        .ba-market-grid-wrap {
+            overflow-x: visible !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .ba-market-grid {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            min-width: 0 !important;
+            gap: 12px !important;
+        }
+
+        .ba-market-subcard {
+            min-width: 0 !important;
+            width: 100% !important;
+        }
+
+        /* Funnel Leakage Mobile Layout */
+        .ba-funnel-row {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 10px !important;
+            padding: 14px 0 !important;
+        }
+
+        .ba-funnel-left {
+            width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+        }
+
+        .ba-funnel-bar-wrap {
+            margin: 2px 0 !important;
+            width: 100% !important;
+        }
+
+        .ba-funnel-right {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 10px !important;
+        }
+
+        .ba-funnel-share {
+            text-align: left !important;
+        }
+    }
+
     @media (max-width: 480px) {
         .ba-market-grid {
             grid-template-columns: 1fr !important;
+            min-width: 0 !important;
         }
 
         .ba-kpi-val {
             font-size: 1.1rem !important;
-        }
-
-        .ba-funnel-right {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 6px !important;
         }
     }
 </style>

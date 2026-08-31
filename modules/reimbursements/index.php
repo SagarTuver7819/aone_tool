@@ -854,26 +854,27 @@ include '../../includes/sidebar.php';
         background: #10B981;
     }
 
-    /* 4 METRIC BLOCKS ROW */
+    /* 4 METRIC BLOCKS ROW (Figma Exact 2-Column Layout) */
     .reimb-metric-blocks-grid {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 1.25rem;
-        margin-bottom: 1.5rem;
+        gap: 16px;
+        margin-bottom: 24px;
         width: 100%;
         min-width: 0;
     }
 
     .reimb-metric-card {
         background: #FFFFFF;
-        border: 1px solid #EAECEF;
-        border-radius: 14px;
-        padding: 14px 16px;
+        border: 1px solid #E8EAF2;
+        border-radius: 16px;
+        padding: 20px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 110px;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 14px;
+        min-height: 146px;
         transition: all 0.15s ease;
         min-width: 0;
         box-sizing: border-box;
@@ -881,76 +882,104 @@ include '../../includes/sidebar.php';
 
     .reimb-metric-card:hover {
         border-color: #CBD5E1;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-    }
-
-    .reimb-metric-top {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
     }
 
     .reimb-metric-icon {
-        width: 30px;
-        height: 30px;
-        border-radius: 8px;
-        background: #EFF6FF;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: #F4F7FE;
+        border: 1px solid #E2E8F8;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
     }
 
+    .reimb-metric-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 106px;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .reimb-metric-top-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
     .reimb-metric-label {
-        font-size: 0.78rem;
-        font-weight: 700;
-        color: #0F172A;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1E293B;
+        line-height: 1.2;
+        white-space: nowrap;
     }
 
     .reimb-metric-mid {
         display: flex;
         align-items: center;
-        gap: 6px;
-        margin: 4px 0 2px 0;
+        gap: 8px;
     }
 
     .reimb-metric-val {
-        font-size: 1.25rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 26px;
         font-weight: 800;
         color: #0F172A;
         line-height: 1;
+        font-variant-numeric: tabular-nums;
     }
 
-    /* Segmented Progress Bars */
+    /* Bottom Flex Wrapper (Segmented Bar + Subtitle) */
+    .reimb-metric-bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* Segmented Progress Bars (Figma Measurement: Width 202.5px, Height 18px, Radius 2px, Gap 3px, Color #4362CE) */
     .reimb-segment-bar {
         display: flex;
         gap: 3px;
-        margin: 4px 0;
+        margin: 0;
+        width: 100%;
+        max-width: 202.5px;
+        height: 18px;
     }
 
     .reimb-segment-bar span {
         flex: 1;
-        height: 8px;
+        height: 18px;
         border-radius: 2px;
         background: #F1F5F9;
+        transition: background 0.2s ease;
     }
 
     .reimb-segment-bar span.active-blue {
-        background: #3B82F6;
+        background: #4362CE !important;
     }
 
     .reimb-segment-bar span.active-orange {
-        background: #F59E0B;
+        background: #F59E0B !important;
     }
 
     .reimb-segment-bar span.active-red {
-        background: #EF4444;
+        background: #EE473D !important;
     }
 
     .reimb-metric-sub {
-        font-size: 0.68rem;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px;
         color: #64748B;
-        font-weight: 600;
+        font-weight: 500;
     }
 
     /* TABLES STYLING */
@@ -1167,27 +1196,37 @@ include '../../includes/sidebar.php';
     }
 
     @media (max-width: 768px) {
+        .main-wrapper {
+            padding: 0.75rem 12px 90px 12px !important;
+            overflow-x: hidden !important;
+        }
+
         .reimb-container {
-            padding: 0.75rem 0.75rem 100px 0.75rem !important;
+            padding: 0 !important;
             width: 100% !important;
-            max-width: 100vw !important;
+            max-width: 100% !important;
             overflow-x: hidden !important;
         }
 
         .figma-page-topbar {
             flex-direction: column !important;
             align-items: stretch !important;
-            gap: 0.75rem !important;
+            gap: 10px !important;
+            padding: 0 0 0.75rem 0 !important;
         }
 
         .figma-page-topbar-left {
             width: 100% !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 8px !important;
         }
 
         .figma-select-wrapper,
         .figma-select-wrapper select {
             width: 100% !important;
             min-width: 0 !important;
+            box-sizing: border-box !important;
         }
 
         .figma-page-breadcrumb {
@@ -1195,10 +1234,19 @@ include '../../includes/sidebar.php';
         }
 
         .figma-page-topbar-right {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 0.5rem !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
             width: 100% !important;
+        }
+
+        .figma-page-topbar-right .btn-figma-primary,
+        .figma-page-topbar-right .btn-figma-outline-sm {
+            flex: 1 !important;
+            justify-content: center !important;
+            text-align: center !important;
+            padding: 0.5rem 0.6rem !important;
+            font-size: 0.78rem !important;
         }
 
         .btn-figma-icon-sm {
@@ -1241,12 +1289,68 @@ include '../../includes/sidebar.php';
             padding: 14px 16px !important;
         }
 
+        .reimb-hero-grid {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+        }
+
+        .reimb-right-col {
+            width: 100% !important;
+            gap: 16px !important;
+        }
+
+        .reimb-trend-card {
+            padding: 14px 16px !important;
+            min-height: 0 !important;
+        }
+
+        .reimb-ai-panel {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            padding: 20px 16px !important;
+            gap: 16px !important;
+        }
+
+        .reimb-ai-orb {
+            width: 80px !important;
+            height: 80px !important;
+            align-self: center !important;
+        }
+
+        .reimb-bottom-grid {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+        }
+
         .reimb-metric-blocks-grid {
             grid-template-columns: 1fr !important;
+            gap: 14px !important;
         }
 
         .reimb-reasons-wrap {
             grid-template-columns: 1fr !important;
+            gap: 16px !important;
+        }
+
+        .reimb-funnel-step {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 10px !important;
+            padding: 14px 0 !important;
+        }
+
+        .reimb-funnel-left {
+            width: 100% !important;
+        }
+
+        .reimb-funnel-bar-wrap {
+            width: 100% !important;
+            margin: 0 !important;
+        }
+
+        .reimb-funnel-right {
+            width: 100% !important;
+            justify-content: space-between !important;
         }
     }
 </style>
@@ -1673,87 +1777,124 @@ include '../../includes/sidebar.php';
 
         <!-- Metric 1: Recovery Efficiency -->
         <div class="reimb-metric-card">
-            <div class="reimb-metric-top">
-                <div class="reimb-metric-icon">
-                    <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Recovery Efficiency.svg"
-                        style="width: 16px; height: 16px;" />
+            <div class="reimb-metric-icon">
+                <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Recovery Efficiency.svg"
+                    style="width: 24px; height: 24px;" />
+            </div>
+            <div class="reimb-metric-content">
+                <div class="reimb-metric-top-info">
+                    <span class="reimb-metric-label">Recovery Efficiency</span>
+                    <div class="reimb-metric-mid">
+                        <span class="reimb-metric-val">90%</span>
+                        <svg width="14" height="14" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 8.5V1.5M5 1.5L8 4.5M5 1.5L2 4.5" stroke="#029153" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
                 </div>
-                <span class="reimb-metric-label">Recovery Efficiency</span>
+                <div class="reimb-metric-bottom">
+                    <div class="reimb-segment-bar">
+                        <span class="active-blue"></span><span class="active-blue"></span><span
+                            class="active-blue"></span><span class="active-blue"></span><span
+                            class="active-blue"></span>
+                        <span class="active-blue"></span><span class="active-blue"></span><span
+                            class="active-blue"></span><span class="active-blue"></span><span></span>
+                    </div>
+                    <div class="reimb-metric-sub">Optimal performance</div>
+                </div>
             </div>
-            <div class="reimb-metric-mid">
-                <span class="reimb-metric-val">90%</span>
-                <span style="color: #029153; font-size: 0.85rem; font-weight: 800;">&uarr;</span>
-            </div>
-            <div class="reimb-segment-bar">
-                <span class="active-blue"></span><span class="active-blue"></span><span class="active-blue"></span><span
-                    class="active-blue"></span><span class="active-blue"></span>
-                <span class="active-blue"></span><span class="active-blue"></span><span class="active-blue"></span><span
-                    class="active-blue"></span><span></span>
-            </div>
-            <div class="reimb-metric-sub">Optimal performance</div>
         </div>
 
         <!-- Metric 2: Inventory Risk -->
         <div class="reimb-metric-card">
-            <div class="reimb-metric-top">
-                <div class="reimb-metric-icon">
-                    <img src="<?php echo BASE_URL; ?>assets/icons/Return Page/Sellable.svg"
-                        style="width: 16px; height: 16px;" />
+            <div class="reimb-metric-icon">
+                <img src="<?php echo BASE_URL; ?>assets/icons/Return Page/Sellable.svg"
+                    style="width: 24px; height: 24px;" />
+            </div>
+            <div class="reimb-metric-content">
+                <div class="reimb-metric-top-info">
+                    <span class="reimb-metric-label">Inventory Risk</span>
+                    <div class="reimb-metric-mid">
+                        <span class="reimb-metric-val">30%</span>
+                        <svg width="14" height="14" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 1.5V8.5M5 8.5L8 5.5M5 8.5L2 5.5" stroke="#EE473D" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
                 </div>
-                <span class="reimb-metric-label">Inventory Risk</span>
+                <div class="reimb-metric-bottom">
+                    <div class="reimb-segment-bar">
+                        <span class="active-orange"></span><span class="active-orange"></span><span
+                            class="active-orange"></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <div class="reimb-metric-sub">Low risk detected</div>
+                </div>
             </div>
-            <div class="reimb-metric-mid">
-                <span class="reimb-metric-val">30%</span>
-                <span style="color: #EE473D; font-size: 0.85rem; font-weight: 800;">&darr;</span>
-            </div>
-            <div class="reimb-segment-bar">
-                <span class="active-orange"></span><span class="active-orange"></span><span
-                    class="active-orange"></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span><span></span>
-            </div>
-            <div class="reimb-metric-sub">Low risk detected</div>
         </div>
 
         <!-- Metric 3: Financial Leakage -->
         <div class="reimb-metric-card">
-            <div class="reimb-metric-top">
-                <div class="reimb-metric-icon">
-                    <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Financial Leakage.svg"
-                        style="width: 16px; height: 16px;" />
+            <div class="reimb-metric-icon">
+                <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Financial Leakage.svg"
+                    style="width: 24px; height: 24px;" />
+            </div>
+            <div class="reimb-metric-content">
+                <div class="reimb-metric-top-info">
+                    <span class="reimb-metric-label">Financial Leakage</span>
+                    <div class="reimb-metric-mid">
+                        <span class="reimb-metric-val">12%</span>
+                        <svg width="14" height="14" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 1.5V8.5M5 8.5L8 5.5M5 8.5L2 5.5" stroke="#EE473D" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
                 </div>
-                <span class="reimb-metric-label">Financial Leakage</span>
+                <div class="reimb-metric-bottom">
+                    <div class="reimb-segment-bar">
+                        <span class="active-red"></span><span
+                            class="active-red"></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <div class="reimb-metric-sub">Minimal leakage</div>
+                </div>
             </div>
-            <div class="reimb-metric-mid">
-                <span class="reimb-metric-val">12%</span>
-                <span style="color: #EE473D; font-size: 0.85rem; font-weight: 800;">&darr;</span>
-            </div>
-            <div class="reimb-segment-bar">
-                <span class="active-red"></span><span class="active-red"></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span><span></span>
-            </div>
-            <div class="reimb-metric-sub">Minimal leakage</div>
         </div>
 
         <!-- Metric 4: Ops Health -->
         <div class="reimb-metric-card">
-            <div class="reimb-metric-top">
-                <div class="reimb-metric-icon">
-                    <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Check.svg"
-                        style="width: 16px; height: 16px;" />
+            <div class="reimb-metric-icon">
+                <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M8 1.5C8 1.5 13.5 2.5 13.5 7C13.5 11.5 8 14.5 8 14.5C8 14.5 2.5 11.5 2.5 7C2.5 2.5 8 1.5 8 1.5Z"
+                        stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M5.75 7.5L7.25 9L10.25 6" stroke="#4362CE" stroke-width="1.3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="reimb-metric-content">
+                <div class="reimb-metric-top-info">
+                    <span class="reimb-metric-label">Ops Health</span>
+                    <div class="reimb-metric-mid">
+                        <span class="reimb-metric-val">95%</span>
+                        <svg width="14" height="14" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 8.5V1.5M5 1.5L8 4.5M5 1.5L2 4.5" stroke="#029153" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
                 </div>
-                <span class="reimb-metric-label">Ops Health</span>
+                <div class="reimb-metric-bottom">
+                    <div class="reimb-segment-bar">
+                        <span class="active-blue"></span><span class="active-blue"></span><span
+                            class="active-blue"></span><span class="active-blue"></span><span
+                            class="active-blue"></span>
+                        <span class="active-blue"></span><span class="active-blue"></span><span
+                            class="active-blue"></span><span class="active-blue"></span><span
+                            class="active-blue"></span>
+                    </div>
+                    <div class="reimb-metric-sub">Superior health</div>
+                </div>
             </div>
-            <div class="reimb-metric-mid">
-                <span class="reimb-metric-val">95%</span>
-                <span style="color: #029153; font-size: 0.85rem; font-weight: 800;">&uarr;</span>
-            </div>
-            <div class="reimb-segment-bar">
-                <span class="active-blue"></span><span class="active-blue"></span><span class="active-blue"></span><span
-                    class="active-blue"></span><span class="active-blue"></span>
-                <span class="active-blue"></span><span class="active-blue"></span><span class="active-blue"></span><span
-                    class="active-blue"></span><span class="active-blue"></span>
-            </div>
-            <div class="reimb-metric-sub">Superior health</div>
         </div>
 
     </div>

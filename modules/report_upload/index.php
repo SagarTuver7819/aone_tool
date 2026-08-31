@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $report_date = $report_month . "-01";
 
     if (isset($_FILES['reports']) && !empty($_FILES['reports']['name'][0])) {
-        
+
         if (isset($_POST['clean_db']) && $_POST['clean_db'] == '1') {
             // Truncate core tables
             $conn->query("TRUNCATE TABLE amazon_business_report");
@@ -27,40 +27,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $conn->query("TRUNCATE TABLE amazon_advertising_sd");
             $conn->query("TRUNCATE TABLE amazon_brand_reports");
             $conn->query("TRUNCATE TABLE amazon_returns_reimbursements");
-            
+
             // Drop dynamic tables
             $res = $conn->query("SHOW TABLES LIKE 'dyn_%'");
             while ($row = $res->fetch_array()) {
                 $conn->query("DROP TABLE `" . $row[0] . "`");
             }
         }
-        
-        function cleanVal($val) {
-            if (empty($val)) return 0;
+
+        function cleanVal($val)
+        {
+            if (empty($val))
+                return 0;
             $val = str_replace(['$', ',', '%', ' '], '', $val);
             return is_numeric($val) ? $val : 0;
         }
 
-        function slugify($text) {
+        function slugify($text)
+        {
             return strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $text));
         }
 
-        function sanitize_sql_name($name) {
+        function sanitize_sql_name($name)
+        {
             $name = preg_replace('/[^a-zA-Z0-9_]/', '_', trim($name));
             $name = strtolower($name);
             // Collapse multiple underscores
             $name = preg_replace('/_+/', '_', $name);
             // Trim underscores from start and end
             $name = trim($name, '_');
-            
-            if (empty($name)) return 'col_' . substr(md5(uniqid()), 0, 8);
+
+            if (empty($name))
+                return 'col_' . substr(md5(uniqid()), 0, 8);
             if (preg_match('/^[0-9]/', $name)) {
                 $name = 'col_' . $name;
             }
             return $name;
         }
 
-        function findMatchingTable($clean_headers, $conn) {
+        function findMatchingTable($clean_headers, $conn)
+        {
             $res = $conn->query("SHOW TABLES LIKE 'dyn_%'");
             while ($row = $res->fetch_array()) {
                 $tableName = $row[0];
@@ -71,21 +77,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $existing_columns[] = $c['Field'];
                     }
                 }
-                
+
                 $h_copy = $clean_headers;
                 $e_copy = $existing_columns;
                 sort($h_copy);
                 sort($e_copy);
-                if ($h_copy == $e_copy) return $tableName;
+                if ($h_copy == $e_copy)
+                    return $tableName;
             }
             return false;
         }
 
-        function parseDynamicExcel($fileInfo, $conn) {
+        function parseDynamicExcel($fileInfo, $conn)
+        {
             $filePath = $fileInfo['tmp_name'];
             $fileName = $fileInfo['name'];
             $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-            
+
             $rows = [];
             $headers = [];
             $rows_count = 0;
@@ -95,7 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($xlsx = \Shuchkin\SimpleXLSX::parse($filePath)) {
                     $rows = $xlsx->rows();
                     $headers = array_shift($rows);
-                } else return false;
+                } else
+                    return false;
             } else {
                 $handle = fopen($filePath, "r");
                 $headers = fgetcsv($handle);
@@ -105,7 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 fclose($handle);
             }
 
-            if (empty($headers)) return false;
+            if (empty($headers))
+                return false;
 
             $clean_headers = [];
             foreach ($headers as $h) {
@@ -122,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $base_name = preg_replace('/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|january|february|march|april|may|june|july|august|september|october|november|december)/i', '', $base_name);
                 $clean_base = sanitize_sql_name($base_name);
                 $full_table_name = "dyn_" . $clean_base;
-                
+
                 // Check if this table name exists but with a DIFFERENT schema
                 $check = $conn->query("SHOW TABLES LIKE '$full_table_name'");
                 if ($check && $check->num_rows > 0) {
@@ -155,7 +165,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             return ['table' => $full_table_name, 'rows' => $rows_count];
         }
 
-        function parseBusinessCSV($filePath, $conn, $customerId, $reportDate) {
+        function parseBusinessCSV($filePath, $conn, $customerId, $reportDate)
+        {
             $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
             $rows = [];
             $rawHeaders = [];
@@ -166,19 +177,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($xlsx = SimpleXLSX::parse($filePath)) {
                     $rows = $xlsx->rows();
                     $rawHeaders = array_shift($rows);
-                } else return;
+                } else
+                    return;
             } else {
                 $fileContent = file_get_contents($filePath);
                 $fileContent = preg_replace('/^\xEF\xBB\xBF/', '', $fileContent);
                 $lines = explode("\n", str_replace("\r", "", $fileContent));
-                if (empty($lines)) return;
+                if (empty($lines))
+                    return;
                 $headerLine = array_shift($lines);
                 $delimiter = ",";
-                if (strpos($headerLine, "\t") !== false) $delimiter = "\t";
-                elseif (strpos($headerLine, ";") !== false) $delimiter = ";";
+                if (strpos($headerLine, "\t") !== false)
+                    $delimiter = "\t";
+                elseif (strpos($headerLine, ";") !== false)
+                    $delimiter = ";";
                 $rawHeaders = str_getcsv($headerLine, $delimiter);
                 foreach ($lines as $line) {
-                    if (trim($line)) $rows[] = str_getcsv($line, $delimiter);
+                    if (trim($line))
+                        $rows[] = str_getcsv($line, $delimiter);
                 }
             }
 
@@ -191,7 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt_clear = $conn->prepare("DELETE FROM amazon_business_report WHERE customer_id = ? AND report_date BETWEEN ? AND ?");
             $stmt_clear->bind_param("iss", $customerId, $monthStart, $monthEnd);
             $stmt_clear->execute();
-            
+
             // Map common variations to standard slugs
             $standardMap = [
                 'date' => ['date'],
@@ -249,10 +265,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'ordersshippedb2b' => ['ordersshippedb2b'],
             ];
 
-            $getVal = function($data, $standardKey) use ($colMap, $standardMap) {
+            $getVal = function ($data, $standardKey) use ($colMap, $standardMap) {
                 if (isset($standardMap[$standardKey])) {
                     foreach ($standardMap[$standardKey] as $possibleSlug) {
-                        if (isset($colMap[$possibleSlug])) return $data[$colMap[$possibleSlug]] ?? 0;
+                        if (isset($colMap[$possibleSlug]))
+                            return $data[$colMap[$possibleSlug]] ?? 0;
                     }
                 }
                 return 0;
@@ -314,23 +331,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 units_shipped_b2b = VALUES(units_shipped_b2b),
                 orders_shipped = VALUES(orders_shipped),
                 orders_shipped_b2b = VALUES(orders_shipped_b2b)";
-            
+
             $stmt = $conn->prepare($sql);
 
             foreach ($rows as $data) {
-                if (empty($data[0]) || count($data) < count($rawHeaders) / 2) continue;
+                if (empty($data[0]) || count($data) < count($rawHeaders) / 2)
+                    continue;
 
                 $dateVal = $getVal($data, 'date');
                 if (!empty($dateVal)) {
                     // Try to normalize Amazon's date format (e.g., "Jan 1, 2026" or "01/01/26")
                     $date = date('Y-m-d', strtotime($dateVal));
-                    if (!$date || $date == '1970-01-01') $date = $reportDate;
+                    if (!$date || $date == '1970-01-01')
+                        $date = $reportDate;
                 } else {
                     $date = $reportDate;
                 }
 
                 $params = [
-                    $customerId, $date,
+                    $customerId,
+                    $date,
                     cleanVal($getVal($data, 'orderedproductsales')),
                     cleanVal($getVal($data, 'orderedproductsalesb2b')),
                     cleanVal($getVal($data, 'unitsordered')),
@@ -394,7 +414,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             return $rows_count;
         }
 
-        function parseDetailCSV($filePath, $conn, $customerId, $reportDate) {
+        function parseDetailCSV($filePath, $conn, $customerId, $reportDate)
+        {
             $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
             $rows = [];
             $rawHeaders = [];
@@ -405,19 +426,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($xlsx = SimpleXLSX::parse($filePath)) {
                     $rows = $xlsx->rows();
                     $rawHeaders = array_shift($rows);
-                } else return;
+                } else
+                    return;
             } else {
                 $fileContent = file_get_contents($filePath);
                 $fileContent = preg_replace('/^\xEF\xBB\xBF/', '', $fileContent);
                 $lines = explode("\n", str_replace("\r", "", $fileContent));
-                if (empty($lines)) return;
+                if (empty($lines))
+                    return;
                 $headerLine = array_shift($lines);
                 $delimiter = ",";
-                if (strpos($headerLine, "\t") !== false) $delimiter = "\t";
-                elseif (strpos($headerLine, ";") !== false) $delimiter = ";";
+                if (strpos($headerLine, "\t") !== false)
+                    $delimiter = "\t";
+                elseif (strpos($headerLine, ";") !== false)
+                    $delimiter = ";";
                 $rawHeaders = str_getcsv($headerLine, $delimiter);
                 foreach ($lines as $line) {
-                    if (trim($line)) $rows[] = str_getcsv($line, $delimiter);
+                    if (trim($line))
+                        $rows[] = str_getcsv($line, $delimiter);
                 }
             }
 
@@ -428,10 +454,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt_clear = $conn->prepare("DELETE FROM amazon_detail_report WHERE customer_id = ? AND report_date = ?");
             $stmt_clear->bind_param("is", $customerId, $reportDate);
             $stmt_clear->execute();
-            
-            $getCol = function($slugs) use ($colMap) {
-                foreach ((array)$slugs as $slug) {
-                    if (isset($colMap[$slug])) return $colMap[$slug];
+
+            $getCol = function ($slugs) use ($colMap) {
+                foreach ((array) $slugs as $slug) {
+                    if (isset($colMap[$slug]))
+                        return $colMap[$slug];
                 }
                 return -1;
             };
@@ -439,7 +466,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $parentAsinIdx = $getCol(['parentasin']);
             $asinIdx = $getCol(['childasin', 'asin']);
             $titleIdx = $getCol(['title']);
-            
+
             $sql = "INSERT INTO amazon_detail_report 
                 (customer_id, report_date, parent_asin, asin, title, sessions_mobile_app, sessions_mobile_app_b2b, sessions_browser, sessions_browser_b2b, sessions_total, sessions_total_b2b, session_percentage_mobile_app, session_percentage_mobile_app_b2b, session_percentage_browser, session_percentage_browser_b2b, session_percentage_total, session_percentage_total_b2b, page_views_mobile_app, page_views_mobile_app_b2b, page_views_browser, page_views_browser_b2b, page_views_total, page_views_total_b2b, page_views_percentage_mobile_app, page_views_percentage_mobile_app_b2b, page_views_percentage_browser, page_views_percentage_browser_b2b, page_views_percentage_total, page_views_percentage_total_b2b, buy_box_percentage, buy_box_percentage_b2b, units_ordered, units_ordered_b2b, unit_session_percentage, unit_session_percentage_b2b, ordered_product_sales, ordered_product_sales_b2b, total_order_items, total_order_items_b2b, units_refunded, units_refunded_b2b, refund_rate, refund_rate_b2b, shipped_product_sales, shipped_product_sales_b2b, units_shipped, units_shipped_b2b, orders_shipped, orders_shipped_b2b) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -453,10 +480,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt = $conn->prepare($sql);
 
             foreach ($rows as $data) {
-                if ($asinIdx < 0 || empty($data[$asinIdx])) continue;
+                if ($asinIdx < 0 || empty($data[$asinIdx]))
+                    continue;
 
                 $params = [
-                    $customerId, $reportDate,
+                    $customerId,
+                    $reportDate,
                     $parentAsinIdx >= 0 ? ($data[$parentAsinIdx] ?? '') : '',
                     $asinIdx >= 0 ? ($data[$asinIdx] ?? '') : '',
                     $titleIdx >= 0 ? ($data[$titleIdx] ?? '') : '',
@@ -516,7 +545,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
 
-        function parseAdvertisingReport($fileInfo, $conn, $customerId, $reportDate, $type, $subType = 'general') {
+        function parseAdvertisingReport($fileInfo, $conn, $customerId, $reportDate, $type, $subType = 'general')
+        {
             $filePath = $fileInfo['tmp_name'];
             $ext = strtolower(pathinfo($fileInfo['name'], PATHINFO_EXTENSION));
             $rows_count = 0;
@@ -524,21 +554,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($ext === 'xlsx') {
                 if ($xlsx = SimpleXLSX::parse($filePath)) {
                     $rows = $xlsx->rows();
-                } else return;
+                } else
+                    return;
             } else {
                 $handle = fopen($filePath, "r");
-                while (($data = fgetcsv($handle)) !== FALSE) { $rows[] = $data; }
+                while (($data = fgetcsv($handle)) !== FALSE) {
+                    $rows[] = $data;
+                }
                 fclose($handle);
             }
-            if (empty($rows)) return;
+            if (empty($rows))
+                return;
             $rawHeaders = array_shift($rows);
             $headers = array_map('slugify', $rawHeaders);
             $colMap = array_flip($headers);
 
             $tableName = "amazon_advertising_sp"; // Default to SP
-            if ($type === 'sb') $tableName = "amazon_advertising_sb";
-            if ($type === 'sd') $tableName = "amazon_advertising_sd";
-            
+            if ($type === 'sb')
+                $tableName = "amazon_advertising_sb";
+            if ($type === 'sd')
+                $tableName = "amazon_advertising_sd";
+
             $monthStart = date('Y-m-01', strtotime($reportDate));
             $monthEnd = date('Y-m-t', strtotime($reportDate));
 
@@ -554,17 +590,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             foreach ($rows as $data) {
-                if (empty($data[0])) continue;
-                
-                $get = function($slug) use ($colMap, $data) { return $data[$colMap[$slug] ?? -1] ?? ''; };
-                $getVal = function($slug) use ($colMap, $data) { return cleanVal($data[$colMap[$slug] ?? -1] ?? 0); };
+                if (empty($data[0]))
+                    continue;
+
+                $get = function ($slug) use ($colMap, $data) {
+                    return $data[$colMap[$slug] ?? -1] ?? ''; };
+                $getVal = function ($slug) use ($colMap, $data) {
+                    return cleanVal($data[$colMap[$slug] ?? -1] ?? 0); };
 
                 // Get row date if available, else fallback to reportMonth-01
                 $rowDate = $reportDate;
                 $dateVal = $get('date');
                 if (!empty($dateVal)) {
                     $parsedDate = date('Y-m-d', strtotime($dateVal));
-                    if ($parsedDate && $parsedDate != '1970-01-01') $rowDate = $parsedDate;
+                    if ($parsedDate && $parsedDate != '1970-01-01')
+                        $rowDate = $parsedDate;
                 }
 
                 if ($type === 'traffic') {
@@ -572,7 +612,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $campaign = $get('campaignname');
                     $gross = intval($getVal('grossclicks'));
                     $invalid = intval($getVal('invalidclicks'));
-                    
+
                     // Update all ad tables for this specific date and campaign
                     $updated = false;
                     foreach (['amazon_advertising_sp', 'amazon_advertising_sb', 'amazon_advertising_sd'] as $tbl) {
@@ -592,15 +632,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $sql = "INSERT INTO `$tableName` (customer_id, report_date, campaign_name, ad_group_name, targeting, match_type, impressions, clicks, ctr, cpc, spend, total_sales, acos, roas, total_orders, total_units, conversion_rate, advertised_sku, advertised_asin, report_type, placement, bidding_strategy) 
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-                
+
                 $campaign = $get('campaignname') ?: $get('campaign') ?: 'Unknown';
                 $adgroup = $get('adgroupname') ?: $get('adgroup') ?: '';
-                
+
                 $spend = $getVal('spend') ?: $getVal('cost') ?: 0;
                 $sales = $getVal('14daytotalsales') ?: $getVal('7daytotalsales') ?: $getVal('totalsales') ?: $getVal('sales') ?: 0;
                 $orders = intval($getVal('14daytotalorders') ?: $getVal('7daytotalorders') ?: $getVal('totalorders') ?: $getVal('orders') ?: 0);
                 $units = intval($getVal('14daytotalunits') ?: $getVal('7daytotalunits') ?: $getVal('totalunits') ?: $getVal('units') ?: 0);
-                
+
                 $acos = $getVal('totaladvertisingcostofsalesacos') ?: $getVal('acos') ?: 0;
                 $placement = $get('placement') ?: 'General';
                 $bidding = $get('biddingstrategy') ?: 'N/A';
@@ -611,17 +651,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
 
                 $params = [
-                    $customerId, $rowDate,
-                    $campaign, $adgroup, $targetValue, $get('matchtype'),
-                    intval($getVal('impressions')), intval($getVal('clicks')),
-                    $getVal('clickthroughratectr'), $getVal('costperclickcpc'), $spend,
-                    $sales, $acos,
-                    $getVal('returnonadspendroas'), 
-                    $orders, $units, $getVal('conversionrate'),
-                    $get('sku') ?: $get('advertisedsku'), $get('asin') ?: $get('advertisedasin'),
-                    $subType, $placement, $bidding
+                    $customerId,
+                    $rowDate,
+                    $campaign,
+                    $adgroup,
+                    $targetValue,
+                    $get('matchtype'),
+                    intval($getVal('impressions')),
+                    intval($getVal('clicks')),
+                    $getVal('clickthroughratectr'),
+                    $getVal('costperclickcpc'),
+                    $spend,
+                    $sales,
+                    $acos,
+                    $getVal('returnonadspendroas'),
+                    $orders,
+                    $units,
+                    $getVal('conversionrate'),
+                    $get('sku') ?: $get('advertisedsku'),
+                    $get('asin') ?: $get('advertisedasin'),
+                    $subType,
+                    $placement,
+                    $bidding
                 ];
-                
+
                 $types = "isssssiiddddddiidsssss";
                 $stmt->bind_param($types, ...$params);
                 if ($stmt->execute()) {
@@ -631,19 +684,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             return $rows_count;
         }
 
-        function parseBrandReport($fileInfo, $conn, $customerId, $reportDate, $type) {
+        function parseBrandReport($fileInfo, $conn, $customerId, $reportDate, $type)
+        {
             $filePath = $fileInfo['tmp_name'];
             $ext = strtolower(pathinfo($fileInfo['name'], PATHINFO_EXTENSION));
             $rows = [];
             $rows_count = 0;
             if ($ext === 'xlsx') {
-                if ($xlsx = SimpleXLSX::parse($filePath)) { $rows = $xlsx->rows(); } else return;
+                if ($xlsx = SimpleXLSX::parse($filePath)) {
+                    $rows = $xlsx->rows();
+                } else
+                    return;
             } else {
                 $handle = fopen($filePath, "r");
-                while (($data = fgetcsv($handle)) !== FALSE) { $rows[] = $data; }
+                while (($data = fgetcsv($handle)) !== FALSE) {
+                    $rows[] = $data;
+                }
                 fclose($handle);
             }
-            if (empty($rows)) return;
+            if (empty($rows))
+                return;
             $rawHeaders = array_shift($rows);
             $headers = array_map('slugify', $rawHeaders);
             $colMap = array_flip($headers);
@@ -654,7 +714,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt_clear->execute();
 
             foreach ($rows as $data) {
-                if (empty($data[0])) continue;
+                if (empty($data[0]))
+                    continue;
                 // Ensure data array matches headers length
                 $padded_data = array_slice(array_pad($data, count($headers), ''), 0, count($headers));
                 $row_assoc = array_combine($headers, $padded_data);
@@ -672,18 +733,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             return $rows_count;
         }
 
-        function parseInventoryReport($filePath, $conn, $customerId, $reportDate) {
+        function parseInventoryReport($filePath, $conn, $customerId, $reportDate)
+        {
             $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
             $rows = [];
             $rows_count = 0;
             if ($ext === 'xlsx') {
-                if ($xlsx = SimpleXLSX::parse($filePath)) { $rows = $xlsx->rows(); } else return;
+                if ($xlsx = SimpleXLSX::parse($filePath)) {
+                    $rows = $xlsx->rows();
+                } else
+                    return;
             } else {
                 $handle = fopen($filePath, "r");
-                while (($data = fgetcsv($handle)) !== FALSE) { $rows[] = $data; }
+                while (($data = fgetcsv($handle)) !== FALSE) {
+                    $rows[] = $data;
+                }
                 fclose($handle);
             }
-            if (empty($rows)) return;
+            if (empty($rows))
+                return;
             $rawHeaders = array_shift($rows);
             $headers = array_map('slugify', $rawHeaders);
             $colMap = array_flip($headers);
@@ -694,29 +762,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt_clear->execute();
 
             foreach ($rows as $data) {
-                if (empty($data[0])) continue;
-                $get = function($slug) use ($colMap, $data) { 
+                if (empty($data[0]))
+                    continue;
+                $get = function ($slug) use ($colMap, $data) {
                     $idx = $colMap[$slug] ?? -1;
-                    return $idx >= 0 ? ($data[$idx] ?? '') : ''; 
+                    return $idx >= 0 ? ($data[$idx] ?? '') : '';
                 };
-                $getVal = function($slug) use ($colMap, $data) { 
+                $getVal = function ($slug) use ($colMap, $data) {
                     $idx = $colMap[$slug] ?? -1;
-                    return cleanVal($idx >= 0 ? ($data[$idx] ?? 0) : 0); 
+                    return cleanVal($idx >= 0 ? ($data[$idx] ?? 0) : 0);
                 };
 
                 $sql = "INSERT INTO amazon_inventory 
                     (customer_id, report_date, sku, asin, fnsku, product_name, condition_type, your_price, mfn_listing_exists, mfn_fulfillable_quantity, afn_listing_exists, afn_warehouse_quantity, afn_fulfillable_quantity, afn_unsellable_quantity, afn_reserved_quantity, afn_total_quantity, afn_inbound_working_quantity, afn_inbound_shipped_quantity, afn_inbound_receiving_quantity) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                
+
                 $stmt = $conn->prepare($sql);
                 $params = [
-                    $customerId, $reportDate,
-                    $get('sku'), $get('asin'), $get('fnsku'), $get('productname'), $get('condition'),
-                    $getVal('yourprice'), $get('mfnlistingexists'), intval($getVal('mfnfulfillablequantity')),
-                    $get('afnlistingexists'), intval($getVal('afnwarehousequantity')),
-                    intval($getVal('afnfulfillablequantity')), intval($getVal('afnunsellablequantity')),
-                    intval($getVal('afnreservedquantity')), intval($getVal('afntotalquantity')),
-                    intval($getVal('afninboundworkingquantity')), intval($getVal('afninboundshippedquantity')),
+                    $customerId,
+                    $reportDate,
+                    $get('sku'),
+                    $get('asin'),
+                    $get('fnsku'),
+                    $get('productname'),
+                    $get('condition'),
+                    $getVal('yourprice'),
+                    $get('mfnlistingexists'),
+                    intval($getVal('mfnfulfillablequantity')),
+                    $get('afnlistingexists'),
+                    intval($getVal('afnwarehousequantity')),
+                    intval($getVal('afnfulfillablequantity')),
+                    intval($getVal('afnunsellablequantity')),
+                    intval($getVal('afnreservedquantity')),
+                    intval($getVal('afntotalquantity')),
+                    intval($getVal('afninboundworkingquantity')),
+                    intval($getVal('afninboundshippedquantity')),
                     intval($getVal('afninboundreceivingquantity'))
                 ];
                 $stmt->bind_param("issssssdsisiiiiiiii", ...$params);
@@ -727,18 +807,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             return $rows_count;
         }
 
-        function parseTransactionFile($fileInfo, $conn, $customerId, $reportDate) {
+        function parseTransactionFile($fileInfo, $conn, $customerId, $reportDate)
+        {
             $filePath = $fileInfo['tmp_name'];
             $fileName = $fileInfo['name'];
             $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-            
+
             $rows = [];
             $rows_count = 0;
             if ($ext === 'xlsx') {
                 if ($xlsx = SimpleXLSX::parse($filePath)) {
                     $rows = $xlsx->rows();
                 } else {
-                    return; 
+                    return;
                 }
             } else {
                 $handle = fopen($filePath, "r");
@@ -748,19 +829,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 fclose($handle);
             }
 
-            if (empty($rows)) return;
-            
+            if (empty($rows))
+                return;
+
             // Search for headers in first 50 rows (Amazon sometimes has many notes)
             $headerIndex = -1;
             foreach ($rows as $idx => $row) {
                 $rowStr = implode(" ", array_map('slugify', $row));
                 // Look for at least 3 identifying columns to be sure it's the header row
                 $hits = 0;
-                if (strpos($rowStr, 'datetime') !== false) $hits++;
-                if (strpos($rowStr, 'transactiontype') !== false) $hits++;
-                if (strpos($rowStr, 'orderid') !== false) $hits++;
-                if (strpos($rowStr, 'productsales') !== false) $hits++;
-                
+                if (strpos($rowStr, 'datetime') !== false)
+                    $hits++;
+                if (strpos($rowStr, 'transactiontype') !== false)
+                    $hits++;
+                if (strpos($rowStr, 'orderid') !== false)
+                    $hits++;
+                if (strpos($rowStr, 'productsales') !== false)
+                    $hits++;
+
                 if ($hits >= 3) {
                     $headerIndex = $idx;
                     break;
@@ -796,14 +882,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt = $conn->prepare($sql);
 
             foreach ($rows as $data) {
-                if (empty($data[0])) continue;
+                if (empty($data[0]))
+                    continue;
 
                 $rawDate = $data[$colMap[slugify('date/time')] ?? -1] ?? '';
-                if (empty($rawDate) || stripos($rawDate, 'Note:') !== false || stripos($rawDate, 'Glossary') !== false) continue;
-                
+                if (empty($rawDate) || stripos($rawDate, 'Note:') !== false || stripos($rawDate, 'Glossary') !== false)
+                    continue;
+
                 $timestamp = strtotime($rawDate);
-                if (!$timestamp || $timestamp < 1000000) continue; // Skip invalid dates
-                
+                if (!$timestamp || $timestamp < 1000000)
+                    continue; // Skip invalid dates
+
                 $date = date('Y-m-d H:i:s', $timestamp);
 
                 $params = [
@@ -842,7 +931,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             return $rows_count;
         }
 
-        function parseReturnsOrReimbursements($filePath, $conn, $customerId, $reportDate, $fileType) {
+        function parseReturnsOrReimbursements($filePath, $conn, $customerId, $reportDate, $fileType)
+        {
             $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
             $rows = [];
             $rows_count = 0;
@@ -850,23 +940,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 require_once __DIR__ . '/../../includes/SimpleXLSX.php';
                 if ($xlsx = \Shuchkin\SimpleXLSX::parse($filePath)) {
                     $rows = $xlsx->rows();
-                } else return 0;
+                } else
+                    return 0;
             } else {
                 $fileContent = file_get_contents($filePath);
                 $fileContent = preg_replace('/^\xEF\xBB\xBF/', '', $fileContent);
                 $lines = explode("\n", str_replace("\r", "", $fileContent));
-                if (empty($lines)) return 0;
+                if (empty($lines))
+                    return 0;
                 $headerLine = array_shift($lines);
                 $delimiter = ",";
-                if (strpos($headerLine, "\t") !== false) $delimiter = "\t";
-                elseif (strpos($headerLine, ";") !== false) $delimiter = ";";
+                if (strpos($headerLine, "\t") !== false)
+                    $delimiter = "\t";
+                elseif (strpos($headerLine, ";") !== false)
+                    $delimiter = ";";
                 $rawHeaders = str_getcsv($headerLine, $delimiter);
                 foreach ($lines as $line) {
-                    if (trim($line)) $rows[] = str_getcsv($line, $delimiter);
+                    if (trim($line))
+                        $rows[] = str_getcsv($line, $delimiter);
                 }
             }
 
-            if (empty($rows)) return 0;
+            if (empty($rows))
+                return 0;
             if (!isset($rawHeaders)) {
                 $rawHeaders = array_shift($rows);
             }
@@ -887,18 +983,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt = $conn->prepare($sql);
 
             foreach ($rows as $data) {
-                if (empty($data[0]) || count($data) < count($rawHeaders) / 2) continue;
+                if (empty($data[0]) || count($data) < count($rawHeaders) / 2)
+                    continue;
 
-                $get = function($slugs) use ($colMap, $data) {
-                    foreach ((array)$slugs as $slug) {
-                        if (isset($colMap[$slug])) return $data[$colMap[$slug]] ?? '';
+                $get = function ($slugs) use ($colMap, $data) {
+                    foreach ((array) $slugs as $slug) {
+                        if (isset($colMap[$slug]))
+                            return $data[$colMap[$slug]] ?? '';
                     }
                     return '';
                 };
 
-                $getVal = function($slugs) use ($colMap, $data) {
-                    foreach ((array)$slugs as $slug) {
-                        if (isset($colMap[$slug])) return cleanVal($data[$colMap[$slug]] ?? 0);
+                $getVal = function ($slugs) use ($colMap, $data) {
+                    foreach ((array) $slugs as $slug) {
+                        if (isset($colMap[$slug]))
+                            return cleanVal($data[$colMap[$slug]] ?? 0);
                     }
                     return 0;
                 };
@@ -913,7 +1012,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $rowDate = $reportDate;
                 if (!empty($dateVal)) {
                     $parsedDate = date('Y-m-d', strtotime($dateVal));
-                    if ($parsedDate && $parsedDate != '1970-01-01') $rowDate = $parsedDate;
+                    if ($parsedDate && $parsedDate != '1970-01-01')
+                        $rowDate = $parsedDate;
                 }
 
                 $orderId = '';
@@ -929,7 +1029,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 } else {
                     $qty = intval($getVal(['quantityreimbursedtotal', 'quantityreimbursedcash', 'quantityreimbursedinventory', 'quantity']));
                 }
-                if ($qty <= 0) $qty = 1;
+                if ($qty <= 0)
+                    $qty = 1;
 
                 $sku = $get(['sku']);
                 $asin = $get(['asin']);
@@ -961,9 +1062,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             return $rows_count;
         }
 
-        function processFile($tmpPath, $name, $report_date, $customer_id, $conn, &$processed_reports, $zip_name = null) {
+        function processFile($tmpPath, $name, $report_date, $customer_id, $conn, &$processed_reports, $zip_name = null)
+        {
             $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-            if (!in_array($ext, ['csv', 'txt', 'xlsx'])) return;
+            if (!in_array($ext, ['csv', 'txt', 'xlsx']))
+                return;
 
             $file_report_date = $report_date;
             if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $name, $matches)) {
@@ -972,10 +1075,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $file_report_date = $matches[3] . '-' . $matches[2] . '-' . $matches[1];
             } elseif (preg_match('/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i', $name, $matches)) {
                 $monthStr = strtolower($matches[1]);
-                $mMap = ['jan'=>1, 'feb'=>2, 'mar'=>3, 'apr'=>4, 'may'=>5, 'jun'=>6, 'jul'=>7, 'aug'=>8, 'sep'=>9, 'oct'=>10, 'nov'=>11, 'dec'=>12];
+                $mMap = ['jan' => 1, 'feb' => 2, 'mar' => 3, 'apr' => 4, 'may' => 5, 'jun' => 6, 'jul' => 7, 'aug' => 8, 'sep' => 9, 'oct' => 10, 'nov' => 11, 'dec' => 12];
                 $mNum = $mMap[$monthStr];
                 $year = date('Y');
-                if (preg_match('/(\d{4})/', $name, $yMatches)) $year = $yMatches[1];
+                if (preg_match('/(\d{4})/', $name, $yMatches))
+                    $year = $yMatches[1];
                 $file_report_date = "$year-" . str_pad($mNum, 2, '0', STR_PAD_LEFT) . "-01";
             }
 
@@ -984,7 +1088,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 require_once __DIR__ . '/../../includes/SimpleXLSX.php';
                 if ($xlsx = \Shuchkin\SimpleXLSX::parse($tmpPath)) {
                     $rows = $xlsx->rows();
-                    for($i=0; $i<min(10, count($rows)); $i++) $content .= implode(" ", $rows[$i]) . " ";
+                    for ($i = 0; $i < min(10, count($rows)); $i++)
+                        $content .= implode(" ", $rows[$i]) . " ";
                 }
             } else {
                 $content = file_get_contents($tmpPath);
@@ -996,36 +1101,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $adSubType = 'general';
 
             // Identification logic...
-            if (stripos($content, 'ASIN') !== false && (stripos($content, 'Sessions') !== false || stripos($content, 'Page Views') !== false)) $fileType = 'detail';
-            elseif (stripos($content, 'Ordered Product Sales') !== false || stripos($content, 'Revenue') !== false) $fileType = 'business';
-            elseif (stripos($content, 'date/time') !== false || stripos($content, 'transaction type') !== false || stripos($content, 'total') !== false && stripos($content, 'amount') !== false || stripos($content, 'order id') !== false) $fileType = 'transaction';
-            elseif (stripos($name, 'LPO') !== false) $fileType = 'transaction';
+            if (stripos($content, 'ASIN') !== false && (stripos($content, 'Sessions') !== false || stripos($content, 'Page Views') !== false))
+                $fileType = 'detail';
+            elseif (stripos($content, 'Ordered Product Sales') !== false || stripos($content, 'Revenue') !== false)
+                $fileType = 'business';
+            elseif (stripos($content, 'date/time') !== false || stripos($content, 'transaction type') !== false || stripos($content, 'total') !== false && stripos($content, 'amount') !== false || stripos($content, 'order id') !== false)
+                $fileType = 'transaction';
+            elseif (stripos($name, 'LPO') !== false)
+                $fileType = 'transaction';
             elseif (stripos($content, 'Campaign Name') !== false && (stripos($content, 'Impressions') !== false || stripos($content, 'Gross Clicks') !== false)) {
-                if (stripos($content, 'Gross Clicks') !== false || stripos($content, 'Invalid Clicks') !== false) $fileType = 'advertising_traffic';
+                if (stripos($content, 'Gross Clicks') !== false || stripos($content, 'Invalid Clicks') !== false)
+                    $fileType = 'advertising_traffic';
                 else {
-                    if (stripos($content, 'Sponsored Products') !== false || stripos($name, 'SP_') !== false || stripos($name, 'Sponsored_Products') !== false) $fileType = 'advertising_sp';
-                    elseif (stripos($content, 'Sponsored Brands') !== false || stripos($name, 'SB_') !== false || stripos($name, 'Sponsored_Brands') !== false) $fileType = 'advertising_sb';
-                    elseif (stripos($content, 'Sponsored Display') !== false || stripos($name, 'SD_') !== false || stripos($name, 'Sponsored_Display') !== false) $fileType = 'advertising_sd';
+                    if (stripos($content, 'Sponsored Products') !== false || stripos($name, 'SP_') !== false || stripos($name, 'Sponsored_Products') !== false)
+                        $fileType = 'advertising_sp';
+                    elseif (stripos($content, 'Sponsored Brands') !== false || stripos($name, 'SB_') !== false || stripos($name, 'Sponsored_Brands') !== false)
+                        $fileType = 'advertising_sb';
+                    elseif (stripos($content, 'Sponsored Display') !== false || stripos($name, 'SD_') !== false || stripos($name, 'Sponsored_Display') !== false)
+                        $fileType = 'advertising_sd';
                     else {
-                        if (stripos($name, '_SB') !== false) $fileType = 'advertising_sb';
-                        elseif (stripos($name, '_SD') !== false) $fileType = 'advertising_sd';
-                        else $fileType = 'advertising_sp';
+                        if (stripos($name, '_SB') !== false)
+                            $fileType = 'advertising_sb';
+                        elseif (stripos($name, '_SD') !== false)
+                            $fileType = 'advertising_sd';
+                        else
+                            $fileType = 'advertising_sp';
                     }
 
                     // Determine subtype
-                    if (stripos($name, 'Search Term') !== false || stripos($content, 'Customer Search Term') !== false) $adSubType = 'search_term';
-                    elseif (stripos($name, 'Targeting') !== false || stripos($content, 'Targeting') !== false) $adSubType = 'targeting';
-                    elseif (stripos($name, 'Placement') !== false || stripos($content, 'Placement') !== false) $adSubType = 'placement';
-                    elseif (stripos($name, 'Advertised Product') !== false || stripos($content, 'Advertised Product') !== false) $adSubType = 'advertised_product';
-                    elseif (stripos($name, 'Purchased Product') !== false || stripos($content, 'Purchased Product') !== false) $adSubType = 'purchased_product';
-                    elseif (stripos($name, 'Campaign') !== false) $adSubType = 'campaign';
+                    if (stripos($name, 'Search Term') !== false || stripos($content, 'Customer Search Term') !== false)
+                        $adSubType = 'search_term';
+                    elseif (stripos($name, 'Targeting') !== false || stripos($content, 'Targeting') !== false)
+                        $adSubType = 'targeting';
+                    elseif (stripos($name, 'Placement') !== false || stripos($content, 'Placement') !== false)
+                        $adSubType = 'placement';
+                    elseif (stripos($name, 'Advertised Product') !== false || stripos($content, 'Advertised Product') !== false)
+                        $adSubType = 'advertised_product';
+                    elseif (stripos($name, 'Purchased Product') !== false || stripos($content, 'Purchased Product') !== false)
+                        $adSubType = 'purchased_product';
+                    elseif (stripos($name, 'Campaign') !== false)
+                        $adSubType = 'campaign';
                 }
-            }
-            elseif (stripos($content, 'Search Query Performance') !== false || (stripos($content, 'Search Query') !== false && stripos($content, 'Brand Share') !== false)) $fileType = 'brand_search_query';
-            elseif (stripos($content, 'Repeat Purchase') !== false && stripos($content, 'Repeat Customers') !== false) $fileType = 'brand_repeat_purchase';
-            elseif (stripos($content, 'sku') !== false && stripos($content, 'asin') !== false && (stripos($content, 'fulfillable') !== false || stripos($content, 'afn-') !== false)) $fileType = 'inventory';
-            elseif (stripos($content, 'Return') !== false && stripos($content, 'Reason') !== false && stripos($content, 'Disposition') !== false) $fileType = 'returns';
-            elseif (stripos($content, 'Reimbursement ID') !== false || stripos($content, 'Reimbursement-ID') !== false) $fileType = 'reimbursements';
+            } elseif (stripos($content, 'Search Query Performance') !== false || (stripos($content, 'Search Query') !== false && stripos($content, 'Brand Share') !== false))
+                $fileType = 'brand_search_query';
+            elseif (stripos($content, 'Repeat Purchase') !== false && stripos($content, 'Repeat Customers') !== false)
+                $fileType = 'brand_repeat_purchase';
+            elseif (stripos($content, 'sku') !== false && stripos($content, 'asin') !== false && (stripos($content, 'fulfillable') !== false || stripos($content, 'afn-') !== false))
+                $fileType = 'inventory';
+            elseif (stripos($content, 'Return') !== false && stripos($content, 'Reason') !== false && stripos($content, 'Disposition') !== false)
+                $fileType = 'returns';
+            elseif (stripos($content, 'Reimbursement ID') !== false || stripos($content, 'Reimbursement-ID') !== false)
+                $fileType = 'reimbursements';
 
             $fileInfo = ['tmp_name' => $tmpPath, 'name' => $name];
             $rows_processed = 0;
@@ -1055,28 +1181,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 case 'advertising_sp':
                 case 'advertising_sb':
                 case 'advertising_sd':
-                case 'advertising_traffic': 
+                case 'advertising_traffic':
                     $adType = str_replace('advertising_', '', $fileType);
-                    $rows_processed = parseAdvertisingReport($fileInfo, $conn, $customer_id, $file_report_date, $adType, $adSubType); 
-                    $processed_reports[] = "Ads ".strtoupper($adType)." ($adSubType) ($name)";
+                    $rows_processed = parseAdvertisingReport($fileInfo, $conn, $customer_id, $file_report_date, $adType, $adSubType);
+                    $processed_reports[] = "Ads " . strtoupper($adType) . " ($adSubType) ($name)";
                     $report_category = "Ads " . strtoupper($adType) . " ($adSubType)";
                     break;
                 case 'brand_search_query':
-                case 'brand_repeat_purchase': 
+                case 'brand_repeat_purchase':
                     $bType = str_replace('brand_', '', $fileType);
-                    $rows_processed = parseBrandReport($fileInfo, $conn, $customer_id, $file_report_date, $bType); 
-                    $processed_reports[] = "Brand ".str_replace('_',' ',$fileType)." ($name)";
-                    $report_category = "Brand " . str_replace('_',' ',$fileType);
+                    $rows_processed = parseBrandReport($fileInfo, $conn, $customer_id, $file_report_date, $bType);
+                    $processed_reports[] = "Brand " . str_replace('_', ' ', $fileType) . " ($name)";
+                    $report_category = "Brand " . str_replace('_', ' ', $fileType);
                     break;
-                case 'inventory': 
-                    $rows_processed = parseInventoryReport($tmpPath, $conn, $customer_id, $file_report_date); 
+                case 'inventory':
+                    $rows_processed = parseInventoryReport($tmpPath, $conn, $customer_id, $file_report_date);
                     $processed_reports[] = "Inventory ($name)";
                     $report_category = 'Inventory';
                     break;
                 case 'returns':
-                case 'reimbursements': 
+                case 'reimbursements':
                     $rows_processed = parseReturnsOrReimbursements($tmpPath, $conn, $customer_id, $file_report_date, $fileType);
-                    $processed_reports[] = ucfirst($fileType)." ($name)";
+                    $processed_reports[] = ucfirst($fileType) . " ($name)";
                     $report_category = ucfirst($fileType);
                     break;
                 default:
@@ -1100,7 +1226,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Loop through all uploaded files
         foreach ($_FILES['reports']['name'] as $i => $name) {
-            if ($_FILES['reports']['error'][$i] != 0) continue;
+            if ($_FILES['reports']['error'][$i] != 0)
+                continue;
             $tmpPath = $_FILES['reports']['tmp_name'][$i];
             $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
 
@@ -1108,7 +1235,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $zip = new ZipArchive;
                 if ($zip->open($tmpPath) === TRUE) {
                     $extractPath = '../../uploads/temp_zip_' . time() . '_' . $i . '/';
-                    if (!is_dir($extractPath)) mkdir($extractPath, 0777, true);
+                    if (!is_dir($extractPath))
+                        mkdir($extractPath, 0777, true);
                     $zip->extractTo($extractPath);
                     $zip->close();
 
@@ -1121,9 +1249,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     // Cleanup temp folder
                     $it = new RecursiveDirectoryIterator($extractPath, RecursiveDirectoryIterator::SKIP_DOTS);
                     $files_to_del = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
-                    foreach($files_to_del as $f) {
-                        if ($f->isDir()) rmdir($f->getRealPath());
-                        else unlink($f->getRealPath());
+                    foreach ($files_to_del as $f) {
+                        if ($f->isDir())
+                            rmdir($f->getRealPath());
+                        else
+                            unlink($f->getRealPath());
                     }
                     rmdir($extractPath);
                 }
@@ -1158,143 +1288,187 @@ include '../../includes/sidebar.php';
     }
 
     .main-wrapper {
-        padding-top: 0 !important;
+        padding: 1.25rem 2rem 2rem 2rem !important;
+        overflow-x: hidden;
     }
 
     .up-container {
-        padding: 1.25rem 2rem 3rem 2rem;
+        padding: 0;
         width: 100%;
         max-width: 100%;
         margin: 0;
         box-sizing: border-box;
+        overflow-x: hidden;
     }
 
-    /* Topbar */
-    .up-topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 1.25rem;
-        border-bottom: 1px solid #EAECEF;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-        gap: 1rem;
+    /* Topbar styling - Clean Transparent Header matching Figma */
+    .figma-page-topbar {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 0.75rem !important;
+        flex-wrap: nowrap !important;
+        padding: 0.25rem 0 1rem 0 !important;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid #EAECEF !important;
+        border-radius: 0 !important;
+        margin-bottom: 1.25rem !important;
+        box-shadow: none !important;
         width: 100%;
     }
 
-    .up-topbar-left {
+    .figma-page-topbar-left {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 0.85rem;
     }
 
-    .up-profile-select-wrap {
+    .figma-select-wrapper {
         position: relative;
         display: inline-flex;
         align-items: center;
     }
 
-    .up-profile-select {
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 8px;
-        height: 38px;
-        padding: 0 32px 0 12px;
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: #0F172A;
-        outline: none;
-        cursor: pointer;
-        min-width: 170px;
+    .figma-select-wrapper select {
         appearance: none;
         -webkit-appearance: none;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-    }
-
-    .up-breadcrumb {
-        font-size: 0.84rem;
-        color: #64748B;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .up-topbar-right {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .btn-up-primary {
-        background: #4362CE;
-        color: #FFFFFF !important;
-        font-size: 0.82rem;
-        font-weight: 700;
-        padding: 8px 18px;
-        border-radius: 8px;
-        border: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        text-decoration: none;
-        box-shadow: 0 1px 2px rgba(67, 98, 206, 0.2);
-        transition: all 0.15s ease;
-    }
-
-    .btn-up-primary:hover {
-        background: #3451B2;
-        color: #FFFFFF !important;
-    }
-
-    .btn-up-outline {
-        background: #FFFFFF;
-        color: #0F172A;
+        min-width: 170px;
+        padding: 0.45rem 2.2rem 0.45rem 0.85rem;
         border: 1px solid #E2E8F0;
+        border-radius: 8px;
         font-size: 0.82rem;
         font-weight: 600;
-        padding: 8px 16px;
-        border-radius: 8px;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        cursor: pointer;
-        transition: all 0.15s ease;
-        text-decoration: none;
-    }
-
-    .btn-up-outline:hover {
-        background: #F8FAFC;
-        border-color: #CBD5E1;
-    }
-
-    .btn-up-icon-box {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
+        color: #1E2238;
         background: #FFFFFF;
-        border: 1px solid #E2E8F0;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.2s ease;
+    }
+
+    .figma-select-wrapper select:focus {
+        border-color: #4362CE;
+    }
+
+    .figma-select-wrapper .select-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        width: 12px;
+        height: 12px;
+    }
+
+    .figma-page-breadcrumb {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: #64748B;
         display: inline-flex;
         align-items: center;
-        justify-content: center;
-        color: #64748B;
-        cursor: pointer;
-        transition: all 0.15s ease;
+        gap: 0.45rem;
     }
 
-    .btn-up-icon-box:hover {
-        background: #F8FAFC;
-        color: #0F172A;
+    .figma-page-breadcrumb .breadcrumb-dot {
+        margin: 0 3px;
+        opacity: 0.4;
+        font-size: 0.9rem;
     }
 
-    /* Page Head */
+    .figma-page-breadcrumb strong {
+        color: #1E293B;
+        font-weight: 600;
+    }
+
+    .figma-page-topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-figma-primary {
+        background: #4362CE !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1.15rem !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.45rem !important;
+        box-shadow: 0px 4px 10px rgba(67, 98, 206, 0.2) !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-primary:hover {
+        background: #3452BA !important;
+        transform: translateY(-1px);
+        color: #FFFFFF !important;
+    }
+
+    .btn-figma-outline-sm {
+        background: #F1F4F9 !important;
+        color: #363B4F !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1.05rem !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.45rem !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-outline-sm:hover {
+        background: #E2E8F0 !important;
+        color: #0F172A !important;
+    }
+
+    .btn-figma-icon-sm {
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 50% !important;
+        background: #F1F4F9 !important;
+        border: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #475569 !important;
+        cursor: pointer !important;
+        position: relative !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .btn-figma-icon-sm:hover {
+        background: #E2E8F0 !important;
+        color: #0F172A !important;
+    }
+
+    .btn-figma-icon-sm .notif-badge {
+        position: absolute;
+        top: 9px;
+        right: 9px;
+        width: 6px;
+        height: 6px;
+        background: #EE473D;
+        border-radius: 50%;
+        border: 1.5px solid #F1F4F9;
+    }
+
+    /* Page Header */
     .up-page-head {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
         flex-wrap: wrap;
         gap: 1.25rem;
+        width: 100%;
     }
 
     .up-page-title h2 {
@@ -1373,17 +1547,20 @@ include '../../includes/sidebar.php';
     .up-form-group {
         display: flex;
         flex-direction: column;
+        position: relative;
     }
 
     .up-form-group label {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         font-size: 0.82rem;
         font-weight: 600;
         color: #0F172A;
         margin-bottom: 6px;
     }
 
-    .up-input, .up-select {
-        background: #F8FAFC;
+    .up-input,
+    .up-select {
+        background: #FFFFFF;
         border: 1px solid #E2E8F0;
         border-radius: 8px;
         height: 42px;
@@ -1394,11 +1571,23 @@ include '../../includes/sidebar.php';
         outline: none;
         width: 100%;
         box-sizing: border-box;
-        font-family: inherit;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         transition: all 0.15s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
     }
 
-    .up-input:focus, .up-select:focus {
+    .up-select {
+        appearance: none;
+        -webkit-appearance: none;
+        padding-right: 36px;
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%2364748B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+    }
+
+    .up-input:focus,
+    .up-select:focus {
         background: #FFFFFF;
         border-color: #4362CE;
         box-shadow: 0 0 0 3px rgba(67, 98, 206, 0.1);
@@ -1418,7 +1607,8 @@ include '../../includes/sidebar.php';
         box-sizing: border-box;
     }
 
-    .up-dropzone:hover, .up-dropzone.dragover {
+    .up-dropzone:hover,
+    .up-dropzone.dragover {
         border-color: #4362CE;
         background: #F0F4FE;
         transform: translateY(-1px);
@@ -1612,17 +1802,6 @@ include '../../includes/sidebar.php';
 
     /* Responsive */
     @media (max-width: 1024px) {
-        .up-topbar {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 1rem;
-        }
-
-        .up-topbar-left, .up-topbar-right {
-            width: 100%;
-            justify-content: space-between;
-        }
-
         .up-form-grid {
             grid-template-columns: 1fr;
         }
@@ -1633,8 +1812,60 @@ include '../../includes/sidebar.php';
     }
 
     @media (max-width: 768px) {
+        .main-wrapper {
+            padding: 0.75rem 0.75rem 90px 0.75rem !important;
+        }
+
         .up-container {
-            padding: 0.75rem 0.75rem 100px 0.75rem !important;
+            padding: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+        }
+
+        .figma-page-topbar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 10px !important;
+            padding-bottom: 0.75rem !important;
+        }
+
+        .figma-page-topbar-left {
+            width: 100% !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 8px !important;
+        }
+
+        .figma-select-wrapper,
+        .figma-select-wrapper select {
+            width: 100% !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        .figma-page-breadcrumb {
+            display: none !important;
+        }
+
+        .figma-page-topbar-right {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            width: 100% !important;
+        }
+
+        .figma-page-topbar-right .btn-figma-primary,
+        .figma-page-topbar-right .btn-figma-outline-sm {
+            flex: 1 !important;
+            justify-content: center !important;
+            text-align: center !important;
+            padding: 0.5rem 0.6rem !important;
+            font-size: 0.78rem !important;
+        }
+
+        .figma-page-topbar-right .btn-figma-icon-sm {
+            flex-shrink: 0 !important;
         }
 
         .up-card {
@@ -1649,43 +1880,36 @@ include '../../includes/sidebar.php';
 
 <div class="up-container">
 
-    <!-- Global Topbar (Figma Matching) -->
-    <div class="up-topbar">
-        <div class="up-topbar-left">
-            <div class="up-profile-select-wrap">
-                <select class="up-profile-select">
+    <!-- Figma-style Top Bar -->
+    <div class="figma-page-topbar">
+        <div class="figma-page-topbar-left">
+            <div class="figma-select-wrapper">
+                <select onchange="window.location.href='index.php?customer_id='+this.value">
                     <option value="">All Amazon Profiles</option>
-                    <?php $customers->data_seek(0); while ($c = $customers->fetch_assoc()): ?>
-                        <option value="<?php echo $c['id']; ?>">
+                    <?php $customers->data_seek(0);
+                    while ($c = $customers->fetch_assoc()): ?>
+                        <option value="<?php echo $c['id']; ?>" <?php echo (($customer_id ?? 0) == $c['id']) ? 'selected' : ''; ?>>
                             <?php echo htmlspecialchars($c['customer_name']); ?>
                         </option>
                     <?php endwhile; ?>
                 </select>
-                <i class="fas fa-chevron-down" style="position: absolute; right: 12px; pointer-events: none; font-size: 0.7rem; color: #64748B;"></i>
+                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Down Up Arrow.svg" class="select-icon"
+                    alt="Toggle" />
             </div>
-            <div class="up-breadcrumb">
-                <span>Dashboard</span>
-                <i class="fas fa-circle" style="font-size: 0.25rem; color: #CBD5E1;"></i>
-                <span>Profit &amp; Loss Analysis</span>
-            </div>
+            <span class="figma-page-breadcrumb">Dashboard <span class="breadcrumb-dot">•</span> <strong>Report Upload
+                    Center</strong></span>
         </div>
-
-        <div class="up-topbar-right">
-            <a href="index.php" class="btn-up-primary">
+        <div class="figma-page-topbar-right">
+            <a href="index.php" class="btn-figma-primary">
                 <i class="fas fa-plus"></i> New Upload
             </a>
-            <a href="<?php echo BASE_URL; ?>modules/report_upload/tracking.php" class="btn-up-outline">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 1.5V10.5M8 10.5L5 7.5M8 10.5L11 7.5" stroke="#0F172A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M2 12V13.5C2 14.0523 2.44772 14.5 3 14.5H13C13.5523 14.5 14 14.0523 14 13.5V12" stroke="#0F172A" stroke-width="1.4" stroke-linecap="round"/>
-                </svg>
-                View Tracking
+            <a href="<?php echo BASE_URL; ?>modules/report_upload/tracking.php" class="btn-figma-outline-sm">
+                <i class="fas fa-history"></i> View Tracking
             </a>
-            <button type="button" class="btn-up-icon-box" title="Search">
-                <i class="fas fa-search" style="font-size: 0.85rem;"></i>
-            </button>
-            <button type="button" class="btn-up-icon-box" title="Notifications">
-                <i class="fas fa-bell" style="font-size: 0.85rem;"></i>
+            <button type="button" class="btn-figma-icon-sm" title="Search"><i class="fas fa-search"></i></button>
+            <button type="button" class="btn-figma-icon-sm" title="Notifications">
+                <i class="fas fa-bell"></i>
+                <span class="notif-badge"></span>
             </button>
         </div>
     </div>
@@ -1730,14 +1954,17 @@ include '../../includes/sidebar.php';
                     <label>Target Customer *</label>
                     <select name="customer_id" class="up-select" required>
                         <option value="">-- Choose Account --</option>
-                        <?php $customers->data_seek(0); while ($row = $customers->fetch_assoc()): ?>
-                            <option value="<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['customer_name']); ?></option>
+                        <?php $customers->data_seek(0);
+                        while ($row = $customers->fetch_assoc()): ?>
+                            <option value="<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['customer_name']); ?>
+                            </option>
                         <?php endwhile; ?>
                     </select>
                 </div>
                 <div class="up-form-group">
                     <label>Reporting Month *</label>
-                    <input type="month" name="report_month" class="up-input" required value="<?php echo date('Y-m'); ?>">
+                    <input type="month" name="report_month" class="up-input" required
+                        value="<?php echo date('Y-m'); ?>">
                 </div>
             </div>
 
@@ -1745,14 +1972,19 @@ include '../../includes/sidebar.php';
             <div class="up-dropzone" id="dropZone" onclick="document.getElementById('fileInput').click()">
                 <div class="up-dropzone-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M7 16C4.79086 16 3 14.2091 3 12C3 9.94474 4.55171 8.25145 6.55047 8.03176C7.03964 5.17066 9.51862 3 12.5 3C15.8646 3 18.6014 5.67916 18.9663 9.01479C20.7303 9.47934 22 11.0864 22 13C22 15.2091 20.2091 17 18 17H17" stroke="#4362CE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 12V21M12 12L8.5 15.5M12 12L15.5 15.5" stroke="#4362CE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path
+                            d="M7 16C4.79086 16 3 14.2091 3 12C3 9.94474 4.55171 8.25145 6.55047 8.03176C7.03964 5.17066 9.51862 3 12.5 3C15.8646 3 18.6014 5.67916 18.9663 9.01479C20.7303 9.47934 22 11.0864 22 13C22 15.2091 20.2091 17 18 17H17"
+                            stroke="#4362CE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 12V21M12 12L8.5 15.5M12 12L15.5 15.5" stroke="#4362CE" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </div>
                 <h3 class="up-dropzone-title">Click or Drag ZIP/Reports Here</h3>
-                <p class="up-dropzone-sub">Support for ZIP Batches, Business, Advertising, Brand, and Transaction reports (.zip, .csv, .txt, .xlsx)</p>
-                <input type="file" name="reports[]" id="fileInput" multiple style="display: none;" onchange="updateFileList(this)">
-                
+                <p class="up-dropzone-sub">Support for ZIP Batches, Business, Advertising, Brand, and Transaction
+                    reports (.zip, .csv, .txt, .xlsx)</p>
+                <input type="file" name="reports[]" id="fileInput" multiple style="display: none;"
+                    onchange="updateFileList(this)">
+
                 <div>
                     <label class="up-clean-box" onclick="event.stopPropagation();">
                         <input type="checkbox" name="clean_db" value="1"> Clean Database Before Import
@@ -1804,7 +2036,8 @@ include '../../includes/sidebar.php';
         <ul class="up-tips-list">
             <li>You can select multiple files or complete monthly ZIP archives at once in the file picker.</li>
             <li>The system automatically detects the report type based on its internal structure and headers.</li>
-            <li><strong>Unknown Formats:</strong> If a report is not recognized, the system will automatically create a dynamic schema table (prefixed with <code>dyn_</code>) and securely store the records for tracking.</li>
+            <li><strong>Unknown Formats:</strong> If a report is not recognized, the system will automatically create a
+                dynamic schema table (prefixed with <code>dyn_</code>) and securely store the records for tracking.</li>
         </ul>
     </div>
 
@@ -1814,18 +2047,18 @@ include '../../includes/sidebar.php';
     function updateFileList(input) {
         const fileList = document.getElementById('fileList');
         fileList.innerHTML = '';
-        
+
         if (input.files.length > 0) {
             Array.from(input.files).forEach(file => {
                 const item = document.createElement('div');
                 item.className = 'file-item';
-                
+
                 let icon = 'fa-file';
                 if (file.name.endsWith('.csv')) icon = 'fa-file-csv';
                 if (file.name.endsWith('.xlsx')) icon = 'fa-file-excel';
                 if (file.name.endsWith('.txt')) icon = 'fa-file-alt';
                 if (file.name.endsWith('.zip')) icon = 'fa-file-archive';
-                
+
                 item.innerHTML = `
                     <i class="fas ${icon}" style="color: #4362CE; font-size: 1.1rem;"></i>
                     <div style="flex: 1;">
@@ -1840,7 +2073,7 @@ include '../../includes/sidebar.php';
     }
 
     const dropZone = document.getElementById('dropZone');
-    
+
     if (dropZone) {
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropZone.addEventListener(eventName, preventDefaults, false);
