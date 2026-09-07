@@ -1439,11 +1439,11 @@ include '../../includes/sidebar.php';
             <!-- Card 1: Total Reimbursement (Hero Blue) -->
             <!-- Card 1: Total Reimbursement -->
             <div class="reimb-kpi-card hero-blue">
-                <div class="reimb-kpi-top">
-                    <span class="reimb-kpi-label">Total Reimbursement</span>
-                    <div style="opacity: 0.9;">
+                <div class="reimb-kpi-top" style="justify-content: flex-start;">
+                    <div style="display: inline-flex; align-items: center; gap: 8px;">
+                        <span class="reimb-kpi-label" style="margin: 0;">Total Reimbursement</span>
                         <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Total Reimbursement.svg"
-                            style="width: 18px; height: 18px; filter: brightness(0) invert(1);" />
+                            style="width: 18px; height: 18px; filter: brightness(0) invert(1); opacity: 0.95;" />
                     </div>
                 </div>
                 <div class="reimb-kpi-val" id="kpi_total_reimbursement">$610.38</div>
@@ -1485,17 +1485,25 @@ include '../../includes/sidebar.php';
                 <div class="reimb-kpi-top">
                     <span class="reimb-kpi-label">Recovery Rate %</span>
                     <div class="reimb-kpi-icon-box">
-                        <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Recovery Efficiency.svg"
-                            style="width: 16px; height: 16px;" />
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M15.8333 4.16669L4.16666 15.8334M6.66666 5.83335C6.66666 6.75383 5.92047 7.50002 4.99999 7.50002C4.07952 7.50002 3.33333 6.75383 3.33333 5.83335C3.33333 4.91288 4.07952 4.16669 4.99999 4.16669C5.92047 4.16669 6.66666 4.91288 6.66666 5.83335ZM16.6667 14.1667C16.6667 15.0872 15.9205 15.8334 15 15.8334C14.0795 15.8334 13.3333 15.0872 13.3333 14.1667C13.3333 13.2462 14.0795 12.5 15 12.5C15.9205 12.5 16.6667 13.2462 16.6667 14.1667Z"
+                                stroke="#4362CE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                     </div>
                 </div>
                 <div class="reimb-kpi-val" id="kpi_recovery_rate">36.5%</div>
                 <div class="reimb-kpi-foot">
-                    <span class="reimb-delta-badge up" id="kpi_rate_badge">
-                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2.5 6L5 8.5L9.5 3.5" stroke="#029153" stroke-width="1.6" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg> Optimized efficiency
+                    <span class="reimb-delta-badge up" id="kpi_rate_badge"
+                        style="gap: 5px; display: inline-flex; align-items: center;">
+                        <svg width="13" height="13" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M15.0779 17.8419C15.8033 17.8419 16.8378 17.9829 17.4086 17.4168C17.984 16.8463 17.8424 15.8075 17.8424 15.0774C17.8424 14.1548 18.0441 13.7305 18.7012 13.0735C19.6786 12.0961 20.1673 11.6074 20.1673 11.0002C20.1673 10.3929 19.6786 9.9042 18.7012 8.92682C18.0442 8.26975 17.8424 7.84553 17.8424 6.92288C17.8424 6.19279 17.984 5.15406 17.4087 4.5835C16.8379 4.01743 15.8033 4.1584 15.0779 4.1584C14.2415 4.1584 13.6604 3.88598 13.074 3.29959C12.0966 2.32219 11.6079 1.8335 11.0007 1.8335C10.3934 1.8335 9.90471 2.32216 8.92738 3.2995L8.92729 3.29959C8.34078 3.8861 7.75956 4.1584 6.92339 4.1584C6.19328 4.1584 5.15455 4.01679 4.58398 4.59215C4.01793 5.16296 4.15891 6.19743 4.15891 6.92288C4.15891 7.75909 3.88658 8.34029 3.30006 8.92682L3.30001 8.92686C2.32266 9.90421 1.83399 10.3929 1.83398 11.0002C1.834 11.6074 2.3227 12.0961 3.30008 13.0735C3.95713 13.7305 4.15891 14.1548 4.15891 15.0774C4.15891 15.8075 4.01731 16.8463 4.59268 17.4168C5.16348 17.9829 6.19794 17.8419 6.92337 17.8419C7.81385 17.8419 8.24266 18.0161 8.87817 18.6516C9.41931 19.1928 10.1448 20.1668 11.0007 20.1668C11.8565 20.1668 12.582 19.1928 13.1231 18.6516C13.7586 18.0161 14.1874 17.8419 15.0779 17.8419Z"
+                                fill="#029153" />
+                            <path d="M7.5 11.2L9.6 13.3L14.5 8.5" stroke="#FFFFFF" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Optimized efficiency
                     </span>
                 </div>
             </div>
@@ -1778,8 +1786,8 @@ include '../../includes/sidebar.php';
         <!-- Metric 1: Recovery Efficiency -->
         <div class="reimb-metric-card">
             <div class="reimb-metric-icon">
-                <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Recovery Efficiency.svg"
-                    style="width: 24px; height: 24px;" />
+                <img src="<?php echo BASE_URL; ?>assets/icons/Reimbursement Center/Vector (1).png"
+                    style="width: 20px; height: 20px; object-fit: contain;" />
             </div>
             <div class="reimb-metric-content">
                 <div class="reimb-metric-top-info">

@@ -330,9 +330,17 @@ include '../../includes/sidebar.php';
         white-space: nowrap;
     }
 
+    .cm-table tbody tr:nth-child(odd) {
+        background-color: #E8EAF2 !important;
+    }
+
+    .cm-table tbody tr:nth-child(even) {
+        background-color: #FFFFFF !important;
+    }
+
     .cm-table tbody td {
         padding: 18px 20px;
-        border-bottom: 1px solid #F1F5F9;
+        border-bottom: 1px solid #E8EAF2;
         vertical-align: middle;
         color: #0F172A;
     }
@@ -342,7 +350,7 @@ include '../../includes/sidebar.php';
     }
 
     .cm-table tbody tr:hover td {
-        background: #F8FAFC;
+        background: #F1F4F9 !important;
     }
 
     .cm-ref-id {
@@ -473,37 +481,41 @@ include '../../includes/sidebar.php';
     .cm-pagination {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
     }
 
     .cm-page-btn {
-        width: 32px;
+        min-width: 32px;
         height: 32px;
-        border-radius: 6px;
+        padding: 0 6px;
+        border-radius: 8px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #64748B;
+        font-family: 'Inter', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        color: #475569;
         text-decoration: none;
-        border: 1px solid transparent;
+        background: transparent;
+        border: none;
+        box-sizing: border-box;
         transition: all 0.15s ease;
     }
 
     .cm-page-btn:hover {
-        background: #F1F5F9;
+        background: #F5F6FA;
         color: #0F172A;
     }
 
     .cm-page-btn.active {
-        background: #4362CE;
-        color: #FFFFFF;
+        background: #F5F6FA !important;
+        color: #0F172A !important;
         font-weight: 700;
     }
 
     .cm-page-btn.disabled {
-        opacity: 0.4;
+        opacity: 0.35;
         pointer-events: none;
     }
 

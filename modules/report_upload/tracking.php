@@ -684,7 +684,7 @@ $result = $conn->query($sql);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: #64748B;
+        color: #4362CE;
         cursor: pointer;
         transition: all 0.15s ease;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
@@ -692,8 +692,8 @@ $result = $conn->query($sql);
     }
 
     .btn-ds-refresh:hover {
-        background: #F8FAFC;
-        color: #0F172A;
+        background: #F5F6FA;
+        color: #4362CE;
         border-color: #CBD5E1;
     }
 
@@ -793,6 +793,7 @@ $result = $conn->query($sql);
     .ds-table thead th {
         background: #FFFFFF;
         border-bottom: 1px solid #EAECEF;
+
         padding: 14px 18px;
         font-size: 0.78rem;
         font-weight: 600;
@@ -800,9 +801,17 @@ $result = $conn->query($sql);
         white-space: nowrap;
     }
 
+    .ds-table tbody tr:nth-child(odd) {
+        background-color: #E8EAF2 !important;
+    }
+
+    .ds-table tbody tr:nth-child(even) {
+        background-color: #FFFFFF !important;
+    }
+
     .ds-table tbody td {
         padding: 16px 18px;
-        border-bottom: 1px solid #F1F5F9;
+        border-bottom: 1px solid #E8EAF2;
         vertical-align: middle;
         color: #0F172A;
     }
@@ -812,7 +821,7 @@ $result = $conn->query($sql);
     }
 
     .ds-table tbody tr:hover td {
-        background: #F8FAFC;
+        background: #F1F4F9 !important;
     }
 
     .ds-cust-name {
@@ -944,37 +953,41 @@ $result = $conn->query($sql);
     .ds-pagination {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
     }
 
     .ds-page-btn {
-        width: 32px;
+        min-width: 32px;
         height: 32px;
-        border-radius: 6px;
+        padding: 0 6px;
+        border-radius: 8px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #64748B;
+        font-family: 'Inter', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        color: #475569;
         text-decoration: none;
-        border: 1px solid transparent;
+        background: transparent;
+        border: none;
+        box-sizing: border-box;
         transition: all 0.15s ease;
     }
 
     .ds-page-btn:hover {
-        background: #F1F5F9;
+        background: #F5F6FA;
         color: #0F172A;
     }
 
     .ds-page-btn.active {
-        background: #4362CE;
-        color: #FFFFFF;
+        background: #F5F6FA !important;
+        color: #0F172A !important;
         font-weight: 700;
     }
 
     .ds-page-btn.disabled {
-        opacity: 0.4;
+        opacity: 0.35;
         pointer-events: none;
     }
 
@@ -1163,7 +1176,7 @@ $result = $conn->query($sql);
             <a href="tracking.php" class="btn-ds-refresh" title="Reset Filters">
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M13.65 6.88A6 6 0 1 0 14 8h-1.5a4.5 4.5 0 1 1-.5-2.02L10 8h5V3l-1.35 1.88z"
-                        fill="#64748B" />
+                        fill="#4362CE" />
                 </svg>
             </a>
         </form>

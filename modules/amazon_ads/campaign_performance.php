@@ -248,7 +248,7 @@ include '../../includes/sidebar.php';
     /* Section Bento Cards */
     .ct-bento-section {
         background: #FFFFFF;
-        border: 1px solid #EAECEF;
+        border: 1px solid #E8EAF2;
         border-radius: 16px;
         padding: 24px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
@@ -320,12 +320,12 @@ include '../../includes/sidebar.php';
         letter-spacing: 0.04em;
     }
 
-    /* List Item Cards (Figma: 585px Fill x 81px Height, 6px gap) */
+    /* List Item Cards (Figma: 585px Fill x 81px Height, 12px 22px padding, #F5F6FA 50% bg) */
     .ct-perf-card {
-        background: #FFFFFF;
-        border: 1px solid #EAECEF;
-        border-radius: 14px;
-        padding: 12px 18px;
+        background: rgba(245, 246, 250, 0.5);
+        border: 1px solid #E8EAF2;
+        border-radius: 12px;
+        padding: 12px 22px;
         margin-bottom: 6px;
         height: 81px;
         min-height: 81px;
@@ -333,13 +333,13 @@ include '../../includes/sidebar.php';
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 10px;
+        gap: 18px;
         transition: all 0.15s ease;
     }
 
     .ct-perf-card:hover {
+        background: #F5F6FA;
         border-color: #CBD5E1;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     }
 
     .ct-perf-left {
@@ -374,16 +374,16 @@ include '../../includes/sidebar.php';
     .ct-perf-right {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 14px;
         flex-shrink: 0;
     }
 
-    /* Figma Roas & ACoS Badge Box (Exact 85px Width x 57px Height Hug, centered) */
+    /* Figma Roas & ACoS Badge Box */
     .ct-roas-badge-box {
         background: #FFFFFF;
-        border: 1px solid #EAECEF;
-        border-radius: 12px;
-        padding: 6px 8px;
+        border: 1px solid #E8EAF2;
+        border-radius: 10px;
+        padding: 6px 10px;
         width: 85px;
         min-width: 85px;
         height: 57px;
@@ -667,21 +667,24 @@ include '../../includes/sidebar.php';
     }
 
     .ct-bid-card {
-        background: #FFFFFF !important;
-        border: 1px solid #EAECEF !important;
-        border-radius: 14px !important;
-        padding: 12px 20px !important;
+        background: rgba(245, 246, 250, 0.5) !important;
+        border: 1px solid #E8EAF2 !important;
+        border-radius: 12px !important;
+        padding: 12px 22px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        gap: 16px !important;
+        gap: 18px !important;
         margin-bottom: 8px !important;
+        height: 81px !important;
+        min-height: 81px !important;
+        box-sizing: border-box !important;
         transition: all 0.15s ease !important;
     }
 
     .ct-bid-card:hover {
+        background: #F5F6FA !important;
         border-color: #CBD5E1 !important;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
     }
 
     .ct-bid-left {
@@ -1483,30 +1486,30 @@ include '../../includes/sidebar.php';
                             const sales = parseFloat(c.sales || 0);
 
                             let bidAction = 'SCALE UP';
-                            let bidStyle = 'background: #EEF8F1; color: #029153; border: 1px solid #C3EEDA;';
+                            let bidStyle = 'background: #EBF9ED; color: #00B71B; border: 1px solid rgba(0, 183, 27, 0.10);';
 
                             if (sales > 0) {
-                                if (acosVal < 15) { bidAction = 'SCALE UP'; bidStyle = 'background: #EEF8F1; color: #029153; border: 1px solid #C3EEDA;'; }
-                                else if (acosVal < 25) { bidAction = 'MAINTAIN'; bidStyle = 'background: #EFF6FF; color: #3B82F6; border: 1px solid #BFDBFE;'; }
-                                else if (acosVal < 35) { bidAction = 'OPTIMIZE'; bidStyle = 'background: #FFF7ED; color: #F59E0B; border: 1px solid #FDE68A;'; }
-                                else { bidAction = 'REDUCE BID'; bidStyle = 'background: #FEF0EF; color: #EE473D; border: 1px solid #FCDAD7;'; }
+                                if (acosVal < 15) { bidAction = 'SCALE UP'; bidStyle = 'background: #EBF9ED; color: #00B71B; border: 1px solid rgba(0, 183, 27, 0.10);'; }
+                                else if (acosVal < 25) { bidAction = 'MAINTAIN'; bidStyle = 'background: #F0F9F4; color: #029153; border: 1px solid rgba(2, 145, 83, 0.10);'; }
+                                else if (acosVal < 35) { bidAction = 'OPTIMIZE'; bidStyle = 'background: #FEF7EB; color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.10);'; }
+                                else { bidAction = 'REDUCE BID'; bidStyle = 'background: #FEF0EF; color: #EE473D; border: 1px solid rgba(238, 71, 61, 0.10);'; }
                             } else if (spend > 10) {
                                 bidAction = 'REDUCE BID';
-                                bidStyle = 'background: #FEF0EF; color: #EE473D; border: 1px solid #FCDAD7;';
+                                bidStyle = 'background: #FEF0EF; color: #EE473D; border: 1px solid rgba(238, 71, 61, 0.10);';
                             } else {
                                 bidAction = 'MAINTAIN';
-                                bidStyle = 'background: #EFF6FF; color: #3B82F6; border: 1px solid #BFDBFE;';
+                                bidStyle = 'background: #F0F9F4; color: #029153; border: 1px solid rgba(2, 145, 83, 0.10);';
                             }
 
                             let rankBadgeHtml = '';
                             if (globalIndex === 0) {
-                                rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: #3B82F6; color: #FFFFFF; border-radius: 50%; font-size: 11px; font-weight: 700; box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);">1</span>`;
+                                rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: #4362CE; color: #FFFFFF; border-radius: 50%; font-size: 12px; font-weight: 700; font-family: 'Inter', sans-serif;">1</span>`;
                             } else if (globalIndex === 1) {
-                                rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: #60A5FA; color: #FFFFFF; border-radius: 50%; font-size: 11px; font-weight: 700; box-shadow: 0 2px 4px rgba(96, 165, 250, 0.25);">2</span>`;
+                                rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: #4362CEB2; color: #FFFFFF; border-radius: 50%; font-size: 12px; font-weight: 700; font-family: 'Inter', sans-serif;">2</span>`;
                             } else if (globalIndex === 2) {
-                                rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: #93C5FD; color: #FFFFFF; border-radius: 50%; font-size: 11px; font-weight: 700; box-shadow: 0 2px 4px rgba(147, 197, 253, 0.25);">3</span>`;
+                                rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: #4362CE4D; color: #1E293B; border-radius: 50%; font-size: 12px; font-weight: 700; font-family: 'Inter', sans-serif;">3</span>`;
                             } else {
-                                rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: #FFFFFF; border: 1.5px solid #E2E8F0; color: #64748B; border-radius: 50%; font-size: 11px; font-weight: 700;">${globalIndex + 1}</span>`;
+                                rankBadgeHtml = `<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: #F5F6FA; border: 1px solid #E8EAF2; color: #475569; border-radius: 50%; font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif;">${globalIndex + 1}</span>`;
                             }
 
                             // 1st row: #F7F9FE, 2nd row: #FFFFFF, 3rd row: #F7F9FE, 4th row: #FFFFFF...
@@ -1529,7 +1532,7 @@ include '../../includes/sidebar.php';
                                     <td style="background-color: ${rowBg} !important; padding: 12px 14px; font-weight: 700; color: #0F172A; text-align: left; vertical-align: middle; font-variant-numeric: tabular-nums;">${acosVal.toFixed(2)}%</td>
                                     <td style="background-color: ${rowBg} !important; padding: 12px 14px; font-weight: 700; color: #0F172A; text-align: left; vertical-align: middle; font-variant-numeric: tabular-nums;">${roasVal.toFixed(2)}x</td>
                                     <td style="background-color: ${rowBg} !important; padding: 12px 14px; text-align: center; vertical-align: middle;">
-                                        <span style="${bidStyle} font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 6px; letter-spacing: 0.03em; display: inline-block;">${bidAction}</span>
+                                        <span style="${bidStyle} width: 102px; height: 30px; box-sizing: border-box; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; line-height: 100%; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap;">${bidAction}</span>
                                     </td>
                                 </tr>
                             `;
@@ -1697,13 +1700,12 @@ include '../../includes/sidebar.php';
                     const sales = b.sales;
                     const roas = spend > 0 ? (sales / spend) : 0;
 
-                    let rankBadgeStyle = 'background: #E2E8F0; color: #475569;';
-                    if (idx === 0) rankBadgeStyle = 'background: #2563EB; color: #FFFFFF;';
-                    else if (idx === 1) rankBadgeStyle = 'background: #60A5FA; color: #FFFFFF;';
-                    else if (idx === 2) rankBadgeStyle = 'background: #CBD5E1; color: #475569;';
+                    let rankBadgeStyle = 'background: #F5F6FA; border: 1px solid #E8EAF2; color: #475569;';
+                    if (idx === 0) rankBadgeStyle = 'background: #4362CE; color: #FFFFFF; border: none;';
+                    else if (idx === 1) rankBadgeStyle = 'background: #4362CEB2; color: #FFFFFF; border: none;';
+                    else if (idx === 2) rankBadgeStyle = 'background: #4362CE4D; color: #1E293B; border: none;';
 
                     const isPositive = roas > 0;
-                    const roasColor = isPositive ? '#10B981' : '#EE473D';
 
                     b_html += `
                         <div class="ct-perf-card ct-bid-card">

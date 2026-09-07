@@ -954,8 +954,11 @@ include '../../includes/sidebar.php';
                 <div class="ret-kpi-top">
                     <span class="ret-kpi-label">Total Returns</span>
                     <div class="ret-kpi-icon-box">
-                        <img src="<?php echo BASE_URL; ?>assets/icons/Overview/Reload.svg"
-                            style="width: 15px; height: 15px;" />
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.1115 0.666504L10.5101 1.41169C10.7796 1.91548 10.9143 2.16738 10.8253 2.27526C10.7361 2.38314 10.4427 2.29601 9.85573 2.12176C9.26893 1.94754 8.64593 1.85381 8.00033 1.85381C4.50252 1.85381 1.66699 4.60548 1.66699 7.99987C1.66699 9.11927 1.97541 10.1689 2.51428 11.0729M5.88921 15.3332L5.49057 14.588C5.22105 14.0842 5.08629 13.8323 5.17539 13.7244C5.26451 13.6165 5.55799 13.7037 6.14492 13.8779C6.73173 14.0521 7.35473 14.1459 8.00033 14.1459C11.4981 14.1459 14.3337 11.3942 14.3337 7.99987C14.3337 6.8804 14.0253 5.83082 13.4864 4.92682"
+                                stroke="#4362CE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                     </div>
                 </div>
                 <div class="ret-kpi-val" id="kpi_total_returns">54</div>
