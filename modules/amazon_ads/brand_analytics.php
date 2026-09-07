@@ -332,17 +332,40 @@ $customers = get_all_customers();
     }
 
     /* Market Overview Mini Sub-cards (Figma: 169.2px Fill x 264px Hug) */
+    .ba-market-grid-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -4px;
+        padding: 0 4px 6px 4px;
+    }
+
+    /* Custom scrollbar for market grid */
+    .ba-market-grid-wrap::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .ba-market-grid-wrap::-webkit-scrollbar-track {
+        background: #F1F5F9;
+        border-radius: 4px;
+    }
+
+    .ba-market-grid-wrap::-webkit-scrollbar-thumb {
+        background: #CBD5E1;
+        border-radius: 4px;
+    }
+
     .ba-market-grid {
         display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(130px, 1fr));
         gap: 12px;
+        min-width: 700px;
     }
 
     .ba-market-subcard {
-        background: #FFFFFF;
+        background: rgba(245, 246, 250, 0.5);
         border: 1px solid #E8EAF2;
-        border-radius: 14px;
-        padding: 16px 14px 14px 14px;
+        border-radius: 12px;
+        padding: 16px 14px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -350,12 +373,12 @@ $customers = get_all_customers();
         height: 264px;
         box-sizing: border-box;
         transition: all 0.15s ease;
-        min-width: 0;
+        min-width: 130px;
     }
 
     .ba-market-subcard:hover {
+        background: #F5F6FA;
         border-color: #CBD5E1;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
     }
 
     .ba-subcard-head {
@@ -369,12 +392,12 @@ $customers = get_all_customers();
         width: 36px;
         height: 36px;
         border-radius: 50%;
-        background: #F8FAFC;
-        border: 1px solid #EFF4FE;
+        background: #FFFFFF;
+        border: 1px solid #E8EAF2;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #3B82F6;
+        color: #4362CE;
         flex-shrink: 0;
     }
 
@@ -654,7 +677,62 @@ $customers = get_all_customers();
     }
 
     /* Responsive */
+
+    /* Large screens: fix main-wrapper padding */
+    @media (max-width: 1400px) {
+        .main-wrapper {
+            padding: 1.25rem 1.5rem 2rem 1.5rem !important;
+        }
+    }
+
+    /* Medium-large: 1200px — market grid 3 cols, reduce gaps */
+    @media (max-width: 1200px) {
+        .main-wrapper {
+            padding: 1rem 1.25rem 2rem 1.25rem !important;
+        }
+
+        .ba-main-layout {
+            grid-template-columns: minmax(0, 1fr) 260px !important;
+            gap: 1rem !important;
+        }
+
+        .ba-market-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 10px !important;
+        }
+
+        .ba-market-subcard {
+            min-height: 220px !important;
+            height: 220px !important;
+        }
+
+        .ba-subcard-bars {
+            height: 110px !important;
+        }
+
+        .ba-card {
+            padding: 18px 20px !important;
+        }
+
+        .ba-kpi-card {
+            padding: 12px 14px 8px 14px !important;
+        }
+
+        .ba-kpi-val {
+            font-size: 1.15rem !important;
+        }
+
+        .figma-page-topbar {
+            flex-wrap: wrap !important;
+        }
+    }
+
+    /* Tablet: 1100px — stack main layout */
     @media (max-width: 1100px) {
+        .main-wrapper {
+            padding: 1rem 1rem 2rem 1rem !important;
+        }
+
         .ba-main-layout {
             grid-template-columns: 1fr !important;
             gap: 1.25rem !important;
@@ -668,14 +746,49 @@ $customers = get_all_customers();
         }
 
         .ba-market-grid {
-            grid-template-columns: repeat(3, 1fr) !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
             gap: 10px !important;
+        }
+
+        .ba-market-subcard {
+            height: auto !important;
+            min-height: 200px !important;
+        }
+
+        .figma-page-topbar {
+            flex-wrap: wrap !important;
+        }
+
+        .figma-page-topbar-right {
+            flex-wrap: wrap !important;
+        }
+
+        .ba-page-head {
+            flex-wrap: wrap !important;
+            gap: 1rem !important;
+        }
+
+        .ba-controls {
+            flex-wrap: wrap !important;
+        }
+
+        .ba-funnel-left {
+            width: 130px !important;
+        }
+
+        .ba-funnel-right {
+            width: 220px !important;
+            gap: 12px !important;
         }
     }
 
+    /* Mobile: 768px */
     @media (max-width: 768px) {
-        .ba-container {
+        .main-wrapper {
             padding: 0.75rem 0.75rem 100px 0.75rem !important;
+        }
+
+        .ba-container {
             width: 100% !important;
             max-width: 100vw !important;
             overflow-x: hidden !important;
@@ -712,7 +825,7 @@ $customers = get_all_customers();
         }
 
         .ba-market-grid {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: repeat(2, 1fr) !important;
             gap: 0.75rem !important;
         }
 
@@ -723,8 +836,8 @@ $customers = get_all_customers();
         }
 
         .ba-subcard-bars {
-            height: 100px !important;
-            margin: 12px 0 !important;
+            height: 90px !important;
+            margin: 10px 0 !important;
         }
 
         .ba-funnel-row {
@@ -756,6 +869,93 @@ $customers = get_all_customers();
         .ba-card {
             padding: 1rem !important;
             border-radius: 14px !important;
+        }
+
+        .figma-page-topbar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+        }
+
+        .figma-page-topbar-right {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 0.5rem !important;
+        }
+
+        .btn-figma-icon-sm {
+            display: none !important;
+        }
+    }
+
+    /* Small mobile: 480px and max-width 768px */
+    @media (max-width: 768px) {
+        .ba-card-head {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+        }
+
+        .ba-market-grid-wrap {
+            overflow-x: visible !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .ba-market-grid {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            min-width: 0 !important;
+            gap: 12px !important;
+        }
+
+        .ba-market-subcard {
+            min-width: 0 !important;
+            width: 100% !important;
+        }
+
+        /* Funnel Leakage Mobile Layout */
+        .ba-funnel-row {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 10px !important;
+            padding: 14px 0 !important;
+        }
+
+        .ba-funnel-left {
+            width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+        }
+
+        .ba-funnel-bar-wrap {
+            margin: 2px 0 !important;
+            width: 100% !important;
+        }
+
+        .ba-funnel-right {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 10px !important;
+        }
+
+        .ba-funnel-share {
+            text-align: left !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .ba-market-grid {
+            grid-template-columns: 1fr !important;
+            min-width: 0 !important;
+        }
+
+        .ba-kpi-val {
+            font-size: 1.1rem !important;
         }
     }
 </style>
@@ -872,136 +1072,139 @@ $customers = get_all_customers();
                 </div>
 
                 <!-- 5 Columns Sub-Grid (Figma Image 3) -->
-                <div class="ba-market-grid">
+                <div class="ba-market-grid-wrap">
+                    <div class="ba-market-grid">
 
-                    <!-- Col 1: Search Volume -->
-                    <div class="ba-market-subcard">
-                        <div class="ba-subcard-head">
-                            <div class="ba-subcard-icon">
-                                <svg width="18" height="18" viewBox="0 0 20 20" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M14.166 14.166L17.5 17.5" stroke="#4362CE" stroke-width="1.5"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                    <path
-                                        d="M15.833 9.16699C15.833 5.4851 12.8489 2.50101 9.16702 2.50101C5.48512 2.50101 2.50104 5.4851 2.50104 9.16699C2.50104 12.8489 5.48512 15.833 9.16702 15.833C12.8489 15.833 15.833 12.8489 15.833 9.16699Z"
-                                        stroke="#4362CE" stroke-width="1.5" stroke-linejoin="round" />
-                                </svg>
+                        <!-- Col 1: Search Volume -->
+                        <div class="ba-market-subcard">
+                            <div class="ba-subcard-head">
+                                <div class="ba-subcard-icon">
+                                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.166 14.166L17.5 17.5" stroke="#4362CE" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path
+                                            d="M15.833 9.16699C15.833 5.4851 12.8489 2.50101 9.16702 2.50101C5.48512 2.50101 2.50104 5.4851 2.50104 9.16699C2.50104 12.8489 5.48512 15.833 9.16702 15.833C12.8489 15.833 15.833 12.8489 15.833 9.16699Z"
+                                            stroke="#4362CE" stroke-width="1.5" stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="ba-subcard-title">Search Volume</div>
+                                    <div class="ba-subcard-val" id="disp_brand_search">663K</div>
+                                </div>
                             </div>
-                            <div>
-                                <div class="ba-subcard-title">Search Volume</div>
-                                <div class="ba-subcard-val" id="disp_brand_search">663K</div>
+                            <div class="ba-subcard-body">
+                                <div class="ba-subcard-bars">
+                                    <div class="ba-vbar main-brand" id="bar_brand_search" style="height: 60%;"></div>
+                                    <div class="ba-vbar market-avg" id="bar_market_search" style="height: 85%;"></div>
+                                </div>
+                                <div class="ba-subcard-foot">
+                                    <span id="val_brand_search">663K</span> <span class="vs">vs</span> <span
+                                        id="val_market_search">850K</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="ba-subcard-body">
-                            <div class="ba-subcard-bars">
-                                <div class="ba-vbar main-brand" id="bar_brand_search" style="height: 60%;"></div>
-                                <div class="ba-vbar market-avg" id="bar_market_search" style="height: 85%;"></div>
+
+                        <!-- Col 2: Impressions -->
+                        <div class="ba-market-subcard">
+                            <div class="ba-subcard-head">
+                                <div class="ba-subcard-icon">
+                                    <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Impressions.svg"
+                                        alt="Impressions" style="width: 18px; height: 18px;" />
+                                </div>
+                                <div>
+                                    <div class="ba-subcard-title">Impressions</div>
+                                    <div class="ba-subcard-val" id="disp_brand_impr">2.4M</div>
+                                </div>
                             </div>
-                            <div class="ba-subcard-foot">
-                                <span id="val_brand_search">663K</span> <span class="vs">vs</span> <span
-                                    id="val_market_search">850K</span>
+                            <div class="ba-subcard-body">
+                                <div class="ba-subcard-bars">
+                                    <div class="ba-vbar main-brand" id="bar_brand_impr" style="height: 22%;"></div>
+                                    <div class="ba-vbar market-avg" id="bar_market_impr" style="height: 85%;"></div>
+                                </div>
+                                <div class="ba-subcard-foot">
+                                    <span id="val_brand_impr">2.4M</span> <span class="vs">vs</span> <span
+                                        id="val_market_impr">20.9M</span>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Col 3: Clicks -->
+                        <div class="ba-market-subcard">
+                            <div class="ba-subcard-head">
+                                <div class="ba-subcard-icon">
+                                    <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Clicks.svg"
+                                        alt="Clicks" style="width: 18px; height: 18px;" />
+                                </div>
+                                <div>
+                                    <div class="ba-subcard-title">Clicks</div>
+                                    <div class="ba-subcard-val" id="disp_brand_clicks">17K</div>
+                                </div>
+                            </div>
+                            <div class="ba-subcard-body">
+                                <div class="ba-subcard-bars">
+                                    <div class="ba-vbar main-brand" id="bar_brand_clicks" style="height: 65%;"></div>
+                                    <div class="ba-vbar market-avg" id="bar_market_clicks" style="height: 85%;"></div>
+                                </div>
+                                <div class="ba-subcard-foot">
+                                    <span id="val_brand_clicks">17K</span> <span class="vs">vs</span> <span
+                                        id="val_market_clicks">21K</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Col 4: Add-to-Carts -->
+                        <div class="ba-market-subcard">
+                            <div class="ba-subcard-head">
+                                <div class="ba-subcard-icon">
+                                    <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Add-to-Carts.svg"
+                                        alt="Add-to-Carts" style="width: 18px; height: 18px;" />
+                                </div>
+                                <div>
+                                    <div class="ba-subcard-title">Add-to-Carts</div>
+                                    <div class="ba-subcard-val" id="disp_brand_atc">930</div>
+                                </div>
+                            </div>
+                            <div class="ba-subcard-body">
+                                <div class="ba-subcard-bars">
+                                    <div class="ba-vbar main-brand" id="bar_brand_atc" style="height: 65%;"></div>
+                                    <div class="ba-vbar market-avg" id="bar_market_atc" style="height: 85%;"></div>
+                                </div>
+                                <div class="ba-subcard-foot">
+                                    <span id="val_brand_atc">930</span> <span class="vs">vs</span> <span
+                                        id="val_market_atc">1K</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Col 5: Purchases -->
+                        <div class="ba-market-subcard">
+                            <div class="ba-subcard-head">
+                                <div class="ba-subcard-icon">
+                                    <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Purchases.svg"
+                                        alt="Purchases" style="width: 18px; height: 18px;" />
+                                </div>
+                                <div>
+                                    <div class="ba-subcard-title">Purchases</div>
+                                    <div class="ba-subcard-val" id="disp_brand_purchases">743</div>
+                                </div>
+                            </div>
+                            <div class="ba-subcard-body">
+                                <div class="ba-subcard-bars">
+                                    <div class="ba-vbar main-brand" id="bar_brand_purchases" style="height: 60%;"></div>
+                                    <div class="ba-vbar market-avg" id="bar_market_purchases" style="height: 85%;">
+                                    </div>
+                                </div>
+                                <div class="ba-subcard-foot">
+                                    <span id="val_brand_purchases">743</span> <span class="vs">vs</span> <span
+                                        id="val_market_purchases">929</span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-
-                    <!-- Col 2: Impressions -->
-                    <div class="ba-market-subcard">
-                        <div class="ba-subcard-head">
-                            <div class="ba-subcard-icon">
-                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Impressions.svg"
-                                    alt="Impressions" style="width: 18px; height: 18px;" />
-                            </div>
-                            <div>
-                                <div class="ba-subcard-title">Impressions</div>
-                                <div class="ba-subcard-val" id="disp_brand_impr">2.4M</div>
-                            </div>
-                        </div>
-                        <div class="ba-subcard-body">
-                            <div class="ba-subcard-bars">
-                                <div class="ba-vbar main-brand" id="bar_brand_impr" style="height: 22%;"></div>
-                                <div class="ba-vbar market-avg" id="bar_market_impr" style="height: 85%;"></div>
-                            </div>
-                            <div class="ba-subcard-foot">
-                                <span id="val_brand_impr">2.4M</span> <span class="vs">vs</span> <span
-                                    id="val_market_impr">20.9M</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Col 3: Clicks -->
-                    <div class="ba-market-subcard">
-                        <div class="ba-subcard-head">
-                            <div class="ba-subcard-icon">
-                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Clicks.svg" alt="Clicks"
-                                    style="width: 18px; height: 18px;" />
-                            </div>
-                            <div>
-                                <div class="ba-subcard-title">Clicks</div>
-                                <div class="ba-subcard-val" id="disp_brand_clicks">17K</div>
-                            </div>
-                        </div>
-                        <div class="ba-subcard-body">
-                            <div class="ba-subcard-bars">
-                                <div class="ba-vbar main-brand" id="bar_brand_clicks" style="height: 65%;"></div>
-                                <div class="ba-vbar market-avg" id="bar_market_clicks" style="height: 85%;"></div>
-                            </div>
-                            <div class="ba-subcard-foot">
-                                <span id="val_brand_clicks">17K</span> <span class="vs">vs</span> <span
-                                    id="val_market_clicks">21K</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Col 4: Add-to-Carts -->
-                    <div class="ba-market-subcard">
-                        <div class="ba-subcard-head">
-                            <div class="ba-subcard-icon">
-                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Add-to-Carts.svg"
-                                    alt="Add-to-Carts" style="width: 18px; height: 18px;" />
-                            </div>
-                            <div>
-                                <div class="ba-subcard-title">Add-to-Carts</div>
-                                <div class="ba-subcard-val" id="disp_brand_atc">930</div>
-                            </div>
-                        </div>
-                        <div class="ba-subcard-body">
-                            <div class="ba-subcard-bars">
-                                <div class="ba-vbar main-brand" id="bar_brand_atc" style="height: 65%;"></div>
-                                <div class="ba-vbar market-avg" id="bar_market_atc" style="height: 85%;"></div>
-                            </div>
-                            <div class="ba-subcard-foot">
-                                <span id="val_brand_atc">930</span> <span class="vs">vs</span> <span
-                                    id="val_market_atc">1K</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Col 5: Purchases -->
-                    <div class="ba-market-subcard">
-                        <div class="ba-subcard-head">
-                            <div class="ba-subcard-icon">
-                                <img src="<?php echo BASE_URL; ?>assets/icons/Brand Analytics/Purchases.svg"
-                                    alt="Purchases" style="width: 18px; height: 18px;" />
-                            </div>
-                            <div>
-                                <div class="ba-subcard-title">Purchases</div>
-                                <div class="ba-subcard-val" id="disp_brand_purchases">743</div>
-                            </div>
-                        </div>
-                        <div class="ba-subcard-body">
-                            <div class="ba-subcard-bars">
-                                <div class="ba-vbar main-brand" id="bar_brand_purchases" style="height: 60%;"></div>
-                                <div class="ba-vbar market-avg" id="bar_market_purchases" style="height: 85%;"></div>
-                            </div>
-                            <div class="ba-subcard-foot">
-                                <span id="val_brand_purchases">743</span> <span class="vs">vs</span> <span
-                                    id="val_market_purchases">929</span>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-            </div>
+            </div><!-- /.ba-market-grid-wrap -->
 
             <!-- Section 2: Funnel Leakage Analysis -->
             <div class="ba-card">

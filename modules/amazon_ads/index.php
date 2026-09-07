@@ -2484,9 +2484,9 @@ include '../../includes/sidebar.php';
             let paginationHtml = '';
 
             // Chevron Left
-            const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
-            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${prevDisabled} onclick="window.onReportPageClick(${currentPage - 1})" style="padding: 6px 12px; border: 1px solid #c6c6cd; border-radius: 6px; cursor: pointer; background: #ffffff;">
-            <i class="fas fa-chevron-left" style="font-size: 12px;"></i>
+            const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.35; cursor: not-allowed;"' : 'style="cursor: pointer;"';
+            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${prevDisabled} onclick="window.onReportPageClick(${currentPage - 1})" style="width: 32px; height: 32px; border: 1px solid #E2E8F0; border-radius: 6px; background: #ffffff; color: #475569; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s;">
+            <i class="fas fa-chevron-left" style="font-size: 11px;"></i>
         </button>`;
 
             // Page Numbers (Up to 5 page buttons)
@@ -2498,16 +2498,16 @@ include '../../includes/sidebar.php';
 
             for (let page = startPage; page <= endPage; page++) {
                 if (page === currentPage) {
-                    paginationHtml += `<button class="px-3 py-1 rounded text-white" style="background: #0051d5; color: #ffffff; font-weight: 700; border: none; cursor: default; padding: 6px 12px; border-radius: 6px; font-size: 14px;">${page}</button>`;
+                    paginationHtml += `<button class="px-3 py-1 rounded font-label-md text-label-md" style="min-width: 32px; height: 32px; background: #F1F5F9; color: #0F172A; font-weight: 800; border: 1px solid #CBD5E1; border-radius: 6px; cursor: default; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; padding: 0 8px;">${page}</button>`;
                 } else {
-                    paginationHtml += `<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors bg-white" style="cursor: pointer; padding: 6px 12px; border: 1px solid #c6c6cd; border-radius: 6px; background: #ffffff; font-size: 14px;" onclick="window.onReportPageClick(${page})">${page}</button>`;
+                    paginationHtml += `<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors font-label-md text-label-md bg-white" style="min-width: 32px; height: 32px; cursor: pointer; border: 1px solid #E2E8F0; border-radius: 6px; background: #ffffff; color: #475569; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; padding: 0 8px; transition: all 0.15s;" onclick="window.onReportPageClick(${page})">${page}</button>`;
                 }
             }
 
             // Chevron Right
-            const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
-            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${nextDisabled} onclick="window.onReportPageClick(${currentPage + 1})" style="padding: 6px 12px; border: 1px solid #c6c6cd; border-radius: 6px; cursor: pointer; background: #ffffff;">
-            <i class="fas fa-chevron-right" style="font-size: 12px;"></i>
+            const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.35; cursor: not-allowed;"' : 'style="cursor: pointer;"';
+            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${nextDisabled} onclick="window.onReportPageClick(${currentPage + 1})" style="width: 32px; height: 32px; border: 1px solid #E2E8F0; border-radius: 6px; background: #ffffff; color: #475569; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s;">
+            <i class="fas fa-chevron-right" style="font-size: 11px;"></i>
         </button>`;
 
             return paginationHtml;

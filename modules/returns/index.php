@@ -353,41 +353,51 @@ include '../../includes/sidebar.php';
         display: flex;
         align-items: center;
         gap: 6px;
+        margin-top: 2px;
     }
 
     .ret-delta-badge {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 12px;
-        font-weight: 700;
-        padding: 3px 8px;
-        border-radius: 6px;
-        display: inline-flex;
-        align-items: center;
-        gap: 3px;
-        line-height: 1;
-        font-variant-numeric: tabular-nums;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        height: 20px !important;
+        padding: 0 8px !important;
+        border-radius: 6px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        line-height: 20px !important;
+        box-sizing: border-box !important;
+        font-variant-numeric: tabular-nums !important;
+        letter-spacing: -0.01em !important;
     }
 
     .ret-delta-badge.up {
-        background: #EEF8F1;
-        color: #029153;
+        background: #EEF8F1 !important;
+        color: #029153 !important;
     }
 
     .ret-delta-badge.down {
-        background: #FEF0EF;
-        color: #EE473D;
+        background: #FEF0EF !important;
+        color: #EE473D !important;
     }
 
     .ret-delta-badge.neutral {
-        background: #F1F5F9;
-        color: #64748B;
+        background: #F1F5F9 !important;
+        color: #64748B !important;
+    }
+
+    .ret-delta-badge svg {
+        flex-shrink: 0;
     }
 
     .ret-delta-sub {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         font-size: 12px;
-        color: #64748B;
+        color: #1E293B;
         font-weight: 500;
+        letter-spacing: -0.01em;
     }
 
     /* Top KPI Layout (6 Cards Left Grid + Reasons Radial Gauge Right) */
@@ -404,11 +414,12 @@ include '../../includes/sidebar.php';
         background: #FFFFFF;
         border: 1px solid #E8EAF2;
         border-radius: 14px;
-        padding: 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        padding: 24px 20px 20px 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        align-items: center;
         width: 280px;
         min-width: 280px;
         height: 300px;
@@ -419,7 +430,7 @@ include '../../includes/sidebar.php';
 
     .ret-reasons-card:hover {
         border-color: #CBD5E1;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     }
 
     .ret-reasons-card h3 {
@@ -434,12 +445,12 @@ include '../../includes/sidebar.php';
 
     .ret-gauge-wrap {
         position: relative;
-        width: 100%;
-        height: 160px;
+        width: 170px;
+        height: 170px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 4px 0;
+        margin: 0 auto;
     }
 
     .ret-gauge-center {
@@ -454,24 +465,25 @@ include '../../includes/sidebar.php';
 
     .ret-gauge-center .total-val {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 800;
-        color: #0F172A;
-        line-height: 1.1;
+        color: #1A1A1A;
+        line-height: 1;
         font-variant-numeric: tabular-nums;
+        margin-bottom: 2px;
     }
 
     .ret-gauge-center .total-lbl {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 500;
         color: #64748B;
-        margin-top: 2px;
     }
 
     .ret-reasons-legend {
-        border-top: 1px solid #F1F5F9;
-        padding-top: 14px;
+        border-top: none !important;
+        padding-top: 0 !important;
+        margin-top: 4px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -491,7 +503,7 @@ include '../../includes/sidebar.php';
         width: 10px;
         height: 10px;
         border-radius: 3px;
-        background: #3B82F6;
+        background: #4362CE;
         flex-shrink: 0;
     }
 
@@ -508,11 +520,12 @@ include '../../includes/sidebar.php';
     .ret-reasons-legend .legend-val {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         font-weight: 700;
-        color: #0F172A;
+        color: #1E293B;
         font-size: 13px;
         white-space: nowrap;
         font-variant-numeric: tabular-nums;
     }
+
 
     /* Trend Toggle */
     .ret-trend-toggle {
@@ -762,42 +775,60 @@ include '../../includes/sidebar.php';
     }
 
     @media (max-width: 768px) {
+        .main-wrapper {
+            padding: 0.75rem 0.75rem 90px 0.75rem !important;
+        }
+
         .ret-container {
-            padding: 0.75rem 0.75rem 100px 0.75rem !important;
+            padding: 0 !important;
             width: 100% !important;
-            max-width: 100vw !important;
+            max-width: 100% !important;
             overflow-x: hidden !important;
         }
 
-        .ret-topbar {
+        .figma-page-topbar {
             flex-direction: column !important;
             align-items: stretch !important;
-            gap: 0.75rem !important;
+            gap: 10px !important;
+            padding-bottom: 0.75rem !important;
         }
 
-        .ret-topbar-left {
+        .figma-page-topbar-left {
             width: 100% !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 8px !important;
         }
 
-        .ret-profile-select-wrap,
-        .ret-profile-select {
+        .figma-select-wrapper,
+        .figma-select-wrapper select {
             width: 100% !important;
             min-width: 0 !important;
+            box-sizing: border-box !important;
         }
 
-        .ret-breadcrumb {
+        .figma-page-breadcrumb {
             display: none !important;
         }
 
-        .ret-topbar-actions {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 0.5rem !important;
+        .figma-page-topbar-right {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
             width: 100% !important;
         }
 
-        .btn-ret-icon {
-            display: none !important;
+        .figma-page-topbar-right .btn-figma-primary,
+        .figma-page-topbar-right .btn-figma-outline-sm {
+            flex: 1 !important;
+            justify-content: center !important;
+            text-align: center !important;
+            padding: 0.5rem 0.6rem !important;
+            font-size: 0.78rem !important;
+        }
+
+        .figma-page-topbar-right .btn-figma-icon-sm {
+            flex-shrink: 0 !important;
         }
 
         .ret-page-head {
@@ -923,13 +954,20 @@ include '../../includes/sidebar.php';
                 <div class="ret-kpi-top">
                     <span class="ret-kpi-label">Total Returns</span>
                     <div class="ret-kpi-icon-box">
-                        <img src="<?php echo BASE_URL; ?>assets/icons/Overview/Reload.svg"
-                            style="width: 15px; height: 15px;" />
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.1115 0.666504L10.5101 1.41169C10.7796 1.91548 10.9143 2.16738 10.8253 2.27526C10.7361 2.38314 10.4427 2.29601 9.85573 2.12176C9.26893 1.94754 8.64593 1.85381 8.00033 1.85381C4.50252 1.85381 1.66699 4.60548 1.66699 7.99987C1.66699 9.11927 1.97541 10.1689 2.51428 11.0729M5.88921 15.3332L5.49057 14.588C5.22105 14.0842 5.08629 13.8323 5.17539 13.7244C5.26451 13.6165 5.55799 13.7037 6.14492 13.8779C6.73173 14.0521 7.35473 14.1459 8.00033 14.1459C11.4981 14.1459 14.3337 11.3942 14.3337 7.99987C14.3337 6.8804 14.0253 5.83082 13.4864 4.92682"
+                                stroke="#4362CE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                     </div>
                 </div>
                 <div class="ret-kpi-val" id="kpi_total_returns">54</div>
                 <div class="ret-kpi-foot">
-                    <span class="ret-delta-badge down" id="cmp_total_returns">+100% &darr;</span>
+                    <span class="ret-delta-badge down" id="cmp_total_returns">+100% <svg width="10" height="10"
+                            viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 1.5V8.5M5 8.5L8 5.5M5 8.5L2 5.5" stroke="#EE473D" stroke-width="1.4"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg></span>
                     <span class="ret-delta-sub">vs LW</span>
                 </div>
             </div>
@@ -945,7 +983,11 @@ include '../../includes/sidebar.php';
                 </div>
                 <div class="ret-kpi-val" id="kpi_sellable_pct">94.4%</div>
                 <div class="ret-kpi-foot">
-                    <span class="ret-delta-badge up" id="cmp_sellable_pct">+100% &uarr;</span>
+                    <span class="ret-delta-badge up" id="cmp_sellable_pct">+100% <svg width="10" height="10"
+                            viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 8.5V1.5M5 1.5L8 4.5M5 1.5L2 4.5" stroke="#029153" stroke-width="1.4"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg></span>
                     <span class="ret-delta-sub">vs LW</span>
                 </div>
             </div>
@@ -961,7 +1003,11 @@ include '../../includes/sidebar.php';
                 </div>
                 <div class="ret-kpi-val" id="kpi_damaged_pct">5.6%</div>
                 <div class="ret-kpi-foot">
-                    <span class="ret-delta-badge down" id="cmp_damaged_pct">+100% &darr;</span>
+                    <span class="ret-delta-badge down" id="cmp_damaged_pct">+100% <svg width="10" height="10"
+                            viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 1.5V8.5M5 8.5L8 5.5M5 8.5L2 5.5" stroke="#EE473D" stroke-width="1.4"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg></span>
                     <span class="ret-delta-sub">vs LW</span>
                 </div>
             </div>
@@ -1155,34 +1201,47 @@ include '../../includes/sidebar.php';
             $('#lbl_top_reason').text(topReason.label.replace(/_/g, ' '));
             $('#lbl_top_reason_count').text(`${topReason.count} (${topReason.pct}%)`);
 
-            // Segmented Ring style matching Figma
-            const totalSegments = 36;
-            const filledCount = totalCount > 0 ? Math.max(2, Math.round((topReason.pct / 100) * totalSegments)) : 0;
-            const segments = Array(totalSegments).fill(1);
-            const segmentColors = segments.map((_, i) => (i < filledCount ? '#3B82F6' : '#E2E8F0'));
+            // Segmented Rounded Ticks matching Figma
+            const canvas = el;
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const width = canvas.parentElement.clientWidth || 170;
+            const height = canvas.parentElement.clientHeight || 170;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            ctx.scale(dpr, dpr);
 
-            reasonsChart = new Chart(el.getContext('2d'), {
-                type: 'doughnut',
-                data: {
-                    labels: segments.map((_, i) => `Segment ${i + 1}`),
-                    datasets: [{
-                        data: segments,
-                        backgroundColor: segmentColors,
-                        borderWidth: 2,
-                        borderColor: '#FFFFFF',
-                        hoverOffset: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '76%',
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: { enabled: false }
-                    }
-                }
-            });
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const totalBars = 36;
+            const radius = 68;
+            const barLength = 16;
+            const barWidth = 3.5;
+            const filledCount = totalCount > 0 ? Math.round((topReason.pct / 100) * totalBars) : 0;
+
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < totalBars; i++) {
+                // start from top (-90 deg)
+                const angle = ((i / totalBars) * 2 * Math.PI) - (Math.PI / 2);
+                const isFilled = i < filledCount;
+                const color = isFilled ? '#4362CE' : '#E2E8F0';
+
+                const x1 = centerX + Math.cos(angle) * (radius - barLength / 2);
+                const y1 = centerY + Math.sin(angle) * (radius - barLength / 2);
+                const x2 = centerX + Math.cos(angle) * (radius + barLength / 2);
+                const y2 = centerY + Math.sin(angle) * (radius + barLength / 2);
+
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = barWidth;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+            }
         }
 
         function renderTrendChartData(trendData) {
@@ -1389,9 +1448,12 @@ include '../../includes/sidebar.php';
             const isUp = cmp.dir === 'up';
             const good = invert ? !isUp : isUp;
             const cls = good ? 'up' : 'down';
-            const icon = isUp ? '&uarr;' : '&darr;';
+            const color = cls === 'up' ? '#029153' : '#EE473D';
+            const iconSvg = isUp
+                ? `<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 8.5V1.5M5 1.5L8 4.5M5 1.5L2 4.5" stroke="${color}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+                : `<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1.5V8.5M5 8.5L8 5.5M5 8.5L2 5.5" stroke="${color}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
             const sign = isUp ? '+' : '-';
-            $el.removeClass('up down neutral').addClass(cls).html(`${sign}${cmp.pct}% ${icon}`);
+            $el.removeClass('up down neutral').addClass(cls).html(`${sign}${cmp.pct}% ${iconSvg}`);
         }
 
         function fetchData() {

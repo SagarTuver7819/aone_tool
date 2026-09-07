@@ -1434,13 +1434,20 @@ include '../../includes/sidebar.php';
         justify-content: space-between !important;
         gap: 0.5rem !important;
         position: relative !important;
-        border-right: 1px solid #EAECEF !important;
         box-sizing: border-box !important;
         min-width: 0 !important;
     }
 
-    .pl-hero-section:last-child {
-        border-right: none !important;
+    .pl-hero-section:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 115px;
+        max-height: calc(100% - 32px);
+        width: 1px;
+        background-color: #EAECEF;
     }
 
     .pl-hero-label {
@@ -1571,9 +1578,12 @@ include '../../includes/sidebar.php';
         }
 
         .pl-hero-section {
-            border-right: none !important;
             border-bottom: 1px solid #EAECEF !important;
             padding: 1rem 1.25rem !important;
+        }
+
+        .pl-hero-section::after {
+            display: none !important;
         }
 
         .pl-hero-section:last-child {
@@ -1761,35 +1771,41 @@ include '../../includes/sidebar.php';
         justify-content: center !important;
         gap: 1.5rem !important;
         padding: 0.4rem 1rem 0.75rem !important;
-        font-size: 0.75rem !important;
-        font-weight: 700 !important;
-        color: #475569 !important;
+        font-family: 'Outfit', 'Inter', sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        color: #363B4F !important;
     }
 
     .pl-legend-item {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
+        cursor: default;
     }
 
     .pl-legend-box {
-        width: 12px;
-        height: 12px;
-        border-radius: 3px;
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
         display: inline-block;
+        background: #4362CE !important;
     }
 
     .pl-legend-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
         display: inline-block;
+        background: rgba(16, 185, 129, 0.08) !important;
+        border: 1.5px solid #10b981 !important;
+        box-sizing: border-box !important;
     }
 
     .pl-table-controls {
         display: flex;
         align-items: center;
-        gap: 0.6rem;
+        gap: 8px;
     }
 
     .pl-search-box {
@@ -1798,47 +1814,63 @@ include '../../includes/sidebar.php';
         align-items: center;
     }
 
+    .pl-search-box svg,
     .pl-search-box i {
         position: absolute;
-        left: 10px;
-        font-size: 0.75rem;
-        color: #94a3b8;
+        left: 11px;
+        color: #363B4F;
         pointer-events: none;
     }
 
     .pl-search-box input {
-        padding: 6px 10px 6px 30px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #334155;
-        border: 1px solid #e2e8f0;
+        height: 32px;
+        padding: 0 12px 0 32px;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 12px;
+        font-weight: 500;
+        color: #363B4F;
+        border: 1px solid #E8EAF2;
         border-radius: 8px;
-        background: #f8fafc;
-        width: 180px;
+        background: #F5F6FA;
+        width: 170px;
         outline: none;
+        box-sizing: border-box;
+        transition: all 0.15s;
+    }
+
+    .pl-search-box input::placeholder {
+        color: #363B4F;
+        opacity: 0.75;
     }
 
     .pl-search-box input:focus {
-        border-color: #3b82f6;
+        border-color: #4362CE;
         background: #fff;
     }
 
     .pl-filter-btn {
+        height: 32px;
         display: inline-flex;
         align-items: center;
-        gap: 5px;
-        padding: 6px 12px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #475569;
-        border: 1px solid #e2e8f0;
+        justify-content: center;
+        gap: 6px;
+        padding: 0 12px;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 12px;
+        font-weight: 500;
+        color: #363B4F;
+        border: 1px solid #E8EAF2;
         border-radius: 8px;
-        background: #fff;
+        background: #F5F6FA;
         cursor: pointer;
+        box-sizing: border-box;
+        transition: all 0.15s;
+        line-height: 1;
+        white-space: nowrap;
     }
 
     .pl-filter-btn:hover {
-        background: #f8fafc;
+        background: #ECEEF5;
     }
 
     .pl-table-responsive {
@@ -1924,60 +1956,61 @@ include '../../includes/sidebar.php';
     .pl-pagination-btns {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
     }
 
     .pl-page-num {
-        min-width: 28px;
-        height: 28px;
+        min-width: 32px;
+        height: 32px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        background: #ffffff;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #475569;
+        border: none !important;
+        border-radius: 8px;
+        background: transparent !important;
+        font-family: 'Outfit', 'Inter', sans-serif !important;
+        font-size: 14px;
+        font-weight: 500;
+        color: #1E293B;
         cursor: pointer;
         transition: all 0.15s;
         padding: 0 6px;
     }
 
-    .pl-page-num:hover {
-        background: #f8fafc;
-        color: #0f172a;
+    .pl-page-num:hover:not(.active) {
+        background: #F1F5F9 !important;
+        color: #0F172A;
     }
 
     .pl-page-num.active {
-        background: #f1f5f9;
-        color: #0f172a;
-        font-weight: 800;
-        border-color: #cbd5e1;
+        background: #F5F6FA !important;
+        color: #0F172A !important;
+        font-weight: 700 !important;
+        border-radius: 10px !important;
     }
 
     .pl-page-nav {
-        min-width: 28px;
-        height: 28px;
+        min-width: 32px;
+        height: 32px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        background: #ffffff;
-        font-size: 0.75rem;
-        color: #64748b;
+        border: none !important;
+        border-radius: 8px;
+        background: transparent !important;
+        font-size: 14px;
+        color: #1E293B;
         cursor: pointer;
         transition: all 0.15s;
     }
 
     .pl-page-nav:hover:not(:disabled) {
-        background: #f8fafc;
-        color: #0f172a;
+        background: #F1F5F9 !important;
+        color: #0F172A;
     }
 
     .pl-page-nav:disabled {
-        opacity: 0.35;
+        opacity: 0.3;
         cursor: not-allowed;
     }
 
@@ -2775,7 +2808,7 @@ include '../../includes/sidebar.php';
     .pp-donut-card,
     .pp-kpi-card {
         background: #ffffff !important;
-        border: 1px solid #EAECEF !important;
+        border: 1px solid #E8EAF2 !important;
         border-radius: 16px !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
     }
@@ -2822,11 +2855,11 @@ include '../../includes/sidebar.php';
         flex-direction: row !important;
         align-items: center !important;
         justify-content: space-between !important;
-        padding: 12px 14px !important;
-        border: 1px solid #EAECEF !important;
+        padding: 12px 22px !important;
+        border: 1px solid #E8EAF2 !important;
         border-radius: 12px !important;
-        background: #ffffff !important;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+        background: rgba(245, 246, 250, 0.5) !important;
+        box-shadow: none !important;
         min-height: 72px !important;
         box-sizing: border-box !important;
         position: relative;
@@ -2834,8 +2867,8 @@ include '../../includes/sidebar.php';
     }
 
     .pp-sku-row:hover {
+        background: #F5F6FA !important;
         border-color: #CBD5E1 !important;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
     }
 
     .pp-sku-rank {
@@ -2845,30 +2878,31 @@ include '../../includes/sidebar.php';
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
+        font-family: 'Inter', sans-serif !important;
         font-size: 13px !important;
-        font-weight: 700 !important;
+        font-weight: 600 !important;
         flex-shrink: 0 !important;
-        background: #ffffff !important;
-        border: 1px solid #E2E8F0 !important;
-        color: #64748B !important;
+        background: #F5F6FA !important;
+        border: 1px solid #E8EAF2 !important;
+        color: #475569 !important;
     }
 
     .pp-sku-rank.rank-1 {
-        background: #3B66F5 !important;
+        background: #4362CE !important;
         border: none !important;
         color: #ffffff !important;
     }
 
     .pp-sku-rank.rank-2 {
-        background: #7395F7 !important;
+        background: #4362CEB2 !important;
         border: none !important;
         color: #ffffff !important;
     }
 
     .pp-sku-rank.rank-3 {
-        background: #A3BAF9 !important;
+        background: #4362CE4D !important;
         border: none !important;
-        color: #ffffff !important;
+        color: #1E293B !important;
     }
 
     .pp-sku-info {
@@ -2901,7 +2935,7 @@ include '../../includes/sidebar.php';
     }
 
     .pp-sku-units {
-        border: 1px solid #EAECEF !important;
+        border: 1px solid #E8EAF2 !important;
         border-radius: 10px !important;
         background: #FFFFFF !important;
         padding: 6px 10px !important;
@@ -2909,8 +2943,8 @@ include '../../includes/sidebar.php';
         height: 48px !important;
         display: flex !important;
         flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
+        align-items: end !important;
+        justify-content: end !important;
         gap: 4px !important;
         flex-shrink: 0 !important;
         text-align: center !important;
@@ -3080,7 +3114,7 @@ include '../../includes/sidebar.php';
         justify-content: center !important;
         pointer-events: none !important;
         text-align: center !important;
-        z-index: 10 !important;
+        z-index: 1 !important;
     }
 
     .pp-donut-center p {
@@ -4800,11 +4834,11 @@ include '../../includes/sidebar.php';
 
                 <div class="pl-chart-legend">
                     <div class="pl-legend-item">
-                        <span class="pl-legend-box" style="background: #93c5fd;"></span>
+                        <span class="pl-legend-box"></span>
                         <span id="pl_legend_bar_label">Sales</span>
                     </div>
                     <div class="pl-legend-item">
-                        <span class="pl-legend-dot" style="background: #10b981; border: 2px solid #059669;"></span>
+                        <span class="pl-legend-dot"></span>
                         <span id="pl_legend_line_label">Net Profit</span>
                     </div>
                 </div>
@@ -4816,11 +4850,20 @@ include '../../includes/sidebar.php';
                     <h3 class="pl-card-title">SKU Wise P&L Performance</h3>
                     <div class="pl-table-controls">
                         <div class="pl-search-box">
-                            <i class="fas fa-search"></i>
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="7" cy="7" r="5.25" stroke="#363B4F" stroke-width="1.5" />
+                                <path d="M11 11L14.5 14.5" stroke="#363B4F" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
                             <input type="text" id="sku_pl_search_input" placeholder="Search SKUs...">
                         </div>
                         <button type="button" class="pl-filter-btn" id="sku_pl_filter_toggle">
-                            <i class="fas fa-filter"></i> Filter
+                            <span>Filter</span>
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2.5 4.5H13.5M4.5 8H11.5M6.5 11.5H9.5" stroke="#363B4F" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -4852,16 +4895,17 @@ include '../../includes/sidebar.php';
                 <div class="pl-pagination-bar">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div class="pl-entries-select-wrap">
-                            <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Show</span>
+                            <span style="font-size: 13px; color: #64748b; font-weight: 500;">Show</span>
                             <select id="sku_pl_page_size" class="pl-page-size-select">
                                 <option value="10" selected>10</option>
-                                <option value="25">25</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
                                 <option value="50">50</option>
                             </select>
-                            <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Entries</span>
+                            <span style="font-size: 13px; color: #64748b; font-weight: 500;">Entries</span>
                         </div>
                         <p id="sku_pl_showing_text"
-                            style="margin: 0; font-size: 0.75rem; color: #64748b; font-weight: 600;">Showing 1 to 10 of
+                            style="margin: 0; font-size: 13px; color: #64748b; font-weight: 500;">Showing 1 to 10 of
                             0 entries</p>
                     </div>
                     <div id="sku_pl_pagination" class="pl-pagination-btns"></div>
@@ -5123,19 +5167,65 @@ include '../../includes/sidebar.php';
         </div>
         <div class="pp-correlation-insights"
             style="margin-top: 1.25rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
-            <div style="padding: 14px 18px; background: #EFF6FF; border: 1px solid #DBEAFE; border-radius: 12px;">
-                <p style="font-weight: 700; font-size: 0.84rem; margin-bottom: 4px; color: #1E40AF;">Strategic
-                    Correlation</p>
-                <p style="font-size: 0.78rem; color: #475569; margin: 0; line-height: 1.45;">Analyze the relationship
-                    between traffic (bars) and financial outcomes (lines). High traffic with low revenue indicates
-                    listing optimization is needed.</p>
+            <!-- Strategic Correlation Card -->
+            <div style="
+                padding: 18px 20px;
+                background: #F5F6FA;
+                border: 1px solid #DBEAFE;
+                border-radius: 12px;
+                box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                transition: box-shadow 0.2s ease;
+            ">
+                <p style="
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    font-weight: 700;
+                    font-size: 0.875rem;
+                    margin: 0;
+                    color: #2563EB;
+                    letter-spacing: 0;
+                ">Strategic Correlation</p>
+                <p style="
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    font-size: 0.8rem;
+                    color: #64748B;
+                    margin: 0;
+                    line-height: 1.55;
+                    font-weight: 400;
+                ">Analyze the relationship between traffic (bars) and financial outcomes (lines). High traffic with low
+                    revenue indicates listing optimization is needed.</p>
             </div>
-            <div style="padding: 14px 18px; background: #F0FDF4; border: 1px solid #DCFCE7; border-radius: 12px;">
-                <p style="font-weight: 700; font-size: 0.84rem; margin-bottom: 4px; color: #15803D;">Actionable Insight
-                </p>
-                <p style="font-size: 0.78rem; color: #475569; margin: 0; line-height: 1.45;">Prioritize products where
-                    the green dashed line (Conv %) is trending upwards, as these are your most efficient growth
-                    opportunities.</p>
+            <!-- Actionable Insight Card -->
+            <div style="
+                padding: 18px 20px;
+                background: #F5F6FA;
+                border: 1px solid #DCFCE7;
+                border-radius: 12px;
+                box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                transition: box-shadow 0.2s ease;
+            ">
+                <p style="
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    font-weight: 700;
+                    font-size: 0.875rem;
+                    margin: 0;
+                    color: #16A34A;
+                    letter-spacing: 0;
+                ">Actionable Insight</p>
+                <p style="
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    font-size: 0.8rem;
+                    color: #64748B;
+                    margin: 0;
+                    line-height: 1.55;
+                    font-weight: 400;
+                ">Prioritize products where the green dashed line (Conv %) is trending upwards, as these are your most
+                    efficient growth opportunities.</p>
             </div>
         </div>
     </section>
@@ -5199,10 +5289,22 @@ include '../../includes/sidebar.php';
             </table>
         </div>
         <div class="pp-table-footer"
-            style="display: flex; justify-content: space-between; align-items: center; background: transparent; border-top: 1px solid #F1F5F9; padding: 14px 24px; box-sizing: border-box;">
-            <p style="font-size: 0.78rem; color: #64748B; margin: 0; font-weight: 500;" id="product_perf_showing_text">
-                Showing 1 to 10 of 48 entries</p>
-            <div style="display: flex; gap: 6px;" id="product_perf_pagination">
+            style="display: flex; justify-content: space-between; align-items: center; background: #ffffff; border-top: 1px solid #F1F5F9; padding: 14px 24px; box-sizing: border-box; flex-wrap: wrap; gap: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="pl-entries-select-wrap">
+                    <span style="font-size: 13px; color: #64748b; font-weight: 500;">Show</span>
+                    <select id="products_page_size" class="pl-page-size-select">
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                    </select>
+                    <span style="font-size: 13px; color: #64748b; font-weight: 500;">Entries</span>
+                </div>
+                <p style="font-size: 13px; color: #64748b; margin: 0; font-weight: 500;" id="product_perf_showing_text">
+                    Showing 1 to 10 of 0 entries</p>
+            </div>
+            <div style="display: flex; gap: 8px;" id="product_perf_pagination">
                 <!-- Dynamic Pagination Buttons -->
             </div>
         </div>
@@ -5449,39 +5551,92 @@ include '../../includes/sidebar.php';
                             labels: {
                                 boxWidth: 12,
                                 boxHeight: 12,
-                                usePointStyle: false,
-                                font: { size: 12, weight: '600' },
-                                color: '#363B4F',
-                                padding: 16
+                                borderRadius: 3,
+                                usePointStyle: true,
+                                pointStyle: 'rectRounded',
+                                pointStyleWidth: 14,
+                                font: { size: 13, weight: '500', family: "'Outfit', 'Inter', sans-serif" },
+                                color: '#475569',
+                                padding: 20,
+                                generateLabels: function (chart) {
+                                    const original = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                                    original.forEach(label => {
+                                        const ds = chart.data.datasets[label.datasetIndex];
+                                        if (ds) {
+                                            const color = ds.borderColor || ds.backgroundColor || '#10B981';
+                                            label.fillStyle = color;
+                                            label.strokeStyle = color;
+                                            label.pointStyle = 'rectRounded';
+                                            label.borderRadius = 3;
+                                        }
+                                    });
+                                    return original;
+                                }
                             }
                         },
                         tooltip: {
-                            padding: 12,
-                            backgroundColor: '#ffffff',
-                            borderColor: '#e2e8f0',
-                            borderWidth: 1,
-                            titleColor: '#64748b',
-                            bodyColor: '#0f172a',
-                            titleFont: { size: 11, weight: '600' },
-                            bodyFont: { size: 13, weight: '700' },
-                            cornerRadius: 10,
-                            boxPadding: 4,
-                            displayColors: false,
-                            callbacks: {
-                                label: function (context) {
-                                    let label = context.dataset.label || 'Revenue';
+                            enabled: false,
+                            external: function (context) {
+                                let tooltipEl = document.getElementById('chartjs-custom-tooltip');
+                                if (!tooltipEl) {
+                                    tooltipEl = document.createElement('div');
+                                    tooltipEl.id = 'chartjs-custom-tooltip';
+                                    tooltipEl.style.background = '#ffffff';
+                                    tooltipEl.style.borderRadius = '10px';
+                                    tooltipEl.style.boxShadow = '0 8px 24px rgba(15, 23, 42, 0.12)';
+                                    tooltipEl.style.border = '1px solid #e2e8f0';
+                                    tooltipEl.style.color = '#334155';
+                                    tooltipEl.style.opacity = 0;
+                                    tooltipEl.style.pointerEvents = 'none';
+                                    tooltipEl.style.position = 'absolute';
+                                    tooltipEl.style.transform = 'translate(-50%, -120%)';
+                                    tooltipEl.style.transition = 'all .15s ease';
+                                    tooltipEl.style.padding = '8px 14px';
+                                    tooltipEl.style.zIndex = '1000';
+                                    tooltipEl.style.fontFamily = "'Outfit', 'Inter', sans-serif";
+                                    document.body.appendChild(tooltipEl);
+                                }
+
+                                const tooltipModel = context.tooltip;
+                                if (tooltipModel.opacity === 0) {
+                                    tooltipEl.style.opacity = 0;
+                                    return;
+                                }
+
+                                if (tooltipModel.body) {
+                                    const titleLines = tooltipModel.title || [];
+                                    const dataPoint = tooltipModel.dataPoints[0];
+                                    const ds = config.data.datasets[dataPoint.datasetIndex];
+                                    const label = ds.label || 'Revenue';
+                                    const color = ds.borderColor || '#10B981';
+
                                     let valStr = '';
-                                    if (context.parsed.y !== null) {
-                                        const isMoneyLabel = ['Revenue', 'Shipped Sales', 'B2B Sales'].includes(context.dataset.label);
+                                    if (dataPoint.parsed.y !== null) {
+                                        const isMoneyLabel = ['Revenue', 'Shipped Sales', 'B2B Sales'].includes(label);
                                         if (isMoneyLabel) {
-                                            valStr = '$' + context.parsed.y.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                            valStr = '$' + dataPoint.parsed.y.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                                         } else {
-                                            valStr = context.parsed.y.toLocaleString();
-                                            if (context.dataset.label && context.dataset.label.includes('%')) valStr += '%';
+                                            valStr = dataPoint.parsed.y.toLocaleString();
+                                            if (label && label.includes('%')) valStr += '%';
                                         }
                                     }
-                                    return `${label} : ${valStr}`;
+
+                                    let innerHtml = '';
+                                    if (titleLines.length > 0) {
+                                        innerHtml += `<div style="font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 4px;">${titleLines[0]}</div>`;
+                                    }
+                                    innerHtml += `<div style="font-size: 13px; font-weight: 500; color: #1e293b; display: flex; align-items: center; gap: 6px; white-space: nowrap;">
+                                        <span>${label} :</span>
+                                        <span style="font-weight: 700; color: ${color};">${valStr}</span>
+                                    </div>`;
+
+                                    tooltipEl.innerHTML = innerHtml;
                                 }
+
+                                const position = context.chart.canvas.getBoundingClientRect();
+                                tooltipEl.style.opacity = 1;
+                                tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                                tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - 8 + 'px';
                             }
                         }
                     },
@@ -5699,14 +5854,12 @@ include '../../includes/sidebar.php';
                             if (Math.abs(pct) >= 0.1) {
                                 const isUp = pct > 0;
                                 const cls = isUp ? 'up' : 'down';
-                                const arrowSvg = isUp
-                                    ? `<svg width="10" height="11" viewBox="0 0 11 12" fill="none" style="vertical-align:middle; margin-left:3px;"><path d="M5.28442 1.00732V10.6502" stroke="#029153" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.57144 4.93562C9.57144 4.93562 6.41508 0.649909 5.28572 0.649902C4.15629 0.649895 1 4.93562 1 4.93562" stroke="#029153" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`
-                                    : `<svg width="10" height="11" viewBox="0 0 11 12" fill="none" style="vertical-align:middle; margin-left:3px;"><path d="M5.28442 10.293V0.650109" stroke="#EE473D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.57144 6.36468C9.57144 6.36468 6.41508 10.6504 5.28572 10.6504C4.15629 10.6504 1 6.36468 1 6.36468" stroke="#EE473D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-                                pillHtml = `<span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% ${arrowSvg}</span>`;
+                                const arrow = isUp ? '↑' : '↓';
+                                pillHtml = `<span class="trend-growth-pill ${cls}">${Math.abs(pct).toFixed(1)}% ${arrow}</span>`;
                             }
                         }
                         cellContent = `<div style="display:inline-flex; align-items:center; justify-content:flex-end; gap:8px; width:100%;">
-                            <div style="width:72px; display:inline-flex; justify-content:flex-end; flex-shrink:0;">${pillHtml}</div>
+                            <div style="min-width:76px; display:inline-flex; justify-content:flex-end; flex-shrink:0;">${pillHtml}</div>
                             <span style="font-family:\'Inter\', sans-serif !important; font-weight:600; color:#0F172A; font-size:14px; white-space:nowrap; font-variant-numeric:tabular-nums; min-width:65px; text-align:right;">${displayVal}</span>
                         </div>`;
                     } else {
@@ -5810,12 +5963,12 @@ include '../../includes/sidebar.php';
             let paginationHtml = '';
 
             // Chevron Left
-            const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
-            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})">
-            <span class="material-symbols-outlined text-[18px]">chevron_left</span>
-        </button>`;
+            const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.3; cursor: not-allowed;"' : 'style="cursor: pointer;"';
+            paginationHtml += `<button class="pl-page-nav" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})">
+                <i class="fas fa-chevron-left" style="font-size: 13px;"></i>
+            </button>`;
 
-            // Page Numbers (Up to 5 page buttons)
+            // Page Numbers
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(totalPages, startPage + 4);
             if (endPage - startPage < 4) {
@@ -5824,17 +5977,17 @@ include '../../includes/sidebar.php';
 
             for (let page = startPage; page <= endPage; page++) {
                 if (page === currentPage) {
-                    paginationHtml += `<button class="px-3 py-1 rounded bg-secondary text-white font-label-md text-label-md" style="background: #0051d5; color: #ffffff; font-weight: 700; border: none; cursor: default;">${page}</button>`;
+                    paginationHtml += `<button class="pl-page-num active">${page}</button>`;
                 } else {
-                    paginationHtml += `<button class="px-3 py-1 rounded border border-outline-variant hover:bg-white transition-colors font-label-md text-label-md bg-white" style="cursor: pointer;" onclick="${onClickPage}(${page})">${page}</button>`;
+                    paginationHtml += `<button class="pl-page-num" onclick="${onClickPage}(${page})">${page}</button>`;
                 }
             }
 
             // Chevron Right
-            const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.4; cursor: not-allowed;"' : '';
-            paginationHtml += `<button class="p-2 rounded border border-outline-variant hover:bg-white transition-colors flex items-center justify-center bg-white" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})">
-            <span class="material-symbols-outlined text-[18px]">chevron_right</span>
-        </button>`;
+            const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.3; cursor: not-allowed;"' : 'style="cursor: pointer;"';
+            paginationHtml += `<button class="pl-page-nav" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})">
+                <i class="fas fa-chevron-right" style="font-size: 13px;"></i>
+            </button>`;
 
             return paginationHtml;
         }
@@ -6074,28 +6227,74 @@ include '../../includes/sidebar.php';
                     plugins: {
                         legend: { display: false },
                         tooltip: {
-                            backgroundColor: '#ffffff',
-                            titleColor: '#0f172a',
-                            bodyColor: '#334155',
-                            borderColor: '#e2e8f0',
-                            borderWidth: 1,
-                            padding: 10,
-                            usePointStyle: true,
-                            titleFont: { size: 12, weight: '700' },
-                            bodyFont: { size: 11, weight: '600' },
-                            callbacks: {
-                                label: function (context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) label += ': ';
-                                    if (context.dataset.type === 'line' && isLinePercent) {
-                                        label += Number(context.parsed.y).toFixed(1) + '%';
-                                    } else if ((context.datasetIndex === 0 && isBarCurrency) || (context.dataset.type === 'line' && !isLinePercent)) {
-                                        label += '$' + Number(context.parsed.y).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                                    } else {
-                                        label += Number(context.parsed.y).toLocaleString();
-                                    }
-                                    return label;
+                            enabled: false,
+                            external: function (context) {
+                                let tooltipEl = document.getElementById('chartjs-pl-tooltip');
+                                if (!tooltipEl) {
+                                    tooltipEl = document.createElement('div');
+                                    tooltipEl.id = 'chartjs-pl-tooltip';
+                                    tooltipEl.style.background = '#ffffff';
+                                    tooltipEl.style.borderRadius = '10px';
+                                    tooltipEl.style.boxShadow = '0 8px 24px rgba(15, 23, 42, 0.12)';
+                                    tooltipEl.style.border = '1px solid #e2e8f0';
+                                    tooltipEl.style.color = '#334155';
+                                    tooltipEl.style.opacity = 0;
+                                    tooltipEl.style.pointerEvents = 'none';
+                                    tooltipEl.style.position = 'absolute';
+                                    tooltipEl.style.transform = 'translate(-50%, -120%)';
+                                    tooltipEl.style.transition = 'all .15s ease';
+                                    tooltipEl.style.padding = '8px 14px';
+                                    tooltipEl.style.zIndex = '1000';
+                                    tooltipEl.style.fontFamily = "'Outfit', 'Inter', sans-serif";
+                                    document.body.appendChild(tooltipEl);
                                 }
+
+                                const tooltipModel = context.tooltip;
+                                if (tooltipModel.opacity === 0) {
+                                    tooltipEl.style.opacity = 0;
+                                    return;
+                                }
+
+                                if (tooltipModel.body) {
+                                    const titleLines = tooltipModel.title || [];
+                                    let innerHtml = '';
+                                    if (titleLines.length > 0) {
+                                        innerHtml += `<div style="font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 6px;">${titleLines[0]}</div>`;
+                                    }
+
+                                    tooltipModel.dataPoints.forEach(dp => {
+                                        const ds = dp.dataset;
+                                        const isLine = ds.type === 'line';
+                                        const color = isLine ? '#10B981' : '#4362CE';
+                                        const label = ds.label || '';
+
+                                        let valStr = '';
+                                        if (dp.parsed.y !== null) {
+                                            if (isLine && isLinePercent) {
+                                                valStr = Number(dp.parsed.y).toFixed(1) + '%';
+                                            } else if ((dp.datasetIndex === 0 && isBarCurrency) || (isLine && !isLinePercent)) {
+                                                valStr = '$' + Number(dp.parsed.y).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                            } else {
+                                                valStr = Number(dp.parsed.y).toLocaleString();
+                                            }
+                                        }
+
+                                        innerHtml += `<div style="font-size: 12px; font-weight: 500; color: #1e293b; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 3px; white-space: nowrap;">
+                                            <div style="display: flex; align-items: center; gap: 6px;">
+                                                <span style="width: 8px; height: 8px; border-radius: 50%; background: ${color}; display: inline-block;"></span>
+                                                <span>${label}:</span>
+                                            </div>
+                                            <span style="font-weight: 700; color: ${color};">${valStr}</span>
+                                        </div>`;
+                                    });
+
+                                    tooltipEl.innerHTML = innerHtml;
+                                }
+
+                                const position = context.chart.canvas.getBoundingClientRect();
+                                tooltipEl.style.opacity = 1;
+                                tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                                tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - 8 + 'px';
                             }
                         }
                     },
@@ -6155,8 +6354,8 @@ include '../../includes/sidebar.php';
             if (totalPages <= 1) return '';
 
             let html = '';
-            const prevDisabled = currentPage === 1 ? 'disabled' : '';
-            html += `<button class="pl-page-nav" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})"><i class="fas fa-chevron-left" style="font-size:0.65rem;"></i></button>`;
+            const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.3; cursor: not-allowed;"' : 'style="cursor: pointer;"';
+            html += `<button class="pl-page-nav" ${prevDisabled} onclick="${onClickPage}(${currentPage - 1})"><i class="fas fa-chevron-left" style="font-size: 13px;"></i></button>`;
 
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(totalPages, startPage + 4);
@@ -6172,8 +6371,8 @@ include '../../includes/sidebar.php';
                 }
             }
 
-            const nextDisabled = currentPage === totalPages ? 'disabled' : '';
-            html += `<button class="pl-page-nav" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})"><i class="fas fa-chevron-right" style="font-size:0.65rem;"></i></button>`;
+            const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.3; cursor: not-allowed;"' : 'style="cursor: pointer;"';
+            html += `<button class="pl-page-nav" ${nextDisabled} onclick="${onClickPage}(${currentPage + 1})"><i class="fas fa-chevron-right" style="font-size: 13px;"></i></button>`;
 
             return html;
         }
@@ -6234,6 +6433,13 @@ include '../../includes/sidebar.php';
             renderSkuPlTable();
         };
 
+        let productsPageSize = 10;
+        $(document).on('change', '#products_page_size', function () {
+            productsPageSize = parseInt($(this).val()) || 10;
+            productsCurrentPage = 1;
+            renderProductPerformanceTable();
+        });
+
         function renderProductPerformanceTable() {
             let filtered = globalProductsData;
             if (productsSearchQuery) {
@@ -6245,13 +6451,14 @@ include '../../includes/sidebar.php';
                 });
             }
 
+            const pageSize = productsPageSize || 10;
             const totalItems = filtered.length;
-            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+            const totalPages = Math.ceil(totalItems / pageSize) || 1;
             if (productsCurrentPage > totalPages) productsCurrentPage = totalPages;
             if (productsCurrentPage < 1) productsCurrentPage = 1;
 
-            const startIndex = (productsCurrentPage - 1) * ITEMS_PER_PAGE;
-            const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+            const startIndex = (productsCurrentPage - 1) * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, totalItems);
             const paginatedItems = filtered.slice(startIndex, endIndex);
 
             let html = '';
@@ -6315,7 +6522,7 @@ include '../../includes/sidebar.php';
             const showingFrom = totalItems > 0 ? startIndex + 1 : 0;
             $('#product_perf_showing_text').text(`Showing ${showingFrom} to ${endIndex} of ${totalItems} entries`);
 
-            const paginationButtons = renderBentoPagination(totalItems, productsCurrentPage, ITEMS_PER_PAGE, 'window.onProductsPageClick');
+            const paginationButtons = renderBentoPagination(totalItems, productsCurrentPage, pageSize, 'window.onProductsPageClick');
             $('#product_perf_pagination').html(paginationButtons);
         }
 
@@ -7152,14 +7359,26 @@ include '../../includes/sidebar.php';
                     const ctxRev = document.getElementById('productRevenueShareChart').getContext('2d');
                     if (window.productRevenueShareChartInst) window.productRevenueShareChartInst.destroy();
 
-                    if (Chart.Tooltip && Chart.Tooltip.positioners) {
-                        Chart.Tooltip.positioners.cursor = function (items, eventPosition) {
-                            return {
-                                x: eventPosition.x,
-                                y: eventPosition.y - 12
-                            };
-                        };
-                    }
+                    const getOrCreateDonutTooltip = (chart) => {
+                        let tooltipEl = chart.canvas.parentNode.querySelector('.chartjs-donut-custom-tooltip');
+                        if (!tooltipEl) {
+                            tooltipEl = document.createElement('div');
+                            tooltipEl.className = 'chartjs-donut-custom-tooltip';
+                            tooltipEl.style.background = '#ffffff';
+                            tooltipEl.style.borderRadius = '8px';
+                            tooltipEl.style.border = '1px solid #E2E8F0';
+                            tooltipEl.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.04)';
+                            tooltipEl.style.padding = '8px 12px';
+                            tooltipEl.style.pointerEvents = 'none';
+                            tooltipEl.style.position = 'absolute';
+                            tooltipEl.style.transition = 'all .1s ease';
+                            tooltipEl.style.zIndex = '9999';
+                            tooltipEl.style.whiteSpace = 'nowrap';
+                            tooltipEl.style.fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+                            chart.canvas.parentNode.appendChild(tooltipEl);
+                        }
+                        return tooltipEl;
+                    };
 
                     window.productRevenueShareChartInst = new Chart(ctxRev, {
                         type: 'doughnut',
@@ -7179,19 +7398,35 @@ include '../../includes/sidebar.php';
                             plugins: {
                                 legend: { display: false },
                                 tooltip: {
-                                    position: 'cursor',
-                                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                                    titleColor: '#ffffff',
-                                    bodyColor: '#ffffff',
-                                    borderColor: 'rgba(255, 255, 255, 0.1)',
-                                    borderWidth: 1,
-                                    padding: 10,
-                                    cornerRadius: 8,
-                                    displayColors: true,
-                                    callbacks: {
-                                        label: function (context) {
-                                            const val = context.raw !== undefined ? context.raw : context.parsed;
-                                            return ' ' + context.label + ': $' + Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                    enabled: false,
+                                    external: function (context) {
+                                        const { chart, tooltip } = context;
+                                        const tooltipEl = getOrCreateDonutTooltip(chart);
+
+                                        if (tooltip.opacity === 0) {
+                                            tooltipEl.style.opacity = '0';
+                                            return;
+                                        }
+
+                                        if (tooltip.dataPoints && tooltip.dataPoints.length > 0) {
+                                            const dataIndex = tooltip.dataPoints[0].dataIndex;
+                                            const label = chart.data.labels[dataIndex] || '';
+                                            const val = chart.data.datasets[0].data[dataIndex] || 0;
+                                            const color = (chart.data.datasets[0].backgroundColor && chart.data.datasets[0].backgroundColor[dataIndex]) || '#3B82F6';
+
+                                            tooltipEl.innerHTML = `
+                                                <div style="font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 5px; letter-spacing: 0.2px; text-transform: uppercase;">${label}</div>
+                                                <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #1E293B;">
+                                                    <span style="width: 8px; height: 8px; border-radius: 2.5px; background: ${color}; display: inline-block; flex-shrink: 0;"></span>
+                                                    <span>${label} : <span style="color: #3B66F5; font-weight: 700;">$${Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</span></span>
+                                                </div>
+                                                <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 8px; height: 8px; background: #ffffff; border-right: 1px solid #E2E8F0; border-bottom: 1px solid #E2E8F0;"></div>
+                                            `;
+
+                                            tooltipEl.style.opacity = '1';
+                                            tooltipEl.style.left = tooltip.caretX + 'px';
+                                            tooltipEl.style.top = tooltip.caretY + 'px';
+                                            tooltipEl.style.transform = 'translate(-50%, -100%) translateY(-10px)';
                                         }
                                     }
                                 }
