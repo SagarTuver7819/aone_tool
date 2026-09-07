@@ -670,25 +670,26 @@ include '../../includes/sidebar.php';
         justify-content: space-between;
     }
 
-    /* Reason Analysis Doughnut & Table Layout (Figma: Donut Box 223px x 223.74px) */
+    /* Reason Analysis Doughnut & Table Layout */
     .reimb-reasons-wrap {
-        display: grid;
-        grid-template-columns: 224px minmax(0, 1fr);
-        gap: 28px;
+        display: flex;
         align-items: center;
+        gap: 36px;
         min-width: 0;
         flex: 1;
+        width: 100%;
     }
 
     .reimb-donut-box {
         position: relative;
-        width: 224px;
-        height: 224px;
+        width: 260px;
+        height: 260px;
         display: flex;
         align-items: center;
         justify-content: center;
-        min-width: 0;
-        margin: 0 auto;
+        min-width: 260px;
+        flex-shrink: 0;
+        margin: 0;
     }
 
     .reimb-donut-box canvas {
@@ -712,7 +713,7 @@ include '../../includes/sidebar.php';
 
     .reimb-donut-center .val {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 22px;
+        font-size: 26px;
         font-weight: 800;
         color: #0F172A;
         line-height: 1.1;
@@ -721,28 +722,32 @@ include '../../includes/sidebar.php';
 
     .reimb-donut-center .lbl {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 12px;
+        font-size: 13px;
         color: #64748B;
-        font-weight: 500;
-        margin-top: 2px;
+        font-weight: 600;
+        margin-top: 3px;
     }
 
     .reimb-reasons-list {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 16px;
         min-width: 0;
+        flex: 1;
+        padding-right: 15px;
     }
 
     .reimb-reason-row {
         display: grid;
-        grid-template-columns: 1fr auto 54px;
-        gap: 12px;
+        grid-template-columns: minmax(160px, 1fr) auto 200px;
         align-items: center;
-        font-size: 0.78rem;
-        font-weight: 700;
-        padding-bottom: 8px;
-        border-bottom: 1px solid #F8FAFC;
+        gap: 20px;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px;
+        font-weight: 500;
+        padding-bottom: 0;
+        border-bottom: none;
+        width: 100%;
     }
 
     .reimb-reason-row:last-child {
@@ -754,15 +759,18 @@ include '../../includes/sidebar.php';
         display: flex;
         align-items: center;
         gap: 8px;
-        color: #0F172A;
+        color: #1E293B;
+        font-size: 13px;
+        font-weight: 500;
+        white-space: nowrap;
         min-width: 0;
-        overflow: hidden;
     }
 
     .reimb-reason-left span:last-child {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        color: #1E293B;
     }
 
     .reimb-reason-dot {
@@ -772,17 +780,19 @@ include '../../includes/sidebar.php';
         flex-shrink: 0;
     }
 
-    .reimb-reason-amount {
+    .reimb-reason-amount-pct {
         color: #0F172A;
-        font-weight: 800;
+        font-weight: 700;
+        font-size: 13px;
         white-space: nowrap;
         text-align: right;
     }
 
-    .reimb-reason-pct {
-        color: #64748B;
+    .reimb-reason-pct-alone {
+        color: #1E293B;
         text-align: right;
-        font-weight: 600;
+        font-weight: 500;
+        font-size: 13px;
     }
 
     /* Recovery Funnel List */
@@ -929,8 +939,8 @@ include '../../includes/sidebar.php';
 
     .reimb-metric-val {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 26px;
-        font-weight: 800;
+        font-size: 22px;
+        font-weight: 700;
         color: #0F172A;
         line-height: 1;
         font-variant-numeric: tabular-nums;
@@ -1629,32 +1639,32 @@ include '../../includes/sidebar.php';
                             <span class="reimb-reason-dot" style="background: #4362CE;"></span>
                             <span>Customer Return</span>
                         </div>
-                        <span class="reimb-reason-amount">$435.41</span>
-                        <span class="reimb-reason-pct">71.3%</span>
+                        <span class="reimb-reason-amount-pct">$435.41(71.3%)</span>
+                        <span class="reimb-reason-pct-alone">71.3%</span>
                     </div>
                     <div class="reimb-reason-row">
                         <div class="reimb-reason-left">
                             <span class="reimb-reason-dot" style="background: #F59E0B;"></span>
                             <span>Damaged:Warehouse</span>
                         </div>
-                        <span class="reimb-reason-amount">$133.00</span>
-                        <span class="reimb-reason-pct">21.8%</span>
+                        <span class="reimb-reason-amount-pct">$133.00(21.8%)</span>
+                        <span class="reimb-reason-pct-alone">21.8%</span>
                     </div>
                     <div class="reimb-reason-row">
                         <div class="reimb-reason-left">
                             <span class="reimb-reason-dot" style="background: #EE473D;"></span>
                             <span>Lost:Warehouse</span>
                         </div>
-                        <span class="reimb-reason-amount">$24.89</span>
-                        <span class="reimb-reason-pct">4.1%</span>
+                        <span class="reimb-reason-amount-pct">$24.89(4.1%)</span>
+                        <span class="reimb-reason-pct-alone">4.1%</span>
                     </div>
                     <div class="reimb-reason-row">
                         <div class="reimb-reason-left">
                             <span class="reimb-reason-dot" style="background: #029153;"></span>
                             <span>General Adjustment</span>
                         </div>
-                        <span class="reimb-reason-amount">$17.08</span>
-                        <span class="reimb-reason-pct">2.8%</span>
+                        <span class="reimb-reason-amount-pct">$17.08(2.8%)</span>
+                        <span class="reimb-reason-pct-alone">2.8%</span>
                     </div>
                 </div>
             </div>
@@ -1764,9 +1774,9 @@ include '../../includes/sidebar.php';
             <table class="reimb-table" id="leaderboard_table">
                 <thead>
                     <tr>
-                        <th style="width: 50%;">Product Details</th>
-                        <th style="width: 15%;">Units Recovered</th>
-                        <th style="width: 15%;">Total Value</th>
+                        <th style="width: 48%;">Product Details</th>
+                        <th style="width: 16%; text-align: right; padding-right: 32px;">Units Recovered</th>
+                        <th style="width: 16%; text-align: right; padding-right: 32px;">Total Value</th>
                         <th style="width: 20%;">Recovery Efficiency</th>
                     </tr>
                 </thead>
@@ -1934,7 +1944,8 @@ include '../../includes/sidebar.php';
                         <th style="width: 30%;">Case / Order ID <span
                                 style="font-size: 0.7rem; color: #94A3B8;">⇅</span></th>
                         <th style="width: 25%;">Reason <span style="font-size: 0.7rem; color: #94A3B8;">⇅</span></th>
-                        <th style="width: 15%;">Amount <span style="font-size: 0.7rem; color: #94A3B8;">⇅</span></th>
+                        <th style="width: 15%; text-align: right; padding-right: 28px;">Amount <span
+                                style="font-size: 0.7rem; color: #94A3B8;">⇅</span></th>
                         <th style="width: 15%;">Status <span style="font-size: 0.7rem; color: #94A3B8;">⇅</span></th>
                         <th style="width: 15%;">Date <span style="font-size: 0.7rem; color: #94A3B8;">⇅</span></th>
                     </tr>
@@ -2144,14 +2155,16 @@ include '../../includes/sidebar.php';
 
             let legendHtml = '';
             list.forEach(r => {
+                let amtFormatted = formatCurrency(r.amount);
+                let pctStr = `${r.pct}%`;
                 legendHtml += `
             <div class="reimb-reason-row">
                 <div class="reimb-reason-left">
                     <span class="reimb-reason-dot" style="background: ${r.color || '#4362CE'};"></span>
                     <span>${r.label}</span>
                 </div>
-                <span class="reimb-reason-amount">${formatCurrency(r.amount)}</span>
-                <span class="reimb-reason-pct">${r.pct}%</span>
+                <span class="reimb-reason-amount-pct">${amtFormatted}(${pctStr})</span>
+                <span class="reimb-reason-pct-alone">${pctStr}</span>
             </div>`;
             });
             $('#reasons_legend').html(legendHtml);
@@ -2204,8 +2217,8 @@ include '../../includes/sidebar.php';
                         </div>
                     </div>
                 </td>
-                <td style="font-weight: 700; color: #0F172A; font-size: 13px;">${p.units_recovered}</td>
-                <td style="font-weight: 800; color: #0F172A; font-size: 13px;">${formatCurrency(p.total_value)}</td>
+                <td style="font-weight: 700; color: #0F172A; font-size: 13px; text-align: right; padding-right: 32px;">${p.units_recovered}</td>
+                <td style="font-weight: 800; color: #0F172A; font-size: 13px; text-align: right; padding-right: 32px;">${formatCurrency(p.total_value)}</td>
                 <td>
                     <div class="reimb-ratio-bar-wrap">
                         <div class="reimb-ratio-bar">
@@ -2242,7 +2255,7 @@ include '../../includes/sidebar.php';
                 html += `<tr>
                 <td style="font-weight: 600; color: #334155; font-family: monospace;">${c.case_id}</td>
                 <td style="color: #475569; font-weight: 500;">${c.reason}</td>
-                <td style="font-weight: 800; color: #0F172A;">${formatCurrency(c.amount)}</td>
+                <td style="font-weight: 700; color: #0F172A; text-align: right; padding-right: 28px;">${formatCurrency(c.amount)}</td>
                 <td><span class="reimb-status-badge ${badgeCls}">${c.status || 'Approved'}</span></td>
                 <td style="color: #64748B; font-weight: 500;">${c.report_date}</td>
             </tr>`;

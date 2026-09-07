@@ -559,16 +559,17 @@ include '../../includes/sidebar.php';
         width: 100%;
         border-collapse: collapse;
         border-spacing: 0;
+        table-layout: fixed;
     }
 
     .ret-table thead th {
         background: #FFFFFF;
-        color: #64748B;
+        color: #1E293B;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 600;
         letter-spacing: 0;
-        padding: 12px 15px;
+        padding: 14px 15px;
         border-top: none;
         border-bottom: 1px solid #E8EAF2;
         text-align: left;
@@ -606,6 +607,32 @@ include '../../includes/sidebar.php';
         transition: background 0.15s ease;
     }
 
+    .ret-table .col-product {
+        width: 48%;
+    }
+
+    .ret-table .col-count {
+        width: 10%;
+        text-align: right !important;
+        padding-right: 30px !important;
+    }
+
+    .ret-table .col-reason {
+        width: 16%;
+        text-align: right !important;
+        padding-right: 50px !important;
+    }
+
+    .ret-table .col-ratio {
+        width: 16%;
+        text-align: left !important;
+    }
+
+    .ret-table .col-status {
+        width: 10%;
+        text-align: center !important;
+    }
+
     .ret-table tbody tr:hover td {
         background-color: #EEF2FD !important;
     }
@@ -618,7 +645,7 @@ include '../../includes/sidebar.php';
         display: flex;
         align-items: center;
         gap: 12px;
-        max-width: 460px;
+        width: 100%;
     }
 
     .ret-prod-icon {
@@ -1135,11 +1162,11 @@ include '../../includes/sidebar.php';
             <table class="ret-table" id="products_table">
                 <thead>
                     <tr>
-                        <th style="width: 45%;">Product Name</th>
-                        <th style="width: 12%;">Return Count</th>
-                        <th style="width: 18%;">Top Reason</th>
-                        <th style="width: 15%;">Sellable Ratio</th>
-                        <th style="width: 10%;">Status</th>
+                        <th class="col-product">Product Name</th>
+                        <th class="col-count">Return Count</th>
+                        <th class="col-reason">Top Reason</th>
+                        <th class="col-ratio">Sellable Ratio</th>
+                        <th class="col-status">Status</th>
                     </tr>
                 </thead>
                 <tbody id="products_body">
@@ -1357,13 +1384,14 @@ include '../../includes/sidebar.php';
             pageSlice.forEach(p => {
                 let name = p.product_name || p.name || p.sku || 'Unknown Product';
                 let count = p.return_count !== undefined ? p.return_count : (p.count !== undefined ? p.count : 0);
-                let reason = (p.top_reason || p.reason || 'CUSTOMER REFUND').replace(/_/g, ' ');
+                let rawReason = (p.top_reason || p.reason || 'Customer Refund').replace(/_/g, ' ').toLowerCase();
+                let reason = rawReason.replace(/\b\w/g, char => char.toUpperCase());
                 let ratio = p.sellable_ratio !== undefined ? p.sellable_ratio : (p.ratio !== undefined ? p.ratio : 100);
                 let status = p.status || (ratio >= 85 ? 'OPTIMAL' : (ratio >= 70 ? 'WATCH' : 'CRITICAL'));
                 let stCls = status.toLowerCase();
 
                 html += `<tr>
-                <td>
+                <td class="col-product">
                     <div class="ret-prod-cell">
                         <div class="ret-prod-icon">
                             <img src="<?php echo BASE_URL; ?>assets/icons/Return Page/Product.svg" style="width: 16px; height: 16px;" />
@@ -1371,9 +1399,9 @@ include '../../includes/sidebar.php';
                         <span class="ret-prod-name">${name}</span>
                     </div>
                 </td>
-                <td style="font-weight: 700; color: #0F172A;">${count}</td>
-                <td style="color: #64748B; font-weight: 500;">${reason}</td>
-                <td>
+                <td class="col-count" style="font-weight: 600; color: #1E293B;">${count}</td>
+                <td class="col-reason" style="color: #334155; font-weight: 500;">${reason}</td>
+                <td class="col-ratio">
                     <div class="ret-ratio-bar-wrap">
                         <div class="ret-ratio-bar">
                             <div class="ret-ratio-fill" style="width: ${ratio}%;"></div>
@@ -1381,7 +1409,7 @@ include '../../includes/sidebar.php';
                         <span class="ret-ratio-pct">${ratio}%</span>
                     </div>
                 </td>
-                <td>
+                <td class="col-status">
                     <span class="ret-status-badge ${stCls}">${status}</span>
                 </td>
             </tr>`;
