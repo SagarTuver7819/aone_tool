@@ -1066,7 +1066,11 @@ include '../../includes/sidebar.php';
             </div>
             <div class="ad-kpi-value" id="sales-value">$0.00</div>
             <div class="ad-kpi-trend" id="sales-trend-container">
-                <span class="ad-kpi-badge up" id="sales-trend">89.1% ↑</span>
+                <span class="ad-kpi-badge up" id="sales-trend">89.1% <svg width="10" height="10" viewBox="0 0 10 10"
+                        fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 3px;">
+                        <path d="M5 8.5V1.5M5 1.5L8 4.5M5 1.5L2 4.5" stroke="#029153" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></span>
                 <span class="ad-kpi-sub">vs previous period</span>
             </div>
             <div class="ad-kpi-sparkline" id="sales-sparkline">
@@ -1094,7 +1098,11 @@ include '../../includes/sidebar.php';
             </div>
             <div class="ad-kpi-value" id="spend-value">$0.00</div>
             <div class="ad-kpi-trend" id="spend-trend-container">
-                <span class="ad-kpi-badge up" id="spend-trend">66.1% ↑</span>
+                <span class="ad-kpi-badge up" id="spend-trend">66.1% <svg width="10" height="10" viewBox="0 0 10 10"
+                        fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 3px;">
+                        <path d="M5 8.5V1.5M5 1.5L8 4.5M5 1.5L2 4.5" stroke="#029153" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></span>
                 <span class="ad-kpi-sub">vs previous period</span>
             </div>
             <div class="ad-kpi-sparkline" id="spend-sparkline">
@@ -1121,7 +1129,11 @@ include '../../includes/sidebar.php';
             </div>
             <div class="ad-kpi-value" id="tacos-value">0.00%</div>
             <div class="ad-kpi-trend" id="tacos-trend-container">
-                <span class="ad-kpi-badge up" id="tacos-trend">3.3% ↓</span>
+                <span class="ad-kpi-badge up" id="tacos-trend">3.3% <svg width="10" height="10" viewBox="0 0 10 10"
+                        fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 3px;">
+                        <path d="M5 1.5V8.5M5 8.5L8 5.5M5 8.5L2 5.5" stroke="#029153" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></span>
                 <span class="ad-kpi-sub">vs previous period</span>
             </div>
             <div class="ad-kpi-sparkline" id="tacos-sparkline">
@@ -1151,7 +1163,11 @@ include '../../includes/sidebar.php';
             </div>
             <div class="ad-kpi-value" id="roas-value">0.00x</div>
             <div class="ad-kpi-trend" id="roas-trend-container">
-                <span class="ad-kpi-badge up" id="roas-trend">0.51x ↑</span>
+                <span class="ad-kpi-badge up" id="roas-trend">0.51x <svg width="10" height="10" viewBox="0 0 10 10"
+                        fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 3px;">
+                        <path d="M5 8.5V1.5M5 1.5L8 4.5M5 1.5L2 4.5" stroke="#029153" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></span>
                 <span class="ad-kpi-sub">vs previous period</span>
             </div>
             <div class="ad-kpi-sparkline" id="roas-sparkline">
@@ -1634,47 +1650,46 @@ include '../../includes/sidebar.php';
                 // Sales Trend
                 const salesGrowth = prevSales > 0 ? ((compSales - prevSales) / prevSales) * 100 : 0;
                 if (salesGrowth >= 0) {
-                    $('#sales-trend').html(`<i class="fas fa-arrow-up" style="margin-right: 2px;"></i>${salesGrowth.toFixed(1)}%`);
-                    $('#sales-trend-container').removeClass('down neutral').addClass('up').css('color', '#10b981');
+                    $('#sales-trend').html(`${salesGrowth.toFixed(1)}% <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 3px;"><path d="M5 8.5V1.5M5 1.5L8 4.5M5 1.5L2 4.5" stroke="#029153" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
+                    $('#sales-trend').removeClass('down').addClass('up');
                 } else {
-                    $('#sales-trend').html(`<i class="fas fa-arrow-down" style="margin-right: 2px;"></i>${Math.abs(salesGrowth).toFixed(1)}%`);
-                    $('#sales-trend-container').removeClass('up neutral').addClass('down').css('color', '#ef4444');
+                    $('#sales-trend').html(`${Math.abs(salesGrowth).toFixed(1)}% <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 3px;"><path d="M5 1.5V8.5M5 8.5L8 5.5M5 8.5L2 5.5" stroke="#EE473D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
+                    $('#sales-trend').removeClass('up').addClass('down');
                 }
-                $('#sales-trend-container .trend-label').text('vs previous period');
+                $('#sales-trend-container .ad-kpi-sub').text('vs previous period');
 
                 // Spend Trend
                 const spendGrowth = prevSpend > 0 ? ((compSpend - prevSpend) / prevSpend) * 100 : 0;
                 if (spendGrowth >= 0) {
-                    $('#spend-trend').html(`<i class="fas fa-arrow-up" style="margin-right: 2px;"></i>${spendGrowth.toFixed(1)}%`);
-                    $('#spend-trend-container').removeClass('down neutral').addClass('up').css('color', '#10b981');
+                    $('#spend-trend').html(`${spendGrowth.toFixed(1)}% <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 3px;"><path d="M5 8.5V1.5M5 1.5L8 4.5M5 1.5L2 4.5" stroke="#029153" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
+                    $('#spend-trend').removeClass('down').addClass('up');
                 } else {
-                    $('#spend-trend').html(`<i class="fas fa-arrow-down" style="margin-right: 2px;"></i>${Math.abs(spendGrowth).toFixed(1)}%`);
-                    $('#spend-trend-container').removeClass('up neutral').addClass('down').css('color', '#ef4444');
+                    $('#spend-trend').html(`${Math.abs(spendGrowth).toFixed(1)}% <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 3px;"><path d="M5 1.5V8.5M5 8.5L8 5.5M5 8.5L2 5.5" stroke="#EE473D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
+                    $('#spend-trend').removeClass('up').addClass('down');
                 }
-                $('#spend-trend-container .trend-label').text('vs previous period');
+                $('#spend-trend-container .ad-kpi-sub').text('vs previous period');
 
                 // TACOS Trend
                 const tacosGrowth = compTacos - prevTacos;
-                if (tacosGrowth >= 0) {
-                    $('#tacos-trend').html(`<i class="fas fa-arrow-up" style="margin-right: 2px;"></i>${tacosGrowth.toFixed(1)}%`);
-                    $('#tacos-trend-container').removeClass('down neutral').addClass('up').css('color', '#10b981');
-                    $('#tacos-trend-container .trend-label').text('vs previous period');
+                if (tacosGrowth <= 0) {
+                    $('#tacos-trend').html(`${Math.abs(tacosGrowth).toFixed(1)}% <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 3px;"><path d="M5 1.5V8.5M5 8.5L8 5.5M5 8.5L2 5.5" stroke="#029153" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
+                    $('#tacos-trend').removeClass('down').addClass('up');
                 } else {
-                    $('#tacos-trend').html(`<i class="fas fa-arrow-down" style="margin-right: 2px;"></i>${Math.abs(tacosGrowth).toFixed(1)}%`);
-                    $('#tacos-trend-container').removeClass('up neutral').addClass('down').css('color', '#ef4444');
-                    $('#tacos-trend-container .trend-label').text('vs previous period');
+                    $('#tacos-trend').html(`${tacosGrowth.toFixed(1)}% <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 3px;"><path d="M5 8.5V1.5M5 1.5L8 4.5M5 1.5L2 4.5" stroke="#EE473D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
+                    $('#tacos-trend').removeClass('up').addClass('down');
                 }
+                $('#tacos-trend-container .ad-kpi-sub').text('vs previous period');
 
                 // ROAS Trend
                 const roasGrowth = compRoas - prevRoas;
                 if (roasGrowth >= 0) {
-                    $('#roas-trend').html(`<i class="fas fa-arrow-up" style="margin-right: 2px;"></i>${roasGrowth.toFixed(2)}x`);
-                    $('#roas-trend-container').removeClass('down neutral').addClass('up').css('color', '#10b981');
+                    $('#roas-trend').html(`${roasGrowth.toFixed(2)}x <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 3px;"><path d="M5 8.5V1.5M5 1.5L8 4.5M5 1.5L2 4.5" stroke="#029153" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
+                    $('#roas-trend').removeClass('down').addClass('up');
                 } else {
-                    $('#roas-trend').html(`<i class="fas fa-arrow-down" style="margin-right: 2px;"></i>${Math.abs(roasGrowth).toFixed(2)}x`);
-                    $('#roas-trend-container').removeClass('up neutral').addClass('down').css('color', '#ef4444');
+                    $('#roas-trend').html(`${Math.abs(roasGrowth).toFixed(2)}x <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 3px;"><path d="M5 1.5V8.5M5 8.5L8 5.5M5 8.5L2 5.5" stroke="#EE473D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
+                    $('#roas-trend').removeClass('up').addClass('down');
                 }
-                $('#roas-trend-container .trend-label').text('vs previous period');
+                $('#roas-trend-container .ad-kpi-sub').text('vs previous period');
 
                 // Populate global daily trend for the report table
                 globalDailyTrend = data.daily_trend || { labels: [], spend: [], sales: [] };
