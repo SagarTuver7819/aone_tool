@@ -650,13 +650,13 @@ $result = $conn->query($sql);
         border: 1px solid #E2E8F0;
         border-radius: 8px;
         height: 38px;
-        padding: 0 32px 0 12px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #0F172A;
+        padding: 0 32px 0 14px;
+        font-size: 0.82rem;
+        font-weight: 400 !important;
+        color: #1E293B;
         outline: none;
         cursor: pointer;
-        min-width: 170px;
+        min-width: 175px;
         appearance: none;
         -webkit-appearance: none;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
@@ -667,12 +667,14 @@ $result = $conn->query($sql);
         border-color: #4362CE;
     }
 
-    .ds-select-wrap i.chevron-icon {
+    .ds-select-wrap .select-icon {
         position: absolute;
         right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
         pointer-events: none;
-        font-size: 0.7rem;
-        color: #64748B;
+        width: 12px;
+        height: 12px;
     }
 
     .btn-ds-refresh {
@@ -684,7 +686,6 @@ $result = $conn->query($sql);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: #4362CE;
         cursor: pointer;
         transition: all 0.15s ease;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
@@ -693,7 +694,6 @@ $result = $conn->query($sql);
 
     .btn-ds-refresh:hover {
         background: #F5F6FA;
-        color: #4362CE;
         border-color: #CBD5E1;
     }
 
@@ -1160,7 +1160,7 @@ $result = $conn->query($sql);
                         </option>
                     <?php endforeach; ?>
                 </select>
-                <i class="fas fa-chevron-down chevron-icon"></i>
+                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Down Up Arrow.svg" class="select-icon" alt="Toggle" />
             </div>
 
             <!-- Page Section Target Select -->
@@ -1169,14 +1169,15 @@ $result = $conn->query($sql);
                     onchange="document.getElementById('filter-form').submit();">
                     <option value="">Select Page Section</option>
                 </select>
-                <i class="fas fa-chevron-down chevron-icon"></i>
+                <img src="<?php echo BASE_URL; ?>assets/icons/Topbar/Down Up Arrow.svg" class="select-icon" alt="Toggle" />
             </div>
 
             <!-- Refresh Button -->
             <a href="tracking.php" class="btn-ds-refresh" title="Reset Filters">
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13.65 6.88A6 6 0 1 0 14 8h-1.5a4.5 4.5 0 1 1-.5-2.02L10 8h5V3l-1.35 1.88z"
-                        fill="#4362CE" />
+                    <path
+                        d="M10.1115 0.666504L10.5101 1.41169C10.7796 1.91548 10.9143 2.16738 10.8253 2.27526C10.7361 2.38314 10.4427 2.29601 9.85573 2.12176C9.26893 1.94754 8.64593 1.85381 8.00033 1.85381C4.50252 1.85381 1.66699 4.60548 1.66699 7.99987C1.66699 9.11927 1.97541 10.1689 2.51428 11.0729M5.88921 15.3332L5.49057 14.588C5.22105 14.0842 5.08629 13.8323 5.17539 13.7244C5.26451 13.6165 5.55799 13.7037 6.14492 13.8779C6.73173 14.0521 7.35473 14.1459 8.00033 14.1459C11.4981 14.1459 14.3337 11.3942 14.3337 7.99987C14.3337 6.8804 14.0253 5.83082 13.4864 4.92682"
+                        stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </a>
         </form>
