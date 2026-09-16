@@ -29,10 +29,22 @@
 
     <div class="sidebar-nav-container">
         <ul class="nav-links">
+            <?php
+            if (!function_exists('user_can_access_module')) {
+                require_once __DIR__ . '/permissions.php';
+            }
+            $can = function ($key) {
+                return user_can_access_module($key);
+            };
+            $php_self = $_SERVER['PHP_SELF'] ?? '';
+            $tab = $_GET['tab'] ?? '';
+            ?>
+
+            <?php if ($can('overview')): ?>
             <!-- Module 2: Dashboard Overview -->
             <li class="nav-item">
                 <a href="<?php echo BASE_URL; ?>modules/dashboard/index.php?tab=kpi" title="Overview"
-                    class="nav-link <?php echo ((strpos($_SERVER['PHP_SELF'], 'dashboard') !== false && ($_GET['tab'] ?? 'kpi') === 'kpi') || (strpos($_SERVER['PHP_SELF'], 'index.php') !== false && empty($_GET['tab']) && strpos($_SERVER['PHP_SELF'], 'modules') === false)) ? 'active' : ''; ?>">
+                    class="nav-link <?php echo ((strpos($php_self, 'dashboard') !== false && ($tab === 'kpi' || $tab === '')) || (strpos($php_self, 'index.php') !== false && empty($tab) && strpos($php_self, 'modules') === false)) ? 'active' : ''; ?>">
                     <span class="nav-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -48,10 +60,12 @@
                     <span>Overview</span>
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if ($can('profit_fees')): ?>
             <li class="nav-item">
                 <a href="<?php echo BASE_URL; ?>modules/dashboard/index.php?tab=financial" title="Profit & Fees"
-                    class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'dashboard') !== false && ($_GET['tab'] ?? '') === 'financial') ? 'active' : ''; ?>">
+                    class="nav-link <?php echo (strpos($php_self, 'dashboard') !== false && $tab === 'financial') ? 'active' : ''; ?>">
                     <span class="nav-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -67,10 +81,12 @@
                     <span>Profit & Fees</span>
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if ($can('product_performance')): ?>
             <li class="nav-item">
                 <a href="<?php echo BASE_URL; ?>modules/dashboard/index.php?tab=products" title="Product Performance"
-                    class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'dashboard') !== false && ($_GET['tab'] ?? '') === 'products') ? 'active' : ''; ?>">
+                    class="nav-link <?php echo (strpos($php_self, 'dashboard') !== false && $tab === 'products') ? 'active' : ''; ?>">
                     <span class="nav-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -96,12 +112,16 @@
                     <span>Product Performance</span>
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if ($can('advertising_overview') || $can('campaign_target') || $can('brand_analytics')): ?>
             <li class="nav-header">ADVERTISING (PPC)</li>
+            <?php endif; ?>
 
+            <?php if ($can('advertising_overview')): ?>
             <li class="nav-item">
                 <a href="<?php echo BASE_URL; ?>modules/amazon_ads/index.php" title="Advertising Overview"
-                    class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'amazon_ads/index') !== false) ? 'active' : ''; ?>">
+                    class="nav-link <?php echo (strpos($php_self, 'amazon_ads/index') !== false) ? 'active' : ''; ?>">
                     <span class="nav-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -120,10 +140,12 @@
                     <span>Advertising Overview</span>
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if ($can('campaign_target')): ?>
             <li class="nav-item">
                 <a href="<?php echo BASE_URL; ?>modules/amazon_ads/campaign_performance.php" title="Campaign & Target"
-                    class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'campaign_performance') !== false) ? 'active' : ''; ?>">
+                    class="nav-link <?php echo (strpos($php_self, 'campaign_performance') !== false) ? 'active' : ''; ?>">
                     <span class="nav-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -139,10 +161,12 @@
                     <span>Campaign & Target</span>
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if ($can('brand_analytics')): ?>
             <li class="nav-item">
                 <a href="<?php echo BASE_URL; ?>modules/amazon_ads/brand_analytics.php" title="Brand Analytics"
-                    class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'brand_analytics') !== false) ? 'active' : ''; ?>">
+                    class="nav-link <?php echo (strpos($php_self, 'brand_analytics') !== false) ? 'active' : ''; ?>">
                     <span class="nav-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -158,10 +182,12 @@
                     <span>Brand Analytics</span>
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if ($can('returns')): ?>
             <li class="nav-item">
                 <a href="<?php echo BASE_URL; ?>modules/returns/index.php" title="Return Page"
-                    class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'returns') !== false) ? 'active' : ''; ?>">
+                    class="nav-link <?php echo (strpos($php_self, 'returns') !== false) ? 'active' : ''; ?>">
                     <span class="nav-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -181,10 +207,12 @@
                     <span>Return Page</span>
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if ($can('reimbursements')): ?>
             <li class="nav-item">
                 <a href="<?php echo BASE_URL; ?>modules/reimbursements/index.php" title="Reimbursement"
-                    class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'reimbursements') !== false) ? 'active' : ''; ?>">
+                    class="nav-link <?php echo (strpos($php_self, 'reimbursements') !== false) ? 'active' : ''; ?>">
                     <span class="nav-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12.0833 18.3333L11.8204 17.9843C11.2278 17.1974 11.0808 15.9953 11.4557 15"
@@ -204,10 +232,12 @@
                     <span>Reimbursement</span>
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if ($can('data_source_tracking')): ?>
             <li class="nav-item">
                 <a href="<?php echo BASE_URL; ?>modules/report_upload/tracking.php" title="Data Source Tracking"
-                    class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'report_upload/tracking') !== false) ? 'active' : ''; ?>">
+                    class="nav-link <?php echo (strpos($php_self, 'report_upload/tracking') !== false) ? 'active' : ''; ?>">
                     <span class="nav-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -223,11 +253,12 @@
                     <span>Data Source Tracking</span>
                 </a>
             </li>
+            <?php endif; ?>
 
-            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <?php if ($can('client_management')): ?>
                 <li class="nav-item">
                     <a href="<?php echo BASE_URL; ?>modules/customer/index.php" title="Client Management"
-                        class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'customer') !== false) ? 'active' : ''; ?>">
+                        class="nav-link <?php echo (strpos($php_self, 'customer') !== false) ? 'active' : ''; ?>">
                         <span class="nav-icon">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -244,10 +275,12 @@
                         <span>Client Management</span>
                     </a>
                 </li>
+            <?php endif; ?>
 
+            <?php if ($can('report_upload')): ?>
                 <li class="nav-item">
                     <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" title="Report Upload Center"
-                        class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'report_upload/index') !== false) ? 'active' : ''; ?>">
+                        class="nav-link <?php echo (strpos($php_self, 'report_upload/index') !== false || (strpos($php_self, 'report_upload') !== false && strpos($php_self, 'tracking') === false)) ? 'active' : ''; ?>">
                         <span class="nav-icon">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -277,8 +310,10 @@
                 <div class="user-card-meta">
                     <div class="user-card-name"><?php echo htmlspecialchars($_SESSION['username'] ?? 'John Smith'); ?>
                     </div>
-                    <div class="user-card-role"><?php echo htmlspecialchars(ucfirst($_SESSION['role'] ?? 'Premium')); ?>
-                    </div>
+                    <div class="user-card-role"><?php
+                        $role = $_SESSION['role'] ?? 'customer';
+                        echo htmlspecialchars($role === 'admin' ? 'Super Admin' : ($role === 'manager' ? 'Company User' : ucfirst($role)));
+                    ?></div>
                 </div>
             </div>
             <a href="<?php echo BASE_URL; ?>logout.php" class="user-card-logout" title="Sign Out">
@@ -296,95 +331,89 @@
 </aside>
 
 <!-- Native Mobile App Bottom Navigation Bar -->
+
 <nav class="mobile-bottom-app-bar" id="mobile_bottom_bar">
+
+    <?php if ($can('overview')): ?>
+
     <a href="<?php echo BASE_URL; ?>modules/dashboard/index.php?tab=kpi"
-        class="mobile-bottom-nav-item <?php echo ((strpos($_SERVER['PHP_SELF'], 'dashboard') !== false && ($_GET['tab'] ?? 'kpi') === 'kpi') || (strpos($_SERVER['PHP_SELF'], 'index.php') !== false && empty($_GET['tab']) && strpos($_SERVER['PHP_SELF'], 'modules') === false)) ? 'active' : ''; ?>"
+
+        class="mobile-bottom-nav-item <?php echo ((strpos($php_self, 'dashboard') !== false && ($tab === 'kpi' || $tab === '')) || (strpos($php_self, 'index.php') !== false && empty($tab) && strpos($php_self, 'modules') === false)) ? 'active' : ''; ?>"
+
         title="Overview">
-        <div class="mobile-nav-icon">
-            <svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M6.32901 3.05957C5.0587 3.09768 4.30132 3.23907 3.77726 3.76361C3.05981 4.48173 3.05981 5.63751 3.05981 7.94907V13.2612C3.05981 15.5728 3.05981 16.7286 3.77726 17.4467C4.4947 18.1648 5.64941 18.1648 7.95881 18.1648H12.0413C14.3507 18.1648 15.5054 18.1648 16.2229 17.4467C16.9403 16.7286 16.9403 15.5728 16.9403 13.2612V7.94907C16.9403 5.63751 16.9403 4.48173 16.2229 3.76362C15.6988 3.23907 14.9414 3.09768 13.6711 3.05957"
-                    stroke="currentColor" stroke-width="1.3" />
-                <path d="M6.7356 13.2661H10.0016M6.7356 9.18359H13.2676" stroke="currentColor" stroke-width="1.3"
-                    stroke-linecap="round" />
-                <path
-                    d="M6.32544 3.26384C6.32544 2.47469 6.96518 1.83496 7.75431 1.83496H12.2451C13.0342 1.83496 13.6739 2.47469 13.6739 3.26384C13.6739 4.05298 13.0342 4.69271 12.2451 4.69271H7.75431C6.96518 4.69271 6.32544 4.05298 6.32544 3.26384Z"
-                    stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
-            </svg>
-        </div>
+
+        <div class="mobile-nav-icon"><i class="fas fa-chart-line"></i></div>
+
         <span class="mobile-nav-label">Overview</span>
+
     </a>
+
+    <?php endif; ?>
+
+
+
+    <?php if ($can('profit_fees')): ?>
 
     <a href="<?php echo BASE_URL; ?>modules/dashboard/index.php?tab=financial"
-        class="mobile-bottom-nav-item <?php echo (strpos($_SERVER['PHP_SELF'], 'dashboard') !== false && ($_GET['tab'] ?? '') === 'financial') ? 'active' : ''; ?>"
+
+        class="mobile-bottom-nav-item <?php echo (strpos($php_self, 'dashboard') !== false && $tab === 'financial') ? 'active' : ''; ?>"
+
         title="Profit & Fees">
-        <div class="mobile-nav-icon">
-            <svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M3.59835 16.4017C2.5 15.3033 2.5 13.5355 2.5 10C2.5 6.46447 2.5 4.6967 3.59835 3.59835C4.6967 2.5 6.46447 2.5 10 2.5C13.5355 2.5 15.3033 2.5 16.4017 3.59835C17.5 4.6967 17.5 6.46447 17.5 10C17.5 13.5355 17.5 15.3033 16.4017 16.4017C15.3033 17.5 13.5355 17.5 10 17.5C6.46447 17.5 4.6967 17.5 3.59835 16.4017Z"
-                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-                <path
-                    d="M5.83398 11.6673L8.16139 9.3399C8.48682 9.01448 9.01448 9.01448 9.3399 9.3399L10.6614 10.6614C10.9868 10.9868 11.5145 10.9868 11.8399 10.6614L14.1673 8.33398"
-                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-        </div>
+
+        <div class="mobile-nav-icon"><i class="fas fa-hand-holding-usd"></i></div>
+
         <span class="mobile-nav-label">Profit</span>
+
     </a>
+
+    <?php endif; ?>
+
+
+
+    <?php if ($can('product_performance')): ?>
 
     <a href="<?php echo BASE_URL; ?>modules/dashboard/index.php?tab=products"
-        class="mobile-bottom-nav-item <?php echo (strpos($_SERVER['PHP_SELF'], 'dashboard') !== false && ($_GET['tab'] ?? '') === 'products') ? 'active' : ''; ?>"
+
+        class="mobile-bottom-nav-item <?php echo (strpos($php_self, 'dashboard') !== false && $tab === 'products') ? 'active' : ''; ?>"
+
         title="Products">
-        <div class="mobile-nav-icon">
-            <svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M8.75032 17.9984C8.1702 18.3333 7.39135 18.3333 5.83366 18.3333C4.27597 18.3333 3.49712 18.3333 2.91699 17.9984C2.53694 17.779 2.22135 17.4634 2.00193 17.0833C1.66699 16.5032 1.66699 15.7243 1.66699 14.1667C1.66699 12.609 1.66699 11.8302 2.00193 11.25C2.22135 10.8699 2.53694 10.5543 2.91699 10.3349C3.49712 10 4.27597 10 5.83366 10C7.39135 10 8.1702 10 8.75032 10.3349C9.13041 10.5543 9.44599 10.8699 9.66541 11.25C10.0003 11.8302 10.0003 12.609 10.0003 14.1667C10.0003 15.7243 10.0003 16.5032 9.66541 17.0833C9.44599 17.4634 9.13041 17.779 8.75032 17.9984Z"
-                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-                <path
-                    d="M17.0833 17.9984C16.5032 18.3333 15.7243 18.3333 14.1667 18.3333C12.609 18.3333 11.8302 18.3333 11.25 17.9984C10.8699 17.779 10.5543 17.4634 10.3349 17.0833C10 16.5032 10 15.7243 10 14.1667C10 12.609 10 11.8302 10.3349 11.25C10.5543 10.8699 10.8699 10.5543 11.25 10.3349C11.8302 10 12.609 10 14.1667 10C15.7243 10 16.5032 10 17.0833 10.3349C17.4634 10.5543 17.779 10.8699 17.9984 11.25C18.3333 11.8302 18.3333 12.609 18.3333 14.1667C18.3333 15.7243 18.3333 16.5032 17.9984 17.0833C17.779 17.4634 17.4634 17.779 17.0833 17.9984Z"
-                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-                <path
-                    d="M12.9163 9.66492C12.3362 9.99984 11.5573 9.99984 9.99967 9.99984C8.44201 9.99984 7.66313 9.99984 7.08301 9.66492C6.70296 9.4455 6.38737 9.12992 6.16794 8.74984C5.83301 8.16971 5.83301 7.39086 5.83301 5.83317C5.83301 4.27548 5.83301 3.49663 6.16794 2.9165C6.38737 2.53645 6.70296 2.22086 7.08301 2.00144C7.66313 1.6665 8.44201 1.6665 9.99967 1.6665C11.5573 1.6665 12.3362 1.6665 12.9163 2.00144C13.2964 2.22086 13.612 2.53645 13.8314 2.9165C14.1663 3.49663 14.1663 4.27548 14.1663 5.83317C14.1663 7.39086 14.1663 8.16971 13.8314 8.74984C13.612 9.12992 13.2964 9.4455 12.9163 9.66492Z"
-                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M10 1.6665V4.1665" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                <path d="M5.83301 10V12.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                <path d="M14.167 10V12.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"
-                    stroke-linejoin="round" />
-            </svg>
-        </div>
+
+        <div class="mobile-nav-icon"><i class="fas fa-boxes"></i></div>
+
         <span class="mobile-nav-label">Products</span>
+
     </a>
+
+    <?php endif; ?>
+
+
+
+    <?php if ($can('advertising_overview') || $can('campaign_target') || $can('brand_analytics')): ?>
 
     <a href="<?php echo BASE_URL; ?>modules/amazon_ads/index.php"
-        class="mobile-bottom-nav-item <?php echo (strpos($_SERVER['PHP_SELF'], 'amazon_ads') !== false) ? 'active' : ''; ?>"
+
+        class="mobile-bottom-nav-item <?php echo (strpos($php_self, 'amazon_ads') !== false) ? 'active' : ''; ?>"
+
         title="Advertising">
-        <div class="mobile-nav-icon">
-            <svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M17.5 17.5H8.33333C5.58347 17.5 4.20854 17.5 3.35427 16.6457C2.5 15.7914 2.5 14.4165 2.5 11.6667V2.5"
-                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                <path d="M5.83301 3.3335H6.66634" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                <path d="M5.83301 5.8335H9.16634" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                <path
-                    d="M4.16699 16.6668C5.05943 15.0443 6.26932 10.8492 8.58891 10.8492C10.1921 10.8492 10.6072 12.8932 12.1783 12.8932C14.8813 12.8932 14.4895 8.3335 17.5003 8.3335"
-                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-        </div>
+
+        <div class="mobile-nav-icon"><i class="fas fa-bullseye"></i></div>
+
         <span class="mobile-nav-label">Ads</span>
+
     </a>
 
+    <?php endif; ?>
+
+
+
     <button type="button" onclick="toggleSidebar()" class="mobile-bottom-nav-item mobile-menu-btn" title="More Menus">
-        <div class="mobile-nav-icon">
-            <svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2.5" y="2.5" width="6" height="6" rx="2" stroke="currentColor" stroke-width="1.4" />
-                <rect x="11.5" y="2.5" width="6" height="6" rx="2" stroke="currentColor" stroke-width="1.4" />
-                <rect x="2.5" y="11.5" width="6" height="6" rx="2" stroke="currentColor" stroke-width="1.4" />
-                <rect x="11.5" y="11.5" width="6" height="6" rx="2" stroke="currentColor" stroke-width="1.4" />
-            </svg>
-        </div>
+
+        <div class="mobile-nav-icon"><i class="fas fa-th-large"></i></div>
+
         <span class="mobile-nav-label">Menu</span>
+
     </button>
+
 </nav>
 
 <script>
@@ -431,7 +460,7 @@
                 <p style="font-size: 0.875rem; font-weight: 600;"><?php echo date('l, d M Y'); ?></p>
                 <p style="font-size: 0.75rem; opacity: 0.8;">Data Engine Active</p>
             </div>
-            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <?php if (user_can_access_module('report_upload')): ?>
                 <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn btn-primary">
                     <i class="fas fa-plus"></i> NEW UPLOAD
                 </a>

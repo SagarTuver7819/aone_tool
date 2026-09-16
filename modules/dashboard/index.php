@@ -4052,13 +4052,13 @@ include '../../includes/sidebar.php';
         <div class="overview-topbar-left">
             <div class="figma-select-wrapper">
                 <select id="filter_customer" class="filter-customer-select" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
-                    <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                    <?php if (function_exists('can_select_any_customer') ? can_select_any_customer() : (($_SESSION['role'] ?? '') === 'admin')): ?>
                         <option value="">All Amazon Profiles</option>
                     <?php endif; ?>
                     <?php $customers->data_seek(0);
                     while ($row = $customers->fetch_assoc()): ?>
                         <?php
-                        $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
+                        $selected = ((!function_exists('can_select_any_customer') || !can_select_any_customer()) && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
                         if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id'])
                             continue;
                         ?>
@@ -4084,7 +4084,7 @@ include '../../includes/sidebar.php';
                 <strong>Product Performance</strong></span>
         </div>
         <div class="overview-topbar-right">
-            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <?php if (function_exists('can_select_any_customer') ? can_select_any_customer() : (($_SESSION['role'] ?? '') === 'admin')): ?>
                 <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><svg width="14"
                         height="14" viewBox="0 0 16 16" fill="none">
                         <path d="M8 1.3335V14.6668" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"
@@ -4156,13 +4156,13 @@ include '../../includes/sidebar.php';
             <div class="form-group" style="flex: 1; min-width: 280px;">
                 <label>Account Selection</label>
                 <select id="filter_customer" style="width: 100%;" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
-                    <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                    <?php if (function_exists('can_select_any_customer') ? can_select_any_customer() : (($_SESSION['role'] ?? '') === 'admin')): ?>
                         <option value="">All Amazon Profiles</option>
                     <?php endif; ?>
                     <?php $customers->data_seek(0);
                     while ($row = $customers->fetch_assoc()): ?>
                         <?php
-                        $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
+                        $selected = ((!function_exists('can_select_any_customer') || !can_select_any_customer()) && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
                         if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id'])
                             continue;
                         ?>
@@ -4210,13 +4210,13 @@ include '../../includes/sidebar.php';
         <div class="overview-topbar-left">
             <div class="figma-select-wrapper">
                 <select id="filter_customer" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
-                    <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                    <?php if (function_exists('can_select_any_customer') ? can_select_any_customer() : (($_SESSION['role'] ?? '') === 'admin')): ?>
                         <option value="">All Amazon Profiles</option>
                     <?php endif; ?>
                     <?php $customers->data_seek(0);
                     while ($row = $customers->fetch_assoc()): ?>
                         <?php
-                        $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
+                        $selected = ((!function_exists('can_select_any_customer') || !can_select_any_customer()) && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
                         if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id'])
                             continue;
                         ?>
@@ -4241,7 +4241,7 @@ include '../../includes/sidebar.php';
                     Analysis</strong></span>
         </div>
         <div class="overview-topbar-right">
-            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <?php if (function_exists('can_select_any_customer') ? can_select_any_customer() : (($_SESSION['role'] ?? '') === 'admin')): ?>
                 <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7 1V13M1 7H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
@@ -4633,13 +4633,13 @@ include '../../includes/sidebar.php';
         <div class="overview-topbar-left">
             <div class="figma-select-wrapper">
                 <select class="filter-customer-select" <?php echo (($_SESSION['role'] ?? '') === 'customer') ? 'disabled' : ''; ?>>
-                    <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                    <?php if (function_exists('can_select_any_customer') ? can_select_any_customer() : (($_SESSION['role'] ?? '') === 'admin')): ?>
                         <option value="">All Amazon Profiles</option>
                     <?php endif; ?>
                     <?php $customers->data_seek(0);
                     while ($row = $customers->fetch_assoc()): ?>
                         <?php
-                        $selected = (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
+                        $selected = ((!function_exists('can_select_any_customer') || !can_select_any_customer()) && ($_SESSION['customer_id'] ?? 0) == $row['id']) ? 'selected' : '';
                         if (($_SESSION['role'] ?? '') === 'customer' && ($_SESSION['customer_id'] ?? 0) != $row['id'])
                             continue;
                         ?>
@@ -4665,7 +4665,7 @@ include '../../includes/sidebar.php';
                 <strong>Profit & Loss Analysis</strong></span>
         </div>
         <div class="overview-topbar-right">
-            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <?php if (function_exists('can_select_any_customer') ? can_select_any_customer() : (($_SESSION['role'] ?? '') === 'admin')): ?>
                 <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><svg width="14"
                         height="14" viewBox="0 0 16 16" fill="none">
                         <path d="M8 1.3335V14.6668" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"

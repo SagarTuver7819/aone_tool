@@ -5,12 +5,15 @@ require_once '../../includes/SimpleXLSX.php';
 
 use Shuchkin\SimpleXLSX;
 
+require_permission('report_upload', 'view');
+
 $customers = get_all_customers();
 $error = '';
 $success = '';
 $processed_reports = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    require_permission('report_upload', 'add');
     $customer_id = intval($_POST['customer_id']);
     $report_month = $_POST['report_month']; // YYYY-MM
     $report_date = $report_month . "-01";
@@ -18,6 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_FILES['reports']) && !empty($_FILES['reports']['name'][0])) {
 
         if (isset($_POST['clean_db']) && $_POST['clean_db'] == '1') {
+            if (!is_admin_user() && !user_can('report_upload', 'delete')) {
+                $error = 'You do not have permission to clean/reset database tables.';
+            } else {
             // Truncate core tables
             $conn->query("TRUNCATE TABLE amazon_business_report");
             $conn->query("TRUNCATE TABLE amazon_detail_report");
@@ -33,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             while ($row = $res->fetch_array()) {
                 $conn->query("DROP TABLE `" . $row[0] . "`");
             }
+            } // end delete-permission else
         }
 
         function cleanVal($val)

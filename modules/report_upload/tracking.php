@@ -1119,7 +1119,7 @@ $result = $conn->query($sql);
                     Tracking</strong></span>
         </div>
         <div class="figma-page-topbar-right">
-            <?php if ($user_role === 'admin'): ?>
+            <?php if ((function_exists('can_select_any_customer') ? can_select_any_customer() : ($user_role === 'admin'))): ?>
                 <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary">
                     <i class="fas fa-plus"></i> New Upload
                 </a>

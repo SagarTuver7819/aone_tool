@@ -2,21 +2,15 @@
 require_once '../../config.php';
 require_once '../../includes/functions.php';
 
-// Check auth
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . BASE_URL . 'login.php');
-    exit();
-}
-
-$user_role = $_SESSION['role'] ?? 'customer';
-if ($user_role !== 'admin') {
-    header('Location: ' . BASE_URL . 'index.php');
-    exit();
-}
+require_permission('client_management', 'view');
 
 // Handle Delete
 if (isset($_GET['delete'])) {
+    require_permission('client_management', 'delete');
     $id = intval($_GET['delete']);
+    ensure_permissions_schema();
+    $conn->query("DELETE FROM customer_permissions WHERE customer_id = " . $id);
+    $conn->query("DELETE FROM users WHERE customer_id = " . $id);
     $stmt = $conn->prepare("DELETE FROM customers WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -634,12 +628,19 @@ include '../../includes/sidebar.php';
     <div class="cm-page-head">
         <div class="cm-page-title">
             <h2>Account Management</h2>
-            <p>Manage individual Amazon Seller Profiles and synchronization settings.</p>
+            <p>Add Seller Clients or Company Staff, set login, and control module rights.</p>
         </div>
-        <div>
+        <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+            <?php if (user_can('client_management', 'add')): ?>
             <a href="manage.php" class="btn-provision-account">
-                <i class="fas fa-plus"></i> Provision New Account
+                <i class="fas fa-plus"></i> Add Client
             </a>
+            <?php endif; ?>
+            <?php if (is_admin_user()): ?>
+            <a href="manage.php?type=staff" class="btn-provision-account" style="background:#0F766E;">
+                <i class="fas fa-user-tie"></i> Add Staff
+            </a>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -660,7 +661,7 @@ include '../../includes/sidebar.php';
                         <th style="width: 22%;">Seller Profile</th>
                         <th style="width: 22%;">Entity/Company</th>
                         <th style="width: 22%;">Email Contact</th>
-                        <th style="width: 12%;">Connectivity</th>
+                        <th style="width: 12%;">Modules</th>
                         <th style="width: 7%;">Status</th>
                         <th style="width: 5%; text-align: center;">Actions</th>
                     </tr>
@@ -677,6 +678,13 @@ include '../../includes/sidebar.php';
                                 <!-- Seller Profile -->
                                 <td>
                                     <div class="cm-seller-name"><?php echo htmlspecialchars($row['customer_name']); ?></div>
+                                    <?php
+                                    $uRole = $conn->query("SELECT role FROM users WHERE customer_id = " . intval($row['id']) . " LIMIT 1")->fetch_assoc();
+                                    if (($uRole['role'] ?? '') === 'manager'): ?>
+                                        <span style="display:inline-block;margin-top:4px;font-size:0.65rem;font-weight:800;color:#0F766E;background:#CCFBF1;padding:2px 7px;border-radius:999px;">STAFF</span>
+                                    <?php else: ?>
+                                        <span style="display:inline-block;margin-top:4px;font-size:0.65rem;font-weight:800;color:#1E40AF;background:#DBEAFE;padding:2px 7px;border-radius:999px;">CLIENT</span>
+                                    <?php endif; ?>
                                 </td>
 
                                 <!-- Entity/Company -->
@@ -689,19 +697,15 @@ include '../../includes/sidebar.php';
                                     <div class="cm-email"><?php echo htmlspecialchars($row['email']); ?></div>
                                 </td>
 
-                                <!-- Connectivity -->
+                                <!-- Modules -->
                                 <td>
-                                    <span class="cm-connectivity">
-                                        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M6.5 9.5L9.5 6.5" stroke="#4362CE" stroke-width="1.3"
-                                                stroke-linecap="round" />
-                                            <path
-                                                d="M7.5 4.5L9 3C10.1046 1.89543 11.8954 1.89543 13 3C14.1046 4.10457 14.1046 5.89543 13 7L11.5 8.5M8.5 11.5L7 13C5.89543 14.1046 4.10457 14.1046 3 13C1.89543 11.8954 1.89543 10.1046 3 9L4.5 7.5"
-                                                stroke="#4362CE" stroke-width="1.3" stroke-linecap="round" />
-                                        </svg>
-                                        Live
-                                    </span>
+                                    <?php
+                                    $perm_count = count(get_customer_permissions_for_form($row['id']));
+                                    $perm_total = count(customer_facing_module_keys());
+                                    $login_u = $conn->query("SELECT username FROM users WHERE customer_id = " . intval($row['id']) . " LIMIT 1")->fetch_assoc();
+                                    ?>
+                                    <div style="font-size:0.78rem;font-weight:700;color:#1E40AF;"><?php echo $perm_count; ?> / <?php echo $perm_total; ?></div>
+                                    <div style="font-size:0.7rem;color:#64748B;"><?php echo $login_u ? htmlspecialchars($login_u['username']) : 'No login'; ?></div>
                                 </td>
 
                                 <!-- Status -->
@@ -715,15 +719,19 @@ include '../../includes/sidebar.php';
                                 <!-- Actions -->
                                 <td>
                                     <div class="cm-actions">
+                                        <?php if (user_can('client_management', 'view') || user_can('client_management', 'edit')): ?>
                                         <a href="manage.php?id=<?php echo $row['id']; ?>" class="btn-cm-action btn-cm-edit"
-                                            title="Settings">
+                                            title="<?php echo user_can('client_management', 'edit') ? 'Edit' : 'View'; ?>">
                                             <i class="fas fa-cog"></i>
                                         </a>
+                                        <?php endif; ?>
+                                        <?php if (user_can('client_management', 'delete')): ?>
                                         <a href="index.php?delete=<?php echo $row['id']; ?>" class="btn-cm-action btn-cm-delete"
                                             title="Purge Account"
-                                            onclick="return confirm('WARNING: Purging an account will delete all associated analytics. Proceed?')">
+                                            onclick="return confirm('WARNING: Purging an account will delete login + permissions. Proceed?')">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>

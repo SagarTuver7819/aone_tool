@@ -7,7 +7,9 @@ require_once '../includes/functions.php';
 
 header('Content-Type: application/json');
 
-$customer_id = isset($_GET['customer_id']) ? intval($_GET['customer_id']) : 0;
+require_api_auth();
+
+$customer_id = resolve_request_customer_id();
 $from_date = isset($_GET['from_date']) ? $_GET['from_date'] : date('Y-m-01', strtotime('-30 days'));
 $to_date = isset($_GET['to_date']) ? $_GET['to_date'] : date('Y-m-d');
 

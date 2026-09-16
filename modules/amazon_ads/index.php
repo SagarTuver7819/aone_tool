@@ -1002,7 +1002,7 @@ include '../../includes/sidebar.php';
                     Overview</strong></span>
         </div>
         <div class="figma-page-topbar-right">
-            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <?php if (function_exists('can_select_any_customer') ? can_select_any_customer() : (($_SESSION['role'] ?? '') === 'admin')): ?>
                 <a href="<?php echo BASE_URL; ?>modules/report_upload/index.php" class="btn-figma-primary"><i
                         class="fas fa-plus"></i> New Upload</a>
             <?php endif; ?>

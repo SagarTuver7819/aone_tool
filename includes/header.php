@@ -3,6 +3,10 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: " . BASE_URL . "login.php");
     exit();
 }
+if (!function_exists('require_module_access')) {
+    require_once __DIR__ . '/permissions.php';
+}
+require_module_access();
 ?>
 <!DOCTYPE html>
 

@@ -2,92 +2,169 @@
 require_once '../../config.php';
 require_once '../../includes/functions.php';
 
-// Check auth
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ' . BASE_URL . 'login.php');
-    exit();
-}
-
-$user_role = $_SESSION['role'] ?? 'customer';
-if ($user_role !== 'admin') {
-    header('Location: ' . BASE_URL . 'index.php');
-    exit();
-}
+require_permission('client_management', 'view');
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$account_type = (($_GET['type'] ?? '') === 'staff') ? 'staff' : 'seller';
 $customer = null;
 $user = null;
+$selected_perms = get_customer_permissions_for_form(0); // defaults for new
+$form_error = '';
 
 if ($id > 0) {
     $customer = get_customer_by_id($id);
+    if (!$customer) {
+        header("Location: index.php?msg=" . urlencode("Customer not found"));
+        exit();
+    }
 
-    // Fetch associated user
-    $stmt_user = $conn->prepare("SELECT id, username FROM users WHERE customer_id = ?");
+    $stmt_user = $conn->prepare("SELECT id, username, role FROM users WHERE customer_id = ?");
     $stmt_user->bind_param("i", $id);
     $stmt_user->execute();
     $user = $stmt_user->get_result()->fetch_assoc();
+    $selected_perms = get_customer_permissions_for_form($id);
+    if (($user['role'] ?? '') === 'manager' || !empty($selected_perms['client_management']['view'])) {
+        $account_type = 'staff';
+    }
+} else {
+    if (!user_can('client_management', 'add')) {
+        header("Location: index.php?msg=" . urlencode("You do not have Add permission"));
+        exit();
+    }
+    // New Staff defaults: Client Management View + Add so they can add clients
+    if ($account_type === 'staff' && is_admin_user()) {
+        $selected_perms['client_management'] = ['view' => 1, 'add' => 1, 'edit' => 1, 'delete' => 0];
+    }
 }
 
-// Handle Form Submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $customer_name = $_POST['customer_name'];
-    $company_name = $_POST['company_name'];
-    $email = $_POST['email'];
-    $mobile = $_POST['mobile'];
-    $status = $_POST['status'];
-
-    $login_user = $_POST['login_username'];
-    $login_pass = $_POST['login_password'];
-
     if ($id > 0) {
-        // Update Customer
-        $stmt = $conn->prepare("UPDATE customers SET customer_name = ?, company_name = ?, email = ?, mobile = ?, status = ? WHERE id = ?");
-        $stmt->bind_param("sssssi", $customer_name, $company_name, $email, $mobile, $status, $id);
-        $stmt->execute();
-
-        // Update User Credentials
-        if ($user) {
-            if (!empty($login_pass)) {
-                $hashed_pass = password_hash($login_pass, PASSWORD_DEFAULT);
-                $stmt_u = $conn->prepare("UPDATE users SET username = ?, password = ? WHERE customer_id = ?");
-                $stmt_u->bind_param("ssi", $login_user, $hashed_pass, $id);
-            } else {
-                $stmt_u = $conn->prepare("UPDATE users SET username = ? WHERE customer_id = ?");
-                $stmt_u->bind_param("si", $login_user, $id);
-            }
-            $stmt_u->execute();
-        } else {
-            // Create user if it doesn't exist
-            $hashed_pass = password_hash($login_pass ?: '123456', PASSWORD_DEFAULT);
-            $stmt_u = $conn->prepare("INSERT INTO users (username, password, role, customer_id) VALUES (?, ?, 'customer', ?)");
-            $stmt_u->bind_param("ssi", $login_user, $hashed_pass, $id);
-            $stmt_u->execute();
-        }
-
-        $msg = "Customer & Credentials Updated Successfully";
+        require_permission('client_management', 'edit');
     } else {
-        // New Customer
-        $stmt = $conn->prepare("INSERT INTO customers (customer_name, company_name, email, mobile, status) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $customer_name, $company_name, $email, $mobile, $status);
-        $stmt->execute();
-        $new_customer_id = $conn->insert_id;
-
-        // Create user
-        $hashed_pass = password_hash($login_pass ?: '123456', PASSWORD_DEFAULT);
-        $stmt_u = $conn->prepare("INSERT INTO users (username, password, role, customer_id) VALUES (?, ?, 'customer', ?)");
-        $stmt_u->bind_param("ssi", $login_user, $hashed_pass, $new_customer_id);
-        $stmt_u->execute();
-
-        $msg = "Customer Added with Login Credentials";
+        require_permission('client_management', 'add');
     }
-    header("Location: index.php?msg=" . urlencode($msg));
-    exit();
+    $account_type = (($_POST['account_type'] ?? 'seller') === 'staff') ? 'staff' : 'seller';
+    $customer_name = trim($_POST['customer_name'] ?? '');
+    $company_name = trim($_POST['company_name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $mobile = trim($_POST['mobile'] ?? '');
+    $status = $_POST['status'] ?? 'Active';
+    $login_user = trim($_POST['login_username'] ?? '');
+    $login_pass = $_POST['login_password'] ?? '';
+    $perm_map = normalize_permissions_from_post($_POST['perm'] ?? []);
+
+    // Staff must get Client Management at least View (and usually Add)
+    if ($account_type === 'staff' && is_admin_user()) {
+        if (empty($perm_map['client_management']['view'])) {
+            $perm_map['client_management'] = $perm_map['client_management'] ?? ['view'=>0,'add'=>0,'edit'=>0,'delete'=>0];
+            $perm_map['client_management']['view'] = 1;
+        }
+    } elseif ($account_type === 'seller') {
+        // Seller clients cannot keep staff modules
+        unset($perm_map['client_management'], $perm_map['report_upload']);
+    }
+
+    $user_role = resolve_user_role_from_permissions($perm_map);
+    if ($account_type === 'staff' && is_admin_user()) {
+        $user_role = 'manager';
+    }
+
+    // Only Super Admin may create/update managers (staff modules)
+    if ($user_role === 'manager' && !is_admin_user()) {
+        $form_error = 'Only Super Admin can create Staff and grant Client Management.';
+        foreach (array_keys($perm_map) as $k) {
+            if (!empty(app_modules()[$k]['staff_module'])) unset($perm_map[$k]);
+        }
+        $user_role = 'customer';
+        $account_type = 'seller';
+    }
+
+    if ($form_error === '' && ($customer_name === '' || $login_user === '')) {
+        $form_error = ($account_type === 'staff' ? 'Staff name' : 'Seller name') . ' and login username are required.';
+    }
+
+    if ($form_error === '') {
+        if ($id > 0 && $user) {
+            $chk = $conn->prepare("SELECT id FROM users WHERE username = ? AND id != ?");
+            $chk->bind_param("si", $login_user, $user['id']);
+        } else {
+            $chk = $conn->prepare("SELECT id FROM users WHERE username = ?");
+            $chk->bind_param("s", $login_user);
+        }
+        $chk->execute();
+        if ($chk->get_result()->num_rows > 0) {
+            $form_error = 'Login username already exists. Choose another.';
+        } else {
+            if ($id > 0) {
+                $stmt = $conn->prepare("UPDATE customers SET customer_name = ?, company_name = ?, email = ?, mobile = ?, status = ? WHERE id = ?");
+                $stmt->bind_param("sssssi", $customer_name, $company_name, $email, $mobile, $status, $id);
+                $stmt->execute();
+
+                if ($user) {
+                    if (!empty($login_pass)) {
+                        $hashed_pass = password_hash($login_pass, PASSWORD_DEFAULT);
+                        $stmt_u = $conn->prepare("UPDATE users SET username = ?, password = ?, role = ? WHERE customer_id = ?");
+                        $stmt_u->bind_param("sssi", $login_user, $hashed_pass, $user_role, $id);
+                    } else {
+                        $stmt_u = $conn->prepare("UPDATE users SET username = ?, role = ? WHERE customer_id = ?");
+                        $stmt_u->bind_param("ssi", $login_user, $user_role, $id);
+                    }
+                    $stmt_u->execute();
+                } else {
+                    $hashed_pass = password_hash($login_pass ?: '123456', PASSWORD_DEFAULT);
+                    $stmt_u = $conn->prepare("INSERT INTO users (username, password, role, customer_id) VALUES (?, ?, ?, ?)");
+                    $stmt_u->bind_param("sssi", $login_user, $hashed_pass, $user_role, $id);
+                    $stmt_u->execute();
+                }
+
+                save_customer_permissions($id, $perm_map);
+                $msg = ($account_type === 'staff' ? 'Staff' : 'Client') . ", login & permissions updated";
+            } else {
+                $stmt = $conn->prepare("INSERT INTO customers (customer_name, company_name, email, mobile, status) VALUES (?, ?, ?, ?, ?)");
+                $stmt->bind_param("sssss", $customer_name, $company_name, $email, $mobile, $status);
+                $stmt->execute();
+                $new_customer_id = $conn->insert_id;
+
+                $hashed_pass = password_hash($login_pass ?: '123456', PASSWORD_DEFAULT);
+                $stmt_u = $conn->prepare("INSERT INTO users (username, password, role, customer_id) VALUES (?, ?, ?, ?)");
+                $stmt_u->bind_param("sssi", $login_user, $hashed_pass, $user_role, $new_customer_id);
+                $stmt_u->execute();
+
+                save_customer_permissions($new_customer_id, $perm_map);
+                $msg = ($account_type === 'staff' ? 'Staff' : 'Client') . " added with login & permissions";
+            }
+            header("Location: index.php?msg=" . urlencode($msg));
+            exit();
+        }
+    }
+
+    $selected_perms = $perm_map;
+    $customer = [
+        'customer_name' => $customer_name,
+        'company_name' => $company_name,
+        'email' => $email,
+        'mobile' => $mobile,
+        'status' => $status,
+    ];
+    $user = ['username' => $login_user];
 }
 
 $all_customers = get_all_customers();
-$page_title = ($id > 0 ? 'Modify' : 'Provision') . " Amazon Profile";
+$page_title = $account_type === 'staff'
+    ? (($id > 0 ? 'Edit' : 'Add') . ' Company Staff')
+    : (($id > 0 ? 'Modify' : 'Provision') . ' Amazon Profile');
 include '../../includes/header.php';
 include '../../includes/sidebar.php';
+
+$module_groups = [];
+foreach (app_modules() as $key => $mod) {
+    // Managers cannot see/grant staff modules in UI
+    if (!empty($mod['staff_module']) && !is_admin_user()) {
+        continue;
+    }
+    $module_groups[$mod['group']][$key] = $mod;
+}
+$crud_actions = permission_actions();
 ?>
 
 <style>
@@ -600,8 +677,10 @@ include '../../includes/sidebar.php';
     <!-- Page Header (Figma Matching) -->
     <div class="cm-page-head">
         <div class="cm-page-title">
-            <h2><?php echo $id > 0 ? 'Modify' : 'Provision'; ?> Amazon Profile</h2>
-            <p>Configure identity and access credentials for the seller account.</p>
+            <h2><?php echo htmlspecialchars($page_title); ?></h2>
+            <p><?php echo $account_type === 'staff'
+                ? 'Create company staff login and set Client Add + module rights.'
+                : 'Configure seller identity, login credentials, and module-wise access.'; ?></p>
         </div>
         <div>
             <a href="index.php" class="btn-cm-return">
@@ -614,7 +693,38 @@ include '../../includes/sidebar.php';
         </div>
     </div>
 
+    <?php if (!empty($form_error)): ?>
+        <div style="background:#FEF2F2;border-left:4px solid #EF4444;padding:0.9rem 1rem;margin-bottom:1.25rem;border-radius:8px;color:#991B1B;font-weight:600;">
+            <i class="fas fa-exclamation-circle"></i> <?php echo htmlspecialchars($form_error); ?>
+        </div>
+    <?php endif; ?>
+
     <form method="POST">
+        <?php if (is_admin_user()): ?>
+        <div class="cm-card" style="margin-bottom:1.25rem;padding:1rem 1.25rem;">
+            <div class="cm-card-head" style="margin-bottom:0.85rem;">
+                <span>Account Type</span>
+            </div>
+            <div style="display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center;">
+                <label style="display:flex;align-items:center;gap:0.45rem;font-weight:600;cursor:pointer;">
+                    <input type="radio" name="account_type" value="seller" <?php echo $account_type === 'seller' ? 'checked' : ''; ?> onchange="onAccountTypeChange(this.value)">
+                    Seller Client
+                </label>
+                <label style="display:flex;align-items:center;gap:0.45rem;font-weight:600;cursor:pointer;">
+                    <input type="radio" name="account_type" value="staff" <?php echo $account_type === 'staff' ? 'checked' : ''; ?> onchange="onAccountTypeChange(this.value)">
+                    Company Staff
+                </label>
+                <span class="cm-subtext" style="margin:0;">Staff = Client add kari shake + module rights set thai.</span>
+            </div>
+            <div id="staffHint" style="display:<?php echo $account_type === 'staff' ? 'block' : 'none'; ?>;margin-top:0.85rem;padding:0.75rem 0.9rem;background:#ECFDF5;border-radius:8px;color:#065F46;font-size:0.8rem;font-weight:600;">
+                Staff rights: below table ma <strong>Client Management → Add</strong> tick karo (Client add permission).
+                Report Upload Add tick karo to data upload kari shake.
+            </div>
+        </div>
+        <?php else: ?>
+            <input type="hidden" name="account_type" value="seller">
+        <?php endif; ?>
+
         <div class="cm-form-grid">
 
             <!-- Left Card: Identity Details -->
@@ -630,31 +740,31 @@ include '../../includes/sidebar.php';
 
                 <div class="cm-inner-grid">
                     <div class="cm-form-group">
-                        <label>Seller Profile Name</label>
+                        <label id="nameLabel"><?php echo $account_type === 'staff' ? 'Staff Name' : 'Seller Profile Name'; ?></label>
                         <input type="text" name="customer_name" class="cm-input"
                             value="<?php echo $customer ? htmlspecialchars($customer['customer_name']) : ''; ?>"
-                            required placeholder="e.g. sagar Ocean infotech">
+                            required placeholder="<?php echo $account_type === 'staff' ? 'Enter Staff Name' : 'Enter Seller Profile Name'; ?>">
                     </div>
 
                     <div class="cm-form-group">
                         <label>Company/Legal Entity</label>
                         <input type="text" name="company_name" class="cm-input"
                             value="<?php echo $customer ? htmlspecialchars($customer['company_name']) : ''; ?>"
-                            placeholder="Ocean infotech">
+                            placeholder="Enter Company/Legal Entity">
                     </div>
 
                     <div class="cm-form-group">
                         <label>Contact Email</label>
                         <input type="email" name="email" class="cm-input"
                             value="<?php echo $customer ? htmlspecialchars($customer['email']) : ''; ?>"
-                            placeholder="sagar@gmail.com">
+                            placeholder="Enter Contact Email">
                     </div>
 
                     <div class="cm-form-group">
                         <label>Mobile Number</label>
                         <input type="text" name="mobile" class="cm-input"
                             value="<?php echo $customer ? htmlspecialchars($customer['mobile']) : ''; ?>"
-                            placeholder="08849967672">
+                            placeholder="Enter Mobile Number">
                     </div>
 
                     <div class="cm-form-group full-width">
@@ -689,7 +799,7 @@ include '../../includes/sidebar.php';
                         <label>Login Username</label>
                         <input type="text" name="login_username" class="cm-input"
                             value="<?php echo $user ? htmlspecialchars($user['username']) : ''; ?>" required
-                            placeholder="username">
+                            placeholder="Enter Login Username">
                     </div>
 
                     <div class="cm-form-group">
@@ -699,19 +809,183 @@ include '../../includes/sidebar.php';
                             <?php echo $id > 0 ? 'Updating this will override the current password.' : 'Default password: 123456'; ?>
                         </div>
                     </div>
+
+                    <div style="padding:0.85rem;background:#EFF6FF;border-radius:10px;font-size:0.78rem;color:#1E40AF;line-height:1.45;">
+                        Set <strong>View / Add / Edit / Delete</strong> per module below.
+                        For Staff, enable <strong>Client Management → Add</strong> so they can add clients.
+                    </div>
+
                 </div>
+
             </div>
 
+
+
         </div>
 
-        <!-- Submit Button -->
-        <div class="cm-form-actions">
-            <button type="submit" class="btn-cm-commit">
-                Committing Changes
-            </button>
+
+
+                <div class="cm-card" style="margin-top:1.25rem;">
+            <div class="cm-card-head" style="justify-content:space-between;flex-wrap:wrap;gap:0.75rem;">
+                <div style="display:flex;align-items:center;gap:0.55rem;">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 2.5L3.5 5.5V9.5C3.5 13.1 6.2 16.4 10 17.5C13.8 16.4 16.5 13.1 16.5 9.5V5.5L10 2.5Z" stroke="#0F172A" stroke-width="1.4" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Module Permissions (View / Add / Edit / Delete)</span>
+                </div>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                    <button type="button" class="btn-figma-outline-sm" onclick="setAllPerms(true)">Select All</button>
+                    <button type="button" class="btn-figma-outline-sm" onclick="setAllPerms(false)">Clear All</button>
+                    <button type="button" class="btn-figma-outline-sm" onclick="setActionPerms('view', true)">All View</button>
+                </div>
+            </div>
+            <p class="cm-subtext" style="margin-bottom:1rem;">
+                Super Admin can grant <strong>Client Management</strong> so a company user can add clients + give login, and grant module Add so they can upload/add data.
+                <?php if (!is_admin_user()): ?>Staff modules are Super Admin only.<?php endif; ?>
+            </p>
+
+            <div style="overflow-x:auto;">
+                <table class="cm-table" style="min-width:720px;">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Module</th>
+                            <th style="text-align:center;width:90px;">View</th>
+                            <th style="text-align:center;width:90px;">Add</th>
+                            <th style="text-align:center;width:90px;">Edit</th>
+                            <th style="text-align:center;width:90px;">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($module_groups as $groupName => $groupMods): ?>
+                            <tr>
+                                <td colspan="5" style="background:#F8FAFC;font-size:0.72rem;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:0.04em;">
+                                    <?php echo htmlspecialchars($groupName); ?>
+                                </td>
+                            </tr>
+                            <?php foreach ($groupMods as $key => $mod):
+                                $crud = $selected_perms[$key] ?? ['view'=>0,'add'=>0,'edit'=>0,'delete'=>0];
+                            ?>
+                            <tr>
+                                <td style="font-weight:600;">
+                                    <?php echo htmlspecialchars($mod['label']); ?>
+                                    <?php if (!empty($mod['staff_module'])): ?>
+                                        <span style="margin-left:6px;font-size:0.68rem;color:#1E40AF;background:#EFF6FF;padding:2px 6px;border-radius:999px;">Staff</span>
+                                    <?php endif; ?>
+                                </td>
+                                <?php foreach ($crud_actions as $action): ?>
+                                <td style="text-align:center;">
+                                    <input type="checkbox"
+                                        class="perm-check perm-<?php echo $action; ?>"
+                                        name="perm[<?php echo htmlspecialchars($key); ?>][<?php echo $action; ?>]"
+                                        value="1"
+                                        data-module="<?php echo htmlspecialchars($key); ?>"
+                                        data-action="<?php echo $action; ?>"
+                                        <?php echo !empty($crud[$action]) ? 'checked' : ''; ?>
+                                        onchange="onPermChange(this)"
+                                        style="width:16px;height:16px;">
+                                </td>
+                                <?php endforeach; ?>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
+<!-- Submit Button -->
+
+        <div class="cm-form-actions">
+
+            <button type="submit" class="btn-cm-commit">
+
+                Save <?php echo $account_type === 'staff' ? 'Staff' : 'Client'; ?> &amp; Permissions
+
+            </button>
+
+        </div>
+
     </form>
 
+
+
 </div>
+
+
+
+<script>
+
+function setAllPerms(on) {
+
+    document.querySelectorAll('.perm-check').forEach(function (el) { el.checked = !!on; });
+
+}
+
+function setActionPerms(action, on) {
+
+    document.querySelectorAll('.perm-' + action).forEach(function (el) { el.checked = !!on; });
+
+}
+
+function onPermChange(el) {
+
+    if (!el.checked) return;
+
+    if (el.dataset.action === 'add' || el.dataset.action === 'edit' || el.dataset.action === 'delete') {
+
+        var view = document.querySelector('.perm-check[data-module="' + el.dataset.module + '"][data-action="view"]');
+
+        if (view) view.checked = true;
+
+    }
+
+}
+
+function onAccountTypeChange(type) {
+
+    var hint = document.getElementById('staffHint');
+
+    if (hint) hint.style.display = (type === 'staff') ? 'block' : 'none';
+
+    var label = document.getElementById('nameLabel');
+
+    var input = document.querySelector('input[name="customer_name"]');
+
+    if (label && input) {
+
+        if (type === 'staff') {
+
+            label.textContent = 'Staff Name';
+
+            input.placeholder = 'Enter Staff Name';
+
+            ['view','add','edit'].forEach(function (a) {
+
+                var el = document.querySelector('.perm-check[data-module="client_management"][data-action="' + a + '"]');
+
+                if (el) el.checked = true;
+
+            });
+
+        } else {
+
+            label.textContent = 'Seller Profile Name';
+
+            input.placeholder = 'Enter Seller Profile Name';
+
+            document.querySelectorAll('.perm-check[data-module="client_management"], .perm-check[data-module="report_upload"]').forEach(function (el) {
+
+                el.checked = false;
+
+            });
+
+        }
+
+    }
+
+}
+
+</script>
+
+
 
 <?php include '../../includes/footer.php'; ?>

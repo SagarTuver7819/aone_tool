@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/permissions.php';
 
 function get_all_customers() {
     global $conn;

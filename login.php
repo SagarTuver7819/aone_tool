@@ -19,7 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['role'] = $user['role'];
             $_SESSION['customer_id'] = $user['customer_id'];
 
-            header("Location: modules/dashboard/index.php");
+            require_once __DIR__ . '/includes/permissions.php';
+            header("Location: " . first_allowed_module_url());
             exit();
         } else {
             $error = "Invalid credentials. Please try again.";
