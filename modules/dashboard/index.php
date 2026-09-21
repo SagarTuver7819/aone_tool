@@ -7305,12 +7305,9 @@ include '../../includes/sidebar.php';
                     // Set Active SKUs
                     $('#prod_meta_skus').text(activeSkusCount);
 
-                    // Set Sessions with dynamic sum (fallback to mockup value 12,482 if zero)
-                    const sessionsDisplay = totalProdSessions > 0 ? totalProdSessions : 12482;
-                    $('#prod_meta_sessions').text(sessionsDisplay.toLocaleString());
-
-                    // Set ROAS with dynamic calc (fallback to mockup 4.2x if zero)
-                    const roasDisplay = totalProdAdSpend > 0 ? (totalProdRevenue / totalProdAdSpend) : 4.2;
+                    // Sessions / ROAS from real product data only (no fake placeholders)
+                    $('#prod_meta_sessions').text(totalProdSessions.toLocaleString());
+                    const roasDisplay = totalProdAdSpend > 0 ? (totalProdRevenue / totalProdAdSpend) : 0;
                     $('#prod_meta_roas').text(roasDisplay.toFixed(1) + 'x');
 
                     // Doughnut chart center overlay total

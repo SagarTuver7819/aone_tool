@@ -145,7 +145,9 @@ try {
     // Accurate Refunds from Transaction Report
     $sql_refund_total = "SELECT COUNT(*) as total_refunds, (COUNT(*) / NULLIF((SELECT SUM(units_ordered) FROM amazon_business_report WHERE $where_customer AND report_date BETWEEN ? AND ?), 0)) * 100 as avg_refund_rate FROM amazon_transaction_report WHERE $where_customer AND type = 'Refund' AND date_time BETWEEN ? AND ?";
     $stmt_ref = $conn->prepare($sql_refund_total);
-    $stmt_ref->bind_param("ssss", $from_date, $to_date, $from_date, $to_date);
+    $ref_dt_start = $from_date . ' 00:00:00';
+    $ref_dt_end = $to_date . ' 23:59:59';
+    $stmt_ref->bind_param("ssss", $from_date, $to_date, $ref_dt_start, $ref_dt_end);
     $stmt_ref->execute();
     $ref_res = $stmt_ref->get_result()->fetch_assoc();
     $totals_full['total_refunds'] = $ref_res['total_refunds'] ?? 0;
@@ -496,11 +498,19 @@ try {
         LIMIT 50";
     $from_bucket = date('Y-m-01', strtotime($from_date));
     $to_bucket = date('Y-m-01', strtotime($to_date));
-    $stmt_p = $conn->prepare($sql_products);
-    if (!$stmt_p) throw new Exception("Prepare failed (Products): " . $conn->error);
-    $stmt_p->bind_param("ss", $from_bucket, $to_bucket);
-    $stmt_p->execute();
-    $res_p_obj = $stmt_p->get_result();
+    $detail_product_rows = [];
+    foreach ([[$from_date, $to_date], [$from_bucket, $to_bucket]] as $range) {
+        $stmt_p = $conn->prepare($sql_products);
+        if (!$stmt_p) throw new Exception("Prepare failed (Products): " . $conn->error);
+        $stmt_p->bind_param("ss", $range[0], $range[1]);
+        $stmt_p->execute();
+        $res_p_obj = $stmt_p->get_result();
+        $detail_product_rows = [];
+        if ($res_p_obj) {
+            while ($row = $res_p_obj->fetch_assoc()) $detail_product_rows[] = $row;
+        }
+        if (count($detail_product_rows) > 0) break;
+    }
     $products_data = [];
     
     // Fee subquery helper
@@ -520,8 +530,8 @@ try {
                    WHERE $where_customer AND sku = ? AND type = 'Refund' AND date_time BETWEEN ? AND ?";
     $stmt_refund = $conn->prepare($refund_sql);
 
-    if ($res_p_obj) {
-        while ($row = $res_p_obj->fetch_assoc()) {
+    if (count($detail_product_rows) > 0) {
+        foreach ($detail_product_rows as $row) {
             $asin = $row['asin'];
             $sku = $sku_mapping[$asin] ?? $asin;
             $name = ($row['name'] ?? '') !== '' ? $row['name'] : 'N/A';
@@ -554,7 +564,7 @@ try {
             ];
 
             // Fetch accurate refunds for this product
-            $stmt_refund->bind_param("sss", $sku, $from_date, $to_date);
+            $stmt_refund->bind_param("sss", $sku, $dt_start, $dt_end);
             $stmt_refund->execute();
             $p_refund_res = $stmt_refund->get_result()->fetch_assoc();
             $p_refunds = intval($p_refund_res['refunds'] ?? 0);
@@ -572,6 +582,73 @@ try {
             $products_data[count($products_data)-1]['ad_sales'] = $p_ad_sales;
             $products_data[count($products_data)-1]['acos'] = $p_ad_sales > 0 ? ($p_spend / $p_ad_sales) * 100 : 0;
             $products_data[count($products_data)-1]['ad_dep'] = $rev > 0 ? ($p_ad_sales / $rev) * 100 : 0;
+        }
+    } else {
+        // Fallback: build product list from transaction report when detail report has no rows
+        $sql_txn_products = "SELECT
+                sku,
+                MAX(description) as name,
+                SUM(CASE WHEN type = 'Order' THEN product_sales ELSE 0 END) as revenue,
+                SUM(CASE WHEN type = 'Order' THEN quantity ELSE 0 END) as units,
+                SUM(CASE WHEN type = 'Order' THEN 1 ELSE 0 END) as total_orders,
+                SUM(CASE WHEN type = 'Refund' THEN 1 ELSE 0 END) as refunds
+            FROM amazon_transaction_report
+            WHERE $where_customer
+              AND date_time BETWEEN ? AND ?
+              AND type IN ('Order', 'Refund')
+              AND sku IS NOT NULL AND sku != ''
+            GROUP BY sku
+            HAVING revenue > 0 OR units > 0
+            ORDER BY revenue DESC
+            LIMIT 50";
+        $stmt_txn_p = $conn->prepare($sql_txn_products);
+        if ($stmt_txn_p) {
+            $stmt_txn_p->bind_param("ss", $dt_start, $dt_end);
+            $stmt_txn_p->execute();
+            $res_txn_p = $stmt_txn_p->get_result();
+            while ($row = $res_txn_p->fetch_assoc()) {
+                $sku = trim((string)$row['sku']);
+                $name = trim((string)($row['name'] ?? ''));
+                if ($name === '') $name = $sku;
+                $rev = floatval($row['revenue']);
+                $units = intval($row['units']);
+                $refunds = intval($row['refunds']);
+
+                $stmt_fee->bind_param("sss", $sku, $dt_start, $dt_end);
+                $stmt_fee->execute();
+                $fee_res = $stmt_fee->get_result()->fetch_assoc();
+                $fees = floatval($fee_res['total_fees'] ?? 0);
+
+                $stmt_ppc->bind_param("sss", $sku, $from_date, $to_date);
+                $stmt_ppc->execute();
+                $ppc_res = $stmt_ppc->get_result()->fetch_assoc();
+                $p_spend = floatval($ppc_res['spend'] ?? 0);
+                $p_ad_sales = floatval($ppc_res['ad_sales'] ?? 0);
+
+                $products_data[] = [
+                    'asin' => $sku,
+                    'sku' => $sku,
+                    'name' => truncateUtf8($name, 80),
+                    'revenue' => $rev,
+                    'units' => $units,
+                    'total_orders' => intval($row['total_orders']),
+                    'page_views_total' => 0,
+                    'page_views_mobile' => 0,
+                    'page_views_browser' => 0,
+                    'sessions_total' => 0,
+                    'sessions_mobile' => 0,
+                    'sessions_browser' => 0,
+                    'conv' => 0,
+                    'buy_box' => 0,
+                    'refunds' => $refunds,
+                    'refund_rate' => $units > 0 ? ($refunds / $units) * 100 : 0,
+                    'fees' => $fees,
+                    'ad_spend' => $p_spend,
+                    'ad_sales' => $p_ad_sales,
+                    'acos' => $p_ad_sales > 0 ? ($p_spend / $p_ad_sales) * 100 : 0,
+                    'ad_dep' => $rev > 0 ? ($p_ad_sales / $rev) * 100 : 0
+                ];
+            }
         }
     }
 
@@ -684,6 +761,13 @@ try {
 }
 function fetchMonthlyProducts($conn, $customer_id, $from, $to) {
     $where_customer = ($customer_id > 0) ? "customer_id = $customer_id" : "1=1";
+    $from_date = date('Y-m-d', strtotime($from));
+    $to_date = date('Y-m-d', strtotime($to));
+    $from_bucket = date('Y-m-01', strtotime($from));
+    $to_bucket = date('Y-m-01', strtotime($to));
+    $dt_start = $from_date . ' 00:00:00';
+    $dt_end = $to_date . ' 23:59:59';
+
     $sql = "SELECT 
                 DATE_FORMAT(report_date, '%Y-%m') as month,
                 asin,
@@ -697,10 +781,37 @@ function fetchMonthlyProducts($conn, $customer_id, $from, $to) {
             WHERE $where_customer AND report_date BETWEEN ? AND ?
             GROUP BY month, asin
             ORDER BY month DESC, revenue DESC";
-    $from_bucket = date('Y-m-01', strtotime($from));
-    $to_bucket = date('Y-m-01', strtotime($to));
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $from_bucket, $to_bucket);
+
+    foreach ([[$from_date, $to_date], [$from_bucket, $to_bucket]] as $range) {
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) break;
+        $stmt->bind_param("ss", $range[0], $range[1]);
+        $stmt->execute();
+        $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        if (!empty($rows)) return $rows;
+    }
+
+    // Fallback from transactions when detail report is empty
+    $sql_txn = "SELECT
+            DATE_FORMAT(date_time, '%Y-%m') as month,
+            sku as asin,
+            SUM(CASE WHEN type = 'Order' THEN product_sales ELSE 0 END) as revenue,
+            SUM(CASE WHEN type = 'Order' THEN quantity ELSE 0 END) as units,
+            0 as sessions,
+            SUM(CASE WHEN type = 'Order' THEN 1 ELSE 0 END) as orders,
+            0 as page_views,
+            0 as conv
+        FROM amazon_transaction_report
+        WHERE $where_customer
+          AND date_time BETWEEN ? AND ?
+          AND type IN ('Order', 'Refund')
+          AND sku IS NOT NULL AND sku != ''
+        GROUP BY month, sku
+        HAVING revenue > 0 OR units > 0
+        ORDER BY month DESC, revenue DESC";
+    $stmt = $conn->prepare($sql_txn);
+    if (!$stmt) return [];
+    $stmt->bind_param("ss", $dt_start, $dt_end);
     $stmt->execute();
     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }

@@ -9,6 +9,8 @@ $tables = [
     'trans' => ['table' => 'amazon_transaction_report', 'date_col' => 'date_time'],
     'brand' => ['table' => 'amazon_brand_reports', 'date_col' => 'report_date'],
     'ops' => ['table' => 'amazon_returns_reimbursements', 'date_col' => 'report_date'],
+    'detail' => ['table' => 'amazon_detail_report', 'date_col' => 'report_date'],
+    'business' => ['table' => 'amazon_business_report', 'date_col' => 'report_date'],
 ];
 
 function normalize_ymd($value) {
