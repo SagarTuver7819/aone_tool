@@ -133,6 +133,109 @@ try {
         $charts['atoz'][] = intval($row['atoz']);
     }
 
+    $chart_sales_sum = array_sum($charts['sales']);
+    // Fallback daily chart from detail report when business sales are empty
+    if (count($charts['labels']) === 0 || $chart_sales_sum <= 0) {
+        $sql_daily_detail = "SELECT 
+            report_date,
+            SUM(ordered_product_sales) as sales,
+            SUM(units_ordered) as units,
+            SUM(sessions_total) as sessions,
+            SUM(total_order_items) as orders,
+            SUM(page_views_total) as page_views,
+            AVG(buy_box_percentage) as buy_box,
+            AVG(unit_session_percentage) as conversion,
+            SUM(units_refunded) as refunds,
+            AVG(refund_rate) as refund_rate,
+            SUM(ordered_product_sales_b2b) as b2b_sales,
+            SUM(sessions_mobile_app) as sessions_mobile,
+            SUM(sessions_browser) as sessions_browser,
+            SUM(page_views_mobile_app) as page_views_mobile,
+            SUM(page_views_browser) as page_views_browser,
+            0 as shipped_sales,
+            0 as feedback,
+            0 as atoz
+            FROM amazon_detail_report
+            WHERE $where_customer AND report_date BETWEEN ? AND ?
+            GROUP BY report_date ORDER BY report_date ASC";
+        $stmt_dd = $conn->prepare($sql_daily_detail);
+        if ($stmt_dd) {
+            $stmt_dd->bind_param("ss", $from_date, $to_date);
+            $stmt_dd->execute();
+            $res_dd = $stmt_dd->get_result();
+            $tmp = ['labels'=>[],'sales'=>[],'units'=>[],'sessions'=>[],'orders'=>[],'page_views'=>[],'buy_box'=>[],'conversion'=>[],'refunds'=>[],'refund_rate'=>[],'b2b_sales'=>[],'sessions_mobile'=>[],'sessions_browser'=>[],'page_views_mobile'=>[],'page_views_browser'=>[],'shipped_sales'=>[],'feedback'=>[],'atoz'=>[]];
+            while ($row = $res_dd->fetch_assoc()) {
+                $tmp['labels'][] = date('d M', strtotime($row['report_date']));
+                $tmp['sales'][] = floatval($row['sales']);
+                $tmp['units'][] = intval($row['units']);
+                $tmp['sessions'][] = intval($row['sessions']);
+                $tmp['orders'][] = intval($row['orders']);
+                $tmp['page_views'][] = intval($row['page_views']);
+                $tmp['buy_box'][] = floatval($row['buy_box']);
+                $tmp['conversion'][] = floatval($row['conversion']);
+                $tmp['refunds'][] = intval($row['refunds']);
+                $tmp['refund_rate'][] = floatval($row['refund_rate']);
+                $tmp['b2b_sales'][] = floatval($row['b2b_sales']);
+                $tmp['sessions_mobile'][] = intval($row['sessions_mobile']);
+                $tmp['sessions_browser'][] = intval($row['sessions_browser']);
+                $tmp['page_views_mobile'][] = intval($row['page_views_mobile']);
+                $tmp['page_views_browser'][] = intval($row['page_views_browser']);
+                $tmp['shipped_sales'][] = 0;
+                $tmp['feedback'][] = 0;
+                $tmp['atoz'][] = 0;
+            }
+            if (count($tmp['labels']) > 0 && array_sum($tmp['sales']) > 0) {
+                $charts = $tmp;
+            }
+        }
+    }
+
+    // Fallback daily chart from transactions when business+detail are empty
+    if (count($charts['labels']) === 0 || array_sum($charts['sales']) <= 0) {
+        $sql_daily_txn = "SELECT 
+            DATE(date_time) as report_date,
+            SUM(CASE WHEN type='Order' THEN product_sales ELSE 0 END) as sales,
+            SUM(CASE WHEN type='Order' THEN quantity ELSE 0 END) as units,
+            SUM(CASE WHEN type='Order' THEN 1 ELSE 0 END) as orders
+            FROM amazon_transaction_report
+            WHERE $where_customer AND date_time BETWEEN ? AND ?
+              AND type IN ('Order','Refund')
+            GROUP BY DATE(date_time)
+            ORDER BY report_date ASC";
+        $stmt_dt = $conn->prepare($sql_daily_txn);
+        if ($stmt_dt) {
+            $dt_from = $from_date . ' 00:00:00';
+            $dt_to = $to_date . ' 23:59:59';
+            $stmt_dt->bind_param("ss", $dt_from, $dt_to);
+            $stmt_dt->execute();
+            $res_dt = $stmt_dt->get_result();
+            $tmp = ['labels'=>[],'sales'=>[],'units'=>[],'sessions'=>[],'orders'=>[],'page_views'=>[],'buy_box'=>[],'conversion'=>[],'refunds'=>[],'refund_rate'=>[],'b2b_sales'=>[],'sessions_mobile'=>[],'sessions_browser'=>[],'page_views_mobile'=>[],'page_views_browser'=>[],'shipped_sales'=>[],'feedback'=>[],'atoz'=>[]];
+            while ($row = $res_dt->fetch_assoc()) {
+                $tmp['labels'][] = date('d M', strtotime($row['report_date']));
+                $tmp['sales'][] = floatval($row['sales']);
+                $tmp['units'][] = intval($row['units']);
+                $tmp['sessions'][] = 0;
+                $tmp['orders'][] = intval($row['orders']);
+                $tmp['page_views'][] = 0;
+                $tmp['buy_box'][] = 0;
+                $tmp['conversion'][] = 0;
+                $tmp['refunds'][] = 0;
+                $tmp['refund_rate'][] = 0;
+                $tmp['b2b_sales'][] = 0;
+                $tmp['sessions_mobile'][] = 0;
+                $tmp['sessions_browser'][] = 0;
+                $tmp['page_views_mobile'][] = 0;
+                $tmp['page_views_browser'][] = 0;
+                $tmp['shipped_sales'][] = 0;
+                $tmp['feedback'][] = 0;
+                $tmp['atoz'][] = 0;
+            }
+            if (count($tmp['labels']) > 0) {
+                $charts = $tmp;
+            }
+        }
+    }
+
     // 2. Totals
     // Base Totals from Business Report
     $sql_totals = "SELECT SUM(ordered_product_sales) as total_sales, SUM(units_ordered) as total_units, SUM(sessions_total) as total_sessions, SUM(page_views_total) as total_page_views, AVG(unit_session_percentage) as avg_conversion, SUM(total_order_items) as total_orders, SUM(ordered_product_sales_b2b) as b2b_sales, AVG(buy_box_percentage) as buy_box FROM amazon_business_report WHERE $where_customer AND report_date BETWEEN ? AND ?";
@@ -141,6 +244,48 @@ try {
     $stmt_f->bind_param("ss", $from_date, $to_date);
     $stmt_f->execute();
     $totals_full = $stmt_f->get_result()->fetch_assoc() ?: [];
+
+    // Fallback totals from detail report when business sales are empty/zero
+    if (floatval($totals_full['total_sales'] ?? 0) <= 0) {
+        $sql_tot_detail = "SELECT SUM(ordered_product_sales) as total_sales, SUM(units_ordered) as total_units, SUM(sessions_total) as total_sessions, SUM(page_views_total) as total_page_views, AVG(unit_session_percentage) as avg_conversion, SUM(total_order_items) as total_orders, SUM(ordered_product_sales_b2b) as b2b_sales, AVG(buy_box_percentage) as buy_box FROM amazon_detail_report WHERE $where_customer AND report_date BETWEEN ? AND ?";
+        $stmt_td = $conn->prepare($sql_tot_detail);
+        if ($stmt_td) {
+            $stmt_td->bind_param("ss", $from_date, $to_date);
+            $stmt_td->execute();
+            $detail_tot = $stmt_td->get_result()->fetch_assoc() ?: [];
+            if (floatval($detail_tot['total_sales'] ?? 0) > 0) {
+                $totals_full = array_merge($totals_full, $detail_tot);
+            }
+        }
+    }
+
+    // Fallback totals from transactions when business+detail sales are empty
+    if (floatval($totals_full['total_sales'] ?? 0) <= 0) {
+        $sql_tot_txn = "SELECT 
+            SUM(CASE WHEN type='Order' THEN product_sales ELSE 0 END) as total_sales,
+            SUM(CASE WHEN type='Order' THEN quantity ELSE 0 END) as total_units,
+            SUM(CASE WHEN type='Order' THEN 1 ELSE 0 END) as total_orders
+            FROM amazon_transaction_report
+            WHERE $where_customer AND date_time BETWEEN ? AND ? AND type IN ('Order','Refund')";
+        $stmt_tt = $conn->prepare($sql_tot_txn);
+        if ($stmt_tt) {
+            $dt_from = $from_date . ' 00:00:00';
+            $dt_to = $to_date . ' 23:59:59';
+            $stmt_tt->bind_param("ss", $dt_from, $dt_to);
+            $stmt_tt->execute();
+            $txn_tot = $stmt_tt->get_result()->fetch_assoc() ?: [];
+            if (floatval($txn_tot['total_sales'] ?? 0) > 0) {
+                $totals_full['total_sales'] = $txn_tot['total_sales'];
+                $totals_full['total_units'] = $txn_tot['total_units'];
+                $totals_full['total_orders'] = $txn_tot['total_orders'];
+                $totals_full['total_sessions'] = $totals_full['total_sessions'] ?? 0;
+                $totals_full['total_page_views'] = $totals_full['total_page_views'] ?? 0;
+                $totals_full['avg_conversion'] = $totals_full['avg_conversion'] ?? 0;
+                $totals_full['b2b_sales'] = $totals_full['b2b_sales'] ?? 0;
+                $totals_full['buy_box'] = $totals_full['buy_box'] ?? 0;
+            }
+        }
+    }
 
     // Accurate Refunds from Transaction Report
     $sql_refund_total = "SELECT COUNT(*) as total_refunds, (COUNT(*) / NULLIF((SELECT SUM(units_ordered) FROM amazon_business_report WHERE $where_customer AND report_date BETWEEN ? AND ?), 0)) * 100 as avg_refund_rate FROM amazon_transaction_report WHERE $where_customer AND type = 'Refund' AND date_time BETWEEN ? AND ?";
@@ -438,20 +583,116 @@ try {
         'total_settlement' => floatval($trans_res['total_settlement'] ?? 0)
     ];
 
-    // 4. Trends
+    // 4. Trends — up to 3 months, preferring months inside the selected filter range
     $trend_data = [];
-    $target_month = date('Y-m-01', strtotime($to_date));
-    for ($i = 2; $i >= 0; $i--) {
-        $m = date('Y-m-01', strtotime("$target_month -$i months"));
+    $trend_months = [];
+    $from_month = date('Y-m-01', strtotime($from_date));
+    $to_month = date('Y-m-01', strtotime($to_date));
+    $cursor = new DateTime($from_month);
+    $end = new DateTime($to_month);
+    while ($cursor <= $end) {
+        $trend_months[] = $cursor->format('Y-m-01');
+        $cursor->modify('+1 month');
+    }
+    // If only 1 month selected, prefer last 3 months that actually have sales data (<= to_date)
+    if (count($trend_months) === 1) {
+        $trend_months = [];
+        $sql_has = "SELECT ym FROM (
+            SELECT DATE_FORMAT(report_date,'%Y-%m-01') ym FROM amazon_detail_report WHERE $where_customer AND report_date <= ? AND ordered_product_sales > 0
+            UNION ALL
+            SELECT DATE_FORMAT(report_date,'%Y-%m-01') ym FROM amazon_business_report WHERE $where_customer AND report_date <= ? AND ordered_product_sales > 0
+            UNION ALL
+            SELECT DATE_FORMAT(date_time,'%Y-%m-01') ym FROM amazon_transaction_report WHERE $where_customer AND date_time <= ? AND type='Order' AND product_sales > 0
+        ) x GROUP BY ym ORDER BY ym DESC LIMIT 3";
+        $stmt_has = $conn->prepare($sql_has);
+        if ($stmt_has) {
+            $to_dt = $to_date . ' 23:59:59';
+            $stmt_has->bind_param("sss", $to_date, $to_date, $to_dt);
+            $stmt_has->execute();
+            $res_has = $stmt_has->get_result();
+            $found = [];
+            while ($r = $res_has->fetch_assoc()) {
+                $found[] = $r['ym'];
+            }
+            $found = array_reverse($found);
+            if (count($found) > 0) {
+                $trend_months = $found;
+            }
+        }
+        if (count($trend_months) === 0) {
+            for ($i = 2; $i >= 0; $i--) {
+                $trend_months[] = date('Y-m-01', strtotime("$to_month -$i months"));
+            }
+        }
+    } elseif (count($trend_months) > 3) {
+        $trend_months = array_slice($trend_months, -3);
+    }
+
+    foreach ($trend_months as $m) {
         $m_end = date('Y-m-t', strtotime($m));
+        $m_dt_start = $m . ' 00:00:00';
+        $m_dt_end = $m_end . ' 23:59:59';
+        $res_m = ['sales'=>0,'orders'=>0,'units'=>0,'page_views'=>0,'conv'=>0,'b2b_share'=>0,'refund'=>0];
+
         $sql_m = "SELECT SUM(ordered_product_sales) as sales, SUM(total_order_items) as orders, SUM(units_ordered) as units, SUM(page_views_total) as page_views, AVG(unit_session_percentage) as conv, (SUM(ordered_product_sales_b2b) / NULLIF(SUM(ordered_product_sales), 0)) * 100 as b2b_share, AVG(refund_rate) as refund FROM amazon_business_report WHERE $where_customer AND report_date BETWEEN ? AND ?";
         $stmt_m = $conn->prepare($sql_m);
-        if (!$stmt_m) throw new Exception("Prepare failed (Trend): " . $conn->error);
-        $stmt_m->bind_param("ss", $m, $m_end);
-        $stmt_m->execute();
-        $res_m_obj = $stmt_m->get_result();
-        $res_m = $res_m_obj ? $res_m_obj->fetch_assoc() : null;
-        $trend_data[date('M Y', strtotime($m))] = $res_m ?: ['sales'=>0,'orders'=>0,'units'=>0,'page_views'=>0,'conv'=>0,'b2b_share'=>0,'refund'=>0];
+        if ($stmt_m) {
+            $stmt_m->bind_param("ss", $m, $m_end);
+            $stmt_m->execute();
+            $row_m = $stmt_m->get_result()->fetch_assoc();
+            if ($row_m && floatval($row_m['sales'] ?? 0) > 0) {
+                $res_m = [
+                    'sales' => floatval($row_m['sales'] ?? 0),
+                    'orders' => floatval($row_m['orders'] ?? 0),
+                    'units' => floatval($row_m['units'] ?? 0),
+                    'page_views' => floatval($row_m['page_views'] ?? 0),
+                    'conv' => floatval($row_m['conv'] ?? 0),
+                    'b2b_share' => floatval($row_m['b2b_share'] ?? 0),
+                    'refund' => floatval($row_m['refund'] ?? 0),
+                ];
+            }
+        }
+
+        if (floatval($res_m['sales']) <= 0) {
+            $sql_md = "SELECT SUM(ordered_product_sales) as sales, SUM(total_order_items) as orders, SUM(units_ordered) as units, SUM(page_views_total) as page_views, AVG(unit_session_percentage) as conv, (SUM(ordered_product_sales_b2b) / NULLIF(SUM(ordered_product_sales), 0)) * 100 as b2b_share, AVG(refund_rate) as refund FROM amazon_detail_report WHERE $where_customer AND report_date BETWEEN ? AND ?";
+            $stmt_md = $conn->prepare($sql_md);
+            if ($stmt_md) {
+                $stmt_md->bind_param("ss", $m, $m_end);
+                $stmt_md->execute();
+                $row_md = $stmt_md->get_result()->fetch_assoc();
+                if ($row_md && floatval($row_md['sales'] ?? 0) > 0) {
+                    $res_m = [
+                        'sales' => floatval($row_md['sales'] ?? 0),
+                        'orders' => floatval($row_md['orders'] ?? 0),
+                        'units' => floatval($row_md['units'] ?? 0),
+                        'page_views' => floatval($row_md['page_views'] ?? 0),
+                        'conv' => floatval($row_md['conv'] ?? 0),
+                        'b2b_share' => floatval($row_md['b2b_share'] ?? 0),
+                        'refund' => floatval($row_md['refund'] ?? 0),
+                    ];
+                }
+            }
+        }
+
+        if (floatval($res_m['sales']) <= 0) {
+            $sql_mt = "SELECT 
+                SUM(CASE WHEN type='Order' THEN product_sales ELSE 0 END) as sales,
+                SUM(CASE WHEN type='Order' THEN 1 ELSE 0 END) as orders,
+                SUM(CASE WHEN type='Order' THEN quantity ELSE 0 END) as units
+                FROM amazon_transaction_report
+                WHERE $where_customer AND date_time BETWEEN ? AND ? AND type IN ('Order','Refund')";
+            $stmt_mt = $conn->prepare($sql_mt);
+            if ($stmt_mt) {
+                $stmt_mt->bind_param("ss", $m_dt_start, $m_dt_end);
+                $stmt_mt->execute();
+                $row_mt = $stmt_mt->get_result()->fetch_assoc();
+                $res_m['sales'] = floatval($row_mt['sales'] ?? 0);
+                $res_m['orders'] = floatval($row_mt['orders'] ?? 0);
+                $res_m['units'] = floatval($row_mt['units'] ?? 0);
+            }
+        }
+
+        $trend_data[date('M Y', strtotime($m))] = $res_m;
     }
 
     // 5. Products
