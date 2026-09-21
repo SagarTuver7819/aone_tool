@@ -3,15 +3,7 @@ require_once __DIR__ . '/../config.php';
 header('Content-Type: application/json');
 
 $customer_id = isset($_GET['customer_id']) ? intval($_GET['customer_id']) : 0;
-
-$tables = [
-    'ads' => ['table' => 'amazon_advertising_sp', 'date_col' => 'report_date'],
-    'trans' => ['table' => 'amazon_transaction_report', 'date_col' => 'date_time'],
-    'brand' => ['table' => 'amazon_brand_reports', 'date_col' => 'report_date'],
-    'ops' => ['table' => 'amazon_returns_reimbursements', 'date_col' => 'report_date'],
-    'detail' => ['table' => 'amazon_detail_report', 'date_col' => 'report_date'],
-    'business' => ['table' => 'amazon_business_report', 'date_col' => 'report_date'],
-];
+$where_customer = ($customer_id > 0) ? "WHERE customer_id = $customer_id" : '';
 
 function normalize_ymd($value) {
     if ($value === null || $value === '') {
@@ -24,39 +16,55 @@ function normalize_ymd($value) {
     return date('Y-m-d', $ts);
 }
 
-$ranges = [];
-$overall_min = null;
-$overall_max = null;
-
-foreach ($tables as $key => $meta) {
-    $table = $meta['table'];
-    $date_col = $meta['date_col'];
-    $where = ($customer_id > 0) ? "WHERE customer_id = $customer_id" : '';
-
-    $sql = "SELECT MIN($date_col) AS min_date, MAX($date_col) AS max_date FROM `$table` $where";
+function table_range($conn, $table, $date_col, $where_customer) {
+    // Verify table exists
+    $chk = $conn->query("SHOW TABLES LIKE '" . $conn->real_escape_string($table) . "'");
+    if (!$chk || $chk->num_rows === 0) {
+        return ['min_date' => null, 'max_date' => null];
+    }
+    $sql = "SELECT MIN($date_col) AS min_date, MAX($date_col) AS max_date FROM `$table` $where_customer";
     $res = $conn->query($sql);
-    $row = $res ? $res->fetch_assoc() : ['min_date' => null, 'max_date' => null];
-
-    $min = normalize_ymd($row['min_date'] ?? null);
-    $max = normalize_ymd($row['max_date'] ?? null);
-
-    $ranges[$key] = [
-        'min_date' => $min,
-        'max_date' => $max,
+    $row = $res ? $res->fetch_assoc() : null;
+    return [
+        'min_date' => normalize_ymd($row['min_date'] ?? null),
+        'max_date' => normalize_ymd($row['max_date'] ?? null),
     ];
-
-    if ($min && ($overall_min === null || $min < $overall_min)) {
-        $overall_min = $min;
-    }
-    if ($max && ($overall_max === null || $max > $overall_max)) {
-        $overall_max = $max;
-    }
 }
 
-$ranges['overall'] = [
-    'min_date' => $overall_min,
-    'max_date' => $overall_max,
-];
+function merge_range($a, $b) {
+    $min = null;
+    $max = null;
+    foreach ([$a, $b] as $r) {
+        if (!empty($r['min_date']) && ($min === null || $r['min_date'] < $min)) {
+            $min = $r['min_date'];
+        }
+        if (!empty($r['max_date']) && ($max === null || $r['max_date'] > $max)) {
+            $max = $r['max_date'];
+        }
+    }
+    return ['min_date' => $min, 'max_date' => $max];
+}
+
+$ranges = [];
+$ranges['ads_sp'] = table_range($conn, 'amazon_advertising_sp', 'report_date', $where_customer);
+$ranges['ads_sb'] = table_range($conn, 'amazon_advertising_sb', 'report_date', $where_customer);
+$ranges['ads_sd'] = table_range($conn, 'amazon_advertising_sd', 'report_date', $where_customer);
+$ranges['ads'] = merge_range(merge_range($ranges['ads_sp'], $ranges['ads_sb']), $ranges['ads_sd']);
+
+$ranges['trans'] = table_range($conn, 'amazon_transaction_report', 'date_time', $where_customer);
+$ranges['brand'] = table_range($conn, 'amazon_brand_reports', 'report_date', $where_customer);
+$ranges['ops'] = table_range($conn, 'amazon_returns_reimbursements', 'report_date', $where_customer);
+$ranges['detail'] = table_range($conn, 'amazon_detail_report', 'report_date', $where_customer);
+$ranges['business'] = table_range($conn, 'amazon_business_report', 'report_date', $where_customer);
+
+$overall = ['min_date' => null, 'max_date' => null];
+foreach (['ads', 'trans', 'brand', 'ops', 'detail', 'business'] as $key) {
+    $overall = merge_range($overall, $ranges[$key]);
+}
+$ranges['overall'] = $overall;
+
+// Friendly month labels for UI (no design change — available for tooltips/debug)
+$ranges['from_month'] = $overall['min_date'] ? date('M Y', strtotime($overall['min_date'])) : null;
+$ranges['to_month'] = $overall['max_date'] ? date('M Y', strtotime($overall['max_date'])) : null;
 
 echo json_encode($ranges);
-?>

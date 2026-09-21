@@ -302,8 +302,20 @@ $(document).ready(function() {
 
     function bootDailyDates() {
         const customerId = $('#filter_customer').val() || 0;
+        if (window.AOneDateRange) {
+            window.AOneDateRange.boot({
+                url: '<?php echo BASE_URL; ?>api/get_data_range.php',
+                customerId: customerId,
+                preferredKeys: ['business', 'trans', 'ads'],
+                onDone: function (span) {
+                    initDailyDatePicker(span.from, span.to);
+                    loadDaily();
+                }
+            });
+            return;
+        }
         $.get('<?php echo BASE_URL; ?>api/get_data_range.php', { customer_id: customerId }, function (ranges) {
-            const src = (ranges && (ranges.trans || ranges.overall || ranges.ads)) || {};
+            const src = (ranges && (ranges.overall || ranges.trans || ranges.ads)) || {};
             let from = src.min_date ? String(src.min_date).substring(0, 10) : '';
             let to = src.max_date ? String(src.max_date).substring(0, 10) : '';
             if (!from || !to) {

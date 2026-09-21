@@ -1108,8 +1108,20 @@ include '../../includes/sidebar.php';
 
         function bootCampaignDates(thenLoad) {
             const customerId = $('#filter_customer').val() || 0;
+            if (window.AOneDateRange) {
+                window.AOneDateRange.boot({
+                    url: '../../api/get_data_range.php',
+                    customerId: customerId,
+                    preferredKeys: ['ads', 'business', 'trans'],
+                    onDone: function (span) {
+                        initCampaignDatePicker();
+                        if (thenLoad) thenLoad();
+                    }
+                });
+                return;
+            }
             $.get('../../api/get_data_range.php', { customer_id: customerId }, function (ranges) {
-                const src = (ranges && (ranges.ads || ranges.overall)) || {};
+                const src = (ranges && (ranges.overall || ranges.ads)) || {};
                 let from = src.min_date ? String(src.min_date).substring(0, 10) : '';
                 let to = src.max_date ? String(src.max_date).substring(0, 10) : '';
                 if (!from || !to) {

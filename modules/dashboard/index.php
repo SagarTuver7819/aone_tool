@@ -7708,8 +7708,10 @@ include '../../includes/sidebar.php';
         }
 
         function resolveDashboardDateRange(ranges) {
-            const preferred = (ranges && (ranges.trans || ranges.overall || ranges.ads || ranges.brand || ranges.ops)) || null;
-            const overall = (ranges && ranges.overall) || preferred;
+            if (window.AOneDateRange) {
+                return window.AOneDateRange.resolve(ranges, ['business', 'trans', 'ads', 'brand', 'ops']);
+            }
+            const overall = (ranges && ranges.overall) || null;
             let from = overall && overall.min_date ? String(overall.min_date).substring(0, 10) : '';
             let to = overall && overall.max_date ? String(overall.max_date).substring(0, 10) : '';
             if (!from || !to) {
@@ -7720,11 +7722,23 @@ include '../../includes/sidebar.php';
             return { from, to };
         }
 
-        // Dashboard Initialization — load real available data range first
-        (function bootDashboardDates() {
+        function bootDashboardDates() {
             const customerId = $('#customer_id_hidden').length
                 ? $('#customer_id_hidden').val()
                 : ($('#filter_customer').val() || $('.filter-customer-select').val() || '');
+
+            if (window.AOneDateRange) {
+                window.AOneDateRange.boot({
+                    url: '<?php echo BASE_URL; ?>api/get_data_range.php',
+                    customerId: customerId || 0,
+                    preferredKeys: ['business', 'trans', 'ads', 'brand', 'ops'],
+                    onDone: function (span) {
+                        initDashboardDatePickers(span.from, span.to);
+                        loadDashboard();
+                    }
+                });
+                return;
+            }
 
             $.get('<?php echo BASE_URL; ?>api/get_data_range.php', { customer_id: customerId || 0 })
                 .done(function (ranges) {
@@ -7741,7 +7755,9 @@ include '../../includes/sidebar.php';
                     initDashboardDatePickers(span.from, span.to);
                     loadDashboard();
                 });
-        })();
+        }
+
+        bootDashboardDates();
 
         $('#save_financials_new').click(function () {
             const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : $('#filter_customer').val();
@@ -7809,7 +7825,7 @@ include '../../includes/sidebar.php';
         // Date & Customer filter sync and apply
         $(document).on('change', '.filter-customer-select', function () {
             $('#filter_customer').val($(this).val());
-            loadDashboard();
+            bootDashboardDates();
         });
 
         $(document).on('change', '.filter-from-input', function () {

@@ -89,17 +89,21 @@ include '../../includes/sidebar.php';
 
 <script>
 $(document).ready(function() {
-    // Check available ranges
-    $.get('../../api/get_data_range.php', function(ranges) {
-        if (ranges.trans && ranges.trans.min_date) {
-            const min = new Date(ranges.trans.min_date);
-            const max = new Date(ranges.trans.max_date);
+    // Auto-select latest month that has DB data (month picker — no design change)
+    $.get('../../api/get_data_range.php', { customer_id: $('#customerSelect').val() || 0 }, function(ranges) {
+        const src = (ranges && (ranges.overall || ranges.trans || ranges.business)) || {};
+        if (src.max_date) {
+            const max = new Date(src.max_date);
+            const min = src.min_date ? new Date(src.min_date) : max;
             $('#date_suggestion').html(`<i class="fas fa-info-circle"></i> Data available from <b>${min.toLocaleString('default', { month: 'short', year: 'numeric' })}</b> to <b>${max.toLocaleString('default', { month: 'short', year: 'numeric' })}</b>`).show();
             $('#suggest_range').text(`Note: Most recent data is for ${max.toLocaleString('default', { month: 'long', year: 'numeric' })}`);
+            const ym = String(src.max_date).substring(0, 7);
+            $('#reportMonth').val(ym);
         }
+        loadPaymentData();
+    }).fail(function () {
+        loadPaymentData();
     });
-
-    loadPaymentData();
 });
 
 async function loadPaymentData() {

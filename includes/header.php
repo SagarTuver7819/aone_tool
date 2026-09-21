@@ -29,6 +29,7 @@ require_module_access();
     <!-- Chart.js (pinned to match reference) & JQuery -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="<?php echo BASE_URL; ?>assets/js/aone-date-range.js?v=<?php echo @filemtime(dirname(__DIR__) . '/assets/js/aone-date-range.js') ?: time(); ?>"></script>
     <!-- Flatpickr Range Datepicker -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

@@ -2459,8 +2459,20 @@ include '../../includes/sidebar.php';
 
         function bootReimbDates() {
             const customerId = $('#filter_customer').val() || 0;
+            if (window.AOneDateRange) {
+                window.AOneDateRange.boot({
+                    url: '../../api/get_data_range.php',
+                    customerId: customerId,
+                    preferredKeys: ['ops', 'trans', 'business'],
+                    onDone: function (span) {
+                        initReimbDatePicker(span.from, span.to);
+                        loadData();
+                    }
+                });
+                return;
+            }
             $.get('../../api/get_data_range.php', { customer_id: customerId }, function (ranges) {
-                const src = (ranges && (ranges.ops || ranges.overall || ranges.trans)) || {};
+                const src = (ranges && (ranges.overall || ranges.ops || ranges.trans)) || {};
                 let from = src.min_date ? String(src.min_date).substring(0, 10) : '';
                 let to = src.max_date ? String(src.max_date).substring(0, 10) : '';
                 if (!from || !to) {

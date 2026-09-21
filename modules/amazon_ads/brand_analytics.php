@@ -1589,8 +1589,20 @@ $customers = get_all_customers();
 
         function bootBrandAnalyticsDates() {
             const customerId = $('#filter_customer').val() || 0;
+            if (window.AOneDateRange) {
+                window.AOneDateRange.boot({
+                    url: '../../api/get_data_range.php',
+                    customerId: customerId,
+                    preferredKeys: ['brand', 'ads', 'business'],
+                    onDone: function (span) {
+                        initBrandAnalyticsDatePicker(span.from, span.to);
+                        refreshData();
+                    }
+                });
+                return;
+            }
             $.get('../../api/get_data_range.php', { customer_id: customerId }, function (ranges) {
-                const src = (ranges && (ranges.brand || ranges.overall || ranges.ads)) || {};
+                const src = (ranges && (ranges.overall || ranges.brand || ranges.ads)) || {};
                 let from = src.min_date ? String(src.min_date).substring(0, 10) : '';
                 let to = src.max_date ? String(src.max_date).substring(0, 10) : '';
                 if (!from || !to) {

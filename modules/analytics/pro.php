@@ -165,8 +165,24 @@ $(document).ready(function() {
 
     function bootProDates() {
         const customerId = $('#filter_customer').val() || 0;
+        if (window.AOneDateRange) {
+            window.AOneDateRange.boot({
+                url: '../../api/get_data_range.php',
+                customerId: customerId,
+                preferredKeys: ['trans', 'business', 'ads'],
+                onDone: function (span, ranges) {
+                    if (ranges.trans && ranges.trans.min_date) {
+                        $('#date_suggestion').html(`<i class="fas fa-info-circle"></i> Transaction data exists from <b>${ranges.trans.min_date}</b> to <b>${ranges.trans.max_date}</b>`).show();
+                        $('#suggest_range').text(`Try selecting a range around ${ranges.trans.max_date}`);
+                    }
+                    initProDatePicker(span.from, span.to);
+                    loadProData();
+                }
+            });
+            return;
+        }
         $.get('../../api/get_data_range.php', { customer_id: customerId }, function(ranges) {
-            const src = (ranges && (ranges.trans || ranges.overall)) || {};
+            const src = (ranges && (ranges.overall || ranges.trans)) || {};
             let from = src.min_date ? String(src.min_date).substring(0, 10) : '';
             let to = src.max_date ? String(src.max_date).substring(0, 10) : '';
             if (ranges.trans && ranges.trans.min_date) {

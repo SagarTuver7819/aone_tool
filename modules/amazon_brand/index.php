@@ -165,8 +165,23 @@ include '../../includes/sidebar.php';
 
     function bootBrandDates() {
         const customerId = $('#filter_customer').val() || 0;
+        if (window.AOneDateRange) {
+            window.AOneDateRange.boot({
+                url: '../../api/get_data_range.php',
+                customerId: customerId,
+                preferredKeys: ['brand', 'ads', 'business'],
+                onDone: function (span, ranges) {
+                    if (ranges.brand && ranges.brand.min_date) {
+                        $('#date_suggestion').html(`<i class="fas fa-info-circle"></i> Brand data available from <b>${ranges.brand.min_date}</b> to <b>${ranges.brand.max_date}</b>`).show();
+                    }
+                    initBrandDatePicker(span.from, span.to);
+                    loadBrandData();
+                }
+            });
+            return;
+        }
         $.get('../../api/get_data_range.php', { customer_id: customerId }, function (ranges) {
-            const src = (ranges && (ranges.brand || ranges.overall)) || {};
+            const src = (ranges && (ranges.overall || ranges.brand)) || {};
             let from = src.min_date ? String(src.min_date).substring(0, 10) : '';
             let to = src.max_date ? String(src.max_date).substring(0, 10) : '';
             if (ranges.brand && ranges.brand.min_date) {
