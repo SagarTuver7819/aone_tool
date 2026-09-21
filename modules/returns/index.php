@@ -957,8 +957,8 @@ include '../../includes/sidebar.php';
                 </svg>
                 <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_ret"
                     placeholder="Select date range" readonly>
-                <input type="hidden" id="filter_from" value="2026-01-01">
-                <input type="hidden" id="filter_to" value="<?php echo date('Y-m-d'); ?>">
+                <input type="hidden" id="filter_from" value="">
+                <input type="hidden" id="filter_to" value="">
             </div>
             <button type="button" class="btn-figma-refresh" id="apply_filters" title="Refresh">
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1544,27 +1544,60 @@ include '../../includes/sidebar.php';
             fetchData();
         });
 
-        if (typeof flatpickr !== 'undefined') {
-            flatpickr("#date_range_picker_ret", {
+        let returnsDatePicker = null;
+        function initReturnsDatePicker(from, to) {
+            if (typeof flatpickr === 'undefined') return;
+            if (returnsDatePicker) {
+                try { returnsDatePicker.destroy(); } catch (e) { /* ignore */ }
+            }
+            returnsDatePicker = flatpickr("#date_range_picker_ret", {
                 mode: "range",
                 dateFormat: "Y-m-d",
                 altInput: true,
                 altFormat: "M d, Y",
-                defaultDate: [$('#filter_from').val() || "2026-01-01", $('#filter_to').val() || "<?php echo date('Y-m-d'); ?>"],
+                defaultDate: [from, to],
                 onChange: function (selectedDates, dateStr, instance) {
                     if (selectedDates.length === 2) {
-                        const from = instance.formatDate(selectedDates[0], "Y-m-d");
-                        const to = instance.formatDate(selectedDates[1], "Y-m-d");
-                        $('#filter_from').val(from);
-                        $('#filter_to').val(to);
+                        const nextFrom = instance.formatDate(selectedDates[0], "Y-m-d");
+                        const nextTo = instance.formatDate(selectedDates[1], "Y-m-d");
+                        $('#filter_from').val(nextFrom);
+                        $('#filter_to').val(nextTo);
                         fetchData();
                     }
                 }
             });
         }
 
+        function bootReturnsDates() {
+            const customerId = $('#filter_customer').val() || 0;
+            $.get('../../api/get_data_range.php', { customer_id: customerId }, function (ranges) {
+                const src = (ranges && (ranges.ops || ranges.overall || ranges.trans)) || {};
+                let from = src.min_date ? String(src.min_date).substring(0, 10) : '';
+                let to = src.max_date ? String(src.max_date).substring(0, 10) : '';
+                if (!from || !to) {
+                    const now = new Date();
+                    to = now.toISOString().slice(0, 10);
+                    from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+                }
+                $('#filter_from').val(from);
+                $('#filter_to').val(to);
+                initReturnsDatePicker(from, to);
+                fetchData();
+            }).fail(function () {
+                const now = new Date();
+                const to = now.toISOString().slice(0, 10);
+                const from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+                $('#filter_from').val(from);
+                $('#filter_to').val(to);
+                initReturnsDatePicker(from, to);
+                fetchData();
+            });
+        }
+
         $('#apply_filters').on('click', fetchData);
-        $('#filter_customer').on('change', fetchData);
+        $('#filter_customer').on('change', bootReturnsDates);
+
+        bootReturnsDates();
 
         // CSV Export Function
         $('#export_csv, #btn_export_csv_top').on('click', function (e) {
@@ -1590,8 +1623,6 @@ include '../../includes/sidebar.php';
             link.click();
             document.body.removeChild(link);
         });
-
-        fetchData();
     });
 </script>
 

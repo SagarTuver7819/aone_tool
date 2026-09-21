@@ -4036,7 +4036,9 @@ include '../../includes/sidebar.php';
 
 <!-- Filter Section -->
 <?php if ($active_tab === 'kpi' || $active_tab === 'financial'): ?>
-    <!-- Figma toolbar lives inside tab -->
+    <!-- Shared date state for Overview / P&L (pickers write here; must always exist) -->
+    <input type="hidden" id="filter_from" value="">
+    <input type="hidden" id="filter_to" value="">
 <?php elseif ($active_tab === 'products'): ?>
     <!-- Figma topbar for Product Performance -->
     <style>
@@ -4138,8 +4140,8 @@ include '../../includes/sidebar.php';
                 </svg>
                 <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_pp"
                     placeholder="Select date range" readonly>
-                <input type="hidden" id="filter_from" value="2026-01-01">
-                <input type="hidden" id="filter_to" value="2026-03-31">
+                <input type="hidden" id="filter_from" value="">
+                <input type="hidden" id="filter_to" value="">
             </div>
             <button type="button" id="apply_filters" class="btn-figma-refresh" title="Refresh Analysis">
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -4301,6 +4303,8 @@ include '../../includes/sidebar.php';
                 </svg>
                 <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_kpi"
                     placeholder="Select date range" readonly>
+                <input type="hidden" class="filter-from-input" value="">
+                <input type="hidden" class="filter-to-input" value="">
             </div>
             <button type="button" id="apply_filters" class="btn-figma-refresh" title="Refresh">
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -4721,6 +4725,8 @@ include '../../includes/sidebar.php';
                 </svg>
                 <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_pl"
                     placeholder="Select date range" readonly>
+                <input type="hidden" class="filter-from-input" value="">
+                <input type="hidden" class="filter-to-input" value="">
             </div>
             <button type="button" class="btn-figma-refresh btn-apply-filters" title="Refresh Analysis">
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -6531,8 +6537,13 @@ include '../../includes/sidebar.php';
             dashboardLoadInProgress = true;
             showLoader();
             const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : ($('#filter_customer').val() || $('.filter-customer-select').val() || '');
-            let from = $('#filter_from').val() || $('.filter-from-input').val() || '2026-01-01';
-            let to = $('#filter_to').val() || $('.filter-to-input').val() || '2026-03-31';
+            let from = $('#filter_from').val() || $('.filter-from-input').val() || '';
+            let to = $('#filter_to').val() || $('.filter-to-input').val() || '';
+            if (!from || !to) {
+                dashboardLoadInProgress = false;
+                hideLoader();
+                return;
+            }
 
             // Synchronize all filters
             $('#filter_customer, .filter-customer-select').val(customerId);
@@ -7666,32 +7677,74 @@ include '../../includes/sidebar.php';
         });
 
         // Initialize Flatpickr for Range Selection matching Figma UI
-        function initDashboardDatePickers() {
-            if (typeof flatpickr !== 'undefined') {
-                flatpickr(".date-range-picker", {
+        let dashboardDatePickers = [];
+        function initDashboardDatePickers(fromDate, toDate) {
+            if (typeof flatpickr === 'undefined') return;
+            const from = fromDate || $('#filter_from').val();
+            const to = toDate || $('#filter_to').val();
+            if (!from || !to) return;
+
+            dashboardDatePickers.forEach(function (fp) {
+                try { fp.destroy(); } catch (e) { /* ignore */ }
+            });
+            dashboardDatePickers = [];
+
+            document.querySelectorAll('.date-range-picker').forEach(function (el) {
+                const fp = flatpickr(el, {
                     mode: "range",
                     dateFormat: "Y-m-d",
                     altInput: true,
                     altFormat: "M d, Y",
-                    defaultDate: [$('#filter_from').val() || "2026-01-01", $('#filter_to').val() || "2026-03-31"],
+                    defaultDate: [from, to],
                     onChange: function (selectedDates, dateStr, instance) {
                         if (selectedDates.length === 2) {
-                            const from = instance.formatDate(selectedDates[0], "Y-m-d");
-                            const to = instance.formatDate(selectedDates[1], "Y-m-d");
-                            $('#filter_from').val(from);
-                            $('#filter_to').val(to);
+                            const nextFrom = instance.formatDate(selectedDates[0], "Y-m-d");
+                            const nextTo = instance.formatDate(selectedDates[1], "Y-m-d");
+                            $('#filter_from, .filter-from-input').val(nextFrom);
+                            $('#filter_to, .filter-to-input').val(nextTo);
                             loadDashboard();
                         }
                     }
                 });
-            }
+                dashboardDatePickers.push(fp);
+            });
         }
 
-        // Dashboard Initialization
-        $('#filter_from').val('2026-01-01');
-        $('#filter_to').val('2026-03-31');
-        initDashboardDatePickers();
-        loadDashboard();
+        function resolveDashboardDateRange(ranges) {
+            const preferred = (ranges && (ranges.trans || ranges.overall || ranges.ads || ranges.brand || ranges.ops)) || null;
+            const overall = (ranges && ranges.overall) || preferred;
+            let from = overall && overall.min_date ? String(overall.min_date).substring(0, 10) : '';
+            let to = overall && overall.max_date ? String(overall.max_date).substring(0, 10) : '';
+            if (!from || !to) {
+                const now = new Date();
+                to = now.toISOString().slice(0, 10);
+                from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+            }
+            return { from, to };
+        }
+
+        // Dashboard Initialization — load real available data range first
+        (function bootDashboardDates() {
+            const customerId = $('#customer_id_hidden').length
+                ? $('#customer_id_hidden').val()
+                : ($('#filter_customer').val() || $('.filter-customer-select').val() || '');
+
+            $.get('<?php echo BASE_URL; ?>api/get_data_range.php', { customer_id: customerId || 0 })
+                .done(function (ranges) {
+                    const span = resolveDashboardDateRange(ranges);
+                    $('#filter_from, .filter-from-input').val(span.from);
+                    $('#filter_to, .filter-to-input').val(span.to);
+                    initDashboardDatePickers(span.from, span.to);
+                    loadDashboard();
+                })
+                .fail(function () {
+                    const span = resolveDashboardDateRange(null);
+                    $('#filter_from, .filter-from-input').val(span.from);
+                    $('#filter_to, .filter-to-input').val(span.to);
+                    initDashboardDatePickers(span.from, span.to);
+                    loadDashboard();
+                });
+        })();
 
         $('#save_financials_new').click(function () {
             const customerId = $('#customer_id_hidden').length ? $('#customer_id_hidden').val() : $('#filter_customer').val();

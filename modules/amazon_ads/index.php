@@ -1035,8 +1035,8 @@ include '../../includes/sidebar.php';
                 </svg>
                 <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_ads"
                     placeholder="Select date range" readonly>
-                <input type="hidden" id="filter_from" value="2026-01-01">
-                <input type="hidden" id="filter_to" value="2026-03-31">
+                <input type="hidden" id="filter_from" value="">
+                <input type="hidden" id="filter_to" value="">
             </div>
             <button type="button" class="btn-figma-refresh" id="refresh_ads" title="Refresh">
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1527,14 +1527,58 @@ include '../../includes/sidebar.php';
         const REPORT_ITEMS_PER_PAGE = 10;
         let reportSearchQuery = "";
 
-        // Load initial date ranges
-        $.get('../../api/get_data_range.php', function (ranges) {
-            if (ranges.ads && ranges.ads.min_date) {
-                $('#filter_from').val(ranges.ads.min_date);
-                $('#filter_to').val(ranges.ads.max_date);
-                loadAdData();
+        // Load initial date ranges, then init picker + data
+        let adsDatePicker = null;
+        function initAdsDatePicker(from, to) {
+            if (typeof flatpickr === 'undefined') return;
+            if (adsDatePicker) {
+                try { adsDatePicker.destroy(); } catch (e) { /* ignore */ }
             }
-        });
+            adsDatePicker = flatpickr("#date_range_picker_ads", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "M d, Y",
+                defaultDate: [from, to],
+                onChange: function (selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        const nextFrom = instance.formatDate(selectedDates[0], "Y-m-d");
+                        const nextTo = instance.formatDate(selectedDates[1], "Y-m-d");
+                        $('#filter_from').val(nextFrom);
+                        $('#filter_to').val(nextTo);
+                        loadAdData();
+                    }
+                }
+            });
+        }
+
+        function bootAdsDates() {
+            const customerId = $('#filter_customer').val() || 0;
+            $.get('../../api/get_data_range.php', { customer_id: customerId }, function (ranges) {
+                const src = (ranges && (ranges.ads || ranges.overall)) || {};
+                let from = src.min_date ? String(src.min_date).substring(0, 10) : '';
+                let to = src.max_date ? String(src.max_date).substring(0, 10) : '';
+                if (!from || !to) {
+                    const now = new Date();
+                    to = now.toISOString().slice(0, 10);
+                    from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+                }
+                $('#filter_from').val(from);
+                $('#filter_to').val(to);
+                initAdsDatePicker(from, to);
+                loadAdData();
+            }).fail(function () {
+                const now = new Date();
+                const to = now.toISOString().slice(0, 10);
+                const from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+                $('#filter_from').val(from);
+                $('#filter_to').val(to);
+                initAdsDatePicker(from, to);
+                loadAdData();
+            });
+        }
+
+        bootAdsDates();
 
         function formatCurrency(v) {
             return '$' + parseFloat(v || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -2837,28 +2881,10 @@ include '../../includes/sidebar.php';
             });
         }
 
-        // Initialize Flatpickr
-        if (typeof flatpickr !== 'undefined') {
-            flatpickr("#date_range_picker_ads", {
-                mode: "range",
-                dateFormat: "Y-m-d",
-                altInput: true,
-                altFormat: "M d, Y",
-                defaultDate: [$('#filter_from').val() || "2026-01-01", $('#filter_to').val() || "2026-03-31"],
-                onChange: function (selectedDates, dateStr, instance) {
-                    if (selectedDates.length === 2) {
-                        const from = instance.formatDate(selectedDates[0], "Y-m-d");
-                        const to = instance.formatDate(selectedDates[1], "Y-m-d");
-                        $('#filter_from').val(from);
-                        $('#filter_to').val(to);
-                        loadAdData();
-                    }
-                }
-            });
-        }
-
         $('#refresh_ads').click(loadAdData);
-        $('#filter_customer').change(loadAdData);
+        $('#filter_customer').change(function () {
+            bootAdsDates();
+        });
 
         // Heatmap custom premium tooltip hover handler (Image 2 White Card style)
         const heatmapTooltip = $('<div id="heatmap-tooltip" style="position: absolute; display: none; background: #ffffff; color: #1E293B; padding: 12px 16px; border-radius: 10px; font-family: \'Inter\', sans-serif; font-size: 0.8rem; z-index: 9999; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.04); pointer-events: none; line-height: 1.4; border: 1px solid #E2E8F0; min-width: 175px;"></div>').appendTo('body');

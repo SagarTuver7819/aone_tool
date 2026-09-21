@@ -1017,8 +1017,8 @@ $customers = get_all_customers();
                 </svg>
                 <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_ba"
                     placeholder="Jan 01, 2026 - Mar 31, 2026" readonly>
-                <input type="hidden" id="filter_from" value="2026-01-01">
-                <input type="hidden" id="filter_to" value="2026-03-31">
+                <input type="hidden" id="filter_from" value="">
+                <input type="hidden" id="filter_to" value="">
             </div>
             <div class="ba-select-wrap">
                 <select id="filter_customer" class="ba-select">
@@ -1563,29 +1563,60 @@ $customers = get_all_customers();
             });
         }
 
-        if (typeof flatpickr !== 'undefined') {
-            flatpickr("#date_range_picker_ba", {
+        let brandAnalyticsDatePicker = null;
+        function initBrandAnalyticsDatePicker(from, to) {
+            if (typeof flatpickr === 'undefined') return;
+            if (brandAnalyticsDatePicker) {
+                try { brandAnalyticsDatePicker.destroy(); } catch (e) { /* ignore */ }
+            }
+            brandAnalyticsDatePicker = flatpickr("#date_range_picker_ba", {
                 mode: "range",
                 dateFormat: "Y-m-d",
                 altInput: true,
                 altFormat: "M d, Y",
-                defaultDate: [$('#filter_from').val() || "2026-01-01", $('#filter_to').val() || "<?php echo date('Y-m-d'); ?>"],
+                defaultDate: [from, to],
                 onChange: function (selectedDates, dateStr, instance) {
                     if (selectedDates.length === 2) {
-                        const from = instance.formatDate(selectedDates[0], "Y-m-d");
-                        const to = instance.formatDate(selectedDates[1], "Y-m-d");
-                        $('#filter_from').val(from);
-                        $('#filter_to').val(to);
+                        const nextFrom = instance.formatDate(selectedDates[0], "Y-m-d");
+                        const nextTo = instance.formatDate(selectedDates[1], "Y-m-d");
+                        $('#filter_from').val(nextFrom);
+                        $('#filter_to').val(nextTo);
                         refreshData();
                     }
                 }
             });
         }
 
-        $('#refresh_button').on('click', refreshData);
-        $('#filter_customer').on('change', refreshData);
+        function bootBrandAnalyticsDates() {
+            const customerId = $('#filter_customer').val() || 0;
+            $.get('../../api/get_data_range.php', { customer_id: customerId }, function (ranges) {
+                const src = (ranges && (ranges.brand || ranges.overall || ranges.ads)) || {};
+                let from = src.min_date ? String(src.min_date).substring(0, 10) : '';
+                let to = src.max_date ? String(src.max_date).substring(0, 10) : '';
+                if (!from || !to) {
+                    const now = new Date();
+                    to = now.toISOString().slice(0, 10);
+                    from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+                }
+                $('#filter_from').val(from);
+                $('#filter_to').val(to);
+                initBrandAnalyticsDatePicker(from, to);
+                refreshData();
+            }).fail(function () {
+                const now = new Date();
+                const to = now.toISOString().slice(0, 10);
+                const from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+                $('#filter_from').val(from);
+                $('#filter_to').val(to);
+                initBrandAnalyticsDatePicker(from, to);
+                refreshData();
+            });
+        }
 
-        refreshData();
+        $('#refresh_button').on('click', refreshData);
+        $('#filter_customer').on('change', bootBrandAnalyticsDates);
+
+        bootBrandAnalyticsDates();
 
         $('#btn_excel_export').on('click', function (e) {
             e.preventDefault();

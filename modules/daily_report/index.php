@@ -32,8 +32,8 @@ include '../../includes/sidebar.php';
                         <path d="M2 6.6665H14" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                     <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_daily" placeholder="Select date range" readonly>
-                    <input type="hidden" id="filter_from" value="2026-01-01">
-                    <input type="hidden" id="filter_to" value="2026-01-31">
+                    <input type="hidden" id="filter_from" value="">
+                    <input type="hidden" id="filter_to" value="">
                 </div>
             </div>
             <button id="apply_filters" class="btn-figma-refresh" title="Refresh">
@@ -251,8 +251,10 @@ $(document).ready(function() {
         const customerId = $('#filter_customer').val();
         let from = $('#filter_from').val();
         let to = $('#filter_to').val();
-        if (!from) from = '2026-01-01';
-        if (!to) to = '2026-01-31';
+        if (!from || !to) {
+            hideLoader();
+            return;
+        }
 
         $.ajax({
             url: '<?php echo BASE_URL; ?>api/daily_report_data.php',
@@ -274,27 +276,58 @@ $(document).ready(function() {
         });
     }
 
-    if (typeof flatpickr !== 'undefined') {
-        flatpickr("#date_range_picker_daily", {
+    let dailyDatePicker = null;
+    function initDailyDatePicker(from, to) {
+        if (typeof flatpickr === 'undefined') return;
+        if (dailyDatePicker) {
+            try { dailyDatePicker.destroy(); } catch (e) { /* ignore */ }
+        }
+        dailyDatePicker = flatpickr("#date_range_picker_daily", {
             mode: "range",
             dateFormat: "Y-m-d",
             altInput: true,
             altFormat: "M d, Y",
-            defaultDate: [$('#filter_from').val() || "2026-01-01", $('#filter_to').val() || "2026-01-31"],
+            defaultDate: [from, to],
             onChange: function(selectedDates, dateStr, instance) {
                 if (selectedDates.length === 2) {
-                    const from = instance.formatDate(selectedDates[0], "Y-m-d");
-                    const to = instance.formatDate(selectedDates[1], "Y-m-d");
-                    $('#filter_from').val(from);
-                    $('#filter_to').val(to);
+                    const nextFrom = instance.formatDate(selectedDates[0], "Y-m-d");
+                    const nextTo = instance.formatDate(selectedDates[1], "Y-m-d");
+                    $('#filter_from').val(nextFrom);
+                    $('#filter_to').val(nextTo);
                     loadDaily();
                 }
             }
         });
     }
 
+    function bootDailyDates() {
+        const customerId = $('#filter_customer').val() || 0;
+        $.get('<?php echo BASE_URL; ?>api/get_data_range.php', { customer_id: customerId }, function (ranges) {
+            const src = (ranges && (ranges.trans || ranges.overall || ranges.ads)) || {};
+            let from = src.min_date ? String(src.min_date).substring(0, 10) : '';
+            let to = src.max_date ? String(src.max_date).substring(0, 10) : '';
+            if (!from || !to) {
+                const now = new Date();
+                to = now.toISOString().slice(0, 10);
+                from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+            }
+            $('#filter_from').val(from);
+            $('#filter_to').val(to);
+            initDailyDatePicker(from, to);
+            loadDaily();
+        }).fail(function () {
+            const now = new Date();
+            const to = now.toISOString().slice(0, 10);
+            const from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+            $('#filter_from').val(from);
+            $('#filter_to').val(to);
+            initDailyDatePicker(from, to);
+            loadDaily();
+        });
+    }
+
     $('#apply_filters').click(loadDaily);
-    $('#filter_customer').change(loadDaily);
+    $('#filter_customer').change(bootDailyDates);
     $('#table_search').on('input', renderTable);
 
     $('.chart-tab-btn').click(function() {
@@ -305,13 +338,13 @@ $(document).ready(function() {
 
     $('#export_csv').click(function() {
         const customerId = $('#filter_customer').val();
-        const from = $('#filter_from').val() || '2026-01-01';
-        const to = $('#filter_to').val() || '2026-01-31';
+        const from = $('#filter_from').val() || '';
+        const to = $('#filter_to').val() || '';
         const url = '<?php echo BASE_URL; ?>api/export_business_daily_csv.php?customer_id=' + encodeURIComponent(customerId) + '&from_date=' + encodeURIComponent(from) + '&to_date=' + encodeURIComponent(to);
         window.location.href = url;
     });
 
-    loadDaily();
+    bootDailyDates();
 });
 </script>
 

@@ -41,8 +41,8 @@ include '../../includes/sidebar.php';
                 </svg>
                 <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_brand"
                     placeholder="Select date range" readonly>
-                <input type="hidden" id="filter_from" value="<?php echo date('Y-m-01'); ?>">
-                <input type="hidden" id="filter_to" value="<?php echo date('Y-m-d'); ?>">
+                <input type="hidden" id="filter_from" value="">
+                <input type="hidden" id="filter_to" value="">
             </div>
         </div>
         <button id="refresh_brand" class="btn-figma-refresh" title="Refresh">
@@ -138,21 +138,69 @@ include '../../includes/sidebar.php';
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     let brandTrendChart;
+    let brandDatePicker = null;
 
-    $(document).ready(function () {
-        $.get('../../api/get_data_range.php', function (ranges) {
+    function initBrandDatePicker(from, to) {
+        if (typeof flatpickr === 'undefined') return;
+        if (brandDatePicker) {
+            try { brandDatePicker.destroy(); } catch (e) { /* ignore */ }
+        }
+        brandDatePicker = flatpickr("#date_range_picker_brand", {
+            mode: "range",
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "M d, Y",
+            defaultDate: [from, to],
+            onChange: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length === 2) {
+                    const nextFrom = instance.formatDate(selectedDates[0], "Y-m-d");
+                    const nextTo = instance.formatDate(selectedDates[1], "Y-m-d");
+                    $('#filter_from').val(nextFrom);
+                    $('#filter_to').val(nextTo);
+                    loadBrandData();
+                }
+            }
+        });
+    }
+
+    function bootBrandDates() {
+        const customerId = $('#filter_customer').val() || 0;
+        $.get('../../api/get_data_range.php', { customer_id: customerId }, function (ranges) {
+            const src = (ranges && (ranges.brand || ranges.overall)) || {};
+            let from = src.min_date ? String(src.min_date).substring(0, 10) : '';
+            let to = src.max_date ? String(src.max_date).substring(0, 10) : '';
             if (ranges.brand && ranges.brand.min_date) {
                 $('#date_suggestion').html(`<i class="fas fa-info-circle"></i> Brand data available from <b>${ranges.brand.min_date}</b> to <b>${ranges.brand.max_date}</b>`).show();
             }
+            if (!from || !to) {
+                const now = new Date();
+                to = now.toISOString().slice(0, 10);
+                from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+            }
+            $('#filter_from').val(from);
+            $('#filter_to').val(to);
+            initBrandDatePicker(from, to);
+            loadBrandData();
+        }).fail(function () {
+            const now = new Date();
+            const to = now.toISOString().slice(0, 10);
+            const from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+            $('#filter_from').val(from);
+            $('#filter_to').val(to);
+            initBrandDatePicker(from, to);
+            loadBrandData();
         });
+    }
 
-        loadBrandData();
+    $(document).ready(function () {
+        bootBrandDates();
     });
 
     function loadBrandData() {
         const customerId = $('#filter_customer').val();
         const fromDate = $('#filter_from').val();
         const toDate = $('#filter_to').val();
+        if (!fromDate || !toDate) return;
 
         $('#refresh_brand').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Refreshing...');
 
@@ -231,29 +279,8 @@ include '../../includes/sidebar.php';
         });
     }
 
-    if (typeof flatpickr !== 'undefined') {
-        flatpickr("#date_range_picker_brand", {
-            mode: "range",
-            dateFormat: "Y-m-d",
-            altInput: true,
-            altFormat: "M d, Y",
-            defaultDate: [$('#filter_from').val() || "<?php echo date('Y-m-01'); ?>", $('#filter_to').val() || "<?php echo date('Y-m-d'); ?>"],
-            onChange: function (selectedDates, dateStr, instance) {
-                if (selectedDates.length === 2) {
-                    const from = instance.formatDate(selectedDates[0], "Y-m-d");
-                    const to = instance.formatDate(selectedDates[1], "Y-m-d");
-                    $('#filter_from').val(from);
-                    $('#filter_to').val(to);
-                    loadBrandData();
-                }
-            }
-        });
-    }
-
     $('#refresh_brand').click(loadBrandData);
-    $('#filter_customer').change(loadBrandData);
-    loadBrandData();
-});
+    $('#filter_customer').change(bootBrandDates);
 </script>
 
 <?php include '../../includes/footer.php'; ?>

@@ -34,8 +34,8 @@ $customer_id = $_SESSION['customer_id'] ?? 0;
                     <path d="M2 6.6665H14" stroke="#363B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 <input type="text" class="flatpickr-range-input date-range-picker" id="date_range_picker_pro" placeholder="Select date range" readonly>
-                <input type="hidden" id="filter_from" value="<?php echo date('Y-m-01'); ?>">
-                <input type="hidden" id="filter_to" value="<?php echo date('Y-m-d'); ?>">
+                <input type="hidden" id="filter_from" value="">
+                <input type="hidden" id="filter_to" value="">
             </div>
         </div>
         <div style="display: flex; gap: 0.5rem; align-items: center;">
@@ -134,25 +134,70 @@ $customer_id = $_SESSION['customer_id'] ?? 0;
 <script>
 $(document).ready(function() {
     let expenseChart;
-
-    // Check available ranges
-    $.get('../../api/get_data_range.php', function(ranges) {
-        if (ranges.trans && ranges.trans.min_date) {
-            const min = new Date(ranges.trans.min_date);
-            const max = new Date(ranges.trans.max_date);
-            $('#date_suggestion').html(`<i class="fas fa-info-circle"></i> Transaction data exists from <b>${ranges.trans.min_date}</b> to <b>${ranges.trans.max_date}</b>`).show();
-            $('#suggest_range').text(`Try selecting a range around ${ranges.trans.max_date}`);
-        }
-    });
+    let proDatePicker = null;
 
     function formatCurrency(v) {
         return '$' + parseFloat(v).toLocaleString(undefined, {minimumFractionDigits: 2});
+    }
+
+    function initProDatePicker(from, to) {
+        if (typeof flatpickr === 'undefined') return;
+        if (proDatePicker) {
+            try { proDatePicker.destroy(); } catch (e) { /* ignore */ }
+        }
+        proDatePicker = flatpickr("#date_range_picker_pro", {
+            mode: "range",
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "M d, Y",
+            defaultDate: [from, to],
+            onChange: function(selectedDates, dateStr, instance) {
+                if (selectedDates.length === 2) {
+                    const nextFrom = instance.formatDate(selectedDates[0], "Y-m-d");
+                    const nextTo = instance.formatDate(selectedDates[1], "Y-m-d");
+                    $('#filter_from').val(nextFrom);
+                    $('#filter_to').val(nextTo);
+                    loadProData();
+                }
+            }
+        });
+    }
+
+    function bootProDates() {
+        const customerId = $('#filter_customer').val() || 0;
+        $.get('../../api/get_data_range.php', { customer_id: customerId }, function(ranges) {
+            const src = (ranges && (ranges.trans || ranges.overall)) || {};
+            let from = src.min_date ? String(src.min_date).substring(0, 10) : '';
+            let to = src.max_date ? String(src.max_date).substring(0, 10) : '';
+            if (ranges.trans && ranges.trans.min_date) {
+                $('#date_suggestion').html(`<i class="fas fa-info-circle"></i> Transaction data exists from <b>${ranges.trans.min_date}</b> to <b>${ranges.trans.max_date}</b>`).show();
+                $('#suggest_range').text(`Try selecting a range around ${ranges.trans.max_date}`);
+            }
+            if (!from || !to) {
+                const now = new Date();
+                to = now.toISOString().slice(0, 10);
+                from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+            }
+            $('#filter_from').val(from);
+            $('#filter_to').val(to);
+            initProDatePicker(from, to);
+            loadProData();
+        }).fail(function () {
+            const now = new Date();
+            const to = now.toISOString().slice(0, 10);
+            const from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+            $('#filter_from').val(from);
+            $('#filter_to').val(to);
+            initProDatePicker(from, to);
+            loadProData();
+        });
     }
 
     function loadProData() {
         const customerId = $('#filter_customer').val();
         const fromDate = $('#filter_from').val();
         const toDate = $('#filter_to').val();
+        if (!fromDate || !toDate) return;
 
         $('#refresh_data').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> CALCULATING...');
 
@@ -219,28 +264,9 @@ $(document).ready(function() {
         });
     }
 
-    if (typeof flatpickr !== 'undefined') {
-        flatpickr("#date_range_picker_pro", {
-            mode: "range",
-            dateFormat: "Y-m-d",
-            altInput: true,
-            altFormat: "M d, Y",
-            defaultDate: [$('#filter_from').val() || "<?php echo date('Y-m-01'); ?>", $('#filter_to').val() || "<?php echo date('Y-m-d'); ?>"],
-            onChange: function(selectedDates, dateStr, instance) {
-                if (selectedDates.length === 2) {
-                    const from = instance.formatDate(selectedDates[0], "Y-m-d");
-                    const to = instance.formatDate(selectedDates[1], "Y-m-d");
-                    $('#filter_from').val(from);
-                    $('#filter_to').val(to);
-                    loadProData();
-                }
-            }
-        });
-    }
-
     $('#refresh_data').click(loadProData);
-    $('#filter_customer').change(loadProData);
-    loadProData();
+    $('#filter_customer').change(bootProDates);
+    bootProDates();
 });
 </script>
 
